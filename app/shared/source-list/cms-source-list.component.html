@@ -1,8 +1,0 @@
-<div id="source-list-card-container" class="source-list-cards">
-    <div class="source-list-unavailable" *ngIf="mSources.length === 0">
-        <span>{{ 'sourceList.unavailable' | translate }}</span>
-    </div>
-    <div *ngIf="mSources.length > 0">
-        <cms-card *ngFor="let source of mSources" [card]="source" (selected)="addSourceToClipboard(source)" (toggleFavorite)="toggleSourceFavorite(source)" [ngClass]="{disabled: source.disabled}"></cms-card>
-    </div>
-</div>

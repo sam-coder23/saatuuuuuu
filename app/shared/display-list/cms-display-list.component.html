@@ -1,9 +1,0 @@
-<div id="display-list-card-container" class="display-list-cards">
-    <div class="display-list-unavailable" *ngIf="mDisplays.length === 0">
-        <span>{{ 'displayList.unavailable' | translate }}</span>
-        <cms-dialog *ngIf="mShowConfirmationDialog" [message]="mDialogMessage" [type]="'alert'" (okPress)="onConfimation()"></cms-dialog>
-    </div>
-    <div *ngIf="mDisplays.length > 0">
-        <cms-card *ngFor="let display of mDisplays" [card]="display" (selected)="connectWall(display)" (toggleFavorite)="toggleDisplayFavorite(display)" [ngClass]="{disabled: display.disabled}"> </cms-card>
-    </div>
-</div>
