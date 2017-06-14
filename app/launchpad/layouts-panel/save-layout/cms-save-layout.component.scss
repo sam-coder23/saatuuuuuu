@@ -1,0 +1,55 @@
+@import 'variables.global';
+
+
+.save-panel-main{
+    width: 100%;
+}
+
+.save-panel-heading{
+    width: 100%;
+    padding: 20px 20px 0px 20px;
+}
+
+.save-panel-heading span{
+    font-size: 18px;
+    width: 100%;
+}
+
+.save-panel-section{
+    padding: 10px  0 0 0;
+}
+
+.input-container{
+    width: 400px;
+    height: 72px;
+    margin: 0 20px;
+    align-self: flex-end;
+}
+
+.input-container md-input-container{
+    width: 100%;
+    padding: 2%;
+    font-size: 20px;
+}
+
+.save-button-container{
+    height: 44px;
+    margin: 20px 40px;
+    align-self: flex-end;
+}
+
+.save-button-container [md-raised-button]{
+    min-width: 120px;
+    height: inherit;
+    font-size: 18px;
+    background-color: $grey_200;
+}
+
+.save-button-container [md-raised-button]:enabled:active{
+    background-color: $blue_500; 
+    color: $white;
+}
+
+.save-button-container [md-raised-button]:enabled:hover{
+    background-color: $blue_200; 
+}

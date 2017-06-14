@@ -1,0 +1,18 @@
+<div id="save-layout" class="save-panel-main">
+    <header class="save-panel-heading layout-row">
+        <span>{{ 'saveLayout.heading' | translate }}</span>
+    </header>
+    <section class="save-panel-section layout-row layout-align-center">
+        <form #saveLayoutForm="ngForm" class="save-form layout-row">
+            <div class="input-container">
+                <md-input-container id="save-layout-input">
+                    <input md-input type="text" placeholder="{{ 'saveLayout.inputText' | translate }}:" required [(ngModel)]="layoutName" name="layoutname">
+                </md-input-container>
+            </div>
+            <div class="save-button-container">
+                <button id="layout-save-button" md-raised-button type="submit" class="md-raised" (click)="confirmSaveLayout()" [disabled]="!saveLayoutForm.form.valid">{{ 'saveLayout.button' | translate }}</button>
+            </div>
+        </form>
+    </section>
+    <cms-dialog *ngIf="showConfirmationDialog" [message]="dialogMessage" [type]="'confirmation'" (okPress)="onConfimation()" (cancelPress)="onCancel()"></cms-dialog>
+</div>

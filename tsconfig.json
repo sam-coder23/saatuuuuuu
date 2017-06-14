@@ -1,0 +1,18 @@
+{
+    "compilerOptions": {
+        "target": "es5",
+        "sourceMap": true,
+        "moduleResolution": "node",
+        "experimentalDecorators": true,
+        "emitDecoratorMetadata": true,
+        "module": "commonjs",
+        "noImplicitAny": false,
+        "outDir": "built",
+        "rootDir": ".",
+        "typeRoots": ["node_modules/@types"],
+        "types": ["node", "core-js", "hammerjs"]        
+    },
+    "exclude": [
+        "node_modules/*"
+    ]
+}

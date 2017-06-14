@@ -1,0 +1,193 @@
+@import 'variables.global';
+
+.page-toolbar{
+     @include page-header-fixed();
+}
+
+.settings-panel{
+    z-index: 0;    
+    height: 100%;
+    width: 100%;
+    @include layout-column();
+
+    .settings-panel-container{
+        width: 100%;
+        height: calc(100% - 64px);
+        overflow: auto;
+        box-sizing: border-box;
+        background-color: $grey_600;
+        -webkit-overflow-scrolling: touch;
+        margin-top: 64px;
+    }
+
+    .settings-content-wrapper{
+        margin: 0 auto;
+        box-sizing: border-box;
+        padding: 0 15%;
+    }
+
+    .loading-content{
+        padding: 20px;
+        
+        @include layout-column();
+        @include layout-align-center();
+
+        md-progress-circle{
+            width: 80px;
+            height: 80px;
+        }
+    }
+
+    .setting-card{
+        margin: 10px 0;
+
+        md-card-subtitle{
+            font-size: 14px;
+            font-weight: bold;
+            color: $grey_500;
+        }
+
+        md-card-content{
+            padding: 0 16px;
+        }
+
+    }
+
+    .setting-card-language {
+        md-card-subtitle{
+            margin-bottom: 10px;
+        }
+
+        md-card-content{
+            padding: 0;
+        }
+
+        .language-button{
+            width: 100%;
+            text-align: inherit;
+            box-shadow: none;
+
+            &:hover{
+                background-color: rgba(0, 0, 0, 0.12);
+            }
+        }
+    }
+
+   .wall-connection-button{
+        font-size: 16px;
+        line-height: 24px;
+        flex-shrink: 0;
+        max-width: 300px;
+        padding: 4px 16px;
+        white-space: normal;
+        word-wrap: break-word;
+        overflow-wrap: break-word; 
+        text-align: inherit;
+        margin: 0px 15px;
+    }
+
+    .list-main-row{
+        @include layout-column();
+        
+        margin: 10px 0;
+
+        .cell-block{
+            @include layout-column();
+        }
+
+        .color-box{
+            padding: 0 20px;
+        }
+
+        .cell-block-content{
+            @include layout-row();
+            align-items: center;
+            height: 45px;
+            white-space: nowrap;
+        }
+        
+        .setting-button-box{
+            padding: 0 20px;
+        }
+
+        &.disabled {
+            pointer-events: none;
+            opacity: 0.5;
+        }
+    }
+
+    .setting-color-button{
+        max-width: 60px;
+        height: 30px;
+        padding: 3px;
+        box-sizing: border-box;
+    }
+
+    .setting-color-reflect-box{
+        width: 35px;
+        height: 30px;
+        margin-right: 5px;
+        box-sizing: border-box;
+        border: 1px solid $grey_500;
+    }
+
+    .setting-square-button{
+        width: 35px;
+        height: 35px;
+        min-width: 35px;
+        max-width: 35px;
+        padding: 0;
+        box-sizing: border-box;
+        font-size: 16px;
+        border: 1px solid $grey_400;
+    }
+
+    .setting-square-button.aLarge{
+        font-size: 26px;
+    }
+
+    .setting-square-button.aSmall{
+        font-size: 12px;
+    }
+
+    .setting-button-group{
+        @include layout-row();
+        width: 175px;
+    }
+
+    .clipboard-row{
+        &.disabled{
+            md-radio-button{
+                pointer-events: none;
+                opacity: 0.5;
+            }
+        }
+    }
+
+    // handling specific wall text truncation with button
+    .specific-wall-row{
+        @include layout-row();
+        align-items: flex-start;
+
+        .text-block{
+            word-wrap: break-word;
+            overflow-wrap: break-word; 
+        }
+
+        .button-block{
+            flex-grow: 1;
+            flex-shrink: 0;
+        }
+
+        &.disabled{
+            pointer-events: none;
+            opacity: 0.5;
+        }
+    }
+
+    .list-text.disabled{
+        pointer-events: none;
+        opacity: 0.5;
+    }
+}
+

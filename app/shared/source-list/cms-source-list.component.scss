@@ -1,0 +1,24 @@
+@import 'variables.global';
+
+.source-list-cards {
+    padding: 1%;
+    background-color: $grey_300;
+    min-width: 98%;
+    overflow: auto;
+    flex-wrap: wrap;
+    -webkit-overflow-scrolling: touch;
+    margin-top: 65px;
+    @include layout-row();
+}
+
+.source-list-unavailable {
+   width: 100%;
+   flex-grow: 1;
+   @include layout-row();
+   @include layout-align-center();
+}
+
+.source-list-unavailable span {
+   font-size: 18px;
+   color: $grey_500;
+}
