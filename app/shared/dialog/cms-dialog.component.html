@@ -1,0 +1,19 @@
+<div class="cms-dialog-content-block" id="cms-dialog">
+	<div class="cms-dialog-content">
+		<md-card class="setting-card setting-card-language">
+			<md-card-content>
+				<div class="cms-dialog-message-container">
+					<md-progress-circle id="cms-dialog-connection-progress" color="primary" mode="indeterminate" *ngIf="type === 'progress'"></md-progress-circle>
+				</div>
+				<div class="message">
+					{{mMessage}}
+				</div>
+				<div class="action-buttons" *ngIf="type !== 'progress'">
+					<button md-button class="cancel-button" type="button" id="cancel-button" (click)="clickOnCancel()" *ngIf="type === 'confirmation'">{{ 'dialog.cancel' | translate }}</button>
+					<button md-button class="ok-button" type="button" id="ok-button" (click)="clickOnOk()">{{ 'dialog.ok' | translate }}</button>
+				</div>
+			</md-card-content>
+		</md-card>
+	</div>
+</div>
+<div class="cms-dialog-overlay"></div>

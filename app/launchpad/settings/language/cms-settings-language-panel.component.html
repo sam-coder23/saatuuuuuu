@@ -1,0 +1,28 @@
+<div class="page-toolbar">
+	<!-- PAGE HEADER -->
+	<md-toolbar id="setting-language-panel-toolbar" class="toolbar-theme">
+		<button id="setting-language-panel-back-button" md-icon-button routerLink="/settings">
+            <i class="material-icons">arrow_back</i>
+        </button>
+
+		<span id="setting-language-panel-title-text">{{ 'settings.languageTitle' | translate }}</span>
+	</md-toolbar>
+</div>
+
+<div class="settings-language-panel">
+	<!-- PAGE CONTENT SECTION -->
+	<div class="settings-panel-container">
+		<div class="settings-content-wrapper">
+			<md-card class="setting-card setting-card-language-page">
+				<md-card-content>
+					<md-nav-list dense>
+						<a md-list-item *ngFor="let langauage of mCmsLanguages" (click)="setLanguage(langauage.key)" id="set-langauge-{{langauage.key}}-link"> 
+							{{ langauage.value }} 
+							<i class="link-select-icon material-icons" *ngIf="mUserSelectedLanguageKey === langauage.key" id="langauge-{{langauage.key}}-check-icon">done</i>
+							</a>
+					</md-nav-list>
+				</md-card-content>
+			</md-card>
+		</div>
+	</div>
+</div>

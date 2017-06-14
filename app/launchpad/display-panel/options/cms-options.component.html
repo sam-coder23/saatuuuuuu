@@ -1,0 +1,62 @@
+<md-sidenav-container style="z-index: 5;" fullscreen>
+    <md-sidenav id="options" #sidenav align="start" mode="over" class="side-nav" (close)="close()" (swipeleft)="sidenav.close()">
+        <div class="options-username-icon">
+            <i class="material-icons">account_circle</i>
+        </div>
+        <div class="options-username">
+            <span>{{ UserName }}</span>
+        </div>
+        <div class="options">
+            <button md-button id="options-logoff-button" (click)="logout()">
+                <i class="material-icons">exit_to_app</i>
+                <span>{{'options.logoff' | translate}}</span>
+            </button>
+        </div>
+        <div class="options">
+            <button md-button id="options-refresh-button" (click)="refresh()">
+                <i class="material-icons">refresh</i>
+                <span>{{'options.refresh' | translate}}</span>
+            </button>
+        </div>
+        <div class="options" [hidden]="true">
+            <button md-button id="options-exit-button" (click)="exit()">
+                <i class="material-icons">clear</i>
+                <span>{{'options.exit' | translate}}</span>
+            </button>
+        </div>
+        <hr>
+        <div class="options">
+            <button md-button id="options-savelayout-button" (click)="goToLayoutsPanelForSaveLayout($event)" [disabled]="disableOptionOnDisplayUnavailable || !isSaveLayoutEnabled">
+                <i class="material-icons">save</i>
+                <span>{{'options.saveNewLayout' | translate}}</span>
+            </button>
+        </div>
+        <hr>
+        <div class="options">
+            <button md-button disabled="true" id="options-zoom-button">
+                <i class="material-icons">pageview</i>
+                <span>{{'options.zoom' | translate}}{{mZoomLevel}}%</span>
+            </button>
+        </div>
+        <div class="options">
+            <button md-button id="options-fitheight-button" [disabled]="disableOptionOnDisplayUnavailable" (click)="onFitHeightClick()">
+                 <i class="material-icons"><img src="resources/icons/fit_height.svg"></i>
+                <span>{{'options.fitHeight' | translate}}</span>
+            </button>
+        </div>
+        <hr>
+        <div class="options">
+            <button md-button id="options-settings-button" routerLink="/settings">
+                <i class="material-icons">settings</i>
+                <span>{{'options.settings' | translate}}</span>
+            </button>
+        </div>
+        <hr>
+        <div class="options">
+            <button md-button id="options-about-button"  routerLink="/about">
+                <i class="material-icons">info_outline</i>
+                <span>{{'options.aboutCmsLaunchPad' | translate}}</span>
+            </button>
+        </div>
+    </md-sidenav>
+</md-sidenav-container>

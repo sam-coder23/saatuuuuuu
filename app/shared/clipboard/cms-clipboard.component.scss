@@ -1,0 +1,26 @@
+#clipboard-preview {
+    width: 200px;
+    height: 100px;
+    position: fixed;
+    top: 0em;
+    z-index: 2;
+    border: 5px solid white;
+    cursor: pointer;
+}
+
+#clipboard-preview.small {
+    width: 100px;
+    height: 54px;
+}
+
+#clipboard-cancel {
+    position: absolute;
+    top: 2px;
+    right: 2px;
+    color: black;
+}
+
+#clipboard-preview img {
+    width: 100%;
+    height: 100%;
+}

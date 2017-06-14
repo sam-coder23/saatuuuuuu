@@ -1,0 +1,30 @@
+<div class="page-toolbar">
+    <md-toolbar id="layouts-panel-toolbar" class="toolbar-theme">
+        <button id="layouts-panel-back-button" md-icon-button routerLink="/display-panel/{{displayId}}">
+            <i class="material-icons">arrow_back</i>
+        </button>
+
+        <span id="layouts-panel-back-button-text">{{ toolbarText }}</span>
+
+        <span class="fill-remaining-space"></span>
+
+        <button id="layouts-panel-reload-button" md-icon-button *ngIf="viewState.reload" (click)="reloadList()">
+            <i class="material-icons">refresh</i>
+        </button>
+        <button id="layouts-panel-favorite-button" md-icon-button>
+            <i class="material-icons" *ngIf="!isFavoriteFilter">star_border</i>
+            <i class="material-icons" *ngIf="isFavoriteFilter">star</i>
+        </button>
+        <button id="layouts-panel-search-button" md-icon-button (click)="initializeSearch($event)">
+            <i class="material-icons">search</i>
+        </button>
+        <md-input-container id="layouts-panel-search-input">
+            <input md-input type="text" placeholder="{{ 'panelToolbar.search' | translate }}" [(ngModel)]="searchKey">
+        </md-input-container>
+    </md-toolbar>
+</div>
+
+<div class="layouts-panel-main">   
+    <cms-save-layout *ngIf="showSaveLayoutPanel" [layoutName]="replaceLayoutName"></cms-save-layout>
+    <cms-layout-list [mDisplayId]="displayId" (change)="onListChanged()" (replaceLayout)="replaceLayout($event)"  *ngIf="viewState.list" [searchFilter]= "searchFilter" [favoriteFilter]="isFavoriteFilter"></cms-layout-list>
+</div>

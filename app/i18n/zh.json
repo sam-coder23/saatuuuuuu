@@ -1,0 +1,117 @@
+{
+    "login": {
+        "welcome": "\u6b22\u8fce\u4f7f\u7528 CMS \u542f\u52a8\u677f",
+        "username": "\u7528\u6237\u540d",
+        "password": "\u5bc6\u7801",
+        "button": "\u767b\u5f55",
+        "error": "\u7528\u6237\u540d\u6216\u5bc6\u7801\u4e0d\u6b63\u786e",
+        "licenceError": "\u65e0\u6cd5\u83b7\u53d6\u8bb8\u53ef\u3002",
+        "serverNotReadyError": "\u670d\u52a1\u5668\u672a\u5c31\u7eea\u3002\u8bf7\u7a0d\u5019\uff01",
+        "serverUnavailableError": "\u670d\u52a1\u5668\u4e0d\u53ef\u7528\u6216\u8005\u65e0\u6cd5\u8bbf\u95ee\u3002",
+        "settingsReadyError": "\u7531\u4e8e\u65e0\u6cd5\u4ece\u670d\u52a1\u5668\u8bbf\u5b58\u8bbe\u7f6e\uff0c\u5e94\u7528\u7a0b\u5e8f\u65e0\u6cd5\u542f\u52a8\u3002\u8bf7\u4e0e\u7ba1\u7406\u5458\u8054\u7cfb\u3002",
+        "userDisabledError": "\u7528\u6237\u5e10\u53f7\u5df2\u7981\u7528"
+    },
+    "options": {
+        "logoff": "\u6ce8\u9500",
+        "refresh": "\u5237\u65b0",
+        "exit": "\u9000\u51fa",
+        "saveNewLayout": "\u4fdd\u5b58\u65b0\u5e03\u5c40",
+        "zoom": "\u7f29\u653e\uff1a ",
+        "fitHeight": "\u9002\u5408\u9ad8\u5ea6",
+        "settings": "\u8bbe\u7f6e",
+        "aboutCmsLaunchPad": "\u5173\u4e8e CMS \u542f\u52a8\u677f"
+    },
+    "displayPanel": {
+        "unavailable": "\u65e0\u663e\u793a\u5668",
+        "selectDisplay": "\u9009\u62e9\u4e00\u4e2a\u663e\u793a\u5668"
+    },
+    "displayList": {
+        "connectTo": "\u8fde\u63a5\u81f3\u663e\u793a\u5e55\u5899",
+        "unavailable": "\u65e0\u663e\u793a\u5668",
+        "unavailableConfirmation": "\u60a8\u7684\u5e10\u6237\u6ca1\u6709\u53ef\u7528\u7684\u663e\u793a\u5668\u3002\u8bf7\u4e0e\u7ba1\u7406\u5458\u8054\u7cfb\u3002"
+    },
+    "layoutList": {
+        "connectTo": "\u52a0\u8f7d\u5e03\u5c40",
+        "search": "\u641c\u7d22",
+        "unavailable": "\u65e0\u5e03\u5c40"
+    },
+    "saveLayout": {
+        "heading": "\u8bf7\u8f93\u5165\u65b0\u5e03\u5c40\u7684\u540d\u79f0\u6216\u8005\u9009\u62e9\u4e0b\u5217\u5176\u4e2d\u4e00\u4e2a\u9879\u76ee\u4ee5\u66ff\u6362",
+        "inputText": "\u5e03\u5c40\u540d\u79f0",
+        "button": "\u4fdd\u5b58",
+        "saveLayoutConfirmation": "\u5e03\u5c40\u201c{{value}}\u201d\u5df2\u5b58\u5728\u3002\u60a8\u662f\u5426\u8981\u66ff\u6362\u8be5\u5e03\u5c40\uff1f",
+        "toolbarText": "\u4fdd\u5b58\u5e03\u5c40"
+    },
+    "miniDisplay": {
+        "loadLayout": "\u52a0\u8f7d\u5e03\u5c40"
+    },
+    "sourceList": {
+        "connectTo": "\u9009\u62e9\u8f93\u5165\u6e90",
+        "unavailable": "\u65e0\u8f93\u5165\u6e90"
+    },
+    "panelToolbar": {
+        "search": "\u641c\u7d22"
+    },
+    "settings": {
+        "settings": "\u8bbe\u7f6e",
+        "language": "\u8bed\u8a00",
+        "wallConnection": "\u5899\u8fde\u63a5",
+        "atStartup": "\u5728\u542f\u52a8\u65f6",
+        "availableWallsList": "\u663e\u793a\u53ef\u7528\u5899\u7684\u5217\u8868",
+        "connectToMostRecentWall": "\u81ea\u52a8\u8fde\u63a5\u5230\u6700\u65b0\u7684\u5899",
+        "connectToSpecificWall": "\u81ea\u52a8\u8fde\u63a5\u5230\u7279\u5b9a\u5899",
+        "sourceLabels": "\u8f93\u5165\u6e90\u6807\u7b7e",
+        "displaySourceName": "\u663e\u793a\u8f93\u5165\u6e90\u540d\u79f0\u6807\u7b7e",
+        "multipleLines": "\u4f7f\u7528\u591a\u4e2a\u7ebf\u8def",
+        "fontColor": "\u5b57\u4f53\u989c\u8272",
+        "fontSize": "\u5b57\u4f53\u5927\u5c0f",
+        "background": "\u80cc\u666f",
+        "transparency": "\u900f\u660e\u5ea6 (%)",
+        "manageWallContent": "\u7ba1\u7406\u5899\u5185\u5bb9",
+        "requireConfirmationLayouts": "\u9700\u8981\u786e\u8ba4\u52a0\u8f7d\u5e03\u5c40",
+        "allowChangingSources": "\u542f\u7528\u66f4\u6539\u8f93\u5165\u6e90",
+        "clipboard": "\u526a\u8d34\u677f",
+        "icon": "\u56fe\u6807",
+        "small": "\u5c0f\u53f7",
+        "large": "\u5927\u53f7",
+        "languageTitle": "\u8bed\u8a00",
+        "selectDisplay": "\u9009\u62e9\u663e\u793a\u5e55\u5899",
+        "noDisplayWallFound": "\u672a\u627e\u5230\u9009\u62e9\u7684\u663e\u793a\u5e55\u5899",
+        "loadLayoutConfirmation": "\u662f\u5426\u8981\u5728\u5e55\u5899\u4e0a\u52a0\u8f7d\u5e03\u5c40\u201c{{value}}\u201d\uff1f",
+        "never": "\u4ece\u4e0d",
+        "autoLogOff": "\u81ea\u52a8\u6ce8\u9500",
+        "timeOutInMinute": "\u5728\u591a\u957f\u65f6\u95f4\u4e0d\u6d3b\u52a8\u4e4b\u540e\u6ce8\u9500\uff08\u5206\u949f\uff09",
+        "listPageSizes": "List page sizes",
+        "defaultPageSize": "Default page size"
+    },
+    "about": {
+        "about": "\u5173\u4e8e CMS \u542f\u52a8\u677f",
+        "version": "\u7248\u672c\uff1a",
+        "licensed": "\u8bb8\u53ef\u7ed9\uff1a",
+        "project": "\u9879\u76ee\u540d\u79f0\uff1a",
+        "licenseStatus": "\u8bb8\u53ef\u72b6\u6001\uff1a",
+        "server": "\u670d\u52a1\u5668\uff1a",
+        "contentText": "\u672c\u4ea7\u54c1\u6839\u636e Barco N.V. \u7684\u6761\u6b3e\u8bb8\u53ef\uff0c\u5e94\u6839\u636e\u8bb8\u53ef\u534f\u8bae\u7684\u6761\u6b3e\u6765\u4f7f\u7528\u3002\u6709\u5173\u5b8c\u6574\u7684\u8bb8\u53ef\u4fe1\u606f\uff0c\u8bf7\u53c2\u9605\u81ea\u8ff0\u6587\u4ef6\u3002",
+        "copyrightText": "Copyright \u24b8 {{value}}, Barco N.V.\u4fdd\u7559\u6240\u6709\u6743\u5229\u3002"
+    },
+    "dialog": {
+        "cancel": "\u53d6\u6d88",
+        "ok": "\u786e\u5b9a"
+    },
+    "systemDialog": {
+        "serverDisconnected": "\u6b63\u5728\u5c1d\u8bd5\u8fde\u63a5\u5230\u670d\u52a1\u5668...",
+        "serverConnected": "\u73b0\u5728\u5df2\u7ecf\u5efa\u7acb\u4e86\u4e0e\u670d\u52a1\u5668\u7684\u8fde\u63a5\uff01\u8bf7\u91cd\u65b0\u767b\u5f55\u3002",
+        "licenseChanged": "\u670d\u52a1\u5668\u4e0a\u4e0a\u4f20\u4e86\u65b0\u7684\u8bb8\u53ef\u6587\u4ef6\u3002\u60a8\u9700\u8981\u91cd\u65b0\u767b\u5f55\u3002",
+        "restoreStarted": "\u7cfb\u7edf\u6b63\u5728\u8fdb\u884c\u6062\u590d\u64cd\u4f5c\uff0c\u8bf7\u7a0d\u5019...",
+        "restoreFinished": "\u7cfb\u7edf\u6062\u590d\u5df2\u5b8c\u6210\uff01\u8bf7\u91cd\u65b0\u767b\u5f55\u3002",
+        "databaseResetStarted": "\u6570\u636e\u5e93\u6b63\u5728\u590d\u4f4d...",
+        "userDeleted": "\u60a8\u7684\u5e10\u6237\u5df2\u88ab\u7981\u7528\u6216\u5220\u9664\u3002\u8bf7\u4e0e\u7ba1\u7406\u5458\u8054\u7cfb\u3002",
+        "userModified": "\u7528\u6237\u6d3b\u52a8\u89d2\u8272\u5df2\u4fee\u6539\u3002\u5e94\u7528\u7a0b\u5e8f\u5c06\u7acb\u5373\u5237\u65b0\u3002",
+        "noPermission": {
+            "shareContent": "\u60a8\u65e0\u6743\u5411\u8ff7\u4f60\u663e\u793a\u5668\u4e2d\u6dfb\u52a0\u6b64\u8f93\u5165\u6e90\u3002",
+            "unshareContent": "\u60a8\u65e0\u6743\u4ece\u8ff7\u4f60\u663e\u793a\u5668\u4e2d\u79fb\u9664\u6b64\u8f93\u5165\u6e90\u3002",
+            "loadLayout": "\u60a8\u65e0\u6743\u52a0\u8f7d\u5e03\u5c40\u3002",
+            "saveLayout": "\u60a8\u65e0\u6743\u4fdd\u5b58\u5e03\u5c40\u3002"
+        }
+    }
+}

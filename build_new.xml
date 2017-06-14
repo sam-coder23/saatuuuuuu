@@ -1,0 +1,50 @@
+<project name="WebUI" default="build">
+ 
+ <property environment="env" />
+ <property name="build.sandbox" value="../../../../CMS" />
+ <property file="${build.sandbox}/launchpadbuildnumber.properties" />
+ 
+ <!--==================================================================================
+  This project is used to compile LaunchPAD code in CMS/JavaScript/Codebase/Launchpad/ 
+  ==================================================================================-->
+    
+ <target name="build" depends="create.launchpad.build.version.file, delete.LaunchPad.war, installNPMdependencies, compilelaunchPAD, create.war, update.build.numder" />
+ 
+   <!-- create LaunchPad.war -->
+   <target name="create.war">
+		<jar destfile="LaunchPad.war" update="true" >
+			<zipfileset dir="./dist" includes="**/**" excludes="build_new.xml, .svn, .js.map"/>
+		</jar>
+   </target>
+      
+	<!-- Install NPM Dependencies -->
+   	<target name="installNPMdependencies">
+		<exec dir="${build.sandbox}/JavaScript/Codebase/Launchpad" executable="cmd.exe">
+			<arg value="/C npm install"/></exec>
+	</target>
+	
+	<!-- Compile Launch PAD code -->
+	<target name="compilelaunchPAD">
+		<exec dir="${build.sandbox}/JavaScript/Codebase/Launchpad" executable="cmd.exe">
+			<arg value="/C npm run prod"/></exec>
+	</target>
+
+  <!-- Delete WebUI.war if it exists -->
+  <target name="delete.LaunchPad.war">
+	     <delete file="LaunchPad.war" failonerror="false" />
+  </target> 
+
+  <target name="update.build.numder">
+		<propertyfile file="${build.sandbox}/launchpadbuildnumber.properties">
+			<entry key="launchpad.buildnumber" type="int" operation="+" default="'0'+${launchpad.buildnumber}" pattern="0000" />
+		</propertyfile>
+  </target>
+  
+  <target name="create.launchpad.build.version.file">
+	<propertyfile file="${build.sandbox}/JavaScript/Codebase/Launchpad/app/version.properties">
+	  <entry key="launchpad.buildnumber" value="${launchpad.buildnumber}" />
+	</propertyfile>  
+   <replaceregexp file="${build.sandbox}/JavaScript/Codebase/Launchpad/app/version.properties" match="^#.*\n" replace=""/>		
+  </target>	  
+   
+</project>
