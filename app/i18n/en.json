@@ -91,8 +91,8 @@
         "project": "Project name:",
         "licenseStatus": "License status:",
         "server": "Server:",
-        "contentText":"This product is licensed under the terms of Barco N.V. and shall be used in accordance with the terms of the license agreement. For complete license information, please refer to the Readme file.",
-        "copyrightText":"Copyright \u24b8 {{value}}, Barco N.V. All Rights Reserved."
+        "contentText": "This product is licensed under the terms of Barco N.V. and shall be used in accordance with the terms of the license agreement. For complete license information, please refer to the Readme file.",
+        "copyrightText": "Copyright \u24b8 {{value}}, Barco N.V. All Rights Reserved."
     },
     "dialog": {
         "cancel": "CANCEL",
@@ -113,5 +113,8 @@
             "loadLayout": "You do not have permission to load a layout.",
             "saveLayout": "You do not have permission to save a layout."
         }
+    },
+    "common": {
+        "next": "Next"
     }
 }

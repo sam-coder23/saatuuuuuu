@@ -16,6 +16,5 @@ export class Source extends CmsResource {
     zorder: number;
     width: number;
     height: number;
-
     selected?: boolean
 }

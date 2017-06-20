@@ -177,7 +177,7 @@ export class CmsSourceListComponent implements OnInit, OnChanges, OnDestroy {
     updateSelection(selected: boolean, source: Source) {
         if (source.selected) {
             // remove it from the selection list
-            let index = this.mClipboard.selectedSources.findIndex(_source => _source.id === source.id && _source.type === source.type);
+            let index = this.mClipboard.selectedSources.findIndex(selectedSource => selectedSource.id === source.id && selectedSource.type === source.type);
 
             this.mClipboard.selectedSources.splice(index, 1);
             source.selected = false;
@@ -242,10 +242,16 @@ export class CmsSourceListComponent implements OnInit, OnChanges, OnDestroy {
         window.history.back();
     }
 
+    /**
+     * Returns updated source to be displayed as a card
+     * @param source 
+     */
     private renderer(source: Source): Source {
         if (!source) return source;
 
-        let selectedSource = this.mClipboard.selectedSources.find((selectedSource) => selectedSource.id === source.id && selectedSource.type === source.type);
+        let selectedSource = this.mClipboard.selectedSources.find((selectedSource) => {
+            return selectedSource.id === source.id && selectedSource.type === source.type;
+        });
 
         if (selectedSource) {
             source.selected = true;

@@ -6,12 +6,6 @@
 
 import { CmsResource } from "./cms-resource";
 
-/**
- * This class defines the model for the layout object.
- * 
- * @author: AKAAR
- * @version: CMS 3.0
- */
 export class Layout extends CmsResource {
     
 }
