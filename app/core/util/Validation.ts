@@ -21,7 +21,7 @@ class Validation {
      * @return {boolean}
      */
     public static IsUndefined(value) : boolean {
-        return typeof value === 'undefined';
+        return typeof value === "undefined";
     }
 
     /**

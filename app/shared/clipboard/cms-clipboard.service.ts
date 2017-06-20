@@ -4,15 +4,15 @@
  * the terms of the license agreement you entered into with Barco.
  */
 
-import { CmsApiService } from './../../cms/api/cms-api.service';
-import { Injectable } from '@angular/core';
-import { Source } from './../../cms/models/cms-source';
-import { Observable } from 'rxjs/Observable';
-import { Subject } from 'rxjs/Subject';
-import { ITile } from './../../cms/models/cms-tile';
-import { CmsSettingsService } from './../../launchpad/settings/cms-settings.service';
-import { IManageWallContent } from './../../cms/models/cms-user-profile-settings';
-import { AppConfig } from '../../config';
+import { CmsApiService } from "./../../cms/api/cms-api.service";
+import { Injectable } from "@angular/core";
+import { Source } from "./../../cms/models/cms-source";
+import { Observable } from "rxjs/Observable";
+import { Subject } from "rxjs/Subject";
+import { ITile } from "./../../cms/models/cms-tile";
+import { CmsSettingsService } from "./../../launchpad/settings/cms-settings.service";
+import { IManageWallContent } from "./../../cms/models/cms-user-profile-settings";
+import { AppConfig } from "../../config";
 
 /**
  * CmsClipboardService works as a clipboard and helps various components to get and set a clipboard source.
@@ -24,6 +24,9 @@ import { AppConfig } from '../../config';
 @Injectable()
 export class CmsClipboardService {
 
+    public selectedSources: Source[] = [];
+    public maxSelection: number = 8;
+    
     public timer: number = 0;
 
     private clipboard;
@@ -80,7 +83,7 @@ export class CmsClipboardService {
                 this.clear();
             })
             .catch((error) => {
-                this.appConfig.log("Errror:::::::::this.cmsApiService.loadContentOnTile:::::::::::::::::::::::::::::::","shareContent method failed in cms-clipboard.service");
+                this.appConfig.log("Errror:::::::::this.cmsApiService.loadContentOnTile:::::::::::::::::::::::::::::::", "shareContent method failed in cms-clipboard.service");
 
                 // handle no permission
                 if (error.status === 403) {

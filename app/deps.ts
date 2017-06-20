@@ -1,8 +1,8 @@
-import 'core-js';
-import 'hammerjs';
-import 'rxjs';
-import 'reflect-metadata';
-import 'zone.js/dist/zone';
+import "core-js";
+import "hammerjs";
+import "rxjs";
+import "reflect-metadata";
+import "zone.js/dist/zone";
 
 import "@angular/common";
 import "@angular/compiler";

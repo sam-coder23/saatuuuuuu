@@ -22,6 +22,9 @@
                          <i class="material-icons" *ngIf="card.online"><img src="resources/icons/display_online_black_36.svg"></i>
                          <i class="material-icons" *ngIf="!card.online"><img src="resources/icons/display_offline_black_36.svg"></i>
                   </button>
+                  <button id="card-selected" md-icon-button *ngIf="multi">
+                        <i class="material-icons">{{card?.selected ? 'check_box' : 'check_box_outline_blank'}}</i>
+                  </button>
             </div>
       </div>
 </md-card>

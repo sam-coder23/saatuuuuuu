@@ -1,13 +1,17 @@
-<div class="page-toolbar">    
+<div class="page-toolbar">
     <md-toolbar id="sources-panel-toolbar" class="toolbar-theme">
-        <button id="sources-panel-back-button" md-icon-button routerLink="/display-panel/{{mDisplayId}}">
+        <button id="sources-panel-back-button" md-icon-button routerLink="/displays-panel">
             <i class="material-icons">arrow_back</i>
         </button>
 
-        <span id="sources-panel-back-button-text">{{ 'sourceList.connectTo' | translate }}</span>
+        <span id="sources-panel-back-button-text">{{ panelTitle }}</span>
 
         <span class="fill-remaining-space"></span>
 
+        
+        <!--<button id="sources-panel-selected-only-button" md-icon-button>
+            <md-checkbox [(ngModel)]="selectedOnly"></md-checkbox>
+        </button>-->
         <button id="sources-panel-reload-button" md-icon-button *ngIf="mStates.reload" (click)="reloadList()">
             <i class="material-icons">refresh</i>
         </button>
@@ -21,9 +25,22 @@
         <md-input-container id="sources-panel-search-input">
             <input md-input type="text" placeholder="{{ 'panelToolbar.search' | translate }}" [(ngModel)]="searchKey">
         </md-input-container>
+
+        <button id="log-off" md-icon-button routerLink="/login">
+            <i class="material-icons">power_settings_new</i>
+        </button>
     </md-toolbar>
 </div>
 
 <div class="sources-panel-main">
-    <cms-source-list [displayId]="mDisplayId" (change)="onListChanged()" *ngIf="mStates.list" [searchFilter]= "searchFilter" [favoriteFilter]="isFavoriteFilter"></cms-source-list>
+    <cms-source-list [displayId]="mDisplayId" [selectedOnly]="selectedOnly" (change)="onListChanged()" *ngIf="mStates.list" [searchFilter]="searchFilter" [favoriteFilter]="isFavoriteFilter"></cms-source-list>
+</div>
+<div class="page-toolbar" style="bottom: 0px;" *ngIf="clipboard?.selectedSources.length > 0">
+    <md-toolbar id="sources-panel-bottom-toolbar" class="toolbar-theme">
+        {{clipboard?.selectedSources.length}} / {{clipboard.maxSelection}}
+
+        <span class="fill-remaining-space"></span>
+
+        <button md-button md-raised-button (click)="onNext()">Next</button>
+    </md-toolbar>
 </div>

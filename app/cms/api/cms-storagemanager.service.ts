@@ -4,7 +4,7 @@
  * the terms of the license agreement you entered into with Barco.
  */
 
-import {Injectable} from '@angular/core';
+import {Injectable} from "@angular/core";
 
 @Injectable()
 export /**

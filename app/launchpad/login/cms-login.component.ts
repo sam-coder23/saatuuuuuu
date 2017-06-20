@@ -4,19 +4,19 @@
  * the terms of the license agreement you entered into with Barco.
  */
 
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Router } from '@angular/router';
-import { Response } from '@angular/http';
-import { TranslateService } from '@ngx-translate/core';
+import { Component, OnInit, OnDestroy } from "@angular/core";
+import { Router } from "@angular/router";
+import { Response } from "@angular/http";
+import { TranslateService } from "@ngx-translate/core";
 
-import { UserConfig, User } from '../models/cms-user.model';
-import { StorageManager } from '../../cms/api/cms-storagemanager.service';
-import { CmsApiService } from '../../cms/api/cms-api.service';
-import { CMS_SESSION_STORAGE_ITEM } from '../../cms/models/cms-session-storage-item';
-import { CmsSettingsService } from '../settings/cms-settings.service';
-import { CmsMiniDisplayService } from './../../shared/mini-display/cms-mini-display.service';
-import { CmsClipboardService } from './../../shared/clipboard/cms-clipboard.service';
-import { AppConfig } from '../../config';
+import { UserConfig, User } from "../models/cms-user.model";
+import { StorageManager } from "../../cms/api/cms-storagemanager.service";
+import { CmsApiService } from "../../cms/api/cms-api.service";
+import { CMS_SESSION_STORAGE_ITEM } from "../../cms/models/cms-session-storage-item";
+import { CmsSettingsService } from "../settings/cms-settings.service";
+import { CmsMiniDisplayService } from "./../../shared/mini-display/cms-mini-display.service";
+import { CmsClipboardService } from "./../../shared/clipboard/cms-clipboard.service";
+import { AppConfig } from "../../config";
 
 
 /**
@@ -24,9 +24,9 @@ import { AppConfig } from '../../config';
  */
 @Component({
     //moduleId: module.id,
-    selector: 'cms-login',
-    template: require('to-string!./cms-login.component.html'),
-    styles: [require('to-string!./cms-login.component.scss')]
+    selector: "cms-login",
+    template: require("to-string!./cms-login.component.html"),
+    styles: [require("to-string!./cms-login.component.scss")]
 })
 export class CmsLoginComponent implements OnInit, OnDestroy {
 
@@ -37,8 +37,8 @@ export class CmsLoginComponent implements OnInit, OnDestroy {
     private isLoginInProgress: boolean = false;
 
     private user: UserConfig = {
-        username: '',
-        password: ''
+        username: "",
+        password: ""
     }
 
     // error message to be shown to the user
@@ -180,22 +180,22 @@ export class CmsLoginComponent implements OnInit, OnDestroy {
         let messageKey: string = "";
 
         if (errorStatus === 403) {
-            messageKey = 'login.licenceError';
+            messageKey = "login.licenceError";
         }
         else if (errorStatus === 503) {
-            messageKey = 'login.serverNotReadyError';
+            messageKey = "login.serverNotReadyError";
         }
         else if (errorStatus === 406) {
-            messageKey = 'login.settingsReadyError';
+            messageKey = "login.settingsReadyError";
         }
         else if (errorStatus === 409) {
-            messageKey = 'login.userDisabledError';
+            messageKey = "login.userDisabledError";
         }
         else if (errorStatus === 0 || errorStatus === 404) {
-            messageKey = 'login.serverUnavailableError';
+            messageKey = "login.serverUnavailableError";
         }
         else {
-            messageKey = 'login.error';
+            messageKey = "login.error";
         }
 
         // error message using TranslateService

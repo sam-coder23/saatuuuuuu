@@ -4,20 +4,20 @@
  * the terms of the license agreement you entered into with Barco.
  */
 
-import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
-import { Subject } from 'rxjs/Subject';
-import { TranslateService } from '@ngx-translate/core';
-import { Router } from '@angular/router';
+import { Injectable } from "@angular/core";
+import { Observable } from "rxjs/Observable";
+import { Subject } from "rxjs/Subject";
+import { TranslateService } from "@ngx-translate/core";
+import { Router } from "@angular/router";
 
-import { CmsApiService } from '../../cms/api/cms-api.service';
-import { CmsLanguages } from '../../i18n/cms-languages';
-import { CMS_SESSION_STORAGE_ITEM } from '../../cms/models/cms-session-storage-item';
-import { StorageManager } from '../../cms/api/cms-storagemanager.service';
-import { IUserProfileSettings } from '../../cms/models/cms-user-profile-settings';
-import { Display } from '../../cms/models/cms-display';
-import { AppConfig } from '../../config';
-import { CMSConstants } from '../../cms/models/cms-constants';
+import { CmsApiService } from "../../cms/api/cms-api.service";
+import { CmsLanguages } from "../../i18n/cms-languages";
+import { CMS_SESSION_STORAGE_ITEM } from "../../cms/models/cms-session-storage-item";
+import { StorageManager } from "../../cms/api/cms-storagemanager.service";
+import { IUserProfileSettings } from "../../cms/models/cms-user-profile-settings";
+import { Display } from "../../cms/models/cms-display";
+import { AppConfig } from "../../config";
+import { CMSConstants } from "../../cms/models/cms-constants";
 
 /**
  * This service is used to provide all methods related to.
@@ -49,8 +49,8 @@ export class CmsSettingsService {
 
         //looping in all lanaguage and get value as per key
         for (var i = 0; i < cmsLanguages.length; i++) {
-            if (cmsLanguages[i]['key'] === languageKey) {
-                return cmsLanguages[i]['value'];
+            if (cmsLanguages[i]["key"] === languageKey) {
+                return cmsLanguages[i]["value"];
             }
         }
     }
@@ -153,7 +153,7 @@ export class CmsSettingsService {
      */
     public updateWallConnectionSpecificDisplayId(display): void {
         this.mUserSettings.wallConnection.atStartup.selectedDisplayId = display.id;
-        this.updateUserProfileData(this.mUserSettings, () => this.router.navigate(['/settings']));
+        this.updateUserProfileData(this.mUserSettings, () => this.router.navigate(["/settings"]));
     }
 
     /**
@@ -169,7 +169,7 @@ export class CmsSettingsService {
     }
 
     /**
-     * This method increase count value as per it's index and nearest high value
+     * This method increase count value as per it"s index and nearest high value
      */
     public increaseCount(count: number, data: any): number {
         let countIndex = data.indexOf(count);
@@ -184,7 +184,7 @@ export class CmsSettingsService {
     }
 
     /**
-     * This method decrease count value as per it's index and nearest low value
+     * This method decrease count value as per it"s index and nearest low value
      */
     public decreaseCount(count: number, data: any): number {
         let countIndex = data.indexOf(count);
@@ -209,7 +209,7 @@ export class CmsSettingsService {
 
         switch (selectedOption) {
             case "show-available-walls-list":
-                this.router.navigate(['/displays-panel']);                
+                this.router.navigate(["/displays-panel"]);                
                 break;
 
             case "auto-connect-to-most-recent-wall":
@@ -228,8 +228,8 @@ export class CmsSettingsService {
      * This method connect to most recent wall at startup
      */
     private autoConnectToMostRecentWall(recentDisplayId: any): void {
-        if (recentDisplayId === '') {
-            this.router.navigate(['/displays-panel']);
+        if (recentDisplayId === "") {
+            this.router.navigate(["/displays-panel"]);
             return;
         }
 
@@ -241,7 +241,7 @@ export class CmsSettingsService {
                     this.router.navigate([`/display-panel/${display.id}`]);
                 }
             }, (error) => {
-                this.router.navigate(['/displays-panel']);
+                this.router.navigate(["/displays-panel"]);
                 this.appConfig.log("CmsSettingsService: connectToWallAtStartup");
             });
     }
@@ -251,8 +251,8 @@ export class CmsSettingsService {
      * This method connect to specific wall at startup
      */
     private autoConnectToSpecificWall(selectedDisplayId: any): void {
-        if (selectedDisplayId === '') {
-            this.router.navigate(['/displays-panel']);
+        if (selectedDisplayId === "") {
+            this.router.navigate(["/displays-panel"]);
             return;
         }
 
@@ -266,7 +266,7 @@ export class CmsSettingsService {
                     this.router.navigate([`/display-panel/${display.id}`]);
                 }
             }, (error) => {
-                this.router.navigate(['/displays-panel']);
+                this.router.navigate(["/displays-panel"]);
                 this.appConfig.log("CmsSettingsService: connectToWallAtStartup");
             });
     }
@@ -294,7 +294,7 @@ export class CmsSettingsService {
     }
 
     /**
-     * This method update 'isLongPress' property and update event emit 
+     * This method update "isLongPress" property and update event emit 
      */
     public updateIsLongPress(state: boolean) {
         this.isLongPressed = state;
@@ -305,7 +305,7 @@ export class CmsSettingsService {
      * This method update text direction for whole application
      */
     public setTextDirectionByLanguageKey(languageKey) {
-        let html = document.getElementsByTagName('html')[0];
+        let html = document.getElementsByTagName("html")[0];
         html.setAttribute("dir", this.isRTLLanguage(languageKey) ? "rtl": "ltr");        
     }
 

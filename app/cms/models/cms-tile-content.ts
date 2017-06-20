@@ -4,8 +4,8 @@
  * the terms of the license agreement you entered into with Barco.
  */
 
-import { ITile } from './cms-tile';
-import { Source } from './cms-source';
+import { ITile } from "./cms-tile";
+import { Source } from "./cms-source";
 
 /**
  * The interface defines the model for the tile content object.

@@ -4,7 +4,7 @@
  * the terms of the license agreement you entered into with Barco.
  */
 
-import { CmsResource } from './cms-resource';
+import { CmsResource } from "./cms-resource";
 
 /**
  * The class defines the model for the source object.
@@ -16,4 +16,6 @@ export class Source extends CmsResource {
     zorder: number;
     width: number;
     height: number;
+
+    selected?: boolean
 }

@@ -1,4 +1,4 @@
-import {Const} from '../util/Const';
+import {Const} from "../util/Const";
 
 export
 /**

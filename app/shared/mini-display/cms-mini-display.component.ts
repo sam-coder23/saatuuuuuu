@@ -4,23 +4,23 @@
  * the terms of the license agreement you entered into with Barco.
  */
 
-import { Component, OnInit, OnChanges, SimpleChanges, Input, Output, OnDestroy, EventEmitter, ElementRef } from '@angular/core';
-import { Router } from '@angular/router';
+import { Component, OnInit, OnChanges, SimpleChanges, Input, Output, OnDestroy, EventEmitter, ElementRef } from "@angular/core";
+import { Router } from "@angular/router";
 
-import { CmsResource } from './../../cms/models/cms-resource';
-import { ITile } from '../../cms/models/cms-tile';
-import { TileContent } from '../../cms/models/cms-tile-content';
-import { ISize } from '../../cms/models/cms-size';
-import { CmsEventEmitterService } from '../../cms/api/cms-event-emitter.service';
-import { CMS_EVENTS } from '../../cms/api/cms-events.enum';
-import { CmsMiniDisplayService } from './cms-mini-display.service';
-import { CMS_SESSION_STORAGE_ITEM } from '../../cms/models/cms-session-storage-item';
-import { Display } from './../../cms/models/cms-display';
-import { StorageManager } from '../../cms/api/cms-storagemanager.service';
-import { DomManager } from '../../utils/dom-manager.util';
-import { EventManager } from '../../utils/event-manager.util';
-import { AppConfig } from '../../config';
-import { Subscription, Observable } from 'rxjs/Rx';
+import { CmsResource } from "./../../cms/models/cms-resource";
+import { ITile } from "../../cms/models/cms-tile";
+import { TileContent } from "../../cms/models/cms-tile-content";
+import { ISize } from "../../cms/models/cms-size";
+import { CmsEventEmitterService } from "../../cms/api/cms-event-emitter.service";
+import { CMS_EVENTS } from "../../cms/api/cms-events.enum";
+import { CmsMiniDisplayService } from "./cms-mini-display.service";
+import { CMS_SESSION_STORAGE_ITEM } from "../../cms/models/cms-session-storage-item";
+import { Display } from "./../../cms/models/cms-display";
+import { StorageManager } from "../../cms/api/cms-storagemanager.service";
+import { DomManager } from "../../utils/dom-manager.util";
+import { EventManager } from "../../utils/event-manager.util";
+import { AppConfig } from "../../config";
+import { Subscription, Observable } from "rxjs/Rx";
 
 
 
@@ -29,9 +29,9 @@ import { Subscription, Observable } from 'rxjs/Rx';
  */
 @Component({
     //moduleId: module.id,
-    selector: 'cms-mini-display',
-    template: require('to-string!./cms-mini-display.component.html'),
-    styles: [require('to-string!./cms-mini-display.component.scss')]
+    selector: "cms-mini-display",
+    template: require("to-string!./cms-mini-display.component.html"),
+    styles: [require("to-string!./cms-mini-display.component.scss")]
 })
 export class CmsMiniDisplayComponent implements OnInit, OnChanges, OnDestroy {
     /**
@@ -45,23 +45,23 @@ export class CmsMiniDisplayComponent implements OnInit, OnChanges, OnDestroy {
     @Input() fitHeight: number;
 
     // required for zooming, sets and gets zoom level in integer
-    @Output('onZoom') zoomLevelEventEmitter: EventEmitter<number> = new EventEmitter<number>();
+    @Output("onZoom") zoomLevelEventEmitter: EventEmitter<number> = new EventEmitter<number>();
 
     /**
      * This will reponsible to commmunicate to its parent component once
      * display get update from event coming server
      * @Output {EventEmitter<any>} displayUpdate
      */
-    @Output('displayUpdate') displayUpdateEventEmitter: EventEmitter<any> = new EventEmitter<any>();
+    @Output("displayUpdate") displayUpdateEventEmitter: EventEmitter<any> = new EventEmitter<any>();
 
     // required for save layout option enable/disable
-    @Output('onSaveLayoutStateUpdate') saveLayoutStateUpdateEventEmitter: EventEmitter<boolean> = new EventEmitter<boolean>();
+    @Output("onSaveLayoutStateUpdate") saveLayoutStateUpdateEventEmitter: EventEmitter<boolean> = new EventEmitter<boolean>();
 
     // it will contain mini display style
     mMiniDisplayStyle = {
-        width: '98%',
-        height: '98%',
-        margin: '20px'
+        width: "98%",
+        height: "98%",
+        margin: "20px"
     };
 
     // it will contain mini display size
@@ -201,7 +201,7 @@ export class CmsMiniDisplayComponent implements OnInit, OnChanges, OnDestroy {
                     displayTilerList: ITile[],
                     miniDisplaySize: ISize
                 }) => {
-                    this.appConfig.log('CmsMiniDisplayComponent: initDisplayTileInfoWithContent');
+                    this.appConfig.log("CmsMiniDisplayComponent: initDisplayTileInfoWithContent");
 
                     // initialize details to be sent to grid
                     this.miniDisplayTilerList = response.miniDisplayTilerList;
@@ -239,7 +239,7 @@ export class CmsMiniDisplayComponent implements OnInit, OnChanges, OnDestroy {
      * Subscribe for mini display scroll events to store scroll positions
      */
     private subscribeScroller() {
-        let miniDisplayContainer = document.getElementById('mini-display-container');
+        let miniDisplayContainer = document.getElementById("mini-display-container");
         this.scrollSubscription = Observable.fromEvent(miniDisplayContainer, "scroll")
             .map((e: UIEvent) => {
                 let element = <HTMLElement>(e.target || e.srcElement);
@@ -299,7 +299,7 @@ export class CmsMiniDisplayComponent implements OnInit, OnChanges, OnDestroy {
      * Get mini-display size
      */
     private getMiniDisplaySize(): ClientRect {
-        let miniDisplay: HTMLElement[] = this.domManager.GetElementsByClassName('cms-mini-display');
+        let miniDisplay: HTMLElement[] = this.domManager.GetElementsByClassName("cms-mini-display");
         if (miniDisplay.length > 0) {
             return miniDisplay[0].getBoundingClientRect();
         }
@@ -388,7 +388,7 @@ export class CmsMiniDisplayComponent implements OnInit, OnChanges, OnDestroy {
 
                     // remove display from session storage and route to display list
                     this.storageManager.remove(CMS_SESSION_STORAGE_ITEM.Display);
-                    this.router.navigate(['/displays-panel']);
+                    this.router.navigate(["/displays-panel"]);
                 }
                 break;
 
@@ -486,7 +486,7 @@ export class CmsMiniDisplayComponent implements OnInit, OnChanges, OnDestroy {
          */
         function enablePinch(e: TouchEvent) {
             if (e.touches.length === 2) {
-                manager.get('pinch').set({
+                manager.get("pinch").set({
                     enable: true
                 });
             }
@@ -495,7 +495,7 @@ export class CmsMiniDisplayComponent implements OnInit, OnChanges, OnDestroy {
          * disable pinch zoom on touchend
          */
         function disablePinch(e: TouchEvent) {
-            manager.get('pinch').set({
+            manager.get("pinch").set({
                 enable: false
             });
         }
@@ -595,10 +595,10 @@ export class CmsMiniDisplayComponent implements OnInit, OnChanges, OnDestroy {
      */
     private addEventListeners(): void {
         // add WheelEvent listener for zoom in and out
-        let container: HTMLElement[] = this.domManager.GetElementsByClassName('cms-mini-display-container');
+        let container: HTMLElement[] = this.domManager.GetElementsByClassName("cms-mini-display-container");
         if (container.length > 0) {
-            EventManager.addEventOnElement(container[0], 'wheel', this.zoomMiniDisplayOnBrowser.bind(this));
-            EventManager.addEventOnElement(container[0], 'keydown', this.zoomMiniDisplayOnBrowser.bind(this));
+            EventManager.addEventOnElement(container[0], "wheel", this.zoomMiniDisplayOnBrowser.bind(this));
+            EventManager.addEventOnElement(container[0], "keydown", this.zoomMiniDisplayOnBrowser.bind(this));
         }
     }
 
@@ -607,10 +607,10 @@ export class CmsMiniDisplayComponent implements OnInit, OnChanges, OnDestroy {
      */
     private removeEventListeners(): void {
         // remove WheelEvent listener for zoom in and out on desktop browser
-        let container: HTMLElement[] = this.domManager.GetElementsByClassName('cms-mini-display-container');
+        let container: HTMLElement[] = this.domManager.GetElementsByClassName("cms-mini-display-container");
         if (container.length > 0) {
-            EventManager.removeEventOnElement(container[0], 'wheel', this.zoomMiniDisplayOnBrowser.bind(this));
-            EventManager.removeEventOnElement(container[0], 'keydown', this.zoomMiniDisplayOnBrowser.bind(this));
+            EventManager.removeEventOnElement(container[0], "wheel", this.zoomMiniDisplayOnBrowser.bind(this));
+            EventManager.removeEventOnElement(container[0], "keydown", this.zoomMiniDisplayOnBrowser.bind(this));
         }
 
     }

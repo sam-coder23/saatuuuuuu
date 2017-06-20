@@ -4,22 +4,22 @@
  * the terms of the license agreement you entered into with Barco.
  */
 
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { Router, ActivatedRoute, Params } from '@angular/router';
+import { Component, OnInit, Input, Output, EventEmitter } from "@angular/core";
+import { Router, ActivatedRoute, Params } from "@angular/router";
 
-import { Layout } from '../../../cms/models/cms-layout';
-import { CmsApiService } from '../../../cms/api/cms-api.service';
-import { TranslateService } from '@ngx-translate/core';
-import { AppConfig } from '../../../config';
+import { Layout } from "../../../cms/models/cms-layout";
+import { CmsApiService } from "../../../cms/api/cms-api.service";
+import { TranslateService } from "@ngx-translate/core";
+import { AppConfig } from "../../../config";
 
 
 /**
  * This is a save layout component that performs saving of a new layout, overriding a layout using CMS Server API.
  */
 @Component({
-    selector: 'cms-save-layout',
-    template: require('to-string!./cms-save-layout.component.html'),
-    styles: [require('to-string!./cms-save-layout.component.scss')]
+    selector: "cms-save-layout",
+    template: require("to-string!./cms-save-layout.component.html"),
+    styles: [require("to-string!./cms-save-layout.component.scss")]
 })
 export class CmsSaveLayoutComponent implements OnInit {
   
@@ -49,7 +49,7 @@ export class CmsSaveLayoutComponent implements OnInit {
      */
     ngOnInit() {
         this.route.params.forEach((params: Params) => {
-            this.displayId = +params['id'];
+            this.displayId = +params["id"];
         });
 
         this.getLayoutList();
@@ -63,7 +63,7 @@ export class CmsSaveLayoutComponent implements OnInit {
             this.showConfirmationDialog = true;
 
             // dialog message using TranslateService
-            this.translate.get('saveLayout.saveLayoutConfirmation', { value: this.layoutName }).subscribe((response: string) => {
+            this.translate.get("saveLayout.saveLayoutConfirmation", { value: this.layoutName }).subscribe((response: string) => {
                 this.dialogMessage = response;
             });
         }

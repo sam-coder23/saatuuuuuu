@@ -4,9 +4,9 @@
  * the terms of the license agreement you entered into with Barco.
  */
 
-import { Injectable, EventEmitter } from '@angular/core';
+import { Injectable, EventEmitter } from "@angular/core";
 
-import { CMS_EVENTS } from './cms-events.enum';
+import { CMS_EVENTS } from "./cms-events.enum";
 
 /**
  * This service creates a central event hub that keeps track of events using an event ID.

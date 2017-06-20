@@ -3,16 +3,16 @@
  * ("Confidential Information"). You shall not disclose such Confidential Information and shall use it only in accordance with
  * the terms of the license agreement you entered into with Barco.
  */
-import { Injectable } from '@angular/core';
-import { Http, Headers, RequestOptionsArgs , Response, URLSearchParams } from '@angular/http';
-import { AppConfig } from '../../config';
-import { Observable } from 'rxjs/Rx';
-import { Router } from '@angular/router';
+import { Injectable } from "@angular/core";
+import { Http, Headers, RequestOptionsArgs , Response, URLSearchParams } from "@angular/http";
+import { AppConfig } from "../../config";
+import { Observable } from "rxjs/Rx";
+import { Router } from "@angular/router";
 
 
 //Import RxJs required methods
-import 'rxjs/add/operator/map';
-import 'rxjs/add/operator/catch';
+import "rxjs/add/operator/map";
+import "rxjs/add/operator/catch";
 
 @Injectable()
 export /**
@@ -32,7 +32,7 @@ class APIRequest {
 
     constructor(private http: Http, private router: Router, private appConfig: AppConfig) {
         this.serverURL = this.appConfig.ServerURL;        
-        this.headers = new Headers({'Content-Type': 'application/json' });
+        this.headers = new Headers({"Content-Type": "application/json" });
         this.requestOption = {
             headers: this.headers,
             withCredentials: true            
@@ -45,14 +45,14 @@ class APIRequest {
      * @param { string } url
      */
     public GetURL(url: string) {
-        if (url.lastIndexOf('?') !== -1) {
+        if (url.lastIndexOf("?") !== -1) {
             url = `${url}&_=${Date.now()}`
         }
         else {
             url = `${url}?_=${Date.now()}`
         }
 
-        return this.serverURL + '/' + url;
+        return this.serverURL + "/" + url;
     } 
 
 
@@ -120,14 +120,14 @@ class APIRequest {
      */
     public handleError(error): Observable<any> {
         if (error.status === 401) {
-            this.get('logout')
+            this.get("logout")
                 .subscribe(()=> {
                     this.appConfig.log("Something wrong with server, Logout users successfully");
                 });
 
-            this.router.navigate(['/login']);
+            this.router.navigate(["/login"]);
        }
 
-        return Observable.throw(error || 'Server error');
+        return Observable.throw(error || "Server error");
     }
 }

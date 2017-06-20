@@ -4,11 +4,11 @@
  * the terms of the license agreement you entered into with Barco.
  */
 
-import { Injectable } from '@angular/core';
-import { CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, Router } from '@angular/router';
+import { Injectable } from "@angular/core";
+import { CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, Router } from "@angular/router";
 
-import { StorageManager } from '../../cms/api/cms-storagemanager.service';
-import { CMS_SESSION_STORAGE_ITEM } from '../../cms/models/cms-session-storage-item';
+import { StorageManager } from "../../cms/api/cms-storagemanager.service";
+import { CMS_SESSION_STORAGE_ITEM } from "../../cms/models/cms-session-storage-item";
 
 
 /** 
@@ -19,7 +19,7 @@ import { CMS_SESSION_STORAGE_ITEM } from '../../cms/models/cms-session-storage-i
  * 
  * routes: Routes = [
  * ...
- * { path: 'dashboard', component: DashboardComponent, canActivate: [CanActivateViaAuthGuard] },
+ * { path: "dashboard", component: DashboardComponent, canActivate: [CanActivateViaAuthGuard] },
  * ...
  * ];
  */
@@ -39,6 +39,6 @@ export class CmsCanActivateViaAuthorizationService implements CanActivate {
             return true;
         }
         // route to login page
-        this.router.navigate(['/login']);
+        this.router.navigate(["/login"]);
     }
 }

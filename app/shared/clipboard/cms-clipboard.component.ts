@@ -4,20 +4,20 @@
  * the terms of the license agreement you entered into with Barco.
  */
 
-import { Component, OnInit, Input, OnDestroy } from '@angular/core';
-import { Router } from '@angular/router';
+import { Component, OnInit, Input, OnDestroy } from "@angular/core";
+import { Router } from "@angular/router";
 
-import { Source } from './../../cms/models/cms-source';
-import { CmsClipboardService } from './cms-clipboard.service';
-import { Subscription } from 'rxjs/Rx';
-import { CmsMiniDisplayService } from './../mini-display/cms-mini-display.service';
+import { Source } from "./../../cms/models/cms-source";
+import { CmsClipboardService } from "./cms-clipboard.service";
+import { Subscription } from "rxjs/Rx";
+import { CmsMiniDisplayService } from "./../mini-display/cms-mini-display.service";
 
-import { CmsSettingsService } from '../../launchpad/settings/cms-settings.service';
+import { CmsSettingsService } from "../../launchpad/settings/cms-settings.service";
 
-import { AppConfig } from '../../config';
-import { RegExManager } from '../../core/util/RegEx';
-import { Url } from '../../core/util/Url';
-import { Validation } from '../../core/util/Validation';
+import { AppConfig } from "../../config";
+import { RegExManager } from "../../core/util/RegEx";
+import { Url } from "../../core/util/Url";
+import { Validation } from "../../core/util/Validation";
 
 
 /**
@@ -30,9 +30,9 @@ import { Validation } from '../../core/util/Validation';
 
 @Component({
     //moduleId: module.id,
-    selector: 'cms-clipboard',
-    template: require('to-string!./cms-clipboard.component.html'),
-    styles: [require('to-string!./cms-clipboard.component.scss')]
+    selector: "cms-clipboard",
+    template: require("to-string!./cms-clipboard.component.html"),
+    styles: [require("to-string!./cms-clipboard.component.scss")]
 })
 export class CmsClipboardComponent implements OnInit, OnDestroy {
     /**
@@ -171,7 +171,7 @@ export class CmsClipboardComponent implements OnInit, OnDestroy {
         let nodes;
 
         //Removes source in the ClipboardComponent 
-        if (this.closest(e.target, 'clipboard-cancel')) {
+        if (this.closest(e.target, "clipboard-cancel")) {
             this.cmsClipboardService.clear();
             return false;
         }
@@ -182,7 +182,7 @@ export class CmsClipboardComponent implements OnInit, OnDestroy {
         this.mouseOldX = this.getPageX(e);
 
         // triger event for observing autologoff time
-        event = new Event('onClipboardDrag');
+        event = new Event("onClipboardDrag");
         nodes = document.getElementsByTagName("cms-launchpad");
         if (nodes.length) {
             nodes[0].dispatchEvent(event);
@@ -229,7 +229,7 @@ export class CmsClipboardComponent implements OnInit, OnDestroy {
     *@method navigateToSourcesPanel
     */
     private navigateToSourcesPanel() {
-        this.router.navigate(['displays', this.cmsMiniDisplayService.display.id, 'sources-panel']);
+        this.router.navigate(["displays", this.cmsMiniDisplayService.display.id, "sources-panel"]);
     }
 
 

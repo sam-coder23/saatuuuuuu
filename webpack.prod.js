@@ -1,8 +1,8 @@
-var path = require('path');
-var webpack = require('webpack');
-var CopyWebpackPlugin = require('copy-webpack-plugin');
-var HtmlWebpackPlugin = require('html-webpack-plugin');
-var ENV = process.env.ENV = 'production';
+var path = require("path");
+var webpack = require("webpack");
+var CopyWebpackPlugin = require("copy-webpack-plugin");
+var HtmlWebpackPlugin = require("html-webpack-plugin");
+var ENV = process.env.ENV = "production";
 
 module.exports = {
   htmlLoader: {
@@ -13,40 +13,40 @@ module.exports = {
       ENV: ENV
   },
  
-  devtool: 'cheap-source-map',
+  devtool: "cheap-source-map",
 
   entry: {
-    'polyfills': path.resolve(__dirname, "app/deps.ts"),
-    'app': path.resolve(__dirname, "app/main.ts")
+    "polyfills": path.resolve(__dirname, "app/deps.ts"),
+    "app": path.resolve(__dirname, "app/main.ts")
   },
 
   debug: false,
  
   output: {
     path: "./dist",
-    filename: '[name].[hash].bundle.js',
-    sourcemapFilename: '[name].map'
+    filename: "[name].[hash].bundle.js",
+    sourcemapFilename: "[name].map"
   },
  
   resolve: {
-    extensions: ['', '.ts', '.tsx', '.js']
+    extensions: ["", ".ts", ".tsx", ".js"]
   },
  
   module: {
     loaders: [
       {
         test: /\.tsx?$/,
-        loader: 'ts-loader',
+        loader: "ts-loader",
         include: [ path.resolve(__dirname, "./app") ]
       },
       {
         test: /\.html$/,
-        loader: 'raw-loader',
+        loader: "raw-loader",
         exclude: [ path.resolve(__dirname, "index.html") ]
       },
       {   
         test: /\.global\.scss$/,
-        loaders: ['style-loader', 'css-loader', 'sass-loader']
+        loaders: ["style-loader", "css-loader", "sass-loader"]
       },
       {
         test: /\.scss$/,
@@ -59,7 +59,7 @@ module.exports = {
       },
       {
           test: /\.(eot|woff|woff2|ttf|svg|png|jpg)$/,
-          loader: 'url-loader?limit=30000&name=[name]-[hash].[ext]'
+          loader: "url-loader?limit=30000&name=[name]-[hash].[ext]"
       }
     ]
   },
@@ -70,58 +70,58 @@ module.exports = {
 
   plugins: [
     new HtmlWebpackPlugin({ 
-      template: 'index.html',
+      template: "index.html",
       chunksSortMode: function(first, second) {
         console.log(first);
         console.log(second);
-        return (first.names[0].indexOf('polyfills') >= 0)? -1 : 1;
+        return (first.names[0].indexOf("polyfills") >= 0)? -1 : 1;
       },
-      chunks: ['polyfills', 'app'],
+      chunks: ["polyfills", "app"],
     }),
     new CopyWebpackPlugin([
 	    /*{
-        context: '.',
-        from: 'index.html'
+        context: ".",
+        from: "index.html"
       },
       */
       {
-        context: '.',
-        from: 'WEB-INF/*.xml'
+        context: ".",
+        from: "WEB-INF/*.xml"
       },                    
 	    {
-        context: './app',
-        from: 'resources/**/*.svg'
+        context: "./app",
+        from: "resources/**/*.svg"
       },
 	    {
-        context: './app',
-        from: '*.png'
+        context: "./app",
+        from: "*.png"
       },
 	    {
-        context: './app',
-        from: 'manifest.json'
+        context: "./app",
+        from: "manifest.json"
       },       
       { 
-        context: './app',
-        from: 'resources/**/*.jpg'
+        context: "./app",
+        from: "resources/**/*.jpg"
       },       
       { 
-        context: './app',
-        from: 'i18n/*.json'
+        context: "./app",
+        from: "i18n/*.json"
       },
       {
-        context: './app',
-        from: 'version.properties'
+        context: "./app",
+        from: "version.properties"
       }
     ], 
     {
-      ignore: ['.svn']
+      ignore: [".svn"]
     }),
     
     new webpack.optimize.DedupePlugin(),
     new webpack.optimize.AggressiveMergingPlugin(),
     new webpack.optimize.UglifyJsPlugin({
       mangle: {
-        except: ['$super', 'exports', 'require']
+        except: ["$super", "exports", "require"]
       },
       compress: {
         warnings: false,

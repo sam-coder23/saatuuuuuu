@@ -4,9 +4,9 @@
  * the terms of the license agreement you entered into with Barco.
  */
 
-import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
-import { CmsLaunchapadModule } from './launchpad/cms-launchpad.module';
-import { enableProdMode } from '@angular/core';
+import { platformBrowserDynamic } from "@angular/platform-browser-dynamic";
+import { CmsLaunchapadModule } from "./launchpad/cms-launchpad.module";
+import { enableProdMode } from "@angular/core";
 
 enableProdMode();
 platformBrowserDynamic().bootstrapModule(CmsLaunchapadModule);

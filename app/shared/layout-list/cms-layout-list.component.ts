@@ -4,21 +4,21 @@
  * the terms of the license agreement you entered into with Barco.
  */
 
-import { Subscription } from 'rxjs/Rx';
-import { Component, OnInit, ElementRef, OnDestroy, EventEmitter, Output, Input, OnChanges, SimpleChanges } from '@angular/core';
-import { Router, ActivatedRoute, Params } from '@angular/router';
+import { Subscription } from "rxjs/Rx";
+import { Component, OnInit, ElementRef, OnDestroy, EventEmitter, Output, Input, OnChanges, SimpleChanges } from "@angular/core";
+import { Router, ActivatedRoute, Params } from "@angular/router";
 
-import { CmsApiService } from '../../cms/api/cms-api.service';
-import { CmsEventEmitterService } from './../../cms/api/cms-event-emitter.service';
-import { CMS_EVENTS } from '../../cms/api/cms-events.enum';
-import { CmsVirtualScrollService } from '../cms-virtual-scroll.service';
-import { ICmsEvent } from '../../cms/models/cms-event';
-import { Layout } from '../../cms/models/cms-layout';
-import { DomManager } from '../../utils/dom-manager.util';
-import { CmsFavoriteService } from '../cms-favorite.service';
-import { CmsSettingsService } from '../../launchpad/settings/cms-settings.service';
-import { TranslateService } from '@ngx-translate/core';
-import { AppConfig } from '../../config';
+import { CmsApiService } from "../../cms/api/cms-api.service";
+import { CmsEventEmitterService } from "./../../cms/api/cms-event-emitter.service";
+import { CMS_EVENTS } from "../../cms/api/cms-events.enum";
+import { CmsVirtualScrollService } from "../cms-virtual-scroll.service";
+import { ICmsEvent } from "../../cms/models/cms-event";
+import { Layout } from "../../cms/models/cms-layout";
+import { DomManager } from "../../utils/dom-manager.util";
+import { CmsFavoriteService } from "../cms-favorite.service";
+import { CmsSettingsService } from "../../launchpad/settings/cms-settings.service";
+import { TranslateService } from "@ngx-translate/core";
+import { AppConfig } from "../../config";
 
 /**
  * This a layout list component that fetches the list of available layouts from CMS Server API and
@@ -28,9 +28,9 @@ import { AppConfig } from '../../config';
  */
 @Component({
     //moduleId: module.id,
-    selector: 'cms-layout-list',
-    template: require('to-string!./cms-layout-list.component.html'),
-    styles: [require('to-string!./cms-layout-list.component.scss')]
+    selector: "cms-layout-list",
+    template: require("to-string!./cms-layout-list.component.html"),
+    styles: [require("to-string!./cms-layout-list.component.scss")]
 })
 
 /**
@@ -74,10 +74,10 @@ export class CmsLayoutListComponent implements OnInit, OnChanges, OnDestroy {
     private mLoadLayoutInfo: Layout;
     private mDialogMessage: string;
 
-    @Output('change') changeEmitter = new EventEmitter();
+    @Output("change") changeEmitter = new EventEmitter();
 
     //Event for updating layout name to be overridden in save layout
-    @Output('replaceLayout') replaceLayoutEmitter = new EventEmitter();
+    @Output("replaceLayout") replaceLayoutEmitter = new EventEmitter();
 
     /** 
      * The constructor initializes various dependencies.
@@ -123,7 +123,7 @@ export class CmsLayoutListComponent implements OnInit, OnChanges, OnDestroy {
    
 
     /**
-     * Angular's lifecycle hook ngOnDestroy
+     * Angular"s lifecycle hook ngOnDestroy
      */
     ngOnDestroy() {
         this.mScroller.removeScrollListener();
@@ -179,7 +179,7 @@ export class CmsLayoutListComponent implements OnInit, OnChanges, OnDestroy {
         }
 
         this.route.params.forEach((params: Params) => {
-            let actionParam = params['action'];
+            let actionParam = params["action"];
 
             // select the layout name for save layout dialog
             if (actionParam === "saveLayout") {
@@ -269,7 +269,7 @@ export class CmsLayoutListComponent implements OnInit, OnChanges, OnDestroy {
         this.mLoadLayoutInfo = layout;
 
         // dialog message using TranslateService
-        this.translate.get('settings.loadLayoutConfirmation', { value: layout.name }).subscribe((response: string) => {
+        this.translate.get("settings.loadLayoutConfirmation", { value: layout.name }).subscribe((response: string) => {
             this.mDialogMessage = response;
         });
     }

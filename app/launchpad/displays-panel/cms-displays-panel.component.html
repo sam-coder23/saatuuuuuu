@@ -1,9 +1,5 @@
 <div class="page-toolbar">
     <md-toolbar id="displays-panel-toolbar" class="toolbar-theme">
-        <button id="displays-panel-back-button" md-icon-button routerLink="/display-panel/{{selectedDisplayId}}" *ngIf="viewState.back">
-            <i class="material-icons">arrow_back</i>
-        </button>
-
         <span id="displays-panel-back-button-text">{{ 'displayList.connectTo' | translate }}</span>
 
         <span class="fill-remaining-space"></span>
@@ -21,6 +17,10 @@
         <md-input-container id="display-list-search-input">
             <input md-input type="text" placeholder="{{ 'panelToolbar.search' | translate }}" [(ngModel)]="searchKey">
         </md-input-container>
+
+        <button id="log-off" md-icon-button routerLink="/login">
+            <i class="material-icons">power_settings_new</i>
+        </button>
     </md-toolbar>
 </div>
 

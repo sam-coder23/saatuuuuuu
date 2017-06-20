@@ -1,4 +1,4 @@
-import {ICollection} from '../base/ICollection';
+import {ICollection} from "../base/ICollection";
 
 /**
  * This class will act as a Generic collection for entire application.

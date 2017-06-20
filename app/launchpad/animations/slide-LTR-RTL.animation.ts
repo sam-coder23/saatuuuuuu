@@ -1,4 +1,4 @@
-import { trigger, state, style, transition, animate, keyframes } from '@angular/core';
+import { trigger, state, style, transition, animate, keyframes } from "@angular/core";
 
 /**
  * Animation Slide_LTR_RTL. 
@@ -11,14 +11,14 @@ import { trigger, state, style, transition, animate, keyframes } from '@angular/
  * 
  * <div [@Slide_LTR_RTL]="'in'"></div>
  */
-export const Slide_LTR_RTL_Trigger = trigger('Slide_LTR_RTL', [
-    state('in', style({ transform: 'translateX(0%)' })),
-    state('out', style({ transform: 'translateX(-100%)' })),
-    transition('void => in', [
-        style({ transform: 'translateX(-100%)' }),
-        animate('300ms ease-in', style({ transform: 'translateX(0%)' }))
+export const Slide_LTR_RTL_Trigger = trigger("Slide_LTR_RTL", [
+    state("in", style({ transform: "translateX(0%)" })),
+    state("out", style({ transform: "translateX(-100%)" })),
+    transition("void => in", [
+        style({ transform: "translateX(-100%)" }),
+        animate("300ms ease-in", style({ transform: "translateX(0%)" }))
     ]),
-    transition('in => out', [
-        animate('300ms ease-in', style({ transform: 'translateX(-100%)' }))
+    transition("in => out", [
+        animate("300ms ease-in", style({ transform: "translateX(-100%)" }))
     ])
 ]);

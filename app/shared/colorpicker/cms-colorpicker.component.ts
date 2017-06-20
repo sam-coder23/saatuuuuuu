@@ -4,7 +4,7 @@
  * the terms of the license agreement you entered into with Barco.
  */
 
-import { Component, Input, Output, EventEmitter, OnInit, ElementRef, Renderer } from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnInit, ElementRef, Renderer } from "@angular/core";
 
 /**
  * This component defines a custom color picker.
@@ -15,9 +15,9 @@ import { Component, Input, Output, EventEmitter, OnInit, ElementRef, Renderer } 
 
 @Component({
     //moduleId: module.id,
-    selector: 'cms-colorpicker',
-    template: require('to-string!./cms-colorpicker.component.html'),
-    styles: [require('to-string!./cms-colorpicker.component.scss')]
+    selector: "cms-colorpicker",
+    template: require("to-string!./cms-colorpicker.component.html"),
+    styles: [require("to-string!./cms-colorpicker.component.scss")]
 })
 export class CmsColorPickerComponent implements OnInit{
     /**
@@ -29,7 +29,7 @@ export class CmsColorPickerComponent implements OnInit{
     @Input() defaultColor: string;
 
     // event for color update
-    @Output('change') colorChangePressEmitter = new EventEmitter();
+    @Output("change") colorChangePressEmitter = new EventEmitter();
 
     // contain current color (color input box)
     private mInputColor: string;
@@ -98,10 +98,10 @@ export class CmsColorPickerComponent implements OnInit{
         let isCurrentPickerOpened = currentElement.getAttribute("isopened");
 
         if (isCurrentPickerOpened === "true") {
-            this.renderer.setElementAttribute(currentElement, 'isopened', "false");
+            this.renderer.setElementAttribute(currentElement, "isopened", "false");
         } else{
            this.closeOpenedColorPickers();
-           this.renderer.setElementAttribute(currentElement, 'isopened', "true");
+           this.renderer.setElementAttribute(currentElement, "isopened", "true");
         }
     }
 
@@ -113,7 +113,7 @@ export class CmsColorPickerComponent implements OnInit{
         for (var i = 0; i < colorPickers.length; i++) {
             let isopened = colorPickers[i].getAttribute("isopened");
             if (isopened === "true") {
-                this.renderer.setElementAttribute(colorPickers[i], 'isopened', "false");
+                this.renderer.setElementAttribute(colorPickers[i], "isopened", "false");
             }
         }
     }

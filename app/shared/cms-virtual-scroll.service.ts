@@ -12,9 +12,9 @@
  * In general we need to use callback model to overcome the problem.
  */
 
-import { Injectable } from '@angular/core';
-import { EventManager } from '../utils/event-manager.util';
-import { CmsSettingsService } from './../launchpad/settings/cms-settings.service';
+import { Injectable } from "@angular/core";
+import { EventManager } from "../utils/event-manager.util";
+import { CmsSettingsService } from "./../launchpad/settings/cms-settings.service";
 
 @Injectable()
 
@@ -41,14 +41,14 @@ export class CmsVirtualScrollService {
         this.scrollCallback = scrollCallback;
 
         if (this.scrollTarget) {
-            EventManager.addEventOnElement(this.scrollTarget, 'scroll', this.onScroll.bind(this));
+            EventManager.addEventOnElement(this.scrollTarget, "scroll", this.onScroll.bind(this));
         }
     }
 
     // remove scroll event listener on mScrollTarget
     public removeScrollListener() {
         if (this.scrollTarget) {
-            EventManager.removeEventOnElement(this.scrollTarget, 'scroll', this.onScroll.bind(this));
+            EventManager.removeEventOnElement(this.scrollTarget, "scroll", this.onScroll.bind(this));
         }
     }
 

@@ -5,16 +5,16 @@
  */
 
 /* Core */
-import { NgModule } from '@angular/core';
+import { NgModule } from "@angular/core";
 
 /* CMS API */
-import { CmsApiService } from './api/cms-api.service';
+import { CmsApiService } from "./api/cms-api.service";
 
 /* Event emitter */
-import { CmsEventEmitterService } from './api/cms-event-emitter.service';
-import { StorageManager } from './api/cms-storagemanager.service';
-import { APIRequest } from './api/api-request';
-import { AppConfig } from '../config';
+import { CmsEventEmitterService } from "./api/cms-event-emitter.service";
+import { StorageManager } from "./api/cms-storagemanager.service";
+import { APIRequest } from "./api/api-request";
+import { AppConfig } from "../config";
 
 
 /**

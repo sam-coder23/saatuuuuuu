@@ -4,25 +4,25 @@
  * the terms of the license agreement you entered into with Barco.
  */
 
-import { Component, OnInit, Input, Output, EventEmitter, ViewChild } from '@angular/core';
-import { Router, ActivatedRoute, Params } from '@angular/router';
+import { Component, OnInit, Input, Output, EventEmitter, ViewChild } from "@angular/core";
+import { Router, ActivatedRoute, Params } from "@angular/router";
 
-import { EventManager } from '../../../utils/event-manager.util';
-import { KeyManager } from '../../../utils/key-manager.util';
-import { CmsApiService } from '../../../cms/api/cms-api.service';
-import { StorageManager } from '../../../cms/api/cms-storagemanager.service';
-import { CMS_SESSION_STORAGE_ITEM } from '../../../cms/models/cms-session-storage-item';
-import { CMSConstants } from '../../../cms/models/cms-constants';
-import { AppConfig } from '../../../config';
+import { EventManager } from "../../../utils/event-manager.util";
+import { KeyManager } from "../../../utils/key-manager.util";
+import { CmsApiService } from "../../../cms/api/cms-api.service";
+import { StorageManager } from "../../../cms/api/cms-storagemanager.service";
+import { CMS_SESSION_STORAGE_ITEM } from "../../../cms/models/cms-session-storage-item";
+import { CMSConstants } from "../../../cms/models/cms-constants";
+import { AppConfig } from "../../../config";
 
 /**
  * This component act as a sidenav for mini-display view. It provides various menu options to the user for launchpad.
  */
 @Component({
     //moduleId: module.id,
-    selector: 'cms-options',
-    template: require('to-string!./cms-options.component.html'),
-    styles: [require('to-string!./cms-options.component.scss')]
+    selector: "cms-options",
+    template: require("to-string!./cms-options.component.html"),
+    styles: [require("to-string!./cms-options.component.scss")]
 })
 
 export class CmsOptionsComponent implements OnInit {
@@ -33,21 +33,21 @@ export class CmsOptionsComponent implements OnInit {
     private keyManager = new KeyManager();
 
     // zoom level of mini-Display
-    @Input('zoom') mZoomLevel: number;
+    @Input("zoom") mZoomLevel: number;
 
     // save layout option state for side-nav options
-    @Input('isSaveLayoutEnabled') isSaveLayoutEnabled: boolean;
+    @Input("isSaveLayoutEnabled") isSaveLayoutEnabled: boolean;
 
-    // Create a 'close' event
-    @Output('close') closeEmitter = new EventEmitter();
+    // Create a "close" event
+    @Output("close") closeEmitter = new EventEmitter();
 
-    @Output('fitHeight') fitHeightEmitter = new EventEmitter();
+    @Output("fitHeight") fitHeightEmitter = new EventEmitter();
 
     /**
      * Sidenav: https://github.com/angular/material2/blob/master/src/lib/sidenav/README.md
      * ViewChild: http://stackoverflow.com/questions/34517969/access-a-local-variable-from-the-template-in-the-controller-in-angular2
      */
-    @ViewChild('sidenav') sidenav;
+    @ViewChild("sidenav") sidenav;
 
     // this flag will disable certain options if display is not available
     private disableOptionOnDisplayUnavailable: boolean;
@@ -63,7 +63,7 @@ export class CmsOptionsComponent implements OnInit {
      * On component initialization, add close event listener.
      */
     ngOnInit() {
-        EventManager.addEvent('keyup', this.onKeyUP.bind(this));
+        EventManager.addEvent("keyup", this.onKeyUP.bind(this));
 
         // Open sidenav with animation
         // @attend - This seems to be tricky. Might need attention.
@@ -74,7 +74,7 @@ export class CmsOptionsComponent implements OnInit {
 
         // fetch selected display id from url parameter
         this.route.params.forEach((params: Params) => {
-            this.displayId = params['id'];
+            this.displayId = params["id"];
         });
 
         // disable certain options based on display unavailablity
@@ -99,7 +99,7 @@ export class CmsOptionsComponent implements OnInit {
      * Also emit close event to its host component.
      */
     public close() {
-        EventManager.removeEvent('keyup', this.onKeyUP);
+        EventManager.removeEvent("keyup", this.onKeyUP);
         this.closeEmitter.emit();
     }
 
@@ -157,13 +157,13 @@ export class CmsOptionsComponent implements OnInit {
      * This method adds keyup event listener to event loop on document. 
      */
     // private addCloseEventListener() {
-    //     window.document.addEventListener('keyup', this.closeHandler.bind(this));
+    //     window.document.addEventListener("keyup", this.closeHandler.bind(this));
     // }
 
     /**
-     * This method navigate to layouts list while click on 'save a new layout' option.
+     * This method navigate to layouts list while click on "save a new layout" option.
      */
     private goToLayoutsPanelForSaveLayout(event) {
-        this.router.navigate([`/displays/${this.displayId}/layouts-panel`, { action: 'saveLayout' }]);
+        this.router.navigate([`/displays/${this.displayId}/layouts-panel`, { action: "saveLayout" }]);
     }
 }

@@ -9,5 +9,5 @@
  */
 export class CMSConstants {
     static NoDisplay = "nodisplay";
-    static RTLLanguages = ['ar'];
+    static RTLLanguages = ["ar"];
 }

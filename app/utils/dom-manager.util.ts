@@ -4,7 +4,7 @@
  * the terms of the license agreement you entered into with Barco.
  */
 
-import {ElementRef} from '@angular/core';
+import {ElementRef} from "@angular/core";
 
 export 
 /**

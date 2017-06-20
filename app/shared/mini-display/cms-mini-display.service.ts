@@ -4,16 +4,16 @@
  * the terms of the license agreement you entered into with Barco.
  */
 
-import { Injectable } from '@angular/core';
+import { Injectable } from "@angular/core";
 
-import { CmsApiService } from '../../cms/api/cms-api.service';
-import { TileContent } from './../../cms/models/cms-tile-content';
-import { Source } from './../../cms/models/cms-source';
-import { ITile } from '../../cms/models/cms-tile';
-import { Display } from '../../cms/models/cms-display';
-import { ISize } from '../../cms/models/cms-size';
-import { Observable } from 'rxjs/Rx';
-import { AppConfig } from '../../config';
+import { CmsApiService } from "../../cms/api/cms-api.service";
+import { TileContent } from "./../../cms/models/cms-tile-content";
+import { Source } from "./../../cms/models/cms-source";
+import { ITile } from "../../cms/models/cms-tile";
+import { Display } from "../../cms/models/cms-display";
+import { ISize } from "../../cms/models/cms-size";
+import { Observable } from "rxjs/Rx";
+import { AppConfig } from "../../config";
 
 
 /**
@@ -247,7 +247,7 @@ export class CmsMiniDisplayService {
          * Why scrollWidth = 23? 
          * 
          * Because for any browser default width of a scrollbar is 17 pixel. And for some un-detectable reason 6 pixel was a gap.
-         * That's why 23px is set as a fix for height calculation.
+         * That"s why 23px is set as a fix for height calculation.
          */
         let miniDisplayContainerSize: ISize = aContainer.getBoundingClientRect(),
             miniDisplayContainerRatio: number = miniDisplayContainerSize.width / miniDisplayContainerSize.height,

@@ -1,6 +1,6 @@
 {
     "login": {
-        "welcome": "Welcome to CMS Launch Pad",
+        "welcome": "CMS Launch Pad - CR",
         "username": "User name",
         "password": "Password",
         "button": "Login",
@@ -26,7 +26,7 @@
         "selectDisplay": "Select a display"
     },
     "displayList": {
-        "connectTo": "Connect to a display wall",
+        "connectTo": "Select a display wall",
         "unavailable": "No Displays",
         "unavailableConfirmation": "No display is available for your account. Please contact the administrator."
     },
@@ -46,7 +46,7 @@
         "loadLayout": "Load a layout"
     },
     "sourceList": {
-        "connectTo": "Select a source",
+        "connectTo": "Select sources (maximum {{value}})",
         "unavailable": "No Sources"
     },
     "panelToolbar": {

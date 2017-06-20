@@ -4,7 +4,7 @@
 * the terms of the license agreement you entered into with Barco.
 */
 
-import { CmsResource } from './../../cms/models/cms-resource';
+import { CmsResource } from "./../../cms/models/cms-resource";
 
 /**
  * This class defines a generic information for layout card component.

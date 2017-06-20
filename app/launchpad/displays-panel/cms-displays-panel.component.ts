@@ -4,22 +4,22 @@
  * the terms of the license agreement you entered into with Barco.
  */
 
-import { Component, OnInit, AfterViewInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit } from "@angular/core";
 
-import { CMS_SESSION_STORAGE_ITEM } from '../../cms/models/cms-session-storage-item';
-import { StorageManager} from '../../cms/api/cms-storagemanager.service';
-import { Display } from '../../cms/models/cms-display';
-import { Observable } from 'rxjs/Rx';
-import { AppConfig } from '../../config';
+import { CMS_SESSION_STORAGE_ITEM } from "../../cms/models/cms-session-storage-item";
+import { StorageManager} from "../../cms/api/cms-storagemanager.service";
+import { Display } from "../../cms/models/cms-display";
+import { Observable } from "rxjs/Rx";
+import { AppConfig } from "../../config";
 
 /**
  * This is a panel component that defines the layout of a page which includes toolbar and display list.
  */
 @Component({
     //moduleId: module.id,
-    selector: 'cms-displays-panel',
-    template: require('to-string!./cms-displays-panel.component.html'),
-    styles: [require('to-string!./cms-displays-panel.component.scss')]
+    selector: "cms-displays-panel",
+    template: require("to-string!./cms-displays-panel.component.html"),
+    styles: [require("to-string!./cms-displays-panel.component.scss")]
 })
 export class CmsDisplaysPanelComponent implements OnInit, AfterViewInit {
    /**
@@ -42,7 +42,7 @@ export class CmsDisplaysPanelComponent implements OnInit, AfterViewInit {
     private selectedDisplayId: number;
     
     constructor(private storageManager: StorageManager, private appConfig: AppConfig) {
-        this.isFavoriteFilter = (this.storageManager.get(CMS_SESSION_STORAGE_ITEM.DisplaysFavoriteFilter) === 'true') || false;
+        this.isFavoriteFilter = (this.storageManager.get(CMS_SESSION_STORAGE_ITEM.DisplaysFavoriteFilter) === "true") || false;
         this.searchFilter = this.storageManager.get(CMS_SESSION_STORAGE_ITEM.DisplaysSearchFilter) || "";
         this.searchKey = this.searchFilter;
      }
@@ -71,8 +71,8 @@ export class CmsDisplaysPanelComponent implements OnInit, AfterViewInit {
          * HTML search input control and update the searchFilter by
          * subscribing this Observable
          */
-        let searchInput =  document.getElementById('display-list-search-input');
-        Observable.fromEvent(searchInput, 'keyup')
+        let searchInput =  document.getElementById("display-list-search-input");
+        Observable.fromEvent(searchInput, "keyup")
                  .map((e:any) => e.target.value.trim())
                  .debounceTime(500)
                  .subscribe(searchString => {
@@ -85,8 +85,8 @@ export class CmsDisplaysPanelComponent implements OnInit, AfterViewInit {
          * on favorite filter icon.
          * Updating display list by subscribing this Observable.
          */
-        let favoriteIcon =  document.getElementById('display-list-favorite-button');
-        Observable.fromEvent(favoriteIcon, 'click')
+        let favoriteIcon =  document.getElementById("display-list-favorite-button");
+        Observable.fromEvent(favoriteIcon, "click")
                  .debounceTime(350)
                  .subscribe(res => {
                     this.isFavoriteFilter = !this.isFavoriteFilter;

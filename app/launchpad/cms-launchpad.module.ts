@@ -5,54 +5,54 @@
  */
 
 /* Core */
-import { NgModule } from '@angular/core';
-import { BrowserModule } from '@angular/platform-browser';
-import { HttpModule, Http } from '@angular/http';
-import { FormsModule } from '@angular/forms';
+import { NgModule } from "@angular/core";
+import { BrowserModule } from "@angular/platform-browser";
+import { HttpModule, Http } from "@angular/http";
+import { FormsModule } from "@angular/forms";
 
 /* Ngx-Translate */
-import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
-import { TranslateHttpLoader } from '@ngx-translate/http-loader';
+import { TranslateModule, TranslateLoader } from "@ngx-translate/core";
+import { TranslateHttpLoader } from "@ngx-translate/http-loader";
 
 /* Angular Material */
-import { MaterialModule, MdIconRegistry, MdUniqueSelectionDispatcher } from '@angular/material';
+import { MaterialModule, MdIconRegistry, MdUniqueSelectionDispatcher } from "@angular/material";
 
 /* App Root */
-import { CmsLaunchpadComponent } from './cms-launchpad.component';
-import { CmsLaunchpadRouter } from './cms-launchpad.routing';
+import { CmsLaunchpadComponent } from "./cms-launchpad.component";
+import { CmsLaunchpadRouter } from "./cms-launchpad.routing";
 
 /* Login */
-import { CmsLoginComponent, CmsCanActivateViaAuthorizationService } from './login/index';
+import { CmsLoginComponent, CmsCanActivateViaAuthorizationService } from "./login/index";
 
 /* Displays Panel */
-import { CmsDisplaysPanelComponent } from './displays-panel/cms-displays-panel.component';
+import { CmsDisplaysPanelComponent } from "./displays-panel/cms-displays-panel.component";
 
 /* Layouts Panel */
-import { CmsLayoutsPanelComponent } from './layouts-panel/cms-layouts-panel.component';
-import { CmsSaveLayoutComponent } from './layouts-panel/save-layout/cms-save-layout.component';
+import { CmsLayoutsPanelComponent } from "./layouts-panel/cms-layouts-panel.component";
+import { CmsSaveLayoutComponent } from "./layouts-panel/save-layout/cms-save-layout.component";
 
 /* Display Panel */
-import { CmsDisplayPanelComponent } from './display-panel/cms-display-panel.component';
-import { CmsOptionsComponent } from './display-panel/options/cms-options.component';
+import { CmsDisplayPanelComponent } from "./display-panel/cms-display-panel.component";
+import { CmsOptionsComponent } from "./display-panel/options/cms-options.component";
 
 /* Sources Panel */
-import { CmsSourcesPanelComponent } from './sources-panel/cms-sources-panel.component';
+import { CmsSourcesPanelComponent } from "./sources-panel/cms-sources-panel.component";
 
 /* CMS Settings */
-import { CmsSettingsPanelComponent } from './settings/cms-settings-panel.component'; 
-import { CmsSettingsLanguagePanelComponent } from './settings/language/cms-settings-language-panel.component'; 
+import { CmsSettingsPanelComponent } from "./settings/cms-settings-panel.component"; 
+import { CmsSettingsLanguagePanelComponent } from "./settings/language/cms-settings-language-panel.component"; 
 
 /* Shared Module */
-import { CmsSharedModule } from '../shared/cms-shared.module';
+import { CmsSharedModule } from "../shared/cms-shared.module";
 
 /* CMS Model Module */
-import { CmsModelModule } from '../cms/cms-model.module';
+import { CmsModelModule } from "../cms/cms-model.module";
 
 /* cms settings service to be registered at module level */
-import { CmsSettingsService } from './settings/cms-settings.service';
+import { CmsSettingsService } from "./settings/cms-settings.service";
 
 /* cms about panel */
-import { CmsAboutPanelComponent } from './about/cms-about-panel.component';
+import { CmsAboutPanelComponent } from "./about/cms-about-panel.component";
 
 
 /**
@@ -74,7 +74,7 @@ import { CmsAboutPanelComponent } from './about/cms-about-panel.component';
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,
-        useFactory: (http: Http) => new TranslateHttpLoader(http, './i18n/', '.json'),
+        useFactory: (http: Http) => new TranslateHttpLoader(http, "./i18n/", ".json"),
         deps: [Http]
       }
     })

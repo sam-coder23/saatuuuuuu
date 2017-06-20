@@ -4,38 +4,38 @@
  * the terms of the license agreement you entered into with Barco.
  */
 
-import { Component, OnInit, ElementRef, EventEmitter, OnDestroy } from '@angular/core';
-import { TranslateService } from '@ngx-translate/core';
-import { Observable } from 'rxjs/Rx';
-import { Router } from '@angular/router';
-import { DomSanitizer } from '@angular/platform-browser';
-import { MdIconRegistry } from '@angular/material';
+import { Component, OnInit, ElementRef, EventEmitter, OnDestroy } from "@angular/core";
+import { TranslateService } from "@ngx-translate/core";
+import { Observable } from "rxjs/Rx";
+import { Router } from "@angular/router";
+import { DomSanitizer } from "@angular/platform-browser";
+import { MdIconRegistry } from "@angular/material";
 
-import { EventManager } from '../utils/event-manager.util';
+import { EventManager } from "../utils/event-manager.util";
 
-import { CmsApiService } from '../cms/api/cms-api.service';
-import { CmsSettingsService } from './settings/cms-settings.service';
-import { CmsLanguages } from '../i18n/cms-languages';
-import { StorageManager } from '../cms/api/cms-storagemanager.service';
-import { CMS_SESSION_STORAGE_ITEM } from '../cms/models/cms-session-storage-item';
-import { IUserToken } from './models/cms-user-token';
-import { CMS_EVENTS } from '../cms/api/cms-events.enum';
-import { CmsEventEmitterService } from '../cms/api/cms-event-emitter.service';
-import { AppConfig } from '../config';
+import { CmsApiService } from "../cms/api/cms-api.service";
+import { CmsSettingsService } from "./settings/cms-settings.service";
+import { CmsLanguages } from "../i18n/cms-languages";
+import { StorageManager } from "../cms/api/cms-storagemanager.service";
+import { CMS_SESSION_STORAGE_ITEM } from "../cms/models/cms-session-storage-item";
+import { IUserToken } from "./models/cms-user-token";
+import { CMS_EVENTS } from "../cms/api/cms-events.enum";
+import { CmsEventEmitterService } from "../cms/api/cms-event-emitter.service";
+import { AppConfig } from "../config";
 
-import '../global.global.scss';
-import '../themes.global.scss';
-import '../override.global.scss';
+import "../global.global.scss";
+import "../themes.global.scss";
+import "../override.global.scss";
 
-import '../resources/fonts/cmslaunchpad-fonts.css';
-import '../resources/fonts/material-fonts.css';
+import "../resources/fonts/cmslaunchpad-fonts.css";
+import "../resources/fonts/material-fonts.css";
 
 /**
  * This is the main component that is bootstrapped and provides a router outlet for all other application pages to be shown.
  */
 @Component({
   //moduleId: module.id,
-  selector: 'cms-launchpad',
+  selector: "cms-launchpad",
   template: `<router-outlet></router-outlet>
     <cms-dialog *ngIf="showSystemDialog" [message]="dialogMessage" [type]="'alert'" (okPress)="onDialogConfirmation()"></cms-dialog>
     <cms-dialog *ngIf="showProgressDialog" [message]="dialogMessage" [type]="'progress'" (okPress)="onDialogConfirmation()"></cms-dialog>`
@@ -75,11 +75,11 @@ export class CmsLaunchpadComponent implements OnInit, OnDestroy {
 
     // add svg icons to icon registry
     mdIconRegistry
-      .addSvgIcon('fit_height', sanitizer.bypassSecurityTrustResourceUrl('resources/icons/fit_height.svg'))
-      .addSvgIcon('display_offline', sanitizer.bypassSecurityTrustResourceUrl('resources/icons/display_offline_black_36.svg'))
-      .addSvgIcon('display_online', sanitizer.bypassSecurityTrustResourceUrl('resources/icons/display_online_black_36.svg'))
-      .addSvgIcon('clear_clipboard_black', sanitizer.bypassSecurityTrustResourceUrl('resources/icons/clear_clipboard_black.svg'))
-      .addSvgIcon('clear_clipboard_white', sanitizer.bypassSecurityTrustResourceUrl('resources/icons/clipboard_clear_white_36px.svg'));
+      .addSvgIcon("fit_height", sanitizer.bypassSecurityTrustResourceUrl("resources/icons/fit_height.svg"))
+      .addSvgIcon("display_offline", sanitizer.bypassSecurityTrustResourceUrl("resources/icons/display_offline_black_36.svg"))
+      .addSvgIcon("display_online", sanitizer.bypassSecurityTrustResourceUrl("resources/icons/display_online_black_36.svg"))
+      .addSvgIcon("clear_clipboard_black", sanitizer.bypassSecurityTrustResourceUrl("resources/icons/clear_clipboard_black.svg"))
+      .addSvgIcon("clear_clipboard_white", sanitizer.bypassSecurityTrustResourceUrl("resources/icons/clipboard_clear_white_36px.svg"));
   }
 
   /**
@@ -103,7 +103,7 @@ export class CmsLaunchpadComponent implements OnInit, OnDestroy {
         this.appConfig.error("ERR_NO_USER_SETTINGS: No user settings found after refresh.");
       }
 
-      // apply user's selected language
+      // apply user"s selected language
       this.cmsSettingsService.applyUserSelectedLanguage();
 
       // set UserLastActionTime after refresh 
@@ -114,7 +114,7 @@ export class CmsLaunchpadComponent implements OnInit, OnDestroy {
     this.addLogOffTimeObservable();
 
     this.applicationLevelEvent = CmsEventEmitterService.get(CMS_EVENTS.Application).subscribe((res: { eventName: string, eventType: string }) => {
-      this.appConfig.log('CmsLaunchpadComponent: Application level event received. ', res.eventName);
+      this.appConfig.log("CmsLaunchpadComponent: Application level event received. ", res.eventName);
 
       // handle system events when user is logged in
       let user: IUserToken = JSON.parse(this.storageManager.get(CMS_SESSION_STORAGE_ITEM.User));
@@ -129,7 +129,7 @@ export class CmsLaunchpadComponent implements OnInit, OnDestroy {
         }
       }
       else {
-        this.appConfig.log('CmsLaunchpadComponent: System events will not be handled as user is not logged in.');
+        this.appConfig.log("CmsLaunchpadComponent: System events will not be handled as user is not logged in.");
       }
     });
   }
@@ -167,10 +167,10 @@ export class CmsLaunchpadComponent implements OnInit, OnDestroy {
    */
   preventBrowserDefaults(): void {
     // disable zoom in browser with ctrl + mousewheel
-    EventManager.addEvent('wheel', this.onMouseWheel.bind(this));
+    EventManager.addEvent("wheel", this.onMouseWheel.bind(this));
 
     // Block certain keys for zooming and browser refresh
-    EventManager.addEvent('keydown', this.onKeyDown.bind(this));
+    EventManager.addEvent("keydown", this.onKeyDown.bind(this));
 
     // Block native pinch zoom 
     document.addEventListener("touchstart", (e: TouchEvent) => {
@@ -261,7 +261,7 @@ export class CmsLaunchpadComponent implements OnInit, OnDestroy {
     if (userSettings && isUserLoggedIn) {
       let userAutoLogOffTime = userSettings.logOffTime;
 
-      // if userAutoLogOffTime in user settings is not 'never'
+      // if userAutoLogOffTime in user settings is not "never"
       if (userAutoLogOffTime) {
         //update local property from sessionStorage
         this.userLastActionTime = this.storageManager.get(CMS_SESSION_STORAGE_ITEM.UserLastActionTime)

@@ -4,31 +4,31 @@
  * the terms of the license agreement you entered into with Barco.
  */
 
-import { Component, OnInit, Input, Output, EventEmitter, OnChanges, SimpleChanges, ElementRef, OnDestroy } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, OnChanges, SimpleChanges, ElementRef, OnDestroy } from "@angular/core";
 
-import { ITile } from '../../../cms/models/cms-tile';
-import { Source } from './../../../cms/models/cms-source';
+import { ITile } from "../../../cms/models/cms-tile";
+import { Source } from "./../../../cms/models/cms-source";
 
 // Service imports
-import { CmsSettingsService } from './../../../launchpad/settings/cms-settings.service';
-import { CmsApiService } from './../../../cms/api/cms-api.service';
-import { AppConfig } from '../../../config';
-import { Router } from '@angular/router';
-import { CmsClipboardService } from './../../clipboard/cms-clipboard.service';
-import { CmsMiniDisplayService } from './../cms-mini-display.service';
-import { TileContent } from './../../../cms/models/cms-tile-content';
-import { RegExManager } from '../../../core/util/RegEx';
-import { Url } from '../../../core/util/Url';
-import { Validation } from '../../../core/util/Validation';
+import { CmsSettingsService } from "./../../../launchpad/settings/cms-settings.service";
+import { CmsApiService } from "./../../../cms/api/cms-api.service";
+import { AppConfig } from "../../../config";
+import { Router } from "@angular/router";
+import { CmsClipboardService } from "./../../clipboard/cms-clipboard.service";
+import { CmsMiniDisplayService } from "./../cms-mini-display.service";
+import { TileContent } from "./../../../cms/models/cms-tile-content";
+import { RegExManager } from "../../../core/util/RegEx";
+import { Url } from "../../../core/util/Url";
+import { Validation } from "../../../core/util/Validation";
 
 /**
  * This is a grid component that creates a tiler on mini-display along with the content.
  */
 @Component({
     //moduleId: module.id,
-    selector: 'cms-grid',
-    template: require('to-string!./cms-grid.component.html'),
-    styles: [require('to-string!./cms-grid.component.scss')]
+    selector: "cms-grid",
+    template: require("to-string!./cms-grid.component.html"),
+    styles: [require("to-string!./cms-grid.component.scss")]
 })
 export class CmsGridComponent implements OnInit, OnChanges, OnDestroy {
 
@@ -41,7 +41,7 @@ export class CmsGridComponent implements OnInit, OnChanges, OnDestroy {
     // the input property will contain the array of sources in each tile
     @Input() contents: TileContent[];
 
-    // 'isLongPress' passed to cms-tile-component as input
+    // "isLongPress" passed to cms-tile-component as input
     private isLongPressed: boolean;
 
     // hold property for disable click event on cms-grid-component
@@ -83,7 +83,7 @@ export class CmsGridComponent implements OnInit, OnChanges, OnDestroy {
         // configure longPress (On Tablets and Browsers)
         this.configureLongPressGestures();
 
-        // subscribe to observable and update local 'isLongPressed' property
+        // subscribe to observable and update local "isLongPressed" property
         //this.cmsSettingsService.longPressObservable.unsubscribe();
         this.longPressSubcription = this.cmsSettingsService.longPressedSubject.subscribe(() => {
             this.isLongPressed = this.cmsSettingsService.isLongPressed;
@@ -94,7 +94,7 @@ export class CmsGridComponent implements OnInit, OnChanges, OnDestroy {
     }
 
     /**
-     * Angular's lifecycle hook ngOnDestroy
+     * Angular"s lifecycle hook ngOnDestroy
      */
     ngOnDestroy() {
         this.longPressSubcription.unsubscribe();
@@ -142,7 +142,7 @@ export class CmsGridComponent implements OnInit, OnChanges, OnDestroy {
      */
     private createSourceLableStyleRule(sourceStyle: string, backgroundStyles: string): void {
         // remove old style sheet
-        var previousStyle = document.getElementById('sourceLabelStylesheet');
+        var previousStyle = document.getElementById("sourceLabelStylesheet");
         if (previousStyle) {
             var sheetParent = previousStyle.parentNode;
             sheetParent.removeChild(previousStyle);
@@ -184,8 +184,8 @@ export class CmsGridComponent implements OnInit, OnChanges, OnDestroy {
      * This method handles PRESS and PRESSUP gesture on cms-grid
      */
     private longPressOnTile(manager, miniDisplayContainer) {
-        manager.on('press', () => this.onLongPress());
-        manager.on('pressup', () => this.onLongPressUp());
+        manager.on("press", () => this.onLongPress());
+        manager.on("pressup", () => this.onLongPressUp());
     }
 
     /**
@@ -193,7 +193,7 @@ export class CmsGridComponent implements OnInit, OnChanges, OnDestroy {
      */
     private addContextMenuListener() {
         let element = this.element.nativeElement.children[0];
-        element.addEventListener('contextmenu', (event) => {
+        element.addEventListener("contextmenu", (event) => {
             event.preventDefault();
 
             if (!this.isClickDisabled) {
@@ -208,13 +208,13 @@ export class CmsGridComponent implements OnInit, OnChanges, OnDestroy {
      */
     private removeContextMenuListener() {
         let element = this.element.nativeElement.children[0];
-        element.removeEventListener('contextmenu', () => {
+        element.removeEventListener("contextmenu", () => {
             this.toggleRemoveSourceIcon(event);
         }, false);
     }
 
     /**
-     *  This method update 'isLongPress' and 'isClickDisabled' property 
+     *  This method update "isLongPress" and "isClickDisabled" property 
      */
     private onLongPress() {
         //get user settings from cms-settings-service
@@ -441,7 +441,7 @@ export class CmsGridComponent implements OnInit, OnChanges, OnDestroy {
      * navigate to source panel route
      */
     private navigateToSourcesPanel() {
-        this.router.navigate(['displays', this.cmsMiniDisplayService.display.id, 'sources-panel']);
+        this.router.navigate(["displays", this.cmsMiniDisplayService.display.id, "sources-panel"]);
     }
 
     /**

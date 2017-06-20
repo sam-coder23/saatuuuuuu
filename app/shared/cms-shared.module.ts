@@ -5,49 +5,49 @@
  */
 
 /* Core */
-import { NgModule } from '@angular/core';
-import { BrowserModule } from '@angular/platform-browser';
-import { HttpModule, Http } from '@angular/http';
-import { RouterModule } from '@angular/router';
-import { FormsModule } from '@angular/forms';
+import { NgModule } from "@angular/core";
+import { BrowserModule } from "@angular/platform-browser";
+import { HttpModule, Http } from "@angular/http";
+import { RouterModule } from "@angular/router";
+import { FormsModule } from "@angular/forms";
 
 /* Ngx-Translate */
-import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
-import { TranslateHttpLoader } from '@ngx-translate/http-loader';
+import { TranslateModule, TranslateLoader } from "@ngx-translate/core";
+import { TranslateHttpLoader } from "@ngx-translate/http-loader";
 
 /* Angular Material */
-import { MaterialModule, MdIconRegistry } from '@angular/material';
+import { MaterialModule, MdIconRegistry } from "@angular/material";
 
 /* Card */
-import { CmsCardComponent } from './card/cms-card.component';
+import { CmsCardComponent } from "./card/cms-card.component";
 
 /* Mini-Display */
-import { CmsMiniDisplayComponent } from './mini-display/cms-mini-display.component';
-import { CmsMiniDisplayService } from './mini-display/cms-mini-display.service';
-import { CmsGridComponent } from './mini-display/grid/cms-grid.component';
+import { CmsMiniDisplayComponent } from "./mini-display/cms-mini-display.component";
+import { CmsMiniDisplayService } from "./mini-display/cms-mini-display.service";
+import { CmsGridComponent } from "./mini-display/grid/cms-grid.component";
 
 /* Display List */
-import { CmsDisplayListComponent } from './display-list/cms-display-list.component';
+import { CmsDisplayListComponent } from "./display-list/cms-display-list.component";
 
 /* Layout List */
-import { CmsLayoutListComponent } from './layout-list/cms-layout-list.component';
+import { CmsLayoutListComponent } from "./layout-list/cms-layout-list.component";
 
 /* Source List */
-import { CmsSourceListComponent } from './source-list/cms-source-list.component';
+import { CmsSourceListComponent } from "./source-list/cms-source-list.component";
 
 /** Common Services for Lists */
-import { CmsVirtualScrollService } from './cms-virtual-scroll.service';
-import { CmsFavoriteService } from './cms-favorite.service';
+import { CmsVirtualScrollService } from "./cms-virtual-scroll.service";
+import { CmsFavoriteService } from "./cms-favorite.service";
 
-import { CmsClipboardComponent } from './clipboard/cms-clipboard.component';
+import { CmsClipboardComponent } from "./clipboard/cms-clipboard.component";
 
-import { CmsDialogComponent } from './dialog/cms-dialog.component';
+import { CmsDialogComponent } from "./dialog/cms-dialog.component";
 
 /* clipboard service to be registered at module level */
-import { CmsClipboardService } from './clipboard/cms-clipboard.service';
+import { CmsClipboardService } from "./clipboard/cms-clipboard.service";
 
 /* colorpicker component */
-import { CmsColorPickerComponent } from './colorpicker/cms-colorpicker.component';
+import { CmsColorPickerComponent } from "./colorpicker/cms-colorpicker.component";
 
 
 /**
@@ -63,7 +63,7 @@ import { CmsColorPickerComponent } from './colorpicker/cms-colorpicker.component
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,
-        useFactory: (http: Http) => new TranslateHttpLoader(http, './i18n/', '.json'),
+        useFactory: (http: Http) => new TranslateHttpLoader(http, "./i18n/", ".json"),
         deps: [Http]
       }
     })

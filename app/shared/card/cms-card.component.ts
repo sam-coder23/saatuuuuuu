@@ -4,13 +4,14 @@
  * the terms of the license agreement you entered into with Barco.
  */
 
-import { Component, OnInit, OnDestroy, Input, Output, EventEmitter, OnChanges, SimpleChanges } from '@angular/core';
-import { CmsResource } from './../../cms/models/cms-resource';
-import { AppConfig } from '../../config';
-import {RegExManager} from '../../core/util/RegEx';
-import {Url} from '../../core/util/Url';
-import {Validation} from '../../core/util/Validation';
-import { CmsFavoriteService } from '../cms-favorite.service';
+import { Component, OnInit, OnDestroy, Input, Output, EventEmitter, OnChanges, SimpleChanges } from "@angular/core";
+import { CmsResource } from "./../../cms/models/cms-resource";
+import { AppConfig } from "../../config";
+import { RegExManager } from "../../core/util/RegEx";
+import { Url } from "../../core/util/Url";
+import { Validation } from "../../core/util/Validation";
+import { CmsFavoriteService } from "../cms-favorite.service";
+import { Source } from "../../cms/models/cms-source";
 
 /**
  * This is a card component which uses md-card provided by ng2-material. 
@@ -19,12 +20,12 @@ import { CmsFavoriteService } from '../cms-favorite.service';
  */
 @Component({
     //moduleId: module.id,
-    selector: 'cms-card',
-    template: require('to-string!./cms-card.component.html'),
-    styles: [require('to-string!./cms-card.scss')]
+    selector: "cms-card",
+    template: require("to-string!./cms-card.component.html"),
+    styles: [require("to-string!./cms-card.scss")]
 })
 
-export class CmsCardComponent implements OnInit, OnChanges {     
+export class CmsCardComponent implements OnInit, OnChanges {
     private isFavorite: boolean;
     private cardSnapshot: string;
     private refreshSnapshot: boolean;
@@ -32,8 +33,9 @@ export class CmsCardComponent implements OnInit, OnChanges {
     // Update the object somewhere else and that will refresh entire componnent. Due to same we will see image is flickered because its timestamp is updated.
 
     @Input() card: CmsResource;
-    @Output('selected') selectedEventEmitter = new EventEmitter(); // card selection    
-    @Output('toggleFavorite') favoriteEventEmitter = new EventEmitter();
+    @Input() multi: boolean;
+    @Output("select") selectedEventEmitter = new EventEmitter(); // card selection    
+    @Output("toggleFavorite") favoriteEventEmitter = new EventEmitter();
 
     /**
      * @constructor
@@ -48,10 +50,10 @@ export class CmsCardComponent implements OnInit, OnChanges {
      */
     ngOnInit() {
         let snapshotPath = this.card.snapshotpath;
-        this.isFavorite = this.card.favorite;       
+        this.isFavorite = this.card.favorite;
 
-        if(snapshotPath && this.refreshSnapshot === true) {
-            if(Url.HasHostName() && !Validation.IsNullOrUndefined(snapshotPath) && Url.HasIP(snapshotPath)) {
+        if (snapshotPath && this.refreshSnapshot === true) {
+            if (Url.HasHostName() && !Validation.IsNullOrUndefined(snapshotPath) && Url.HasIP(snapshotPath)) {
                 this.cardSnapshot = RegExManager.IPToHost(snapshotPath, this.appConfig.Host);
             }
             else {
@@ -75,13 +77,19 @@ export class CmsCardComponent implements OnInit, OnChanges {
         this.favoriteService.refreshSnapshot = true;
         this.isFavorite = this.card.favorite;
     }
-    
+
     /**
      * This methods emits an event to its host component when a card is selected.
      * @method selectCard
      */
     public selectCard(card: CmsResource) {
-        this.selectedEventEmitter.emit();
+        if (card.disabled) return;
+
+        if (card instanceof Source) {
+            this.selectedEventEmitter.emit((<Source>card).selected);
+        } else {
+            this.selectedEventEmitter.emit();
+        }
     }
 
     /**

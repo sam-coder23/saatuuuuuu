@@ -4,14 +4,14 @@
  * the terms of the license agreement you entered into with Barco.
  */
 
-import { Component, OnInit, AfterViewInit } from '@angular/core';
-import { ActivatedRoute, Params } from '@angular/router';
+import { Component, OnInit, AfterViewInit } from "@angular/core";
+import { ActivatedRoute, Params } from "@angular/router";
 
-import { TranslateService } from '@ngx-translate/core';
-import { Observable } from 'rxjs/Rx';
-import { AppConfig } from '../../config';
-import { StorageManager } from '../../cms/api/cms-storagemanager.service';
-import { CMS_SESSION_STORAGE_ITEM } from './../../cms/models/cms-session-storage-item';
+import { TranslateService } from "@ngx-translate/core";
+import { Observable } from "rxjs/Rx";
+import { AppConfig } from "../../config";
+import { StorageManager } from "../../cms/api/cms-storagemanager.service";
+import { CMS_SESSION_STORAGE_ITEM } from "./../../cms/models/cms-session-storage-item";
 
 
 /**
@@ -19,9 +19,9 @@ import { CMS_SESSION_STORAGE_ITEM } from './../../cms/models/cms-session-storage
  */
 @Component({
     //moduleId: module.id,
-    selector: 'cms-layouts-panel',
-    template: require('to-string!./cms-layouts-panel.component.html'),
-    styles: [require('to-string!./cms-layouts-panel.component.scss')]
+    selector: "cms-layouts-panel",
+    template: require("to-string!./cms-layouts-panel.component.html"),
+    styles: [require("to-string!./cms-layouts-panel.component.scss")]
 })
 export class CmsLayoutsPanelComponent implements OnInit, AfterViewInit {
     /**
@@ -54,7 +54,7 @@ export class CmsLayoutsPanelComponent implements OnInit, AfterViewInit {
      * The constructor initializes various dependencies.
      */
     constructor(private route: ActivatedRoute, private translate: TranslateService, private appConfig: AppConfig, private storageManager: StorageManager) {
-        this.isFavoriteFilter = (this.storageManager.get(CMS_SESSION_STORAGE_ITEM.LayoutsFavoriteFilter) === 'true') || false;
+        this.isFavoriteFilter = (this.storageManager.get(CMS_SESSION_STORAGE_ITEM.LayoutsFavoriteFilter) === "true") || false;
         this.searchFilter = this.storageManager.get(CMS_SESSION_STORAGE_ITEM.LayoutsSearchFilter) || "";
         this.searchKey = this.searchFilter;
     }
@@ -65,18 +65,18 @@ export class CmsLayoutsPanelComponent implements OnInit, AfterViewInit {
      */
     public ngOnInit() {
         this.route.params.forEach((params: Params) => {
-            this.displayId = Number(params['id']);
+            this.displayId = Number(params["id"]);
 
-            let actionParam = params['action'];
+            let actionParam = params["action"];
             if (actionParam === "saveLayout") {
                 this.showSaveLayoutPanel = true;
 
-                this.translate.get('saveLayout.toolbarText').subscribe((response: string) => {
+                this.translate.get("saveLayout.toolbarText").subscribe((response: string) => {
                     this.toolbarText = response;
                 });
             }
             else {
-                this.translate.get('layoutList.connectTo').subscribe((response: string) => {
+                this.translate.get("layoutList.connectTo").subscribe((response: string) => {
                     this.toolbarText = response;
                 });
             }
@@ -94,8 +94,8 @@ export class CmsLayoutsPanelComponent implements OnInit, AfterViewInit {
          * HTML search input control and update the searchFilter by
          * subscribing this Observable
          */
-        let searchInput = document.getElementById('layouts-panel-search-input');
-        Observable.fromEvent(searchInput, 'keyup')
+        let searchInput = document.getElementById("layouts-panel-search-input");
+        Observable.fromEvent(searchInput, "keyup")
             .map((e: any) => e.target.value.trim())
             .debounceTime(500)
             .subscribe(searchString => {
@@ -108,8 +108,8 @@ export class CmsLayoutsPanelComponent implements OnInit, AfterViewInit {
          * on favorite filter icon.
          * Updating layout list by subscribing this Observable.
          */
-        let favoriteIcon = document.getElementById('layouts-panel-favorite-button');
-        Observable.fromEvent(favoriteIcon, 'click')
+        let favoriteIcon = document.getElementById("layouts-panel-favorite-button");
+        Observable.fromEvent(favoriteIcon, "click")
             .debounceTime(350)
             .subscribe(res => {
                 this.isFavoriteFilter = !this.isFavoriteFilter;

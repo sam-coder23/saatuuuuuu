@@ -3,7 +3,7 @@
  * ("Confidential Information"). You shall not disclose such Confidential Information and shall use it only in accordance with
  * the terms of the license agreement you entered into with Barco.
  */
-import { Injectable } from '@angular/core';
+import { Injectable } from "@angular/core";
 
 @Injectable()
 export /**
@@ -16,7 +16,7 @@ class AppConfig {
     public serverURL:string;
     public defaultLanguage: string;
     public copyRightYear: string;
-    private apiURL = '/cms-rest/v1';
+    private apiURL = "/cms-rest/v1";
     private host: string;
 
     constructor() {
@@ -24,10 +24,10 @@ class AppConfig {
             protocol = location.protocol;
         this.host = location.host;
 
-        this.serverURL = "https://10.98.1.110" + this.apiURL;
+        this.serverURL = "http://10.98.0.153/cms-rest/v1";
 
-        this.log('Application is using services available on the following url - ', this.serverURL);
-        this.defaultLanguage = 'en';
+        this.log("Application is using services available on the following url - ", this.serverURL);
+        this.defaultLanguage = "en";
         this.copyRightYear = "2016";
     }
 

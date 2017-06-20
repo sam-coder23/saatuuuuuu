@@ -4,26 +4,26 @@
  * the terms of the license agreement you entered into with Barco.
  */
 
-import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
-import { TranslateService } from '@ngx-translate/core';
+import { Component, OnInit } from "@angular/core";
+import { Router } from "@angular/router";
+import { TranslateService } from "@ngx-translate/core";
 
-import { CmsApiService } from '../../cms/api/cms-api.service';
-import { IUserProfileSettings } from '../../cms/models/cms-user-profile-settings';
-import { CmsSettingsService } from './cms-settings.service';
-import { CmsColorPickerComponent } from '../../shared/colorpicker/cms-colorpicker.component';
-import { Display } from '../../cms/models/cms-display';
-import { CMSConstants } from '../../cms/models/cms-constants';
-import { AppConfig } from '../../config';
+import { CmsApiService } from "../../cms/api/cms-api.service";
+import { IUserProfileSettings } from "../../cms/models/cms-user-profile-settings";
+import { CmsSettingsService } from "./cms-settings.service";
+import { CmsColorPickerComponent } from "../../shared/colorpicker/cms-colorpicker.component";
+import { Display } from "../../cms/models/cms-display";
+import { CMSConstants } from "../../cms/models/cms-constants";
+import { AppConfig } from "../../config";
 
 /**
  * This is a panel component that defines the layout and feature of settings page.
  */
 @Component({
     //moduleId: module.id,
-    selector: 'cms-settings-panel',
-    template: require('to-string!./cms-settings-panel.component.html'),
-    styles: [require('to-string!./cms-settings-panel.component.scss')]
+    selector: "cms-settings-panel",
+    template: require("to-string!./cms-settings-panel.component.html"),
+    styles: [require("to-string!./cms-settings-panel.component.scss")]
 })
 export class CmsSettingsPanelComponent implements OnInit {
     // to show or hide loading process
@@ -114,7 +114,7 @@ export class CmsSettingsPanelComponent implements OnInit {
         this.mUserSelectedLanguage = this.cmsSettingsService.getUserSelectedLanguageByKey(this.mUserSettings.language);
 
         // check if recent display exists
-        if (this.mUserSettings.wallConnection.atStartup.recentDisplayId !== '') {
+        if (this.mUserSettings.wallConnection.atStartup.recentDisplayId !== "") {
             this.checkForRecentDisplay(this.mUserSettings.wallConnection.atStartup.recentDisplayId);
         }
         else {
@@ -147,10 +147,10 @@ export class CmsSettingsPanelComponent implements OnInit {
         this.cmsServerApi.getSelectedDisplayContent(displayId)
             .subscribe((display: Display) => {
                 if (display) {
-                    this.displayWallName = display['name'];
+                    this.displayWallName = display["name"];
 
                     // update as selected display wall for future selection
-                    this.mUserSettings.wallConnection.atStartup.selectedDisplayId = display['id'];
+                    this.mUserSettings.wallConnection.atStartup.selectedDisplayId = display["id"];
                     this.cmsSettingsService.updateUserProfileData(this.mUserSettings);
 
                 }
@@ -170,7 +170,7 @@ export class CmsSettingsPanelComponent implements OnInit {
         this.cmsServerApi.getSelectedDisplayContent(displayId)
             .subscribe((display: Display) => {
                 if (display) {
-                    this.recentDisplayId = display['id'].toString();
+                    this.recentDisplayId = display["id"].toString();
                 }
             }, (error) => {
                 this.recentDisplayId = CMSConstants.NoDisplay;
@@ -192,10 +192,10 @@ export class CmsSettingsPanelComponent implements OnInit {
 
     /**
      * @description
-     * This method navigate to displays list while click on 'auto connect on specific display wall' button
+     * This method navigate to displays list while click on "auto connect on specific display wall" button
      */
     private goToSelectDisplayForAutoConnect(event) {
-        this.router.navigate(['/displays-panel', { action: 'selectDisplayForAutoConnect' }]);
+        this.router.navigate(["/displays-panel", { action: "selectDisplayForAutoConnect" }]);
     }
 
     /**
@@ -311,7 +311,7 @@ export class CmsSettingsPanelComponent implements OnInit {
         let autoLogOffTime = Number(this.autoLogOffTime);
         this.autoLogOffTime = this.cmsSettingsService.validateCountData(autoLogOffTime, this.logOffTimeSteps, this.logOffTimeDefault);
         if (this.autoLogOffTime == 0 || isNaN(this.autoLogOffTime)) {
-            // update time as 0 for NaN and 'never' on UI
+            // update time as 0 for NaN and "never" on UI
             this.updateAutoLogOffValueBinding(this.autoLogOffTime);
             this.mUserSettings.logOffTime = 0;
             this.cmsSettingsService.updateUserProfileData(this.mUserSettings);
@@ -344,7 +344,7 @@ export class CmsSettingsPanelComponent implements OnInit {
 
     private updateAutoLogOffValueBinding(autoLogOffTime) {
         if (autoLogOffTime == 0 || isNaN(autoLogOffTime)) {
-            this.translate.get('settings.never').subscribe((response: string) => {
+            this.translate.get("settings.never").subscribe((response: string) => {
                 this.autoLogOffTime = response;
             });
         }
@@ -355,11 +355,11 @@ export class CmsSettingsPanelComponent implements OnInit {
      * This method show display wall name as per selected wall connection
      */
     private showDisplayWallNameByWallConnection() {
-        if (this.mUserSettings.wallConnection.atStartup.selectedDisplayId !== '' && this.mUserSettings.wallConnection.atStartup.status === 'auto-connect-to-specific-wall') {
+        if (this.mUserSettings.wallConnection.atStartup.selectedDisplayId !== "" && this.mUserSettings.wallConnection.atStartup.status === "auto-connect-to-specific-wall") {
             //show selected display name
             this.showDisplayWallNameById(this.mUserSettings.wallConnection.atStartup.selectedDisplayId);
         }
-        else if (this.mUserSettings.wallConnection.atStartup.recentDisplayId !== '') {
+        else if (this.mUserSettings.wallConnection.atStartup.recentDisplayId !== "") {
             //show recent display name
             this.showDisplayWallNameById(this.mUserSettings.wallConnection.atStartup.recentDisplayId);
         }
@@ -373,7 +373,7 @@ export class CmsSettingsPanelComponent implements OnInit {
      * This method gets any first display from CMS Server API.
      */
     private showFirstDisplayWallName() {
-        let start = 1, count = 1, search = '', isFavorite = false;
+        let start = 1, count = 1, search = "", isFavorite = false;
 
         return this.cmsServerApi.getDisplayList(start, count, search, isFavorite)
             .subscribe(
@@ -386,13 +386,13 @@ export class CmsSettingsPanelComponent implements OnInit {
                     this.noDisplayAvailable = false;
 
                     // wall exists and no recent wall selected
-                    if (this.mUserSettings.wallConnection.atStartup.recentDisplayId === '') {
-                        this.showDisplayWallNameById(displays[0]['id']);
+                    if (this.mUserSettings.wallConnection.atStartup.recentDisplayId === "") {
+                        this.showDisplayWallNameById(displays[0]["id"]);
                     }
                 }
             },
             error => {
-                this.appConfig.log('CmsSettingsPanelComponent: showFirstDisplayWallName');
+                this.appConfig.log("CmsSettingsPanelComponent: showFirstDisplayWallName");
             });
     }
 

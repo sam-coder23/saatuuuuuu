@@ -1,4 +1,4 @@
-import {GenericCollection} from '../core/type/extended/GenericCollection';
+import {GenericCollection} from "../core/type/extended/GenericCollection";
 
 export
 /**
@@ -17,7 +17,7 @@ class KeyManager {
     
     constructor() {
         this.keyCollection = new GenericCollection<number>();
-        this.keyCollection.Add('Escape', 27);
+        this.keyCollection.Add("Escape", 27);
         //I don't want to hardcode important string, consider using Enum over here and make it visible to entire application
     }
 
@@ -61,7 +61,7 @@ class KeyManager {
      * if it is escape key otherwise false
      */
     public IsEscapeKey(e: KeyboardEvent): boolean {
-        let value = this.KeyCode('Escape'),
+        let value = this.KeyCode("Escape"),
             keyCode = e.keyCode,
             which = e.which;
 

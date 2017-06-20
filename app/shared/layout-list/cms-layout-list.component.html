@@ -3,7 +3,7 @@
         <span>{{ 'layoutList.unavailable' | translate }}</span>
     </div>
     <div *ngIf="mLayouts.length > 0">
-        <cms-card *ngFor="let layout of mLayouts" [card]="layout" (selected)="confirmLoadLayout(layout)" (toggleFavorite)="toggleLayoutFavorite(layout)" [ngClass]="{disabled: layout.disabled}"> </cms-card>
+        <cms-card *ngFor="let layout of mLayouts" [card]="layout" (select)="confirmLoadLayout(layout)" (toggleFavorite)="toggleLayoutFavorite(layout)" [ngClass]="{disabled: layout.disabled}"> </cms-card>
         <cms-dialog *ngIf="mShowConfirmationDialog" [message]="mDialogMessage" [type]="'confirmation'" (okPress)="onConfimation()" (cancelPress)="onCancel()"></cms-dialog>
     </div>
 </div>

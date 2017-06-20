@@ -4,19 +4,19 @@
  * the terms of the license agreement you entered into with Barco.
  */
 
-import { Component, OnInit } from '@angular/core';
-// import { Router } from '@angular/router';
-import {Location} from '@angular/common';
+import { Component, OnInit } from "@angular/core";
+// import { Router } from "@angular/router";
+import {Location} from "@angular/common";
 import { TranslateService } from "@ngx-translate/core";
 
-import { CmsApiService } from '../../cms/api/cms-api.service';
-import { AppConfig } from '../../config';
+import { CmsApiService } from "../../cms/api/cms-api.service";
+import { AppConfig } from "../../config";
 
 @Component({
     //moduleId: module.id,
-    selector: 'cms-about-panel',
-    template: require('to-string!./cms-about-panel.component.html'),
-    styles: [require('to-string!./cms-about-panel.component.scss')]
+    selector: "cms-about-panel",
+    template: require("to-string!./cms-about-panel.component.html"),
+    styles: [require("to-string!./cms-about-panel.component.scss")]
 })
 /**
  * This class will be responsible to display the about content 
@@ -27,13 +27,13 @@ export class CmsAboutPanelComponent implements OnInit {
 
     private loading: boolean = false;
     private systemInfo = {
-        licensedTo: '',
-        projectName: '',
-        licenseStatus: '',
-        server: '',
-        version:'',
-        serverVersion:'',
-        daysremaining:''
+        licensedTo: "",
+        projectName: "",
+        licenseStatus: "",
+        server: "",
+        version:"",
+        serverVersion:"",
+        daysremaining:""
     }
 
     private copyRightText: string;
@@ -100,7 +100,7 @@ export class CmsAboutPanelComponent implements OnInit {
        * This method fetch year from client and update copyright text
        */
       updateCopyrightText() {
-          this.translate.get('about.copyrightText', { value: this.appConfig.copyRightYear }).subscribe((response: string) => {
+          this.translate.get("about.copyrightText", { value: this.appConfig.copyRightYear }).subscribe((response: string) => {
               this.copyRightText = response;
 
               // hide loading state

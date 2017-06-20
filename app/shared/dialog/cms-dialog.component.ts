@@ -4,8 +4,8 @@
  * the terms of the license agreement you entered into with Barco.
  */
 
-import { Component, Input, Output, EventEmitter, OnInit, OnChanges, SimpleChanges, OnDestroy } from '@angular/core';
-import { AppConfig } from '../../config';
+import { Component, Input, Output, EventEmitter, OnInit, OnChanges, SimpleChanges, OnDestroy } from "@angular/core";
+import { AppConfig } from "../../config";
 /**
  * This component defines a custom dialog.
  * 
@@ -15,9 +15,9 @@ import { AppConfig } from '../../config';
 
 @Component({
     //moduleId: module.id,
-    selector: 'cms-dialog',
-    template: require('to-string!./cms-dialog.component.html'),
-    styles: [require('to-string!./cms-dialog.component.scss')]
+    selector: "cms-dialog",
+    template: require("to-string!./cms-dialog.component.html"),
+    styles: [require("to-string!./cms-dialog.component.scss")]
 })
 export class CmsDialogComponent implements OnInit, OnChanges {
     /**
@@ -30,9 +30,9 @@ export class CmsDialogComponent implements OnInit, OnChanges {
     // dialog type as "alert" or "confirmation"  as input
     @Input() type: string;
 
-    // create a 'OK' and 'Cancel' event
-    @Output('okPress') okPressEmitter = new EventEmitter();
-    @Output('cancelPress') cancelPressEmitter = new EventEmitter();
+    // create a "OK" and "Cancel" event
+    @Output("okPress") okPressEmitter = new EventEmitter();
+    @Output("cancelPress") cancelPressEmitter = new EventEmitter();
 
     private mMessage: string;
 

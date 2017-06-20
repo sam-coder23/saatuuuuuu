@@ -36,7 +36,7 @@
 
   <target name="update.build.numder">
 		<propertyfile file="${build.sandbox}/launchpadbuildnumber.properties">
-			<entry key="launchpad.buildnumber" type="int" operation="+" default="'0'+${launchpad.buildnumber}" pattern="0000" />
+			<entry key="launchpad.buildnumber" type="int" operation="+" default="0"+${launchpad.buildnumber}" pattern="0000" />
 		</propertyfile>
   </target>
   

@@ -4,25 +4,25 @@
  * the terms of the license agreement you entered into with Barco.
  */
 
-import { Subscription } from 'rxjs/Rx';
-import { Component, OnInit, ElementRef, OnDestroy, EventEmitter, Input, Output, OnChanges, SimpleChanges } from '@angular/core';
-import { Router, ActivatedRoute, Params } from '@angular/router';
+import { Subscription } from "rxjs/Rx";
+import { Component, OnInit, ElementRef, OnDestroy, EventEmitter, Input, Output, OnChanges, SimpleChanges } from "@angular/core";
+import { Router, ActivatedRoute, Params } from "@angular/router";
 
-import { CmsApiService } from '../../cms/api/cms-api.service';
-import { CmsEventEmitterService } from './../../cms/api/cms-event-emitter.service';
-import { CmsClipboardService } from './../clipboard/cms-clipboard.service';
-import { CMS_EVENTS } from '../../cms/api/cms-events.enum';
-import { CmsVirtualScrollService } from '../cms-virtual-scroll.service';
-import { CMS_SESSION_STORAGE_ITEM } from '../../cms/models/cms-session-storage-item';
-import { ICmsEvent } from '../../cms/models/cms-event';
-import { Display } from '../../cms/models/cms-display';
-import { StorageManager } from '../../cms/api/cms-storagemanager.service';
-import { DomManager } from '../../utils/dom-manager.util';
-import { CmsFavoriteService } from '../cms-favorite.service';
-import { CmsSettingsService } from '../../launchpad/settings/cms-settings.service';
-import { TranslateService } from '@ngx-translate/core';
-import { CMSConstants } from '../../cms/models/cms-constants';
-import { AppConfig } from '../../config';
+import { CmsApiService } from "../../cms/api/cms-api.service";
+import { CmsEventEmitterService } from "./../../cms/api/cms-event-emitter.service";
+import { CmsClipboardService } from "./../clipboard/cms-clipboard.service";
+import { CMS_EVENTS } from "../../cms/api/cms-events.enum";
+import { CmsVirtualScrollService } from "../cms-virtual-scroll.service";
+import { CMS_SESSION_STORAGE_ITEM } from "../../cms/models/cms-session-storage-item";
+import { ICmsEvent } from "../../cms/models/cms-event";
+import { Display } from "../../cms/models/cms-display";
+import { StorageManager } from "../../cms/api/cms-storagemanager.service";
+import { DomManager } from "../../utils/dom-manager.util";
+import { CmsFavoriteService } from "../cms-favorite.service";
+import { CmsSettingsService } from "../../launchpad/settings/cms-settings.service";
+import { TranslateService } from "@ngx-translate/core";
+import { CMSConstants } from "../../cms/models/cms-constants";
+import { AppConfig } from "../../config";
 
 
 /**
@@ -32,9 +32,9 @@ import { AppConfig } from '../../config';
  */
 @Component({
     //moduleId: module.id,
-    selector: 'cms-display-list',
-    template: require('to-string!./cms-display-list.component.html'),
-    styles: [require('to-string!./cms-display-list.component.scss')]
+    selector: "cms-display-list",
+    template: require("to-string!./cms-display-list.component.html"),
+    styles: [require("to-string!./cms-display-list.component.scss")]
 })
 
 /**
@@ -68,7 +68,7 @@ export class CmsDisplayListComponent implements OnInit, OnChanges, OnDestroy {
     private domManager: DomManager;
     private action: string;
 
-    @Output('change') changeEmitter = new EventEmitter();
+    @Output("change") changeEmitter = new EventEmitter();
 
     private mShowConfirmationDialog: boolean;
     private mDialogMessage: string;
@@ -172,7 +172,7 @@ export class CmsDisplayListComponent implements OnInit, OnChanges, OnDestroy {
         
         // fetch the param and select the display for wall auto-connection
         this.route.params.forEach((params: Params) => {
-            let actionParam = params['action'];
+            let actionParam = params["action"];
 
             if (actionParam === "selectDisplayForAutoConnect") {
                 this.cmsSettingsService.updateWallConnectionSpecificDisplayId(display);
@@ -183,7 +183,7 @@ export class CmsDisplayListComponent implements OnInit, OnChanges, OnDestroy {
 
                 window.sessionStorage.setItem(CMS_SESSION_STORAGE_ITEM.Display, JSON.stringify(display));
                 this.cmsClipboardService.clear();
-				this.mRouter.navigate([`/display-panel/${display.id}`]);
+				this.mRouter.navigate([`/displays/${display.id}/sources-panel`]);
             }
         });
     }
@@ -211,10 +211,10 @@ export class CmsDisplayListComponent implements OnInit, OnChanges, OnDestroy {
      */
     public onConfimation() {
         this.route.params.forEach((params: Params) => {
-            let actionParam = params['action'];
+            let actionParam = params["action"];
 
             if (actionParam === "selectDisplayForAutoConnect") {
-                this.mRouter.navigate(['/settings']);
+                this.mRouter.navigate(["/settings"]);
             }
             else {
                 this.mRouter.navigate([`/display-panel/${CMSConstants.NoDisplay}`]);
@@ -230,7 +230,7 @@ export class CmsDisplayListComponent implements OnInit, OnChanges, OnDestroy {
         this.mShowConfirmationDialog = true;
 
         // dialog message using TranslateService
-        this.translate.get('displayList.unavailableConfirmation').subscribe((response: string) => {
+        this.translate.get("displayList.unavailableConfirmation").subscribe((response: string) => {
             this.mDialogMessage = response;
         });
     }

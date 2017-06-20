@@ -4,23 +4,23 @@
  * the terms of the license agreement you entered into with Barco.
  */
 
-import { Component, OnInit, ElementRef, OnDestroy, EventEmitter, Output, Input, OnChanges, SimpleChanges } from '@angular/core';
-import { Router } from '@angular/router';
-import { Subscription } from 'rxjs/Rx';
+import { Component, OnInit, ElementRef, OnDestroy, EventEmitter, Output, Input, OnChanges, SimpleChanges } from "@angular/core";
+import { Router } from "@angular/router";
+import { Subscription } from "rxjs/Rx";
 
-import { CmsApiService } from '../../cms/api/cms-api.service';
-import { CmsEventEmitterService } from './../../cms/api/cms-event-emitter.service';
-import { CMS_EVENTS } from '../../cms/api/cms-events.enum';
-import { CmsVirtualScrollService } from '../cms-virtual-scroll.service';
-import { Source } from '../../cms/models/cms-source';
-import { CMS_SESSION_STORAGE_ITEM } from '../../cms/models/cms-session-storage-item';
-import { ICmsEvent } from '../../cms/models/cms-event';
-import { CmsClipboardService } from './../clipboard/cms-clipboard.service';
-import { CmsFavoriteService } from '../cms-favorite.service';
-import { StorageManager } from './../../cms/api/cms-storagemanager.service';
-import { DomManager } from '../../utils/dom-manager.util';
-import { AppConfig } from '../../config';
-import { CmsSettingsService } from './../../launchpad/settings/cms-settings.service';
+import { CmsApiService } from "../../cms/api/cms-api.service";
+import { CmsEventEmitterService } from "./../../cms/api/cms-event-emitter.service";
+import { CMS_EVENTS } from "../../cms/api/cms-events.enum";
+import { CmsVirtualScrollService } from "../cms-virtual-scroll.service";
+import { Source } from "../../cms/models/cms-source";
+import { CMS_SESSION_STORAGE_ITEM } from "../../cms/models/cms-session-storage-item";
+import { ICmsEvent } from "../../cms/models/cms-event";
+import { CmsClipboardService } from "./../clipboard/cms-clipboard.service";
+import { CmsFavoriteService } from "../cms-favorite.service";
+import { StorageManager } from "./../../cms/api/cms-storagemanager.service";
+import { DomManager } from "../../utils/dom-manager.util";
+import { AppConfig } from "../../config";
+import { CmsSettingsService } from "./../../launchpad/settings/cms-settings.service";
 
 /**
  * This a source list component that fetches the combined list of available sources, perspectives and display specific
@@ -29,9 +29,9 @@ import { CmsSettingsService } from './../../launchpad/settings/cms-settings.serv
  */
 @Component({
     //moduleId: module.id,
-    selector: 'cms-source-list',
-    template: require('to-string!./cms-source-list.component.html'),
-    styles: [require('to-string!./cms-source-list.component.scss')]
+    selector: "cms-source-list",
+    template: require("to-string!./cms-source-list.component.html"),
+    styles: [require("to-string!./cms-source-list.component.scss")]
 })
 
 export class CmsSourceListComponent implements OnInit, OnChanges, OnDestroy {
@@ -40,11 +40,13 @@ export class CmsSourceListComponent implements OnInit, OnChanges, OnDestroy {
      * @Input()  {boolean} favoriteFilter 
      * @Input() {string} searchFilter
      */
+
     @Input() favoriteFilter: boolean;
     @Input() searchFilter: string;
+    @Input() selectedOnly: boolean = false;
 
     // an event to emit changes to sources-panel
-    @Output('change') changeEmitter = new EventEmitter();
+    @Output("change") changeEmitter = new EventEmitter();
 
     // id of selected display
     @Input() displayId: number;
@@ -65,7 +67,7 @@ export class CmsSourceListComponent implements OnInit, OnChanges, OnDestroy {
 
     // it saves the CMS events subscription and unsubscribe them on component destruction
     private mSourceListCmsEvent: EventEmitter<any>;
-    
+
     //Define domManager variable of DomaManager type to handle dom related stuff
     private domManager: DomManager;
 
@@ -87,7 +89,7 @@ export class CmsSourceListComponent implements OnInit, OnChanges, OnDestroy {
      * from CMS Server API service and initializing sources array.
      */
     ngOnInit() {
-       
+
     }
 
     /**
@@ -96,7 +98,7 @@ export class CmsSourceListComponent implements OnInit, OnChanges, OnDestroy {
      * @Hook ngOnChanges
      * @param {SimpleChanges} changes
      */
-    ngOnChanges(changes: SimpleChanges){
+    ngOnChanges(changes: SimpleChanges) {
         this.mScroller.removeScrollListener();
         this.mSources = [];
         this.mScroller.dataCount = 0;
@@ -104,13 +106,13 @@ export class CmsSourceListComponent implements OnInit, OnChanges, OnDestroy {
         this.mScroller.count = this.cmsSettingsService.mUserSettings.defaultPageSize || 20;
         this.mScrollTarget = this.domManager.FirstChild();
         this.getSources();
-        
+
 
         this.mScroller.addScrollListener(this.mScrollTarget, function () {
-            if ( this.mScroller.max == null) {
+            if (this.mScroller.max == null) {
                 this.getSources();
             }
-        }.bind(this));        
+        }.bind(this));
     }
 
     /**
@@ -132,6 +134,12 @@ export class CmsSourceListComponent implements OnInit, OnChanges, OnDestroy {
         if (isNaN(this.displayId)) {
             return;
         }
+
+        if (this.selectedOnly) {
+            this.mSources.push(...this.mClipboard.selectedSources);
+            return;
+        }
+
         //this.appConfig.log("Initially this.mScroller.max ", this.mScroller.max );
         // return if complete list is loaded
         if (this.mScroller.max != null) {
@@ -139,54 +147,50 @@ export class CmsSourceListComponent implements OnInit, OnChanges, OnDestroy {
         }
         this.mCmsServerApi.getSourceList(this.mSources.length + 1, this.mScroller.count, this.displayId, this.searchFilter, this.favoriteFilter)
             .subscribe(
-                (sources: Source[]) =>{
-                    this.appConfig.log('CmsSourceListComponent: getSources:: Sources list from server = ');
+            (sources: Source[]) => {
+                this.appConfig.log("CmsSourceListComponent: getSources:: Sources list from server = ");
 
-                    this.mScroller.dataCount = sources.length;
-                    this.mSources.push(...sources);
+                this.mScroller.dataCount = sources.length;
+                this.mSources.push(...sources);
 
-                    // if max source has been loaded then set maxSources else again addScrollListener                    
-                    if (sources.length < this.mScroller.count) {
-                        this.mScroller.max = sources.length;
-                    }
-                    this.mScroller.loading = false; 
+                // if max source has been loaded then set maxSources else again addScrollListener                    
+                if (sources.length < this.mScroller.count) {
+                    this.mScroller.max = sources.length;
+                }
+                this.mScroller.loading = false;
 
-                    // subscribe for source list change events
-                    if(!this.mSourceListCmsEvent) {
-                        this.mSourceListCmsEvent = CmsEventEmitterService.get(CMS_EVENTS.SourceList)
+                // subscribe for source list change events
+                if (!this.mSourceListCmsEvent) {
+                    this.mSourceListCmsEvent = CmsEventEmitterService.get(CMS_EVENTS.SourceList)
                         .subscribe((res: { eventType: string, body: any }) => this.handleSourceListEvents(res.eventType, res.body));
-                    }
-                },
-                error =>{
-                    this.mScroller.loading = false; 
-                }                
+                }
+            },
+            error => {
+                this.mScroller.loading = false;
+            }
             );
     }
 
     /**
      * On selecting a card, the respective source will be copied to clipboard.
      */
-    addSourceToClipboard(source: Source) {
-        if(source.disabled) {
-            return;
-        }
-        // store selected source in clipboard
-        this.mClipboard.Clipboard = Object.assign({}, source);
+    updateSelection(selected: boolean, source: Source) {
+        if (source.selected) {
+            // remove it from the selection list
+            let index = this.mClipboard.selectedSources.findIndex(_source => _source.id === source.id && _source.type === source.type);
 
-        // immediately share content on the display
-        let shareContentPromise = this.mClipboard.shareContent(this.displayId)
-
-        if (shareContentPromise) {
-            shareContentPromise.then(() => {
-                this.back();
-            }).catch(() => {
-                this.appConfig.log("Error: addSourceToClipboard method failed in cms-source-list.component");
-            })
+            this.mClipboard.selectedSources.splice(index, 1);
+            source.selected = false;
+        } else if (this.mClipboard.selectedSources.length < this.mClipboard.maxSelection) {
+            source.selected = true;
+            // store selected source in selection
+            this.mClipboard.selectedSources.push(source);
         } else {
-            this.back();
+            alert(`Maximum ${this.mClipboard.maxSelection} sources can be selected.`);
         }
+
     }
-    
+
 
     /**
      * On selecting favorite button on card, the respective source will be marked as favorite\unfavorite.
@@ -199,7 +203,7 @@ export class CmsSourceListComponent implements OnInit, OnChanges, OnDestroy {
         // if source is favorite, mark it as unfavorite
         if (source.favorite) {
             this.mFavoriteService.markObjectAsUnfavorite(source.id, source.type, this.mSources, this.favoriteFilter);
-         }
+        }
         // if source is unfavorite, mark it as favorite
         else {
             this.mFavoriteService.markObjectAsFavorite(source.id, source.type, this.mSources);
@@ -220,7 +224,7 @@ export class CmsSourceListComponent implements OnInit, OnChanges, OnDestroy {
 
             // clean up the clipboard if it contained the deleted source
             var clipboardSource = JSON.parse(this.storageManager.get(CMS_SESSION_STORAGE_ITEM.Clipboard));
-            //window.sessionStorage.getItem('clipboard')
+            //window.sessionStorage.getItem("clipboard")
             if (clipboardSource && clipboardSource.id === aResponseBody.id) {
                 this.storageManager.remove(CMS_SESSION_STORAGE_ITEM.Clipboard);
                 //window.sessionStorage.removeItem(CMS_SESSION_STORAGE_ITEM.Clipboard);
@@ -236,5 +240,17 @@ export class CmsSourceListComponent implements OnInit, OnChanges, OnDestroy {
      */
     private back() {
         window.history.back();
+    }
+
+    private renderer(source: Source): Source {
+        if (!source) return source;
+
+        let selectedSource = this.mClipboard.selectedSources.find((selectedSource) => selectedSource.id === source.id && selectedSource.type === source.type);
+
+        if (selectedSource) {
+            source.selected = true;
+        }
+
+        return source;
     }
 }

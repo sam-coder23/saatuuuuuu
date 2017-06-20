@@ -4,10 +4,10 @@
  * the terms of the license agreement you entered into with Barco.
  */
 
-import { Injectable } from '@angular/core';
+import { Injectable } from "@angular/core";
 
-import { CmsApiService } from '../cms/api/cms-api.service';
-import { AppConfig } from '../config';
+import { CmsApiService } from "../cms/api/cms-api.service";
+import { AppConfig } from "../config";
 
 /**
  * This service is used to handle favorite information for various objects (Display, Layout, Source, Perspective, Application).

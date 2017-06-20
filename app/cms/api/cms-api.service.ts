@@ -4,28 +4,28 @@
  * the terms of the license agreement you entered into with Barco.
  */
 
-import { Injectable } from '@angular/core';
-import { Router } from '@angular/router';
-import { Headers, Http, Response, RequestOptionsArgs, URLSearchParams } from '@angular/http';
+import { Injectable } from "@angular/core";
+import { Router } from "@angular/router";
+import { Headers, Http, Response, RequestOptionsArgs, URLSearchParams } from "@angular/http";
 
-import { Observable, Subscription, Observer, TimeoutError } from 'rxjs/Rx';
-import 'rxjs/add/operator/toPromise';
-import 'rxjs/add/operator/map';
-import 'rxjs/add/operator/catch';
+import { Observable, Subscription, Observer, TimeoutError } from "rxjs/Rx";
+import "rxjs/add/operator/toPromise";
+import "rxjs/add/operator/map";
+import "rxjs/add/operator/catch";
 
-import { CMS_EVENTS } from './cms-events.enum';
-import { CmsEventEmitterService } from './cms-event-emitter.service';
-import { Display } from '../models/cms-display';
-import { Layout } from '../models/cms-layout';
-import { Source } from '../models/cms-source';
-import { ICmsEvent } from '../models/cms-event';
-import { ITile } from './../models/cms-tile';
-import { UserConfig, User } from '../../launchpad/models/cms-user.model';
-import { APIRequest } from './api-request';
-import { IUserProfileSettings } from '../models/cms-user-profile-settings';
-import { StorageManager } from './cms-storagemanager.service';
-import { AppConfig } from '../../config';
-import { CMS_SESSION_STORAGE_ITEM } from '../models/cms-session-storage-item';
+import { CMS_EVENTS } from "./cms-events.enum";
+import { CmsEventEmitterService } from "./cms-event-emitter.service";
+import { Display } from "../models/cms-display";
+import { Layout } from "../models/cms-layout";
+import { Source } from "../models/cms-source";
+import { ICmsEvent } from "../models/cms-event";
+import { ITile } from "./../models/cms-tile";
+import { UserConfig, User } from "../../launchpad/models/cms-user.model";
+import { APIRequest } from "./api-request";
+import { IUserProfileSettings } from "../models/cms-user-profile-settings";
+import { StorageManager } from "./cms-storagemanager.service";
+import { AppConfig } from "../../config";
+import { CMS_SESSION_STORAGE_ITEM } from "../models/cms-session-storage-item";
 
 /**
  * This service is used to place CMS Server REST API calls for various functions. 
@@ -56,7 +56,7 @@ export class CmsApiService {
      */
     login(user: User): Observable<Response> {
         let body = user.toJSON();
-        return this.apiRequest.post('login', body);
+        return this.apiRequest.post("login", body);
     }
 
     /**
@@ -65,7 +65,7 @@ export class CmsApiService {
      * @return Observable<Response>
      */
     logout(): Observable<Response> {
-        return this.apiRequest.get('logout');
+        return this.apiRequest.get("logout");
     }
 
     /**
@@ -74,7 +74,7 @@ export class CmsApiService {
     public performOnlogout() {
         this.storageManager.removeStorage();
         this.makeSessionExpire();
-        this.router.navigate(['/login']);
+        this.router.navigate(["/login"]);
     }
 
     /**
@@ -120,7 +120,7 @@ export class CmsApiService {
      */
     getLayoutList(displayId: number, search: string = "", favorite: boolean = false, start: number = 1, count: number = 2147483647, detail: number = 1): Observable<Layout[]> {
         if (isNaN(displayId)) {
-            return Observable.throw('Cannot get layout list without display id.');
+            return Observable.throw("Cannot get layout list without display id.");
         }
         let params = "displays/" + displayId + "/layouts?detail=" + detail + "&start=" + start + "&count=" + count + "&filter=" + encodeURIComponent(search) + "&onlyfavorite=" + favorite;
         return this.apiRequest.get(params);
@@ -128,7 +128,7 @@ export class CmsApiService {
 
     /**
      * Fetch selected display detail info from CMS Server.
-     * Display's tile array will be returned along with display's detail information and content array.
+     * Display"s tile array will be returned along with display"s detail information and content array.
      * @method getSelectedDisplayContent
      * @param {number} aDisplayId
      * @return {Display} Observable
@@ -258,7 +258,7 @@ export class CmsApiService {
      * @method getEvents
      */
     getEvents(): Observable<Response> {
-        let url = this.apiRequest.GetURL('events');
+        let url = this.apiRequest.GetURL("events");
 
         return this.http.get(url, this.apiRequest.requestOption)
             .map((res: Response) => {
@@ -367,7 +367,7 @@ export class CmsApiService {
             return this.apiRequest.delete(url);
         }
         catch (error) {
-            this.appConfig.error('CmsApiService: unloadContentFromDisplay', error);
+            this.appConfig.error("CmsApiService: unloadContentFromDisplay", error);
             return this.apiRequest.handleError.bind(error);
         }
     }
@@ -377,7 +377,7 @@ export class CmsApiService {
      */
     public keepSessionAlive() {
         if (this.sessionAlive) {
-            // this.appConfig.log('Cleaning up session alive.', this.sessionAlive);
+            // this.appConfig.log("Cleaning up session alive.", this.sessionAlive);
             this.sessionAlive.unsubscribe();
         }
 
@@ -493,7 +493,7 @@ export class CmsApiService {
      * Check CMS_EVENTS for details on events.
      */
     private handleDisplaysEvent(eventObject: ICmsEvent) {
-        let verb: string = eventObject.verb ? eventObject.verb.toLowerCase() : '',
+        let verb: string = eventObject.verb ? eventObject.verb.toLowerCase() : "",
             uri = eventObject.uri;
 
         // match the uri as "/displays"
@@ -548,7 +548,7 @@ export class CmsApiService {
 
     /**
      * This method responsible to emit the event if matches the uri as "/displays/{id}/content".
-     * This method is called from 'handleDisplaysEvent' method
+     * This method is called from "handleDisplaysEvent" method
      * @method updateDisplayContent
      * @param {string} verb  
      * @param {string} uri 
@@ -600,7 +600,7 @@ export class CmsApiService {
 
     /**
      * This method responsible to emit the event if matches the uri as "/displays/{id}".
-     * This method is called from 'handleDisplaysEvent' method.
+     * This method is called from "handleDisplaysEvent" method.
      *
      * @method updateSingleDisplay
      * @param {string} verb  
@@ -647,7 +647,7 @@ export class CmsApiService {
 
     /**
      * This method responsible to emit the event if matches the uri as "/displays/{id}/content/{id}".
-     * This method is called from 'handleDisplaysEvent' method
+     * This method is called from "handleDisplaysEvent" method
      *
      * @method updateDisplayContentElement
      * @param {string} verb  
@@ -688,7 +688,7 @@ export class CmsApiService {
 
     /**
      * This method responsible to emit the event if matches the uri as "/displays/{id}/applications/{id}".
-     * This method is called from 'handleDisplaysEvent' method
+     * This method is called from "handleDisplaysEvent" method
      *
      * @method updateDisplaySingleApplication
      * @param {string} verb  
@@ -741,7 +741,7 @@ export class CmsApiService {
      * Check CMS_EVENTS for details on events.
      */
     private handleSourcesEvent(eventObject: ICmsEvent) {
-        let verb: string = eventObject.verb ? eventObject.verb.toLowerCase() : '',
+        let verb: string = eventObject.verb ? eventObject.verb.toLowerCase() : "",
             uri = eventObject.uri;
 
         this.appConfig.log("CmsApiService: handleSourcesEvent...");
@@ -767,7 +767,7 @@ export class CmsApiService {
 
     /**
      * This method responsible to emit the event if matches the uri as "/sources/{id}".
-     * This method is called from 'handleSourcesEvent' method
+     * This method is called from "handleSourcesEvent" method
      *
      * @method updateSingleSource
      * @param {string} verb  
@@ -811,7 +811,7 @@ export class CmsApiService {
      * Check CMS_EVENTS for details on events.
      */
     private handlePerspectivesEvent(eventObject: ICmsEvent) {
-        let verb: string = eventObject.verb ? eventObject.verb.toLowerCase() : '',
+        let verb: string = eventObject.verb ? eventObject.verb.toLowerCase() : "",
             uri = eventObject.uri;
 
         this.appConfig.log("CmsApiService: handlePerspectivesEvent...");
@@ -838,7 +838,7 @@ export class CmsApiService {
 
     /**
      * This method responsible to emit the event if matches the uri as "/perspectives/{id}".
-     * This method is called from 'handlePerspectivesEvent' method
+     * This method is called from "handlePerspectivesEvent" method
      *
      * @method updateSinglePerspective
      * @param {string} verb  
@@ -916,7 +916,7 @@ export class CmsApiService {
         this.appConfig.log("CMSServerAPi: handleUserEvents:: Handle user events...");
 
         if (eventObject.body) {
-            let verb: string = eventObject.verb ? eventObject.verb.toLowerCase() : '';
+            let verb: string = eventObject.verb ? eventObject.verb.toLowerCase() : "";
             let user = JSON.parse(this.storageManager.get(CMS_SESSION_STORAGE_ITEM.User));
 
             if(!user && !user.username){
@@ -963,7 +963,7 @@ export class CmsApiService {
         if (error.status === 401) {
             // unauthorized
             this.logout();
-            this.router.navigate(['/login']);
+            this.router.navigate(["/login"]);
         }
 
         return Promise.reject(error);

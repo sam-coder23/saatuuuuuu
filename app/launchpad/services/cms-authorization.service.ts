@@ -4,14 +4,14 @@
 //  * the terms of the license agreement you entered into with Barco.
 //  */
 
-// import { Injectable } from '@angular/core';
-// import { Observable } from 'rxjs/Observable';
+// import { Injectable } from "@angular/core";
+// import { Observable } from "rxjs/Observable";
 
-// import { CmsApiService } from '../../cms/api/cms-api.service';
-// import { CMS_SESSION_STORAGE_ITEM } from '../../cms/models/cms-session-storage-item';
-// import { StorageManager } from '../../cms/api/cms-storagemanager.service';
-// import { UserConfig, User } from '../models/cms-user.model';
-// import { APIResponse } from '../models/api-response.model'
+// import { CmsApiService } from "../../cms/api/cms-api.service";
+// import { CMS_SESSION_STORAGE_ITEM } from "../../cms/models/cms-session-storage-item";
+// import { StorageManager } from "../../cms/api/cms-storagemanager.service";
+// import { UserConfig, User } from "../models/cms-user.model";
+// import { APIResponse } from "../models/api-response.model"
 
 // /**
 //  * This service is used to authenticate user login and stores/removes user token on login/logout respectively.

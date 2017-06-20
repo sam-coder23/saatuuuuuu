@@ -4,23 +4,23 @@
  * the terms of the license agreement you entered into with Barco.
  */
 
-import { Component, OnInit, OnDestroy, EventEmitter } from '@angular/core';
-import { Http, Headers } from '@angular/http';
-import { Router, ActivatedRoute, Params } from '@angular/router';
+import { Component, OnInit, OnDestroy, EventEmitter } from "@angular/core";
+import { Http, Headers } from "@angular/http";
+import { Router, ActivatedRoute, Params } from "@angular/router";
 
-import 'rxjs/add/operator/toPromise';
+import "rxjs/add/operator/toPromise";
 
-import { CmsResource } from './../../cms/models/cms-resource';
-import { CMS_SESSION_STORAGE_ITEM } from '../../cms/models/cms-session-storage-item';
-import { Source } from './../../cms/models/cms-source';
-import { StorageManager } from '../../cms/api/cms-storagemanager.service';
-import { CmsSettingsService } from './../../launchpad/settings/cms-settings.service';
-import { IManageWallContent } from './../../cms/models/cms-user-profile-settings';
-import { CmsEventEmitterService } from '../../cms/api/cms-event-emitter.service';
-import { CMS_EVENTS } from '../../cms/api/cms-events.enum';
-import { TranslateService } from '@ngx-translate/core';
-import { CMSConstants } from './../../cms/models/cms-constants';
-import { AppConfig } from '../../config';
+import { CmsResource } from "./../../cms/models/cms-resource";
+import { CMS_SESSION_STORAGE_ITEM } from "../../cms/models/cms-session-storage-item";
+import { Source } from "./../../cms/models/cms-source";
+import { StorageManager } from "../../cms/api/cms-storagemanager.service";
+import { CmsSettingsService } from "./../../launchpad/settings/cms-settings.service";
+import { IManageWallContent } from "./../../cms/models/cms-user-profile-settings";
+import { CmsEventEmitterService } from "../../cms/api/cms-event-emitter.service";
+import { CMS_EVENTS } from "../../cms/api/cms-events.enum";
+import { TranslateService } from "@ngx-translate/core";
+import { CMSConstants } from "./../../cms/models/cms-constants";
+import { AppConfig } from "../../config";
 
 
 /**
@@ -30,9 +30,9 @@ import { AppConfig } from '../../config';
  */
 @Component({
     //moduleId: module.id,
-    selector: 'cms-display-panel',
-    template: require('to-string!./cms-display-panel.component.html'),
-    styles: [require('to-string!./cms-display-panel.component.scss')]
+    selector: "cms-display-panel",
+    template: require("to-string!./cms-display-panel.component.html"),
+    styles: [require("to-string!./cms-display-panel.component.scss")]
 })
 
 /**
@@ -98,7 +98,7 @@ export class CmsDisplayPanelComponent implements OnInit, OnDestroy {
      */
     public ngOnInit() {
         this.route.params.forEach((params: Params) => {
-            this.displayId = params['id'];
+            this.displayId = params["id"];
         });
         if (this.displayId !== CMSConstants.NoDisplay) {
             this.isDisplaySelected = true;
@@ -108,17 +108,17 @@ export class CmsDisplayPanelComponent implements OnInit, OnDestroy {
             this.isDisplaySelected = false;
             
             // display name using TranslateService
-            this.translate.get('displayPanel.selectDisplay').subscribe((response: string) => {
+            this.translate.get("displayPanel.selectDisplay").subscribe((response: string) => {
                 this.displayName = response;
             });
 
             this.mDisplayPanelCmsEvent = CmsEventEmitterService.get(CMS_EVENTS.DisplayPanel).subscribe((res: { eventType: string, body: any, displayId: number }) => {
-                this.appConfig.log('CmsDisplayPanelComponent: New Display added! Routing to display list.');
-                this.router.navigate(['/displays-panel']);
+                this.appConfig.log("CmsDisplayPanelComponent: New Display added! Routing to display list.");
+                this.router.navigate(["/displays-panel"]);
             });
         }
 
-        // subscribe to observable and update local 'isLongPressed' property
+        // subscribe to observable and update local "isLongPressed" property
         this.longPressSubcription = this.cmsSettingsService.longPressedSubject.subscribe(() => {
             this.isLongPressed = this.cmsSettingsService.isLongPressed;
         });
@@ -146,8 +146,8 @@ export class CmsDisplayPanelComponent implements OnInit, OnDestroy {
 
         // If selected display is not available, route to display list.
         if (display === null) {
-            this.appConfig.log('Display not found! Routing to display list.');
-            this.router.navigate(['/displays-panel'])
+            this.appConfig.log("Display not found! Routing to display list.");
+            this.router.navigate(["/displays-panel"])
         }
 
         this.display = <CmsResource>JSON.parse(display);

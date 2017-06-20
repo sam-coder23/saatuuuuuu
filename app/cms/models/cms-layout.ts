@@ -4,7 +4,7 @@
 * the terms of the license agreement you entered into with Barco.
 */
 
-import { CmsResource } from './cms-resource';
+import { CmsResource } from "./cms-resource";
 
 /**
  * This class defines the model for the layout object.

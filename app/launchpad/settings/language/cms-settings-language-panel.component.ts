@@ -4,13 +4,13 @@
  * the terms of the license agreement you entered into with Barco.
  */
 
-import { Component, OnInit } from '@angular/core';
-import { Router, ActivatedRoute, Params } from '@angular/router';
-import { TranslateService } from '@ngx-translate/core';
+import { Component, OnInit } from "@angular/core";
+import { Router, ActivatedRoute, Params } from "@angular/router";
+import { TranslateService } from "@ngx-translate/core";
 
-import { CmsLanguages } from '../../../i18n/cms-languages';
-import { CmsApiService } from '../../../cms/api/cms-api.service';
-import { CmsSettingsService } from './../../settings/cms-settings.service';
+import { CmsLanguages } from "../../../i18n/cms-languages";
+import { CmsApiService } from "../../../cms/api/cms-api.service";
+import { CmsSettingsService } from "./../../settings/cms-settings.service";
 
 /**
  * This is a panel component that defines the layout of language page.
@@ -21,9 +21,9 @@ import { CmsSettingsService } from './../../settings/cms-settings.service';
 
 @Component({
     //moduleId: module.id,
-    selector: 'cms-settings-language-panel',
-    template: require('to-string!./cms-settings-language-panel.component.html'),
-    styles: [require('to-string!./cms-settings-language-panel.component.scss')]
+    selector: "cms-settings-language-panel",
+    template: require("to-string!./cms-settings-language-panel.component.html"),
+    styles: [require("to-string!./cms-settings-language-panel.component.scss")]
     
 })
 export class CmsSettingsLanguagePanelComponent implements OnInit {
@@ -52,7 +52,7 @@ export class CmsSettingsLanguagePanelComponent implements OnInit {
      */
     ngOnInit() {
         this.route.params.forEach((params: Params) => {
-            this.mUserSelectedLanguageKey = params['key'];
+            this.mUserSelectedLanguageKey = params["key"];
         });
     }
 
@@ -72,6 +72,6 @@ export class CmsSettingsLanguagePanelComponent implements OnInit {
         this.cmsSettingsService.setTextDirectionByLanguageKey(languageKey);
         
         //update user setiings in DB
-        this.cmsSettingsService.updateUserProfileData(userprofileSettings, ()=> this.router.navigate(['/settings']));
+        this.cmsSettingsService.updateUserProfileData(userprofileSettings, ()=> this.router.navigate(["/settings"]));
     }
 }
