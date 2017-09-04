@@ -12,7 +12,7 @@ import { Source } from "./cms-source";
  */
 export class TileContent extends Source {
     // id of any type of resource shared on display
-    resourceid: number;
+    resourceId: number;
     
 	// last modified timestamp for snapshot
     // the reason we marked it as string type is that it holds a number not a real date

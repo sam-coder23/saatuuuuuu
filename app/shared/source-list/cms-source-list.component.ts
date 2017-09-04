@@ -21,6 +21,10 @@ import { StorageManager } from "./../../cms/api/cms-storagemanager.service";
 import { DomManager } from "../../utils/dom-manager.util";
 import { AppConfig } from "../../config";
 import { CmsSettingsService } from "./../../launchpad/settings/cms-settings.service";
+import { TileContent } from "../../cms/models/cms-tile-content";
+import { Layout } from "../../cms/models/cms-layout";
+import { ITile } from "../../cms/models/cms-tile";
+import { ITilePreset } from "../../cms/models/cms-tile-preset";
 
 /**
  * This a source list component that fetches the combined list of available sources, perspectives and display specific
@@ -64,6 +68,7 @@ export class CmsSourceListComponent implements OnInit, OnChanges, OnDestroy {
     private mScroller: CmsVirtualScrollService;
     private mClipboard: CmsClipboardService;
     private mFavoriteService: CmsFavoriteService;
+    private tilePresets: ITilePreset[];
 
     // it saves the CMS events subscription and unsubscribe them on component destruction
     private mSourceListCmsEvent: EventEmitter<any>;
@@ -71,6 +76,7 @@ export class CmsSourceListComponent implements OnInit, OnChanges, OnDestroy {
     //Define domManager variable of DomaManager type to handle dom related stuff
     private domManager: DomManager;
 
+    private selectedDisplay;
     /**
      * The constructor initializes various dependencies.
      */
@@ -89,7 +95,8 @@ export class CmsSourceListComponent implements OnInit, OnChanges, OnDestroy {
      * from CMS Server API service and initializing sources array.
      */
     ngOnInit() {
-
+        this.getDisplayDetails();
+        this.loadTilers();
     }
 
     /**
@@ -167,24 +174,54 @@ export class CmsSourceListComponent implements OnInit, OnChanges, OnDestroy {
             },
             error => {
                 this.mScroller.loading = false;
-            }
-            );
+            });
     }
 
     /**
      * On selecting a card, the respective source will be copied to clipboard.
      */
     updateSelection(selected: boolean, source: Source) {
+        let tileId: number;
         if (source.selected) {
-            // remove it from the selection list
-            let index = this.mClipboard.selectedSources.findIndex(selectedSource => selectedSource.id === source.id && selectedSource.type === source.type);
+            let requestPayload = {
+                "resources": [...this.mClipboard.selectedSources]
+            };
 
-            this.mClipboard.selectedSources.splice(index, 1);
-            source.selected = false;
+            let index = requestPayload.resources.findIndex(resource => resource.id === source.id);
+            requestPayload.resources.splice(index, 1);
+
+            // API rejects extra properties
+            requestPayload.resources.forEach(resource => {
+                resource.selected = undefined;
+            });
+
+            tileId = this.tileIdForSourceCount(requestPayload.resources.length) || 0;
+
+            this.mCmsServerApi.putContentsOnDisplay(this.displayId, tileId, requestPayload).subscribe(response => {
+                index = this.mClipboard.selectedSources.findIndex(resource => resource.id === source.id);
+                this.mClipboard.selectedSources.splice(index, 1);
+                source.selected = false;
+            }, error => {
+                console.error(error);
+            });
         } else if (this.mClipboard.selectedSources.length < this.mClipboard.maxSelection) {
-            source.selected = true;
-            // store selected source in selection
-            this.mClipboard.selectedSources.push(source);
+            let requestPayload = {
+                "resources": [...this.mClipboard.selectedSources, source]
+            };
+
+            // API rejects extra properties
+            requestPayload.resources.forEach(resource => {
+                resource.selected = undefined;
+            });
+
+            tileId = this.tileIdForSourceCount(requestPayload.resources.length) || 0;
+
+            this.mCmsServerApi.putContentsOnDisplay(this.displayId, tileId, requestPayload).subscribe(response => {
+                this.mClipboard.selectedSources.push(source);
+                source.selected = true;
+            }, error => {
+                console.error(error);
+            });
         } else {
             alert(`Maximum ${this.mClipboard.maxSelection} sources can be selected.`);
         }
@@ -258,5 +295,69 @@ export class CmsSourceListComponent implements OnInit, OnChanges, OnDestroy {
         }
 
         return source;
+    }
+
+    /**
+     * Returns void, sets all display detail of level 3
+     */
+    private getDisplayDetails() {
+        let displayObservable = this.mCmsServerApi.getSelectedDisplayContent(this.displayId);
+        displayObservable.subscribe((displayDetail) => {
+            this.selectedDisplay = displayDetail;
+        });
+        return displayObservable;
+    }
+
+    /**
+     * 
+     * @param source source to be shared on tile
+     * @param tileIndex zero based tileIndex at which source to be shared
+     */
+    private shareSourceOnTile(source: Source, tileIndex: number): void {
+        if (this.selectedDisplay.tiles && this.selectedDisplay.tiles[tileIndex]) {
+            this.mCmsServerApi.loadContentOnTile(this.displayId, {
+                "x": this.selectedDisplay.tiles[tileIndex].left,
+                "y": this.selectedDisplay.tiles[tileIndex].top,
+                "width": this.selectedDisplay.tiles[tileIndex].width,
+                "height": this.selectedDisplay.tiles[tileIndex].height
+            }, source).then(() => {
+                source.selected = true;
+                // store selected source in selection
+                this.mClipboard.selectedSources.push(source);
+            });
+        } else {
+            this.appConfig.error("No tile found to share content.");
+        }
+    }
+
+    private loadTilers() {
+        this.mCmsServerApi.getTilers().subscribe((tilers) => {
+            this.tilePresets = tilers;
+        }, (error) => {
+            console.log(error);
+        });
+    }
+
+    /**
+     * TODO: Remove hardcodings, and receieve this information from server
+     * @param sourceCount 
+     */
+    private tileIdForSourceCount(sourceCount: number): number {
+        let tileIdIndex: number;
+
+        if (sourceCount < 1) {
+            return 0;
+        }
+
+
+        if (this.tilePresets) {
+            tileIdIndex = this.tilePresets.findIndex(tilePreset => tilePreset.noOfTiles === sourceCount);
+        }
+
+        if (tileIdIndex >= 0) {
+            return this.tilePresets[tileIdIndex].id;
+        }
+
+        return 0;
     }
 }

@@ -53,6 +53,7 @@ import { CmsSettingsService } from "./settings/cms-settings.service";
 
 /* cms about panel */
 import { CmsAboutPanelComponent } from "./about/cms-about-panel.component";
+import { CmsTilesPanelComponent } from "./tiles-panel/cms-tiles-panel.component";
 
 
 /**
@@ -91,7 +92,8 @@ import { CmsAboutPanelComponent } from "./about/cms-about-panel.component";
     CmsSourcesPanelComponent,
     CmsSettingsPanelComponent,
     CmsSettingsLanguagePanelComponent,
-    CmsAboutPanelComponent
+    CmsAboutPanelComponent,
+    CmsTilesPanelComponent
   ],
 
   bootstrap: [CmsLaunchpadComponent],

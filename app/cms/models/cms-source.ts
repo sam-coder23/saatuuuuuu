@@ -13,7 +13,7 @@ export class Source extends CmsResource {
     type: string;
     x: number;
     y: number;
-    zorder: number;
+    zOrder: number;
     width: number;
     height: number;
     selected?: boolean

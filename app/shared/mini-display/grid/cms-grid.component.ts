@@ -309,7 +309,7 @@ export class CmsGridComponent implements OnInit, OnChanges, OnDestroy {
             height: `${rawStyle.height}%`,
             left: `${rawStyle.x}%`,
             top: `${rawStyle.y}%`,
-            "z-index": rawStyle.zorder,
+            "z-index": rawStyle.zOrder,
             "background-image": snapshotPath
         };
     }
@@ -414,22 +414,22 @@ export class CmsGridComponent implements OnInit, OnChanges, OnDestroy {
      * set clipboard data with a source of the tile content
      */
     private setTileDataIntoClipboard(content: TileContent) {
-        if (content.resourceid === -1) {
+        if (content.resourceId === -1) {
             this.appConfig.log("Unshared Geometry only window will not be moved to Clipboard.");
             return;
         }
 
         let clipboardSource: Source = {
-            id: content.resourceid,
+            id: content.resourceId,
             name: content.name,
             type: content.type,
             description: content.description,
-            snapshotpath: `${content.snapshotpath}`,
+            snapshotPath: `${content.snapshotPath}`,
             x: content.x,
             y: content.y,
             width: content.width,
             height: content.height,
-            zorder: content.zorder,
+            zOrder: content.zOrder,
             disabled: false,
             favorite: false
         };

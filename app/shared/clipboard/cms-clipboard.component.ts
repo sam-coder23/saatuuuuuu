@@ -106,7 +106,7 @@ export class CmsClipboardComponent implements OnInit, OnDestroy {
         this.source = this.cmsClipboardService.Clipboard;
 
         if (this.source) {
-            let snapshotPath = this.source.snapshotpath;
+            let snapshotPath = this.source.snapshotPath;
 
             if (Url.HasHostName() && !Validation.IsNullOrUndefined(snapshotPath) && Url.HasIP(snapshotPath)) {
                 this.clipboardSnapshot = RegExManager.IPToHost(snapshotPath, this.appConfig.Host);

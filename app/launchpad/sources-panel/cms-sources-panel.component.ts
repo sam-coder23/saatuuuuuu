@@ -146,9 +146,18 @@ export class CmsSourcesPanelComponent implements OnInit {
 
 
     /**
-     * onNext
+     * navigateNext
      */
-    public onNext(): void {
+    public navigateNext(): void {
         this.router.navigateByUrl(`/displays/${this.mDisplayId}/layouts-panel`);
+    }
+
+
+    /**
+     * navigateBack
+     */
+    public navigateBack(): void {
+        this.clipboard.selectedSources.length = 0;
+        this.router.navigateByUrl(`/displays-panel`);
     }
 }

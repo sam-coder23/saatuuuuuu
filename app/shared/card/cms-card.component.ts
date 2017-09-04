@@ -49,7 +49,7 @@ export class CmsCardComponent implements OnInit, OnChanges {
      * @method ngOnInit 
      */
     ngOnInit() {
-        let snapshotPath = this.card.snapshotpath;
+        let snapshotPath = this.card.snapshotPath;
         this.isFavorite = this.card.favorite;
 
         if (snapshotPath && this.refreshSnapshot === true) {
@@ -61,7 +61,7 @@ export class CmsCardComponent implements OnInit, OnChanges {
             }
 
             this.cardSnapshot = `${this.cardSnapshot}&_=${Date.now()}`;
-            this.card.snapshotpath = this.cardSnapshot;
+            this.card.snapshotPath = this.cardSnapshot;
         }
         else {
             this.cardSnapshot = snapshotPath;

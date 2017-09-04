@@ -169,21 +169,21 @@ export class CmsDisplayListComponent implements OnInit, OnChanges, OnDestroy {
         if (display.disabled) {
             return;
         }
-        
+
         // fetch the param and select the display for wall auto-connection
         this.route.params.forEach((params: Params) => {
             let actionParam = params["action"];
 
             if (actionParam === "selectDisplayForAutoConnect") {
                 this.cmsSettingsService.updateWallConnectionSpecificDisplayId(display);
-            } 
+            }
             else {
                 //update recentDisplayId on user profile data 
                 this.cmsSettingsService.updateWallConnectionRecentDisplayId(display);
 
                 window.sessionStorage.setItem(CMS_SESSION_STORAGE_ITEM.Display, JSON.stringify(display));
                 this.cmsClipboardService.clear();
-				this.mRouter.navigate([`/displays/${display.id}/sources-panel`]);
+                this.mRouter.navigate([`/displays/${display.id}/sources-panel`]);
             }
         });
     }
@@ -238,7 +238,7 @@ export class CmsDisplayListComponent implements OnInit, OnChanges, OnDestroy {
     /**
      * Event listener to handle display list related events
      */
-    private handleDisplayListEvents(event: ICmsEvent) {      
+    private handleDisplayListEvents(event: ICmsEvent) {
         //show confimation dialog
         this.mShowConfirmationDialog = false;
 

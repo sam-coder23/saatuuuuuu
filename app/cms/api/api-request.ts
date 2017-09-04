@@ -98,7 +98,13 @@ class APIRequest {
         //     this.requestOption.search = params;
         // }
         return this.http.put(this.GetURL(url), body, this.requestOption)
-            .map((response : any) => response.json())
+            .map((response : any) => { 
+                try {
+                    return response.json();
+                } catch (error) {
+                    return response._body;
+                }
+            })
             .catch(this.handleError.bind(this));
     }
 

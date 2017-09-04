@@ -15,6 +15,7 @@ import { CmsSourcesPanelComponent } from "./sources-panel/cms-sources-panel.comp
 import { CmsSettingsPanelComponent } from "./settings/cms-settings-panel.component";
 import { CmsSettingsLanguagePanelComponent } from "./settings/language/cms-settings-language-panel.component"; 
 import { CmsAboutPanelComponent } from "./about/cms-about-panel.component";
+import { CmsTilesPanelComponent } from "./tiles-panel/cms-tiles-panel.component";
 
 /**
  * This module defines root level routes for entire application.
@@ -28,7 +29,8 @@ export const routes: Routes = [
   { path: "displays/:id/layouts-panel", component: CmsLayoutsPanelComponent, canActivate: [CmsCanActivateViaAuthorizationService] },
   { path: "settings", component: CmsSettingsPanelComponent, canActivate: [CmsCanActivateViaAuthorizationService] },
   { path: "settings/language/:key", component: CmsSettingsLanguagePanelComponent, canActivate: [CmsCanActivateViaAuthorizationService] },
-  { path: "about", component: CmsAboutPanelComponent, canActivate: [CmsCanActivateViaAuthorizationService] }
+  { path: "about", component: CmsAboutPanelComponent, canActivate: [CmsCanActivateViaAuthorizationService] },
+  { path: "displays/:id/tiles", component: CmsTilesPanelComponent, canActivate: [CmsCanActivateViaAuthorizationService] },
 
 
 ];

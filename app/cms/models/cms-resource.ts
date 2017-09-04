@@ -11,7 +11,7 @@ export class CmsResource {
     id: number;
     name: string;
     description: string;
-    snapshotpath: string;
+    snapshotPath: string;
     disabled: boolean = false;
     favorite: boolean = false;
 }

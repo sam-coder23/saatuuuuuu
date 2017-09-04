@@ -1,0 +1,17 @@
+@import "variables.global";
+
+.page-toolbar{
+     @include page-header-fixed();
+}
+
+.tiles-panel-main {
+    z-index: 0;
+    height: 100%;
+    width: 100%;
+    @include layout-column();
+}
+
+cms-tile-list{
+    @include layout-row();
+    height: inherit;
+}

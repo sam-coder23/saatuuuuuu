@@ -402,9 +402,9 @@ export class CmsMiniDisplayComponent implements OnInit, OnChanges, OnDestroy {
                         }
 
                         for (let i = 0; i < newContentList.length; i++) {
-                            if (newContentList[i].resourceid === aResponseBody.id && newContentList[i].type === aResponseBody.type) {
+                            if (newContentList[i].resourceId === aResponseBody.id && newContentList[i].type === aResponseBody.type) {
                                 newContentList[i].name = aResponseBody.name;
-                                newContentList[i].snapshotpath = aResponseBody.snapshotpath;
+                                newContentList[i].snapshotPath = aResponseBody.snapshotpath;
                                 newContentList[i].lastModified = Date.now().toString();
                                 break;
                             }
@@ -420,7 +420,7 @@ export class CmsMiniDisplayComponent implements OnInit, OnChanges, OnDestroy {
             case "ResourceDeleted":
 
                 if (this.miniDisplayContentList !== undefined) {
-                    this.miniDisplayContentList = this.miniDisplayContentList.filter(content => content.resourceid !== aResponseBody.id);
+                    this.miniDisplayContentList = this.miniDisplayContentList.filter(content => content.resourceId !== aResponseBody.id);
                     this.appConfig.log(`CmsMiniDisplayComponent: handleMiniDisplayChangeEvent:: Content source [id: ${aResponseBody.id}] removed.`);
 
                     this.checkDisplayContentVisibility();

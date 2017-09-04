@@ -71,6 +71,7 @@ export class CmsLoginComponent implements OnInit, OnDestroy {
         this.storageManager.removeStorage();
         this.cmsMiniDisplayService.init();
         this.cmsClipboardService.clear();
+        this.cmsClipboardService.selectedSources.length = 0;
     }
 
     /**

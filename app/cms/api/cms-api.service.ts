@@ -26,6 +26,7 @@ import { IUserProfileSettings } from "../models/cms-user-profile-settings";
 import { StorageManager } from "./cms-storagemanager.service";
 import { AppConfig } from "../../config";
 import { CMS_SESSION_STORAGE_ITEM } from "../models/cms-session-storage-item";
+import { ITilePreset } from "../models/cms-tile-preset";
 
 /**
  * This service is used to place CMS Server REST API calls for various functions. 
@@ -87,8 +88,8 @@ export class CmsApiService {
      * @param {boolean} favorite
      * @return {Display[]} Observable
      */
-    getDisplayList(start: number = 1, count: number = 2147483647, search: string = "", favorite: boolean = false, detail: number = 1): Observable<Display[]> {
-        let params = "displays?detail=" + detail + "&start=" + start + "&count=" + count + "&filter=" + encodeURIComponent(search) + "&onlyfavorite=" + favorite;
+    getDisplayList(start: number = 1, count: number = 2147483647, search: string = "", favorite: boolean = false): Observable<Display[]> {
+        let params = "displays?start=" + start + "&count=" + count + "&filter=" + encodeURIComponent(search) + "&onlyfavorite=" + favorite;
         return this.apiRequest.get(params);
     }
 
@@ -107,6 +108,11 @@ export class CmsApiService {
         return this.apiRequest.get(params);
     }
 
+    putContentsOnDisplay(displayId: number, tilerId: number, body: any) {
+        let url = `displays/${displayId}/content?tilerId=${tilerId}`;
+        return this.apiRequest.put(url, body);
+    }
+
     /**
      * Fetch layout list from CMS Server.
      * @method getLayoutList
@@ -118,11 +124,11 @@ export class CmsApiService {
      * @param {boolean} favorite
      * @return {Layout[]} Observable
      */
-    getLayoutList(displayId: number, search: string = "", favorite: boolean = false, start: number = 1, count: number = 2147483647, detail: number = 1): Observable<Layout[]> {
+    getLayoutList(displayId: number, search: string = "", favorite: boolean = false, start: number = 1, count: number = 2147483647): Observable<Layout[]> {
         if (isNaN(displayId)) {
             return Observable.throw("Cannot get layout list without display id.");
         }
-        let params = "displays/" + displayId + "/layouts?detail=" + detail + "&start=" + start + "&count=" + count + "&filter=" + encodeURIComponent(search) + "&onlyfavorite=" + favorite;
+        let params = "displays/" + displayId + "/layouts?start=" + start + "&count=" + count + "&filter=" + encodeURIComponent(search) + "&onlyfavorite=" + favorite;
         return this.apiRequest.get(params);
     }
 
@@ -134,7 +140,7 @@ export class CmsApiService {
      * @return {Display} Observable
      */
     getSelectedDisplayContent(aDisplayId: number): Observable<Display> {
-        return this.apiRequest.get(`displays/${aDisplayId}?detail=3`);
+        return this.apiRequest.get(`displays/${aDisplayId}`);
     }
 
     /**
@@ -145,7 +151,7 @@ export class CmsApiService {
      */
     saveLayout(displayId: number, layoutName: string): Promise<Response> {
         let url = `displays/${displayId}/layouts`,
-            body = { 
+            body = {
                 "name": layoutName
             };
 
@@ -194,7 +200,7 @@ export class CmsApiService {
     markAsUnfavorite(objectId: number, objectType: string): Promise<Response> {
         let id = objectType + "_" + objectId,
             url = `users/current/profile/favorites/${id}`;
-        
+
         return this.http
             .delete(this.apiRequest.GetURL(url), this.apiRequest.requestOption)
             .toPromise()
@@ -262,8 +268,6 @@ export class CmsApiService {
 
         return this.http.get(url, this.apiRequest.requestOption)
             .map((res: Response) => {
-                this.appConfig.log("CMSServerApi: getEvents:: CMS Events response arrived");
-
                 // on network reconnection
                 if (this.firstDisconnection) {
                     this.firstDisconnection = false;
@@ -303,10 +307,10 @@ export class CmsApiService {
             })
             .timeout(1500 * 60)
             .catch((error: any) => {
-                if(error instanceof TimeoutError){
+                if (error instanceof TimeoutError) {
                     this.appConfig.error("CMSServerApi: getEvents:: CMS Events API response delay (90sec) exceeded!");
                 }
-                
+
                 this.appConfig.error("CMSServerApi: getEvents:: Error while fetching events from server.", error);
 
                 if (error.status === 500 && !this.databaseResetStarted) {
@@ -316,6 +320,15 @@ export class CmsApiService {
                     return this.apiRequest.handleError(error);
                 }
             });
+    }
+
+    /**
+     * Get current content of a display wall
+     * @method getDisplayContent
+     * @param {number} aDisplayId It hold the display id
+      */
+    getDisplayContent(aDisplayId: number) {
+        return this.apiRequest.get(`displays/${aDisplayId}/content`);
     }
 
     /**
@@ -330,15 +343,15 @@ export class CmsApiService {
         try {
             let url = `displays/${displayId}/content`,
                 body = {
-                "name": content.name,
-                "type": content.type,
-                "resourceid": content.id,
-                "x": tile.x,
-                "y": tile.y,
-                "width": tile.width,
-                "height": tile.height,
-                "snapshotpath": content.snapshotpath
-            };
+                    "name": content.name,
+                    "type": content.type,
+                    "resourceId": content.id,
+                    "x": tile.x,
+                    "y": tile.y,
+                    "width": tile.width,
+                    "height": tile.height,
+                    "snapshotPath": content.snapshotPath
+                };
 
             return this.http
                 .post(this.apiRequest.GetURL(url), body, this.apiRequest.requestOption)
@@ -361,7 +374,7 @@ export class CmsApiService {
      */
     unloadContentFromDisplay(displayId: number, contentId: number): Observable<Response> {
         this.appConfig.log("CmsApiService: unloadContentFromDisplay...");
-        
+
         try {
             let url = `displays/${displayId}/content/${contentId}`;
             return this.apiRequest.delete(url);
@@ -701,10 +714,10 @@ export class CmsApiService {
         switch (verb) {
             case "put":
                 this.appConfig.log("CmsApiService: updateDisplaySingleApplication:: update a single application");
-                
+
                 //adding "type" property
-                eventObject.body.type = "Application"; 
-                
+                eventObject.body.type = "Application";
+
                 var appResponse = {
                     eventType: "ResourceUpdated",
                     body: eventObject.body
@@ -849,7 +862,7 @@ export class CmsApiService {
         switch (verb) {
             case "put":
                 this.appConfig.log("CmsApiService: updateSinglePerspective:: update a single perspective");
-                
+
                 //adding "type" property
                 eventObject.body.type = "Perspective"
 
@@ -919,7 +932,7 @@ export class CmsApiService {
             let verb: string = eventObject.verb ? eventObject.verb.toLowerCase() : "";
             let user = JSON.parse(this.storageManager.get(CMS_SESSION_STORAGE_ITEM.User));
 
-            if(!user && !user.username){
+            if (!user && !user.username) {
                 return;
             }
 
@@ -967,5 +980,19 @@ export class CmsApiService {
         }
 
         return Promise.reject(error);
+    }
+
+
+
+    /**
+     * APIs for /tilers
+     */
+
+
+    /**
+     * getTilers
+     */
+    public getTilers(): Observable<ITilePreset[]> {
+        return this.apiRequest.get("tilers");
     }
 }
