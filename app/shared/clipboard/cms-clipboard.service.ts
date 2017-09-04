@@ -25,7 +25,7 @@ import { AppConfig } from "../../config";
 export class CmsClipboardService {
 
     public selectedSources: Source[] = [];
-    public maxSelection: number = 4;
+    public maxSelection: number = 100;
     
     public timer: number = 0;
 

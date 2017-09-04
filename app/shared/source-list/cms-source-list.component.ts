@@ -195,7 +195,7 @@ export class CmsSourceListComponent implements OnInit, OnChanges, OnDestroy {
                 resource.selected = undefined;
             });
 
-            tileId = this.tileIdForSourceCount(requestPayload.resources.length) || 0;
+            tileId = this.tileIdForSourceCount(requestPayload.resources.length);
 
             this.mCmsServerApi.putContentsOnDisplay(this.displayId, tileId, requestPayload).subscribe(response => {
                 index = this.mClipboard.selectedSources.findIndex(resource => resource.id === source.id);
@@ -214,7 +214,12 @@ export class CmsSourceListComponent implements OnInit, OnChanges, OnDestroy {
                 resource.selected = undefined;
             });
 
-            tileId = this.tileIdForSourceCount(requestPayload.resources.length) || 0;
+            tileId = this.tileIdForSourceCount(requestPayload.resources.length);
+
+            if (tileId === 0) {
+                this.appConfig.log("No tile layout found");
+                return;
+            }
 
             this.mCmsServerApi.putContentsOnDisplay(this.displayId, tileId, requestPayload).subscribe(response => {
                 this.mClipboard.selectedSources.push(source);
@@ -332,7 +337,9 @@ export class CmsSourceListComponent implements OnInit, OnChanges, OnDestroy {
 
     private loadTilers() {
         this.mCmsServerApi.getTilers().subscribe((tilers) => {
-            this.tilePresets = tilers;
+            this.tilePresets = tilers.sort((a, b) => {
+                return a.noOfTiles - b.noOfTiles;
+            });
         }, (error) => {
             console.log(error);
         });
@@ -351,7 +358,15 @@ export class CmsSourceListComponent implements OnInit, OnChanges, OnDestroy {
 
 
         if (this.tilePresets) {
-            tileIdIndex = this.tilePresets.findIndex(tilePreset => tilePreset.noOfTiles === sourceCount);
+            tileIdIndex = this.tilePresets.findIndex(tilePreset => tilePreset.noOfTiles === sourceCount && tilePreset.isDefault);
+
+            if (!(tileIdIndex >= 0)) {
+                tileIdIndex = this.tilePresets.findIndex(tilePreset => tilePreset.noOfTiles === sourceCount);
+            }
+
+            if (!(tileIdIndex >= 0)) {
+                tileIdIndex = this.tilePresets.findIndex(tilePreset => tilePreset.noOfTiles >= sourceCount);
+            }
         }
 
         if (tileIdIndex >= 0) {
