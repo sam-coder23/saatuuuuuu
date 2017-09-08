@@ -1,0 +1,3 @@
+<div class="cms-tile-preset" [ngStyle]="displayBaseStyle" *ngIf="displayBase && tilePreset">
+    <div *ngFor="let tile of tilePreset.tiles" class="cms-tile-rectangle" [ngStyle]="tileStyle(tile)"></div>
+</div>

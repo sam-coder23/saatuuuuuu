@@ -52,6 +52,8 @@ export class CmsSourceListComponent implements OnInit, OnChanges, OnDestroy {
     // an event to emit changes to sources-panel
     @Output("change") changeEmitter = new EventEmitter();
 
+    @Output("error") errorEmitter = new EventEmitter<string>();
+
     // id of selected display
     @Input() displayId: number;
 
@@ -201,6 +203,7 @@ export class CmsSourceListComponent implements OnInit, OnChanges, OnDestroy {
                 index = this.mClipboard.selectedSources.findIndex(resource => resource.id === source.id);
                 this.mClipboard.selectedSources.splice(index, 1);
                 source.selected = false;
+                this.errorEmitter.emit("");                
             }, error => {
                 console.error(error);
             });
@@ -217,7 +220,9 @@ export class CmsSourceListComponent implements OnInit, OnChanges, OnDestroy {
             tileId = this.tileIdForSourceCount(requestPayload.resources.length);
 
             if (tileId === 0) {
-                this.appConfig.log("No tile layout found");
+                // TODO: i18n
+                let errorString = "No tile layout found for loading source on display wall."
+                this.errorEmitter.emit(errorString);
                 return;
             }
 
@@ -228,7 +233,9 @@ export class CmsSourceListComponent implements OnInit, OnChanges, OnDestroy {
                 console.error(error);
             });
         } else {
-            alert(`Maximum ${this.mClipboard.maxSelection} sources can be selected.`);
+            // TODO: i18n
+            let errorString = `Maximum ${this.mClipboard.maxSelection} sources can be selected.`
+            this.errorEmitter.emit(errorString);
         }
 
     }

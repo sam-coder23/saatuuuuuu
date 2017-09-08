@@ -4,11 +4,11 @@
             <i class="material-icons">arrow_back</i>
         </button>
 
-        <span id="tiles-panel-back-button-text">{{ panelTitle }}</span>
+        <span id="tiles-panel-title">{{ 'tilePresetList.alternateLayouts' | translate }}</span>
 
         <span class="fill-remaining-space"></span>
 
-        
+
         <!--<button id="tiles-panel-reload-button" md-icon-button *ngIf="mStates.reload" (click)="reloadList()">
             <i class="material-icons">refresh</i>
         </button>-->
@@ -19,5 +19,12 @@
 </div>
 
 <div class="tiles-panel-main">
-    <!--<cms-tile-list [displayId]="mDisplayId" [sourcesCount]=""></cms-tile-list>-->
+    <cms-tile-list [sourceCount]="sourceCount" [displayResolution]="displayResolution" (select)="navigateNext()"></cms-tile-list>
+</div>
+
+<div class="page-toolbar" style="bottom: 0px;">
+    <md-toolbar id="tiles-panel-bottom-toolbar" class="toolbar-theme">
+        <span class="fill-remaining-space"></span>
+        <button md-button md-raised-button (click)="navigateNext()">{{ 'common.next' | translate}}</button>
+    </md-toolbar>
 </div>

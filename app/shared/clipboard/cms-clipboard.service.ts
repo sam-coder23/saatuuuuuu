@@ -13,6 +13,8 @@ import { ITile } from "./../../cms/models/cms-tile";
 import { CmsSettingsService } from "./../../launchpad/settings/cms-settings.service";
 import { IManageWallContent } from "./../../cms/models/cms-user-profile-settings";
 import { AppConfig } from "../../config";
+import { StorageManager } from "../../cms/api/cms-storagemanager.service";
+import { CMS_SESSION_STORAGE_ITEM } from "../../cms/models/cms-session-storage-item";
 
 /**
  * CmsClipboardService works as a clipboard and helps various components to get and set a clipboard source.
@@ -26,7 +28,7 @@ export class CmsClipboardService {
 
     public selectedSources: Source[] = [];
     public maxSelection: number = 100;
-    
+
     public timer: number = 0;
 
     private clipboard;
@@ -38,8 +40,12 @@ export class CmsClipboardService {
     // Holds tile geometry that requires a clipboard source directly
     tile: ITile;
 
-    constructor(private cmsApiService: CmsApiService, private cmsSettingsService: CmsSettingsService, private appConfig: AppConfig) {
+    constructor(private cmsApiService: CmsApiService,
+        private cmsSettingsService: CmsSettingsService,
+        private appConfig: AppConfig,
+        private storageManager: StorageManager) {
         this.clipboardUpdated = this.clipboardSource.asObservable();
+        this.addUnloadEventListener();
     }
 
     public get Clipboard(): Source {
@@ -116,5 +122,15 @@ export class CmsClipboardService {
         if (this.settings && this.settings.clipboard) {
             return this.settings.clipboard.status;
         }
+    }
+
+
+    private addUnloadEventListener() {
+        this.selectedSources = JSON.parse(this.storageManager.get(CMS_SESSION_STORAGE_ITEM.ClipboardSelectedSources)) || [];
+        this.storageManager.remove(CMS_SESSION_STORAGE_ITEM.ClipboardSelectedSources);
+        window.onunload = (e) => {
+            let selectedSources = JSON.stringify(this.selectedSources);
+            this.storageManager.set(CMS_SESSION_STORAGE_ITEM.ClipboardSelectedSources, selectedSources);
+        };
     }
 }

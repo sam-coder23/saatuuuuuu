@@ -48,6 +48,8 @@ import { CmsClipboardService } from "./clipboard/cms-clipboard.service";
 
 /* colorpicker component */
 import { CmsColorPickerComponent } from "./colorpicker/cms-colorpicker.component";
+import { TileGridComponent } from "./tile-grid/tile-grid.component";
+import { CmsTileListComponent } from "./tile-list/cms-tile-list.component";
 
 
 /**
@@ -77,7 +79,9 @@ import { CmsColorPickerComponent } from "./colorpicker/cms-colorpicker.component
     CmsSourceListComponent,
     CmsClipboardComponent,
     CmsDialogComponent,
-    CmsColorPickerComponent
+    CmsColorPickerComponent,
+    TileGridComponent,
+    CmsTileListComponent
   ],
   exports: [
     CmsCardComponent,
@@ -88,7 +92,9 @@ import { CmsColorPickerComponent } from "./colorpicker/cms-colorpicker.component
     CmsSourceListComponent,
     CmsClipboardComponent,
     CmsDialogComponent,
-    CmsColorPickerComponent
+    CmsColorPickerComponent,
+    TileGridComponent,
+    CmsTileListComponent
   ],
   providers: [
     MdIconRegistry,

@@ -1,8 +1,8 @@
 export interface ITilePreset {
-    "id": number,
+    "id"?: number,
     "name": string,
-    "description": string,
-    "tags": string,
+    "description"?: string,
+    "tags"?: string,
     "base": {
       "rowBound": number, //height
       "colBound": number // width
@@ -13,7 +13,7 @@ export interface ITilePreset {
         "width": number,
         "height": number
     }[],
-    "isDefault": boolean,
-    "noOfTiles": number,
-    "isGrid": boolean
+    "isDefault"?: boolean,
+    "noOfTiles"?: number,
+    "isGrid"?: boolean
 }

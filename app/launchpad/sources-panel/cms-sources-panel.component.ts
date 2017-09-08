@@ -149,7 +149,8 @@ export class CmsSourcesPanelComponent implements OnInit {
      * navigateNext
      */
     public navigateNext(): void {
-        this.router.navigateByUrl(`/displays/${this.mDisplayId}/layouts-panel`);
+        let url = `/displays/${this.mDisplayId}/tiles-panel?sourceCount=${this.clipboard.selectedSources.length}`;
+        this.router.navigateByUrl(url);
     }
 
 

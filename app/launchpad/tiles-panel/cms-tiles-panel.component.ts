@@ -13,6 +13,8 @@ import { CMS_SESSION_STORAGE_ITEM } from "../../cms/models/cms-session-storage-i
 import { StorageManager } from "../../cms/api/cms-storagemanager.service";
 import { CmsClipboardService } from "../../shared/clipboard/cms-clipboard.service";
 import { TranslateService } from "@ngx-translate/core";
+import { Display } from "../../cms/models/cms-display";
+import { CmsApiService } from "../../cms/api/cms-api.service";
 
 /**
  * This is a panel component that defines the layout of a page which includes toolbar and tile list.
@@ -26,24 +28,35 @@ import { TranslateService } from "@ngx-translate/core";
 export class CmsTilesPanelComponent implements OnInit {
     // the selected display id
     private mDisplayId: number;
+    private displayResolution: { "width": number, "height": number };
+    private sourceCount: number;
 
-    constructor(private activatedRoute: ActivatedRoute, private translate: TranslateService) { }
+    constructor(private activatedRoute: ActivatedRoute,
+        private translate: TranslateService,
+        private cmsServerApi: CmsApiService,
+        private router: Router) {
+
+        this.displayResolution = {
+            height: 130,
+            width: 230
+        }
+    }
 
     ngOnInit() {
-        debugger
-        this.activatedRoute.params.forEach((params: Params) => {
-            this.mDisplayId = parseInt(params["id"]);
-        });
+        this.mDisplayId = parseInt(this.activatedRoute.params["value"]["id"]);
+        this.sourceCount = parseInt(this.activatedRoute.queryParams["value"]["sourceCount"]);
+        // this.cmsServerApi.getDisplayContent(this.mDisplayId).subscribe((display) => {
+        //     this.display = display;
+        // });
     }
 
 
     public navigateNext(): void {
-        // this.router.navigateByUrl(`/displays/${this.mDisplayId}/layouts-panel`);
+        this.router.navigateByUrl(`display-panel/${this.mDisplayId}`);
     }
 
 
     public navigateBack(): void {
-        // this.clipboard.selectedTiles.length = 0;
-        // this.router.navigateByUrl(`/displays-panel`);
+        window.history.back();
     }
 }

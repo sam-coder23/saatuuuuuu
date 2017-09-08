@@ -116,5 +116,9 @@
     },
     "common": {
         "next": "Next"
+    },
+    "tilePresetList": {
+        "unavailable": "No Tile Layouts",
+        "alternateLayouts": "Alternate Layouts"
     }
 }

@@ -159,7 +159,6 @@ export class CmsMiniDisplayService {
         updateLastModifed: boolean = true
     ): TileContent {
         
-        let content = new TileContent();
         let existingContent: TileContent;
 
         if (aDisplayContent !== null || aDisplayContent !== undefined) {
