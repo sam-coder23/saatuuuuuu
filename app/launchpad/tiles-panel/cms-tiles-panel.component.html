@@ -22,7 +22,7 @@
     <cms-tile-list [sourceCount]="sourceCount" [displayResolution]="displayResolution" (select)="navigateNext()"></cms-tile-list>
 </div>
 
-<div class="page-toolbar" style="bottom: 0px;">
+<div class="page-toolbar bottom">
     <md-toolbar id="tiles-panel-bottom-toolbar" class="toolbar-theme">
         <span class="fill-remaining-space"></span>
         <button md-button md-raised-button (click)="navigateNext()">{{ 'common.next' | translate}}</button>

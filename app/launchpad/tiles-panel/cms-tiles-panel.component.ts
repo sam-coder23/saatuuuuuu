@@ -45,9 +45,6 @@ export class CmsTilesPanelComponent implements OnInit {
     ngOnInit() {
         this.mDisplayId = parseInt(this.activatedRoute.params["value"]["id"]);
         this.sourceCount = parseInt(this.activatedRoute.queryParams["value"]["sourceCount"]);
-        // this.cmsServerApi.getDisplayContent(this.mDisplayId).subscribe((display) => {
-        //     this.display = display;
-        // });
     }
 
 

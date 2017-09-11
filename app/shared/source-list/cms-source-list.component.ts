@@ -25,6 +25,7 @@ import { TileContent } from "../../cms/models/cms-tile-content";
 import { Layout } from "../../cms/models/cms-layout";
 import { ITile } from "../../cms/models/cms-tile";
 import { ITilePreset } from "../../cms/models/cms-tile-preset";
+import { TranslateService } from "@ngx-translate/core";
 
 /**
  * This a source list component that fetches the combined list of available sources, perspectives and display specific
@@ -82,7 +83,18 @@ export class CmsSourceListComponent implements OnInit, OnChanges, OnDestroy {
     /**
      * The constructor initializes various dependencies.
      */
-    constructor(aRouter: Router, aCmsServerApi: CmsApiService, el: ElementRef, aScroller: CmsVirtualScrollService, private cmsSettingsService: CmsSettingsService, aClipboard: CmsClipboardService, private storageManager: StorageManager, aFavoriteService: CmsFavoriteService, private appConfig: AppConfig) {
+    constructor(aRouter: Router,
+        aCmsServerApi: CmsApiService,
+        el: ElementRef,
+        aScroller: CmsVirtualScrollService,
+        private cmsSettingsService: CmsSettingsService,
+        aClipboard: CmsClipboardService,
+        private storageManager: StorageManager,
+        aFavoriteService: CmsFavoriteService,
+        private appConfig: AppConfig,
+        private translateService: TranslateService) {
+
+
         this.mRouter = aRouter;
         this.mCmsServerApi = aCmsServerApi;
         this.element = el;
@@ -203,7 +215,7 @@ export class CmsSourceListComponent implements OnInit, OnChanges, OnDestroy {
                 index = this.mClipboard.selectedSources.findIndex(resource => resource.id === source.id);
                 this.mClipboard.selectedSources.splice(index, 1);
                 source.selected = false;
-                this.errorEmitter.emit("");                
+                this.errorEmitter.emit("");
             }, error => {
                 console.error(error);
             });
@@ -220,9 +232,9 @@ export class CmsSourceListComponent implements OnInit, OnChanges, OnDestroy {
             tileId = this.tileIdForSourceCount(requestPayload.resources.length);
 
             if (tileId === 0) {
-                // TODO: i18n
-                let errorString = "No tile layout found for loading source on display wall."
-                this.errorEmitter.emit(errorString);
+                this.translateService.get("sourceList.tileLayoutNotAvailable").subscribe((value) => {
+                    this.errorEmitter.emit(value);
+                });
                 return;
             }
 
@@ -233,9 +245,9 @@ export class CmsSourceListComponent implements OnInit, OnChanges, OnDestroy {
                 console.error(error);
             });
         } else {
-            // TODO: i18n
-            let errorString = `Maximum ${this.mClipboard.maxSelection} sources can be selected.`
-            this.errorEmitter.emit(errorString);
+            this.translateService.get("sourceList.maxSelection", { value: this.mClipboard.maxSelection }).subscribe((value) => {
+                this.errorEmitter.emit(value);
+            });
         }
 
     }
@@ -353,7 +365,6 @@ export class CmsSourceListComponent implements OnInit, OnChanges, OnDestroy {
     }
 
     /**
-     * TODO: Remove hardcodings, and receieve this information from server
      * @param sourceCount 
      */
     private tileIdForSourceCount(sourceCount: number): number {

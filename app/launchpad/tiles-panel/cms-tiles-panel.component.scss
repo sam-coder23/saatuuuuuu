@@ -15,3 +15,7 @@ cms-tile-list{
     @include layout-row();
     height: inherit;
 }
+
+.bottom {
+    bottom: 0px;
+}
