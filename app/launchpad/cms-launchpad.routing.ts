@@ -30,9 +30,7 @@ export const routes: Routes = [
   { path: "settings", component: CmsSettingsPanelComponent, canActivate: [CmsCanActivateViaAuthorizationService] },
   { path: "settings/language/:key", component: CmsSettingsLanguagePanelComponent, canActivate: [CmsCanActivateViaAuthorizationService] },
   { path: "about", component: CmsAboutPanelComponent, canActivate: [CmsCanActivateViaAuthorizationService] },
-  { path: "displays/:id/tiles", component: CmsTilesPanelComponent, canActivate: [CmsCanActivateViaAuthorizationService] },
-
-
+  { path: "displays/:id/tiles-panel", component: CmsTilesPanelComponent, canActivate: [CmsCanActivateViaAuthorizationService] }
 ];
 
 export const CmsLaunchpadRouter: ModuleWithProviders = RouterModule.forRoot(routes);

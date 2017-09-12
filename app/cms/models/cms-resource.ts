@@ -14,4 +14,13 @@ export class CmsResource {
     snapshotPath: string;
     disabled: boolean = false;
     favorite: boolean = false;
+
+    constructor(resource) {
+        this.id = resource.id;
+        this.name = resource.name;
+        this.description = resource.description;
+        this.snapshotPath = resource.snapshotPath;
+        this.disabled = resource.disabled;
+        this.favorite = resource.favorite;
+    }
 }

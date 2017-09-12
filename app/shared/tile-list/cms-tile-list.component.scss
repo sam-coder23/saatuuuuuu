@@ -1,5 +1,30 @@
 @import "variables.global";
 
+.tile-list-cards {
+    padding: 1%;
+    background-color: $grey_300;
+    min-width: 98%;
+    overflow: auto;
+    flex-wrap: wrap;
+    -webkit-overflow-scrolling: touch;
+    margin-top: 65px;
+    @include layout-row();
+}
+
+.tile-list-unavailable {
+   width: 100%;
+   flex-grow: 1;
+   @include layout-row();
+   @include layout-align-center();
+}
+
+.tile-list-unavailable span {
+   font-size: 18px;
+   color: $grey_500;
+}
+
+@import "variables.global";
+
 .card {
   margin: 0 15px 15px 0;
   padding: 15px 7.5px;
@@ -7,7 +32,6 @@
   height: 130px;
   cursor: pointer;
   display: inline-block;
-  overflow: hidden;
 }
 
 .card-inner {

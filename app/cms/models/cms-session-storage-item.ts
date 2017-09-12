@@ -19,4 +19,5 @@ export class CMS_SESSION_STORAGE_ITEM {
     static LayoutsFavoriteFilter = "LayoutsFavoriteFilter";
     static DisplaysFavoriteFilter = "DisplaysFavoriteFilter";
     static SourcesFavoriteFilter = "SourcesFavoriteFilter";
+    static ClipboardSelectedSources = "ClipboardSelectedSources";
 }

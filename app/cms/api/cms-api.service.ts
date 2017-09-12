@@ -140,7 +140,10 @@ export class CmsApiService {
      * @return {Display} Observable
      */
     getSelectedDisplayContent(aDisplayId: number): Observable<Display> {
-        return this.apiRequest.get(`displays/${aDisplayId}`);
+        return this.apiRequest.get(`displays/${aDisplayId}`).map(response => {
+            var display = new Display(response);
+            return display;
+        });
     }
 
     /**

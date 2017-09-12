@@ -7,9 +7,11 @@
 /**
  * The interface defines the model for the tile object.
  */
-export interface ITile{
-    x: number;
-    y: number;
+export interface ITile {
+    x?: number;
+    y?: number;
     width: number;
     height: number;
+    left?: number;
+    top?: number
 }

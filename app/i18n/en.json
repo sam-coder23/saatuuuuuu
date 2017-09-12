@@ -46,6 +46,8 @@
         "loadLayout": "Load a layout"
     },
     "sourceList": {
+        "tileLayoutNotAvailable": "No tile layout found for loading source on display wall.",
+        "maxSelection": "Maximum {{value}} source(s) can be selected.",
         "connectTo": "Select sources (maximum {{value}})",
         "unavailable": "No Sources"
     },
@@ -116,5 +118,9 @@
     },
     "common": {
         "next": "Next"
+    },
+    "tilePresetList": {
+        "unavailable": "No Tile Layouts",
+        "alternateLayouts": "Alternate Layouts"
     }
 }

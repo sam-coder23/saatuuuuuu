@@ -8,7 +8,7 @@
 
         <span class="fill-remaining-space"></span>
 
-        
+
         <!--<button id="sources-panel-selected-only-button" md-icon-button>
             <md-checkbox [(ngModel)]="selectedOnly"></md-checkbox>
         </button>-->
@@ -33,13 +33,19 @@
 </div>
 
 <div class="sources-panel-main">
-    <cms-source-list [displayId]="mDisplayId" [selectedOnly]="selectedOnly" (change)="onListChanged()" *ngIf="mStates.list" [searchFilter]="searchFilter" [favoriteFilter]="isFavoriteFilter"></cms-source-list>
+    <cms-source-list [displayId]="mDisplayId" [selectedOnly]="selectedOnly" (change)="onListChanged()" *ngIf="mStates.list" [searchFilter]="searchFilter"
+        [favoriteFilter]="isFavoriteFilter" (error)="errorMessage = $event"></cms-source-list>
 </div>
-<div class="page-toolbar" style="bottom: 0px;" *ngIf="clipboard?.selectedSources.length > 0">
+<div class="page-toolbar bottom" *ngIf="(clipboard?.selectedSources.length > 0) || errorMessage">
     <md-toolbar id="sources-panel-bottom-toolbar" class="toolbar-theme">
-        {{clipboard?.selectedSources.length}} / {{clipboard.maxSelection}}
-
+        <span>
+            {{clipboard?.selectedSources.length}} / {{clipboard.maxSelection}}
+        </span>
         <span class="fill-remaining-space"></span>
-        <button md-button md-raised-button (click)="navigateNext()">{{ 'common.next' | translate}}</button>
+        <span class="error" *ngIf="errorMessage">
+            {{errorMessage}}
+        </span>
+        <span class="fill-remaining-space"></span>
+        <button md-button md-raised-button *ngIf="clipboard?.selectedSources.length > 0" (click)="navigateNext()">{{ 'common.next' | translate}}</button>
     </md-toolbar>
 </div>

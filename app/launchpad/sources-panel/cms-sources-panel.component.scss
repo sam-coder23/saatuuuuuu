@@ -15,3 +15,11 @@ cms-source-list{
     @include layout-row();
     height: inherit;
 }
+
+.error {
+    color: $red_500;
+}
+
+.bottom {
+    bottom: 0px;
+}

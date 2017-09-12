@@ -14,8 +14,30 @@ import { CmsResource } from "./cms-resource";
 export class Display extends CmsResource {
     type: string;
     online: boolean;
-    width: number;
-    height: number;
+    private resolution: {
+        width: number;
+        height: number;
+    }
+
+
+    public get width(): number {
+        return this.resolution.width;
+    }
+
+    public get height(): number {
+        return this.resolution.height;
+    }
+
     tiles: ITile[];
     content: TileContent[];
+
+    constructor(display) {
+        super(display);
+
+        this.type = display.type;
+        this.online = display.online;
+        this.resolution = display.resolution;
+        this.tiles = display.tiles;
+        this.content = display.content;
+    }
 }

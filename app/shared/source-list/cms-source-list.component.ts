@@ -25,6 +25,7 @@ import { TileContent } from "../../cms/models/cms-tile-content";
 import { Layout } from "../../cms/models/cms-layout";
 import { ITile } from "../../cms/models/cms-tile";
 import { ITilePreset } from "../../cms/models/cms-tile-preset";
+import { TranslateService } from "@ngx-translate/core";
 
 /**
  * This a source list component that fetches the combined list of available sources, perspectives and display specific
@@ -51,6 +52,8 @@ export class CmsSourceListComponent implements OnInit, OnChanges, OnDestroy {
 
     // an event to emit changes to sources-panel
     @Output("change") changeEmitter = new EventEmitter();
+
+    @Output("error") errorEmitter = new EventEmitter<string>();
 
     // id of selected display
     @Input() displayId: number;
@@ -80,7 +83,18 @@ export class CmsSourceListComponent implements OnInit, OnChanges, OnDestroy {
     /**
      * The constructor initializes various dependencies.
      */
-    constructor(aRouter: Router, aCmsServerApi: CmsApiService, el: ElementRef, aScroller: CmsVirtualScrollService, private cmsSettingsService: CmsSettingsService, aClipboard: CmsClipboardService, private storageManager: StorageManager, aFavoriteService: CmsFavoriteService, private appConfig: AppConfig) {
+    constructor(aRouter: Router,
+        aCmsServerApi: CmsApiService,
+        el: ElementRef,
+        aScroller: CmsVirtualScrollService,
+        private cmsSettingsService: CmsSettingsService,
+        aClipboard: CmsClipboardService,
+        private storageManager: StorageManager,
+        aFavoriteService: CmsFavoriteService,
+        private appConfig: AppConfig,
+        private translateService: TranslateService) {
+
+
         this.mRouter = aRouter;
         this.mCmsServerApi = aCmsServerApi;
         this.element = el;
@@ -195,12 +209,13 @@ export class CmsSourceListComponent implements OnInit, OnChanges, OnDestroy {
                 resource.selected = undefined;
             });
 
-            tileId = this.tileIdForSourceCount(requestPayload.resources.length) || 0;
+            tileId = this.tileIdForSourceCount(requestPayload.resources.length);
 
             this.mCmsServerApi.putContentsOnDisplay(this.displayId, tileId, requestPayload).subscribe(response => {
                 index = this.mClipboard.selectedSources.findIndex(resource => resource.id === source.id);
                 this.mClipboard.selectedSources.splice(index, 1);
                 source.selected = false;
+                this.errorEmitter.emit("");
             }, error => {
                 console.error(error);
             });
@@ -214,7 +229,14 @@ export class CmsSourceListComponent implements OnInit, OnChanges, OnDestroy {
                 resource.selected = undefined;
             });
 
-            tileId = this.tileIdForSourceCount(requestPayload.resources.length) || 0;
+            tileId = this.tileIdForSourceCount(requestPayload.resources.length);
+
+            if (tileId === 0) {
+                this.translateService.get("sourceList.tileLayoutNotAvailable").subscribe((value) => {
+                    this.errorEmitter.emit(value);
+                });
+                return;
+            }
 
             this.mCmsServerApi.putContentsOnDisplay(this.displayId, tileId, requestPayload).subscribe(response => {
                 this.mClipboard.selectedSources.push(source);
@@ -223,7 +245,9 @@ export class CmsSourceListComponent implements OnInit, OnChanges, OnDestroy {
                 console.error(error);
             });
         } else {
-            alert(`Maximum ${this.mClipboard.maxSelection} sources can be selected.`);
+            this.translateService.get("sourceList.maxSelection", { value: this.mClipboard.maxSelection }).subscribe((value) => {
+                this.errorEmitter.emit(value);
+            });
         }
 
     }
@@ -332,14 +356,15 @@ export class CmsSourceListComponent implements OnInit, OnChanges, OnDestroy {
 
     private loadTilers() {
         this.mCmsServerApi.getTilers().subscribe((tilers) => {
-            this.tilePresets = tilers;
+            this.tilePresets = tilers.sort((a, b) => {
+                return a.noOfTiles - b.noOfTiles;
+            });
         }, (error) => {
             console.log(error);
         });
     }
 
     /**
-     * TODO: Remove hardcodings, and receieve this information from server
      * @param sourceCount 
      */
     private tileIdForSourceCount(sourceCount: number): number {
@@ -351,7 +376,15 @@ export class CmsSourceListComponent implements OnInit, OnChanges, OnDestroy {
 
 
         if (this.tilePresets) {
-            tileIdIndex = this.tilePresets.findIndex(tilePreset => tilePreset.noOfTiles === sourceCount);
+            tileIdIndex = this.tilePresets.findIndex(tilePreset => tilePreset.noOfTiles === sourceCount && tilePreset.isDefault);
+
+            if (!(tileIdIndex >= 0)) {
+                tileIdIndex = this.tilePresets.findIndex(tilePreset => tilePreset.noOfTiles === sourceCount);
+            }
+
+            if (!(tileIdIndex >= 0)) {
+                tileIdIndex = this.tilePresets.findIndex(tilePreset => tilePreset.noOfTiles >= sourceCount);
+            }
         }
 
         if (tileIdIndex >= 0) {
