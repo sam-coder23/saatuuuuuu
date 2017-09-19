@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from "@angular/core";
+import { Component, Input } from "@angular/core";
 import { ITilePreset } from "../../cms/models/cms-tile-preset";
 import { ITile } from "../../cms/models/cms-tile";
 
@@ -8,12 +8,15 @@ import { ITile } from "../../cms/models/cms-tile";
     styles: [require("to-string!./tile-grid.component.scss")]
 })
 
-export class TileGridComponent implements OnInit {
+export class TileGridComponent {
     @Input()
     displayBase: { height: number, width: number };
 
     @Input()
     tilePreset: ITilePreset;
+
+    // default tile-grid broder depends on .cms-tile-rectangle in css
+    public border: number = 2;
 
     private get displayBaseStyle(): any {
         if (!this.displayBase) {
@@ -31,10 +34,7 @@ export class TileGridComponent implements OnInit {
         };
     }
 
-    ngOnInit() { }
-
-    private tileStyle(tile: ITile) {
-        let border: number = 2;
+    public tileStyle(tile: ITile) {
 
         let tilePresetBase = {
             height: this.tilePreset.base.rowBound,
@@ -49,8 +49,8 @@ export class TileGridComponent implements OnInit {
         let tileStyleModel: ITile = {
             left: tile.left * ratioDisplayBaseToTilePresetBase.width,
             top: tile.top * ratioDisplayBaseToTilePresetBase.height,
-            width: (tile.width * ratioDisplayBaseToTilePresetBase.width) - border,
-            height: (tile.height * ratioDisplayBaseToTilePresetBase.height) - border
+            width: (tile.width * ratioDisplayBaseToTilePresetBase.width) - this.border,
+            height: (tile.height * ratioDisplayBaseToTilePresetBase.height) - this.border
         };
 
         let tileStyle = Object.assign({}, tileStyleModel);
