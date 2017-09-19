@@ -27,7 +27,7 @@ import { CMS_SESSION_STORAGE_ITEM } from "../../cms/models/cms-session-storage-i
 export class CmsClipboardService {
 
     public selectedSources: Source[] = [];
-    public maxSelection: number = 100;
+    public maxSelection: number = 20;
 
     public timer: number = 0;
 

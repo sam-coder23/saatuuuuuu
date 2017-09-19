@@ -183,6 +183,7 @@ export class CmsDisplayListComponent implements OnInit, OnChanges, OnDestroy {
 
                 window.sessionStorage.setItem(CMS_SESSION_STORAGE_ITEM.Display, JSON.stringify(display));
                 this.cmsClipboardService.clear();
+                this.cmsClipboardService.selectedSources.length = 0;
                 this.mRouter.navigate([`/displays/${display.id}/sources-panel`]);
             }
         });

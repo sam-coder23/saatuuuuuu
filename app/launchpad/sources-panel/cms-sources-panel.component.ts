@@ -158,7 +158,6 @@ export class CmsSourcesPanelComponent implements OnInit {
      * navigateBack
      */
     public navigateBack(): void {
-        this.clipboard.selectedSources.length = 0;
         this.router.navigateByUrl(`/displays-panel`);
     }
 }
