@@ -1,4 +1,4 @@
-<div id="tile-list-card-container" class="tile-list-cards">
+<div id="tile-list-card-container" class="tile-list-cards" [ngClass]="{'bottom-up' : clipboard?.selectedSources.length > 0}">
     <div class="tile-list-unavailable" *ngIf="tilePresets?.length === 0">
         <span>{{ 'tilePresetList.unavailable' | translate }}</span>
     </div>

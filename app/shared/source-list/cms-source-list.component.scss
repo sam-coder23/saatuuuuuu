@@ -9,6 +9,7 @@
     -webkit-overflow-scrolling: touch;
     margin-top: 65px;
     @include layout-row();
+    transition: margin .4s cubic-bezier(.25, .8, .25, 1);
 }
 
 .source-list-unavailable {
@@ -21,4 +22,8 @@
 .source-list-unavailable span {
    font-size: 18px;
    color: $grey_500;
+}
+
+.bottom-up {
+    margin-bottom: 64px;
 }
