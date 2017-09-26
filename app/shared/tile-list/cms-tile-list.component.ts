@@ -17,7 +17,7 @@ export class CmsTileListComponent implements OnInit {
     @Input()
     displayResolution: { "width": number, "height": number };
 
-    private tilePresets: ITilePreset[];
+    public tilePresets: ITilePreset[];
 
 
     @Output("select") tileSelectEmitter = new EventEmitter();
@@ -39,13 +39,13 @@ export class CmsTileListComponent implements OnInit {
     }
 
 
-    private getTilePresets() {
+    public getTilePresets() {
         this.cmsServerApi.getTilers().subscribe(tilePresets => {
             this.tilePresets = tilePresets.filter(tilePreset => tilePreset.noOfTiles >= this.sourceCount).sort((a, b) => a.noOfTiles - b.noOfTiles);
         });
     }
 
-    private checkSourceCount(): boolean {
+    public checkSourceCount(): boolean {
         if (!(this.sourceCount > 0)) {
             return false;
         }
