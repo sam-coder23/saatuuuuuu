@@ -3,7 +3,7 @@ import { TileGridComponent } from "./tile-grid.component";
 import { ComponentFixture, TestBed, async } from "@angular/core/testing";
 import { By } from "@angular/platform-browser";
 import { DebugElement } from "@angular/core";
-import { TILE_PRESET } from "./tile-grid.mock";
+import { TilePresets } from "./tile-grid.mock";
 
 describe("TileGridComponent", () => {
 
@@ -38,7 +38,7 @@ describe("TileGridComponent", () => {
             width: 400
         };
 
-        component.tilePreset = TILE_PRESET;
+        component.tilePreset = TilePresets[0];
 
         fixture.detectChanges();
 
@@ -57,7 +57,7 @@ describe("TileGridComponent", () => {
             width: 400
         };
 
-        component.tilePreset = TILE_PRESET;
+        component.tilePreset = TilePresets[0];
 
         let input = component.tilePreset.tiles[0];
         let output = { left: "0px", top: "0px", width: "198px", height: "98px" };
@@ -83,7 +83,7 @@ describe("TileGridComponent", () => {
             width: 400
         };
 
-        component.tilePreset = TILE_PRESET;
+        component.tilePreset = TilePresets[0];
 
         fixture.detectChanges();
 

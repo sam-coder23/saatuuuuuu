@@ -41,7 +41,7 @@ export class CmsTileListComponent implements OnInit {
 
     public getTilePresets() {
         this.cmsServerApi.getTilers().subscribe(tilePresets => {
-            this.tilePresets = tilePresets.filter(tilePreset => tilePreset.noOfTiles >= this.sourceCount).sort((a, b) => a.noOfTiles - b.noOfTiles);
+            this.tilePresets = tilePresets.filter(tilePreset => tilePreset.noOfTiles === this.sourceCount);
         });
     }
 

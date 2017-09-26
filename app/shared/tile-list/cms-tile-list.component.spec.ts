@@ -7,7 +7,7 @@ import { ActivatedRoute } from "@angular/router";
 import { CmsApiService } from "../../cms/api/cms-api.service";
 import { Observable } from "rxjs/Observable";
 import { ITilePreset } from "../../cms/models/cms-tile-preset";
-import { TILE_PRESET } from "../tile-grid/tile-grid.mock";
+import { TilePresets } from "../tile-grid/tile-grid.mock";
 import { CmsClipboardService } from "../clipboard/cms-clipboard.service";
 import { TranslateModule, TranslateLoader } from "@ngx-translate/core";
 import { Http, HttpModule } from "@angular/http";
@@ -44,7 +44,7 @@ class MockActivatedRoute {
  */
 class MockCmsApiService {
     getTilers(): Observable<ITilePreset[]> {
-        return Observable.of([TILE_PRESET]);
+        return Observable.of(TilePresets);
     }
 
     putContentsOnDisplay(displayId: number, tilerId: number, body: any) {
@@ -124,6 +124,7 @@ describe("CmsTileListComponent", () => {
 
         fixture.detectChanges();
         fixture.whenStable().then(() => {
+            // source count is 2, so expect only 1 tile preset is shown after filtering
             expect(component.tilePresets.length).toEqual(1);
         });
     }));
