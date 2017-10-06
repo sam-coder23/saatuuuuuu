@@ -32,8 +32,6 @@ export class CmsTilesPanelComponent implements OnInit {
     private sourceCount: number;
 
     constructor(private activatedRoute: ActivatedRoute,
-        private translate: TranslateService,
-        private cmsServerApi: CmsApiService,
         private router: Router) {
 
         this.displayResolution = {
