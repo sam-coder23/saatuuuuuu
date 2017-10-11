@@ -40,13 +40,13 @@ export class CmsClipboardComponent implements OnInit, OnDestroy {
      */
 
     // clipboard source
-    source: Source;
+    source: Source = null;
 
     //holds clipboard snapshot path
-    clipboardSnapshot: string;
+    clipboardSnapshot: string = null;
 
     // holds display status of clipboard
-    clipboardStatus: string
+    clipboardStatus: string = null;
 
     // reposition active flag
     private reposition: boolean = false;
@@ -223,15 +223,7 @@ export class CmsClipboardComponent implements OnInit, OnDestroy {
             }
         };
     }
-
-    /**
-    *This method will be navigate to source panel route
-    *@method navigateToSourcesPanel
-    */
-    private navigateToSourcesPanel() {
-        this.router.navigate(["displays", this.cmsMiniDisplayService.display.id, "sources-panel"]);
-    }
-
+    
 
     /**
     * Subscribe for window resize events

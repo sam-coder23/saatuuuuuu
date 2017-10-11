@@ -33,23 +33,23 @@ import { Validation } from "../../../core/util/Validation";
 export class CmsGridComponent implements OnInit, OnChanges, OnDestroy {
 
     // the input property will contain the array of tiles applied on the display
-    @Input() miniTiles: Tile[];
+    @Input() miniTiles: Tile[] = null;
 
     // the input property will contain the array of actual tiles of display wall
-    @Input() tiles: Tile[];
+    @Input() tiles: Tile[] = null;
 
     // the input property will contain the array of sources in each tile
-    @Input() contents: TileContent[];
+    @Input() contents: TileContent[] = null;
 
     // "isLongPress" passed to cms-tile-component as input
-    private isLongPressed: boolean;
+    private isLongPressed: boolean = false;
 
     // hold property for disable click event on cms-grid-component
     // Prevent click event trigger after longPress
-    private isClickDisabled: boolean;
+    private isClickDisabled: boolean = false;
 
     // prevent highlight of tiles on grid when longpress is enable or source changing is not allowed
-    private isTileHighlightDisabled: boolean;
+    private isTileHighlightDisabled: boolean = false;
 
     // hold subscription for isLongPressed
     private longPressSubcription;
@@ -97,7 +97,9 @@ export class CmsGridComponent implements OnInit, OnChanges, OnDestroy {
      * Angular"s lifecycle hook ngOnDestroy
      */
     ngOnDestroy() {
-        this.longPressSubcription.unsubscribe();
+        if(this.longPressSubcription) {
+            this.longPressSubcription.unsubscribe();
+        }
         this.removeContextMenuListener();
     }
 
