@@ -25,7 +25,7 @@ import { Validation } from "../../../core/util/Validation";
  * This is a grid component that creates a tiler on mini-display along with the content.
  */
 @Component({
-    //moduleId: module.id,
+    //moduleId: module.id, 
     selector: "cms-grid",
     template: require("to-string!./cms-grid.component.html"),
     styles: [require("to-string!./cms-grid.component.scss")]
@@ -355,9 +355,7 @@ export class CmsGridComponent implements OnInit, OnChanges, OnDestroy {
 
         this.setClipboardTile(tile);
 
-        if (this.cmsClipboardService.Clipboard === null) {
-            this.navigateToSourcesPanel();
-        } else {
+        if (!Validation.IsNull(this.cmsClipboardService.Clipboard)) {
             return this.cmsClipboardService.shareContent(this.cmsMiniDisplayService.display.id);
         }
     }
@@ -388,9 +386,6 @@ export class CmsGridComponent implements OnInit, OnChanges, OnDestroy {
                         // load source into clipboard
                         this.setTileDataIntoClipboard(content);
                     }
-                } else {
-                    this.setClipboardTile(content.absoluteSize);
-                    this.navigateToSourcesPanel();
                 }
             }, error => {
                 this.appConfig.log("Error: contentClickHandler method failed in the cms-tile.component!");
@@ -438,14 +433,7 @@ export class CmsGridComponent implements OnInit, OnChanges, OnDestroy {
 
         this.cmsClipboardService.Clipboard = clipboardSource;
     }
-
-    /**
-     * navigate to source panel route
-     */
-    private navigateToSourcesPanel() {
-        this.router.navigate(["displays", this.cmsMiniDisplayService.display.id, "sources-panel"]);
-    }
-
+    
     /**
      * This method trigger by click on remove source button and emit "unShareSource" event as output
      */

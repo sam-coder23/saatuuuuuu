@@ -99,9 +99,9 @@ body { background-color: #eeeeee; padding: 0; margin: 5px; overflow-y: scroll; }
 <div class="alert">
 
 
-<!-- <span class="failingAlert bar">Failed 1 specs</span> -->
+<!-- <span class="failingAlert bar">Failed 4 specs</span> -->
 <span class="failingAlert bar"><span class="fold-buttons"><a href="#" onclick="fold();">Fold</a> | 
-  <a href="#" onclick="unfold();">Unfold</a></span>30 specs, 1 failed, 1 pending</span>
+  <a href="#" onclick="unfold();">Unfold</a></span>76 specs, 4 failed, 1 pending</span>
 <span class="resultsMenu bar">
 <a class="summaryMenuItem" onclick="showSummary();" href="#">Spec List<a>|<a 
    class="detailsMenuItem" onclick="showFailures();" href="#">Failures</a>
@@ -118,6 +118,98 @@ body { background-color: #eeeeee; padding: 0; margin: 5px; overflow-y: scroll; }
   
   
     <div class="suite passed">
+      <span class="description">Service: StorageManager</span>
+    
+      <div class="specSummary passed">
+      <span class="description">Service should be defined</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">Service should be able to set key-value data</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">Service should be able to get stored value</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">Service should be able to remove stored value</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">Service should be able to clear storage data</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">CmsDisplayPanelComponent - Test Suite</span>
+    
+      <div class="specSummary passed">
+      <span class="description">Component should be instantiated</span>
+      </div>
+    
+      <div class="specSummary skipped">
+      <span class="description">should not load a display and navigate to '/displays-panel' if no display info is available</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">Component: CmsDisplaysPanelComponent</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should be a defined component: </span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should call onListChanged: </span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should call reloadList: </span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should call isDisplaySelected: </span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should initialize search</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should set searchkey as set to session storage</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should have filter button available with ID === display-panel-favorite-button </span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">CmsLoginComponent</span>
+    
+      <div class="specSummary passed">
+      <span class="description">component should be a defined</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">User Login: Success</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">Logout</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">User Login: Failure</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite failed">
       <span class="description">CmsSourcesPanelComponent</span>
     
       <div class="specSummary passed">
@@ -156,11 +248,11 @@ body { background-color: #eeeeee; padding: 0; margin: 5px; overflow-y: scroll; }
       <span class="description">should set searchkey as set to session storage</span>
       </div>
     
-      <div class="specSummary passed">
+      <div class="specSummary failed">
       <span class="description">should have filter button available with ID === sources-panel-favorite-button </span>
       </div>
     
-      <div class="specSummary passed">
+      <div class="specSummary failed">
       <span class="description">should show error message if error comes from Source List</span>
       </div>
     
@@ -184,9 +276,96 @@ body { background-color: #eeeeee; padding: 0; margin: 5px; overflow-y: scroll; }
     </div>
   
     <div class="suite failed">
-      <span class="description">CmsGridComponent</span>
+      <span class="description">CmsClipboardComponent</span>
     
       <div class="specSummary passed">
+      <span class="description">clipboard component should be a defined</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">grid component should be a defined</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">Check clipboard is enabled and clipboard display status</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">Init clipboard and grid component and load clipboard with large status</span>
+      </div>
+    
+      <div class="specSummary failed">
+      <span class="description">Check tile click in grid component</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">Check mouse event functionality</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">Check reposition clipboard functionality</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">Load clipboard with icon status</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">Init clipboard and grid component without mini tiles</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">Init clipboard and grid component without mini display contents</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">Service: CmsFavoriteService</span>
+    
+      <div class="specSummary passed">
+      <span class="description">Service should be defined</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">display: Service should mark favorite</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">display: Service should unmark favorite display</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">source: Service should mark favorite</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">Source: Service should unmark favorite display</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">Service: CmsVirtualScrollService</span>
+    
+      <div class="specSummary passed">
+      <span class="description">service should be able to attach scroll event listener and able to call scroll function</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">service should be able to attach scroll event listener and able to call scroll function</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">service should be able to remove attached scroll event listener</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite failed">
+      <span class="description">CmsGridComponent</span>
+    
+      <div class="specSummary failed">
       <span class="description">should be a defined component</span>
       </div>
     
@@ -202,7 +381,7 @@ body { background-color: #eeeeee; padding: 0; margin: 5px; overflow-y: scroll; }
       <span class="description">should call unLoadContent when content and display object is not null</span>
       </div>
     
-      <div class="specSummary failed">
+      <div class="specSummary passed">
       <span class="description">should not call contentClickHandler on click of contentClickWrapper</span>
       </div>
     
@@ -216,6 +395,59 @@ body { background-color: #eeeeee; padding: 0; margin: 5px; overflow-y: scroll; }
     
       <div class="specSummary passed">
       <span class="description">should call contentClickHandler</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">CmsSourceListComponent</span>
+    
+      <div class="specSummary passed">
+      <span class="description">component should be defined and new data should be populated on Changes</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should not render list and apply class when there are no sources on Init</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should return the source as selected when a undisabled source is clicked</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should return the undefined when there is no display to render</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should return the updated display list for selected source</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should only add the clipboard selected sources to select source list</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should return 0 if there are no sources or tile Id for a valid source</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should not return anything if the max scroll is not reached</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should not let user mark favorite or unfavorite on a disabled source</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should call CmsFavoriteService.markObjectAsFavorite when the selected source is unfavorite</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should call CmsFavoriteService.markObjectAsUnFavorite when the selected source is favorite</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should call CmsApiService.putContentsOnDisplay when source is selected</span>
       </div>
     
     </div>
@@ -254,19 +486,6 @@ body { background-color: #eeeeee; padding: 0; margin: 5px; overflow-y: scroll; }
     
     </div>
   
-    <div class="suite passed">
-      <span class="description">CmsDisplayPanelComponent - Test Suite</span>
-    
-      <div class="specSummary passed">
-      <span class="description">Component should be instantiated</span>
-      </div>
-    
-      <div class="specSummary skipped">
-      <span class="description">should not load a display and navigate to '/displays-panel' if no display info is available</span>
-      </div>
-    
-    </div>
-  
   
 </div>
 
@@ -274,15 +493,63 @@ body { background-color: #eeeeee; padding: 0; margin: 5px; overflow-y: scroll; }
   
   
   <div class="specDetail failed">
-    <span class="description">CmsGridComponent should not call contentClickHandler on click of contentClickWrapper</span>
+    <span class="description">CmsSourcesPanelComponent should have filter button available with ID === sources-panel-favorite-button </span>
     <div class="stackTrace">
-      <div class="resultMessage">Expected true to be false.
-    at http://localhost:9876/base/test/test.js?18d38ad37d213f895ef5e2581caa536cc5236c24:118443:53 [ProxyZone]
-    at ProxyZoneSpec.onInvokeTask (http://localhost:9876/base/test/test.js?18d38ad37d213f895ef5e2581caa536cc5236c24:115498:40) [ProxyZone]
-    at ZoneDelegate.invokeTask (http://localhost:9876/base/test/test.js?18d38ad37d213f895ef5e2581caa536cc5236c24:113510:37) [ProxyZone]
-    at Zone.runTask (http://localhost:9876/base/test/test.js?18d38ad37d213f895ef5e2581caa536cc5236c24:113314:48) [&lt;root&gt; =&gt; ProxyZone]
-    at ZoneTask.invoke (http://localhost:9876/base/test/test.js?18d38ad37d213f895ef5e2581caa536cc5236c24:113564:39) [&lt;root&gt;]
-    at data.args.(anonymous function) (http://localhost:9876/base/test/test.js?18d38ad37d213f895ef5e2581caa536cc5236c24:114675:26) [&lt;root&gt;]</div>
+      <div class="resultMessage">Expected '' to be 'testSearchString'.
+    at http://localhost:9876/base/test/test.js?1b4ea49f4f6e895c728c1a701f2356081498d486:120622:45 [ProxyZone]
+    at ProxyZoneSpec.onInvokeTask (http://localhost:9876/base/test/test.js?1b4ea49f4f6e895c728c1a701f2356081498d486:117237:40) [ProxyZone]
+    at ZoneDelegate.invokeTask (http://localhost:9876/base/test/test.js?1b4ea49f4f6e895c728c1a701f2356081498d486:115249:37) [ProxyZone]
+    at Zone.runTask (http://localhost:9876/base/test/test.js?1b4ea49f4f6e895c728c1a701f2356081498d486:115053:48) [&lt;root&gt; =&gt; ProxyZone]
+    at ZoneTask.invoke (http://localhost:9876/base/test/test.js?1b4ea49f4f6e895c728c1a701f2356081498d486:115303:39) [&lt;root&gt;]
+    at data.args.(anonymous function) (http://localhost:9876/base/test/test.js?1b4ea49f4f6e895c728c1a701f2356081498d486:116414:26) [&lt;root&gt;]</div>
+    </div>
+  </div>
+  
+  <div class="specDetail failed">
+    <span class="description">CmsSourcesPanelComponent should show error message if error comes from Source List</span>
+    <div class="stackTrace">
+      <div class="resultMessage">Expected false to be true.
+    at http://localhost:9876/base/test/test.js?1b4ea49f4f6e895c728c1a701f2356081498d486:120634:53 [ProxyZone]
+    at ProxyZoneSpec.onInvokeTask (http://localhost:9876/base/test/test.js?1b4ea49f4f6e895c728c1a701f2356081498d486:117237:40) [ProxyZone]
+    at ZoneDelegate.invokeTask (http://localhost:9876/base/test/test.js?1b4ea49f4f6e895c728c1a701f2356081498d486:115249:37) [ProxyZone]
+    at Zone.runTask (http://localhost:9876/base/test/test.js?1b4ea49f4f6e895c728c1a701f2356081498d486:115053:48) [&lt;root&gt; =&gt; ProxyZone]
+    at ZoneTask.invoke (http://localhost:9876/base/test/test.js?1b4ea49f4f6e895c728c1a701f2356081498d486:115303:39) [&lt;root&gt;]
+    at data.args.(anonymous function) (http://localhost:9876/base/test/test.js?1b4ea49f4f6e895c728c1a701f2356081498d486:116414:26) [&lt;root&gt;]</div>
+    </div>
+  </div>
+  
+  
+  
+  <div class="specDetail failed">
+    <span class="description">CmsClipboardComponent Check tile click in grid component</span>
+    <div class="stackTrace">
+      <div class="resultMessage">Expected spy displays to have been called with [ [ 'displays', 31, 'sources-panel' ] ] but it was never called.
+    at http://localhost:9876/base/test/test.js?1b4ea49f4f6e895c728c1a701f2356081498d486:120909:46 [ProxyZone]
+    at ProxyZoneSpec.onInvoke (http://localhost:9876/base/test/test.js?1b4ea49f4f6e895c728c1a701f2356081498d486:117213:40) [ProxyZone]
+    at Zone.run (http://localhost:9876/base/test/test.js?1b4ea49f4f6e895c728c1a701f2356081498d486:115013:44) [ProxyZone =&gt; ProxyZone]
+    at http://localhost:9876/base/test/test.js?1b4ea49f4f6e895c728c1a701f2356081498d486:115566:58 [ProxyZone]
+    at ProxyZoneSpec.onInvokeTask (http://localhost:9876/base/test/test.js?1b4ea49f4f6e895c728c1a701f2356081498d486:117237:40) [ProxyZone]</div>
+    </div>
+  </div>
+  
+  
+  
+  <div class="specDetail failed">
+    <span class="description">CmsGridComponent should be a defined component</span>
+    <div class="stackTrace">
+      <div class="resultMessage">Expected '' to be 'recordsFetched'.
+    at http://localhost:9876/base/test/test.js?1b4ea49f4f6e895c728c1a701f2356081498d486:121576:33 [ProxyZone]
+    at ProxyZoneSpec.onInvokeTask (http://localhost:9876/base/test/test.js?1b4ea49f4f6e895c728c1a701f2356081498d486:117237:40) [ProxyZone]
+    at ZoneDelegate.invokeTask (http://localhost:9876/base/test/test.js?1b4ea49f4f6e895c728c1a701f2356081498d486:115249:37) [ProxyZone]
+    at Zone.runTask (http://localhost:9876/base/test/test.js?1b4ea49f4f6e895c728c1a701f2356081498d486:115053:48) [&lt;root&gt; =&gt; ProxyZone]
+    at ZoneTask.invoke (http://localhost:9876/base/test/test.js?1b4ea49f4f6e895c728c1a701f2356081498d486:115303:39) [&lt;root&gt;]
+    at data.args.(anonymous function) (http://localhost:9876/base/test/test.js?1b4ea49f4f6e895c728c1a701f2356081498d486:116414:26) [&lt;root&gt;],Expected '' to be 'recordsFetched'.
+    at http://localhost:9876/base/test/test.js?1b4ea49f4f6e895c728c1a701f2356081498d486:121602:33 [ProxyZone]
+    at ProxyZoneSpec.onInvokeTask (http://localhost:9876/base/test/test.js?1b4ea49f4f6e895c728c1a701f2356081498d486:117237:40) [ProxyZone]
+    at ZoneDelegate.invokeTask (http://localhost:9876/base/test/test.js?1b4ea49f4f6e895c728c1a701f2356081498d486:115249:37) [ProxyZone]
+    at Zone.runTask (http://localhost:9876/base/test/test.js?1b4ea49f4f6e895c728c1a701f2356081498d486:115053:48) [&lt;root&gt; =&gt; ProxyZone]
+    at ZoneTask.invoke (http://localhost:9876/base/test/test.js?1b4ea49f4f6e895c728c1a701f2356081498d486:115303:39) [&lt;root&gt;]
+    at data.args.(anonymous function) (http://localhost:9876/base/test/test.js?1b4ea49f4f6e895c728c1a701f2356081498d486:116414:26) [&lt;root&gt;]</div>
     </div>
   </div>
   
@@ -298,7 +565,7 @@ document.body.onkeypress = function (e) {
   switch (e.keyCode) {
     case 102: toggleFold(); break;
     case 49: showSummary(); break;
-    case 50: showFailures(); break;
+    case 50: showFailures(); break;case 50: showFailures(); break;case 50: showFailures(); break;
   }
 };
 
