@@ -7,8 +7,8 @@
         <button id="dashboard-layouts-button" md-icon-button routerLink="/displays/{{display.id}}/layouts-panel" *ngIf="isDisplaySelected">
             <i class="material-icons" aria-label="Layouts">dashboard</i>
         </button>
-        <button id="dashboard-sources-button" md-icon-button routerLink="/displays/{{display.id}}/sources-panel" *ngIf="settings?.allowChangingSources && settings?.clipboard?.isEnabled && isDisplaySelected">
-            <i class="material-icons" aria-label="Sources">check_box_outline_blank</i>
+        <button id="dashboard-sources-button" md-icon-button (click)="showConfirmationPopup = true;">
+            <i class="material-icons" aria-label="Sources">grid_off</i>
         </button>
         <button id="dashboard-displayList-button" class="display-name-button" md-button md-raised-button routerLink="/displays-panel">{{displayName}}</button>
     </div>
@@ -25,8 +25,15 @@
 <!-- @pending  We need to add handlers and put some business logic before updating our variables -->
 <cms-options *ngIf="viewOptions" (close)="viewOptions = false;" [zoom]="zoomLevel" (fitHeight)="fitHeight()" [isSaveLayoutEnabled]="isSaveLayoutEnabled"></cms-options>
 
-<cms-mini-display *ngIf="isDisplaySelected" [display]="display" (onZoom)="zoomLevel = $event" (close)="setFocusOnMiniDisplayContainer()" (displayUpdate)="onDisplayUpdate($event)" (onSaveLayoutStateUpdate)="isSaveLayoutEnabled = $event"  [fitHeight]="fitHeightCount"></cms-mini-display>
+<cms-mini-display *ngIf="isDisplaySelected" [display]="display" (onZoom)="zoomLevel = $event" (close)="setFocusOnMiniDisplayContainer()" (displayUpdate)="onDisplayUpdate($event)" [fitHeight]="fitHeightCount"></cms-mini-display>
 
 <div class="display-unavailable" *ngIf="!isDisplaySelected">
     <span>{{ 'displayPanel.unavailable' | translate }}</span>
 </div>
+
+<nd-popup *ngIf="showConfirmationPopup" id="display-panel-confirmation-popup" class="confirm-popup" title="{{'displayPanel.confirmationTitlePopup' | translate }}"
+ (done)="clearMiniDisplayWall()" (closing)="showConfirmationPopup = false;" okText="{{'common.yes' | translate}}" cancelText="{{'common.no' | translate}}">
+    <popup-body>
+        {{'displayPanel.confirmationPopupMessage' | translate}}
+    </popup-body>
+</nd-popup>

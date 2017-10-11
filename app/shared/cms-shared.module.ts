@@ -5,7 +5,7 @@
  */
 
 /* Core */
-import { NgModule } from "@angular/core";
+import { NgModule, NO_ERRORS_SCHEMA } from "@angular/core";
 import { BrowserModule } from "@angular/platform-browser";
 import { HttpModule, Http } from "@angular/http";
 import { RouterModule } from "@angular/router";
@@ -51,6 +51,7 @@ import { CmsColorPickerComponent } from "./colorpicker/cms-colorpicker.component
 import { TileGridComponent } from "./tile-grid/tile-grid.component";
 import { CmsTileListComponent } from "./tile-list/cms-tile-list.component";
 
+import { RobotModule, BuilderService } from "core-components/app";
 
 /**
  * This module defines various components that are designed keeping in mind their reusability in future.
@@ -62,6 +63,7 @@ import { CmsTileListComponent } from "./tile-list/cms-tile-list.component";
     MaterialModule.forRoot(),
     RouterModule,
     FormsModule,
+    RobotModule,
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,
@@ -101,8 +103,10 @@ import { CmsTileListComponent } from "./tile-list/cms-tile-list.component";
     CmsVirtualScrollService,
     CmsMiniDisplayService,
     CmsFavoriteService,
-    CmsClipboardService
-  ]
+    CmsClipboardService,
+    BuilderService
+  ],
+  schemas: [NO_ERRORS_SCHEMA]
 })
 export class CmsSharedModule {
 

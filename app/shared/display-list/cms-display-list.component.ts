@@ -70,7 +70,7 @@ export class CmsDisplayListComponent implements OnInit, OnChanges, OnDestroy {
 
     @Output("change") changeEmitter = new EventEmitter();
 
-    private mShowConfirmationDialog: boolean;
+    private showConfirmationPopup: boolean = false;
     private mDialogMessage: string;
 
     /**
@@ -82,7 +82,6 @@ export class CmsDisplayListComponent implements OnInit, OnChanges, OnDestroy {
         this.element = el;
         this.mScroller = aScroller;
         this.domManager = new DomManager(this.element);
-        this.mShowConfirmationDialog = false;
     }
 
     /**
@@ -210,7 +209,7 @@ export class CmsDisplayListComponent implements OnInit, OnChanges, OnDestroy {
     /**
      * On displays unavailable dialog confirmation, route user to display panel.
      */
-    public onConfimation() {
+    public onConfirmation() {
         this.route.params.forEach((params: Params) => {
             let actionParam = params["action"];
 
@@ -228,7 +227,7 @@ export class CmsDisplayListComponent implements OnInit, OnChanges, OnDestroy {
      */
     private showDialogMessage() {
         //show confimation dialog
-        this.mShowConfirmationDialog = true;
+        this.showConfirmationPopup = true;
 
         // dialog message using TranslateService
         this.translate.get("displayList.unavailableConfirmation").subscribe((response: string) => {
@@ -241,7 +240,7 @@ export class CmsDisplayListComponent implements OnInit, OnChanges, OnDestroy {
      */
     private handleDisplayListEvents(event: ICmsEvent) {
         //show confimation dialog
-        this.mShowConfirmationDialog = false;
+        this.showConfirmationPopup = false;
 
         if (event.verb.toLowerCase() === "deleted") {
             let id = (<{ id: number }>event.body).id;

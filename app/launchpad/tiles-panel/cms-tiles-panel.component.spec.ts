@@ -7,12 +7,8 @@ import { Observable } from "rxjs/Observable";
 import { HttpModule, Http } from "@angular/http";
 import { TranslateModule, TranslateLoader } from "@ngx-translate/core";
 import { TranslateHttpLoader } from "@ngx-translate/http-loader";
+import { MockRouterStub } from "../../core/mock-stubs/mock-router-stub";
 
-class MockRouterStub {
-    navigateByUrl(url: string) {
-        return url;
-    }
-}
 
 describe("CmsTilesPanelComponent - Test Suite", () => {
 

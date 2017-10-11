@@ -10,6 +10,8 @@ import { Router, ActivatedRoute, Params } from "@angular/router";
 
 import "rxjs/add/operator/toPromise";
 
+import { CmsApiService } from "../../cms/api/cms-api.service";
+import { CmsClipboardService } from "../../shared/clipboard/cms-clipboard.service";
 import { CmsResource } from "./../../cms/models/cms-resource";
 import { CMS_SESSION_STORAGE_ITEM } from "../../cms/models/cms-session-storage-item";
 import { Source } from "./../../cms/models/cms-source";
@@ -54,10 +56,10 @@ export class CmsDisplayPanelComponent implements OnInit, OnDestroy {
     public fitHeightCount: number;
 
     //Holds settings related to wall content
-    settings: IManageWallContent;
+    public settings: IManageWallContent;
 
     //@pending - var name To control visibility of Options sidebar
-    private viewOptions: boolean;
+    public viewOptions: boolean;
 
     //Holds currently selected display from display list
     private display: CmsResource;
@@ -69,7 +71,7 @@ export class CmsDisplayPanelComponent implements OnInit, OnDestroy {
     private longPressSubcription;
 
     // we are using selected display id as string as it can also provide string value as "nodisplay"
-    private displayId: string;
+    public displayId: string;
 
     private displayName: string;
 
@@ -79,18 +81,27 @@ export class CmsDisplayPanelComponent implements OnInit, OnDestroy {
     private mDisplayPanelCmsEvent: EventEmitter<any>;
 
     // hold save layout state
-    private isSaveLayoutEnabled: boolean;
+    public isSaveLayoutEnabled: boolean;
+
+    private showConfirmationPopup: boolean = false;
 
     /**
      * The constructor initializes various dependencies.
      */
-    constructor(private http: Http, private router: Router, private route: ActivatedRoute, private storageManager: StorageManager, private cmsSettingsService: CmsSettingsService, private translate: TranslateService, private appConfig: AppConfig) {
+    constructor(private router: Router,
+        private route: ActivatedRoute,
+        private storageManager: StorageManager,
+        private cmsSettingsService: CmsSettingsService,
+        private translate: TranslateService,
+        private appConfig: AppConfig,
+        private mCmsServerApi: CmsApiService,
+        private cmsClipboardService: CmsClipboardService) {
 
         this.viewOptions = false;
         this.zoomLevel = 100;
         this.fitHeightCount = 0;
         this.settings = this.cmsSettingsService.mUserSettings ? this.cmsSettingsService.mUserSettings.manageWallContent : null;
-        this.isSaveLayoutEnabled = true;
+        this.isSaveLayoutEnabled = false;
     }
 
     /**
@@ -106,7 +117,7 @@ export class CmsDisplayPanelComponent implements OnInit, OnDestroy {
         }
         else {
             this.isDisplaySelected = false;
-            
+
             // display name using TranslateService
             this.translate.get("displayPanel.selectDisplay").subscribe((response: string) => {
                 this.displayName = response;
@@ -119,9 +130,15 @@ export class CmsDisplayPanelComponent implements OnInit, OnDestroy {
         }
 
         // subscribe to observable and update local "isLongPressed" property
-        this.longPressSubcription = this.cmsSettingsService.longPressedSubject.subscribe(() => {
-            this.isLongPressed = this.cmsSettingsService.isLongPressed;
-        });
+        if (this.cmsSettingsService.longPressedSubject) {
+            this.longPressSubcription = this.cmsSettingsService.longPressedSubject.subscribe(() => {
+                this.isLongPressed = this.cmsSettingsService.isLongPressed;
+            });
+        } else {
+            let error = "cmsSettingsService.longPressedSubject is not defined";
+            this.appConfig.error(error);
+            throw error;
+        }
     }
 
     /**
@@ -134,7 +151,9 @@ export class CmsDisplayPanelComponent implements OnInit, OnDestroy {
             this.mDisplayPanelCmsEvent.unsubscribe();
         }
 
-        this.longPressSubcription.unsubscribe();
+        if (this.longPressSubcription !== undefined) {
+            this.longPressSubcription.unsubscribe();
+        }
     }
 
     /**
@@ -146,8 +165,8 @@ export class CmsDisplayPanelComponent implements OnInit, OnDestroy {
 
         // If selected display is not available, route to display list.
         if (display === null) {
-            this.appConfig.log("Display not found! Routing to display list.");
-            this.router.navigate(["/displays-panel"])
+            this.appConfig.error("Display not found! Routing to display list.");
+            this.router.navigate(["/displays-panel"]);
         }
 
         this.display = <CmsResource>JSON.parse(display);
@@ -178,8 +197,22 @@ export class CmsDisplayPanelComponent implements OnInit, OnDestroy {
      * case of display title and content update 
      * @method {void} onDisplayUpdate
      */
-    private onDisplayUpdate(display:any): void{
-         this.displayName = display.name;
-         this.appConfig.log(`CmsDisplayPanelComponent: onDisplayUpdate:: Display [id: ${display.id}] name updated to [Name: ${display.name}].`);
+    private onDisplayUpdate(display: any): void {
+        this.displayName = display.name;
+        this.appConfig.log(`CmsDisplayPanelComponent: onDisplayUpdate:: Display [id: ${display.id}] name updated to [Name: ${display.name}].`);
+    }
+
+    /**
+     * This will be reponsible to clear the mini display wall
+     * @method {void} clearMiniDisplayWall
+     */
+    private clearMiniDisplayWall() {
+        let displayId = parseInt(this.displayId);
+        this.mCmsServerApi.putContentsOnDisplay(displayId, 0, {}).subscribe(response => {
+            this.cmsClipboardService.selectedSources.length = 0;
+        }, error => {
+            console.error(error);
+        });
+        this.showConfirmationPopup = false;
     }
 }

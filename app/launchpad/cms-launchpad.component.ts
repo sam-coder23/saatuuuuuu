@@ -37,7 +37,12 @@ import "../resources/fonts/material-fonts.css";
   //moduleId: module.id,
   selector: "cms-launchpad",
   template: `<router-outlet></router-outlet>
-    <cms-dialog *ngIf="showSystemDialog" [message]="dialogMessage" [type]="'alert'" (okPress)="onDialogConfirmation()"></cms-dialog>
+    <nd-popup *ngIf="showSystemDialog" id="sytem-events-alert-popup" class="confirm-popup" title="{{'systemDialog.confirmationTitlePopup' | translate }}"
+      (done)="onDialogConfirmation()" (closing)="showSystemDialog = false;" okText="{{'common.ok' | translate}}">
+      <popup-body>
+        {{dialogMessage}}
+      </popup-body>
+    </nd-popup>
     <cms-dialog *ngIf="showProgressDialog" [message]="dialogMessage" [type]="'progress'" (okPress)="onDialogConfirmation()"></cms-dialog>`
 })
 export class CmsLaunchpadComponent implements OnInit, OnDestroy {
@@ -115,7 +120,7 @@ export class CmsLaunchpadComponent implements OnInit, OnDestroy {
 
     this.applicationLevelEvent = CmsEventEmitterService.get(CMS_EVENTS.Application).subscribe((res: { eventName: string, eventType: string }) => {
       this.appConfig.log("CmsLaunchpadComponent: Application level event received. ", res.eventName);
-
+      
       // handle system events when user is logged in
       let user: IUserToken = JSON.parse(this.storageManager.get(CMS_SESSION_STORAGE_ITEM.User));
       if (user && user.loggedIn) {

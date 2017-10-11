@@ -93,14 +93,19 @@ body { background-color: #eeeeee; padding: 0; margin: 5px; overflow-y: scroll; }
 </style>
 </head>
 
-<body id="HTMLReporter" class="html-reporter">
-<h1>Tested in Firefox 55.0.0 (Windows 7 0.0.0M o oMoMon Oct 09 20</</h1>
+<body id="HTMLReporter" class="html-reporter showDetails">
+<h1>Tested in Chrome 61.0.3163 (Windows 7 0.0.0) on Wed Oct 11 2017</h1>
+
+<div class="alert">
 
 
-  
-  <span class="passingAlert bar"><span class="fold-buttons"><a href="#" onclick="fold();">Fold</a> | 
-  <a href="#" onclick="unfold();">Unfold</a>< specs, 0 fail fail pen0 pending</span>
- 
+<!-- <span class="failingAlert bar">Failed 1 specs</span> -->
+<span class="failingAlert bar"><span class="fold-buttons"><a href="#" onclick="fold();">Fold</a> | 
+  <a href="#" onclick="unfold();">Unfold</a></span>30 specs, 1 failed, 1 pending</span>
+<span class="resultsMenu bar">
+<a class="summaryMenuItem" onclick="showSummary();" href="#">Spec List<a>|<a 
+   class="detailsMenuItem" onclick="showFailures();" href="#">Failures</a>
+</span>
 
 
 
@@ -113,14 +118,104 @@ body { background-color: #eeeeee; padding: 0; margin: 5px; overflow-y: scroll; }
   
   
     <div class="suite passed">
+      <span class="description">CmsSourcesPanelComponent</span>
+    
+      <div class="specSummary passed">
+      <span class="description">component should be a defined and initialized with default values and elements</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should have max count === 10, also panel title is same as defined pattern and display ID Initialized</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should show bottom toolbar in case selected source is &gt; 0</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should show selected source count/maxsource in bottom toolbar</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should have next button and onclick it navigates to displays/{:id}/tiles-panel?sourceCount={:selectedsourceCount} route</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should navigate to displays-panel onclick of navigates back</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should set reload to TRUE on list change</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should set reload ad list to FALSE on reload list</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should set searchkey as set to session storage</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should have filter button available with ID === sources-panel-favorite-button </span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should show error message if error comes from Source List</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should initialize search and search element should have ID === sources-panel-search-input</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
       <span class="description">CmsTilesPanelComponent - Test Suite</span>
+    
+      <div class="specSummary passed">
+      <span class="description">Component should be instantiated</span>
+      </div>
     
       <div class="specSummary passed">
       <span class="description">should have next button and onclick it navigates to display-panel/{:id} route</span>
       </div>
     
+    </div>
+  
+    <div class="suite failed">
+      <span class="description">CmsGridComponent</span>
+    
       <div class="specSummary passed">
-      <span class="description">Component should be instantiated</span>
+      <span class="description">should be a defined component</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should execute ngOnInit as required</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should not call unLoadContent when content is null</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should call unLoadContent when content and display object is not null</span>
+      </div>
+    
+      <div class="specSummary failed">
+      <span class="description">should not call contentClickHandler on click of contentClickWrapper</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should call contentClickHandler on click of contentClickWrapper</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should not call contentClickHandler</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should call contentClickHandler</span>
       </div>
     
     </div>
@@ -159,10 +254,38 @@ body { background-color: #eeeeee; padding: 0; margin: 5px; overflow-y: scroll; }
     
     </div>
   
+    <div class="suite passed">
+      <span class="description">CmsDisplayPanelComponent - Test Suite</span>
+    
+      <div class="specSummary passed">
+      <span class="description">Component should be instantiated</span>
+      </div>
+    
+      <div class="specSummary skipped">
+      <span class="description">should not load a display and navigate to '/displays-panel' if no display info is available</span>
+      </div>
+    
+    </div>
+  
   
 </div>
 
 <div id="details">
+  
+  
+  <div class="specDetail failed">
+    <span class="description">CmsGridComponent should not call contentClickHandler on click of contentClickWrapper</span>
+    <div class="stackTrace">
+      <div class="resultMessage">Expected true to be false.
+    at http://localhost:9876/base/test/test.js?18d38ad37d213f895ef5e2581caa536cc5236c24:118443:53 [ProxyZone]
+    at ProxyZoneSpec.onInvokeTask (http://localhost:9876/base/test/test.js?18d38ad37d213f895ef5e2581caa536cc5236c24:115498:40) [ProxyZone]
+    at ZoneDelegate.invokeTask (http://localhost:9876/base/test/test.js?18d38ad37d213f895ef5e2581caa536cc5236c24:113510:37) [ProxyZone]
+    at Zone.runTask (http://localhost:9876/base/test/test.js?18d38ad37d213f895ef5e2581caa536cc5236c24:113314:48) [&lt;root&gt; =&gt; ProxyZone]
+    at ZoneTask.invoke (http://localhost:9876/base/test/test.js?18d38ad37d213f895ef5e2581caa536cc5236c24:113564:39) [&lt;root&gt;]
+    at data.args.(anonymous function) (http://localhost:9876/base/test/test.js?18d38ad37d213f895ef5e2581caa536cc5236c24:114675:26) [&lt;root&gt;]</div>
+    </div>
+  </div>
+  
   
 </div>
 
@@ -175,7 +298,7 @@ document.body.onkeypress = function (e) {
   switch (e.keyCode) {
     case 102: toggleFold(); break;
     case 49: showSummary(); break;
-    
+    case 50: showFailures(); break;
   }
 };
 

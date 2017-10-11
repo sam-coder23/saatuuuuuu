@@ -23,12 +23,15 @@
     },
     "displayPanel": {
         "unavailable": "No Display",
-        "selectDisplay": "Select a display"
+        "selectDisplay": "Select a display",
+        "confirmationTitlePopup": "Clear Display Wall",
+        "confirmationPopupMessage": "Are you sure you want to clear the display wall?"
     },
     "displayList": {
         "connectTo": "Select a display wall",
         "unavailable": "No Displays",
-        "unavailableConfirmation": "No display is available for your account. Please contact the administrator."
+        "unavailableConfirmation": "No display is available for your account. Please contact the administrator.",
+        "confirmationTitlePopup": "Information Alert"
     },
     "layoutList": {
         "connectTo": "Load a layout",
@@ -114,10 +117,14 @@
             "unshareContent": "You do not have permission to remove this source from mini-display.",
             "loadLayout": "You do not have permission to load a layout.",
             "saveLayout": "You do not have permission to save a layout."
-        }
+        },
+        "confirmationTitlePopup": "Information Alert"
     },
     "common": {
-        "next": "Next"
+        "next": "Next",
+        "yes": "Yes",
+        "no": "No",
+        "ok": "OK"
     },
     "tilePresetList": {
         "unavailable": "No Tile Layouts",

@@ -5,7 +5,7 @@
  */
 
 /* Core */
-import { NgModule } from "@angular/core";
+import { NgModule, NO_ERRORS_SCHEMA } from "@angular/core";
 import { BrowserModule } from "@angular/platform-browser";
 import { HttpModule, Http } from "@angular/http";
 import { FormsModule } from "@angular/forms";
@@ -55,6 +55,7 @@ import { CmsSettingsService } from "./settings/cms-settings.service";
 import { CmsAboutPanelComponent } from "./about/cms-about-panel.component";
 import { CmsTilesPanelComponent } from "./tiles-panel/cms-tiles-panel.component";
 
+import { RobotModule, BuilderService } from "core-components/app";
 
 /**
  * This is the main module which defines various its own components and services along with other dependent modules
@@ -69,6 +70,7 @@ import { CmsTilesPanelComponent } from "./tiles-panel/cms-tiles-panel.component"
     FormsModule,
     CmsSharedModule,
     CmsModelModule,
+    RobotModule,
 
     MaterialModule.forRoot(),
 
@@ -101,8 +103,10 @@ import { CmsTilesPanelComponent } from "./tiles-panel/cms-tiles-panel.component"
     MdIconRegistry,
     CmsCanActivateViaAuthorizationService,
     CmsSettingsService,
-	  MdUniqueSelectionDispatcher
-  ]
+    MdUniqueSelectionDispatcher,
+    BuilderService
+  ],
+  schemas: [NO_ERRORS_SCHEMA]
 })
 export class CmsLaunchapadModule {
 
