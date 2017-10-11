@@ -4,6 +4,12 @@ module.exports = function (config) {
         basePath: "",
         files: [
             "./test/*.js",
+            {
+                pattern: "./app/i18n/*.json",
+                watched: true,
+                served: true,
+                included: false
+            }
         ],
 
         frameworks: ["jasmine"],
