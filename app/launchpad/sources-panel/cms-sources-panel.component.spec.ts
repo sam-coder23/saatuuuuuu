@@ -238,7 +238,7 @@ describe("CmsSourcesPanelComponent", () => {
         let searchBox = fixture.nativeElement.querySelector("#sources-panel-search-input");
         expect(searchBox).toBeTruthy();
 
-        let searchString = "KTHU";
+        let searchString = "testSearchString";
         searchBox.value = searchString;
         fixture.detectChanges();
         searchBox.dispatchEvent(new Event("keyup"));
