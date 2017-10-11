@@ -1,8 +1,8 @@
 <div id="source-list-card-container" class="source-list-cards" [ngClass]="{'bottom-up' : mClipboard?.selectedSources.length > 0}">
-    <div class="source-list-unavailable" *ngIf="mSources.length === 0">
+    <div class="source-list-unavailable" *ngIf="!mSources || !mSources.length">
         <span>{{ 'sourceList.unavailable' | translate }}</span>
     </div>
-    <div *ngIf="mSources.length > 0">
+    <div *ngIf="mSources && mSources.length">
         <cms-card *ngFor="let source of mSources" multi="true" [card]="renderer(source)" (select)="updateSelection($event, source)" (toggleFavorite)="toggleSourceFavorite(source)" [ngClass]="{disabled: source.disabled}"></cms-card>
     </div>
 </div>

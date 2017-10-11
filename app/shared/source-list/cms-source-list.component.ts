@@ -59,19 +59,18 @@ export class CmsSourceListComponent implements OnInit, OnChanges, OnDestroy {
     @Input() displayId: number;
 
     // list of sources to be created as card list
-    private mSources: Source[];
+    public mSources: Source[];
 
     // scroll element
     private mScrollTarget: HTMLElement;
 
     // dependencies initialized in constructor
-    private mRouter: Router;
     private mCmsServerApi: CmsApiService;
     private element: ElementRef;
     private mScroller: CmsVirtualScrollService;
     private mClipboard: CmsClipboardService;
     private mFavoriteService: CmsFavoriteService;
-    private tilePresets: ITilePreset[];
+    public tilePresets: ITilePreset[];
 
     // it saves the CMS events subscription and unsubscribe them on component destruction
     private mSourceListCmsEvent: EventEmitter<any>;
@@ -83,7 +82,7 @@ export class CmsSourceListComponent implements OnInit, OnChanges, OnDestroy {
     /**
      * The constructor initializes various dependencies.
      */
-    constructor(aRouter: Router,
+    constructor(
         aCmsServerApi: CmsApiService,
         el: ElementRef,
         aScroller: CmsVirtualScrollService,
@@ -93,9 +92,7 @@ export class CmsSourceListComponent implements OnInit, OnChanges, OnDestroy {
         aFavoriteService: CmsFavoriteService,
         private appConfig: AppConfig,
         private translateService: TranslateService) {
-
-
-        this.mRouter = aRouter;
+        
         this.mCmsServerApi = aCmsServerApi;
         this.element = el;
         this.mScroller = aScroller;
@@ -103,6 +100,8 @@ export class CmsSourceListComponent implements OnInit, OnChanges, OnDestroy {
         this.mFavoriteService = aFavoriteService;
         this.domManager = new DomManager(this.element);
     }
+
+
 
     /**
      * On initialization of the component, fetching list of sources, perspectives and applications 
@@ -125,9 +124,10 @@ export class CmsSourceListComponent implements OnInit, OnChanges, OnDestroy {
         this.mScroller.dataCount = 0;
         this.mScroller.max = null;
         this.mScroller.count = this.cmsSettingsService.mUserSettings.defaultPageSize || 20;
+
+        debugger;
         this.mScrollTarget = this.domManager.FirstChild();
         this.getSources();
-
 
         this.mScroller.addScrollListener(this.mScrollTarget, function () {
             if (this.mScroller.max == null) {
@@ -141,7 +141,9 @@ export class CmsSourceListComponent implements OnInit, OnChanges, OnDestroy {
      * Unsubscribe observables and detach event handlers to avoid memory leaks.
      */
     ngOnDestroy() {
-        this.mScroller.removeScrollListener();
+        if(this.mScroller) {
+            this.mScroller.removeScrollListener();
+        }
         if (this.mSourceListCmsEvent) {
             this.mSourceListCmsEvent.unsubscribe();
         }
@@ -170,7 +172,6 @@ export class CmsSourceListComponent implements OnInit, OnChanges, OnDestroy {
             .subscribe(
             (sources: Source[]) => {
                 this.appConfig.log("CmsSourceListComponent: getSources:: Sources list from server = ");
-
                 this.mScroller.dataCount = sources.length;
                 this.mSources.push(...sources);
 
@@ -200,7 +201,6 @@ export class CmsSourceListComponent implements OnInit, OnChanges, OnDestroy {
             let requestPayload = {
                 "resources": [...this.mClipboard.selectedSources]
             };
-
             let index = requestPayload.resources.findIndex(resource => resource.id === source.id);
             requestPayload.resources.splice(index, 1);
 
@@ -297,13 +297,6 @@ export class CmsSourceListComponent implements OnInit, OnChanges, OnDestroy {
     }
 
     /**
-     * Redirect to previous route
-     */
-    private back() {
-        window.history.back();
-    }
-
-    /**
      * Returns updated source to be displayed as a card
      * @param source 
      */
@@ -357,7 +350,7 @@ export class CmsSourceListComponent implements OnInit, OnChanges, OnDestroy {
         }
     }
 
-    private loadTilers() {
+    public loadTilers() {
         this.mCmsServerApi.getTilers().subscribe((tilers) => {
             this.tilePresets = tilers.sort((a, b) => {
                 return a.noOfTiles - b.noOfTiles;
@@ -376,7 +369,6 @@ export class CmsSourceListComponent implements OnInit, OnChanges, OnDestroy {
         if (sourceCount < 1) {
             return 0;
         }
-
 
         if (this.tilePresets) {
             tileIdIndex = this.tilePresets.findIndex(tilePreset => tilePreset.noOfTiles === sourceCount && tilePreset.isDefault);

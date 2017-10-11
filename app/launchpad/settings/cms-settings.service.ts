@@ -55,7 +55,7 @@ export class CmsSettingsService {
         }
     }
 
-
+    
     /**
      * @description
      * This method fetch user profile settings and update local property and execute optional callback function

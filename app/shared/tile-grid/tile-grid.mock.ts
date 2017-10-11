@@ -1,41 +1,45 @@
 import { ITilePreset } from "../../cms/models/cms-tile-preset";
 
+
+/**
+ * DO NOT CHANGE THE INDEX OF THE TILE-PRESETS IN THE ARRAY BELOW
+ */
 export const TilePresets: ITilePreset[] = [{
     "id": 1,
-    "name": "2*2",
+    "name": "2x2",
     "description": "",
     "tags": "",
     "base": {
-        "rowBound": 4,
-        "colBound": 4
+        "rowBound": 2,
+        "colBound": 2
     },
     "tiles": [
         {
             "left": 0,
             "top": 0,
-            "width": 2,
-            "height": 2
+            "width": 1,
+            "height": 1
         },
         {
-            "left": 2,
+            "left": 1,
             "top": 0,
-            "width": 2,
-            "height": 2
+            "width": 1,
+            "height": 1
         },
         {
             "left": 0,
-            "top": 2,
-            "width": 2,
-            "height": 2
+            "top": 1,
+            "width": 1,
+            "height": 1
         },
         {
-            "left": 2,
-            "top": 2,
-            "width": 2,
-            "height": 2
+            "left": 1,
+            "top": 1,
+            "width": 1,
+            "height": 1
         }
     ],
-    "isDefault": false,
+    "isDefault": true,
     "noOfTiles": 4,
     "isGrid": false
 },

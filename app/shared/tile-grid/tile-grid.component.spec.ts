@@ -58,7 +58,7 @@ describe("TileGridComponent", () => {
             width: 400
         };
 
-        component.tilePreset = TilePresets[0];
+        component.tilePreset = TilePresets[1];
 
         let input = new Tile(component.tilePreset.tiles[0]);
         let output = { left: "0px", top: "0px", width: "198px", height: "98px" };
@@ -74,10 +74,10 @@ describe("TileGridComponent", () => {
         let tileRectSelector = ".cms-tile-rectangle";
 
         let expectedStyles = [
-            { left: "0px", top: "0px", width: "198px", height: "98px" },
-            { left: "200px", top: "0px", width: "198px", height: "98px" },
-            { left: "0px", top: "100px", width: "198px", height: "98px" },
-            { left: "200px", top: "100px", width: "198px", height: "98px" }
+            { left: "0px", top: "0px", width: "198px", height: "198px" },
+            { left: "200px", top: "0px", width: "198px", height: "198px" },
+            { left: "0px", top: "100px", width: "198px", height: "198px" },
+            { left: "200px", top: "100px", width: "198px", height: "198px" }
         ]
         component.displayBase = {
             height: 200,
