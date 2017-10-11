@@ -6,7 +6,7 @@
 
 import { Component, OnInit, Input, Output, EventEmitter, OnChanges, SimpleChanges, ElementRef, OnDestroy } from "@angular/core";
 
-import { ITile } from "../../../cms/models/cms-tile";
+import { Tile } from "../../../cms/models/cms-tile";
 import { Source } from "./../../../cms/models/cms-source";
 
 // Service imports
@@ -33,10 +33,10 @@ import { Validation } from "../../../core/util/Validation";
 export class CmsGridComponent implements OnInit, OnChanges, OnDestroy {
 
     // the input property will contain the array of tiles applied on the display
-    @Input() miniTiles: ITile[];
+    @Input() miniTiles: Tile[];
 
     // the input property will contain the array of actual tiles of display wall
-    @Input() tiles: ITile[];
+    @Input() tiles: Tile[];
 
     // the input property will contain the array of sources in each tile
     @Input() contents: TileContent[];
@@ -293,8 +293,8 @@ export class CmsGridComponent implements OnInit, OnChanges, OnDestroy {
 
         let snapshotPath: string;
 
-        if (rawStyle.snapshotpath) {
-            snapshotPath = rawStyle.snapshotpath;
+        if (rawStyle.snapshotPath) {
+            snapshotPath = rawStyle.snapshotPath;
             if (Url.HasHostName() && !Validation.IsNullOrUndefined(snapshotPath) && Url.HasIP(snapshotPath)) {
                 snapshotPath = RegExManager.IPToHost(snapshotPath, this.appConfig.Host);
             }
@@ -339,7 +339,7 @@ export class CmsGridComponent implements OnInit, OnChanges, OnDestroy {
     /**
      * This method is used for adding a source to empty tile from clipboard
      */
-    tileClickHandler(tile: ITile): Promise<void> {
+    tileClickHandler(tile: Tile): Promise<void> {
         // prevent further click event if longPress is true
         if (this.isLongPressed || this.cmsMiniDisplayService.panend) {
             return;
@@ -403,10 +403,10 @@ export class CmsGridComponent implements OnInit, OnChanges, OnDestroy {
     /**
      * set tile info in the clipboard service to be able to share content on tile with this geometry
      */
-    private setClipboardTile(contentAbsoluteSize: ITile) {
+    private setClipboardTile(contentAbsoluteSize: Tile) {
         if (contentAbsoluteSize) {
             // save content geometry with clipboard service
-            this.cmsClipboardService.tile = Object.assign({}, contentAbsoluteSize);
+            this.cmsClipboardService.tile = new Tile(contentAbsoluteSize);
         }
     }
 

@@ -4,6 +4,7 @@ import { ComponentFixture, TestBed, async } from "@angular/core/testing";
 import { By } from "@angular/platform-browser";
 import { DebugElement } from "@angular/core";
 import { TilePresets } from "./tile-grid.mock";
+import { Tile } from "../../cms/models/cms-tile";
 
 describe("TileGridComponent", () => {
 
@@ -59,7 +60,7 @@ describe("TileGridComponent", () => {
 
         component.tilePreset = TilePresets[0];
 
-        let input = component.tilePreset.tiles[0];
+        let input = new Tile(component.tilePreset.tiles[0]);
         let output = { left: "0px", top: "0px", width: "198px", height: "98px" };
         let tileStyle = component.tileStyle(input);
 

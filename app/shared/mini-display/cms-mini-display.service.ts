@@ -9,7 +9,7 @@ import { Injectable } from "@angular/core";
 import { CmsApiService } from "../../cms/api/cms-api.service";
 import { TileContent } from "./../../cms/models/cms-tile-content";
 import { Source } from "./../../cms/models/cms-source";
-import { ITile } from "../../cms/models/cms-tile";
+import { Tile } from "../../cms/models/cms-tile";
 import { Display } from "../../cms/models/cms-display";
 import { ISize } from "../../cms/models/cms-size";
 import { Observable } from "rxjs/Rx";
@@ -37,7 +37,7 @@ export class CmsMiniDisplayService {
     public fitHeightZoomLevel: number;
 
     public panend: boolean;
-    
+
     // it will contain actual display size
     private mDisplaySize: ISize;
 
@@ -72,9 +72,9 @@ export class CmsMiniDisplayService {
      */
     getMiniDisplayTilerInfoWithContent(aDisplayId: number, aContainer: HTMLElement): Observable<{
         displaySize: ISize,
-        miniDisplayTilerList: ITile[],
+        miniDisplayTilerList: Tile[],
         miniDisplayContentList: TileContent[],
-        displayTilerList: ITile[],
+        displayTilerList: Tile[],
         miniDisplaySize: ISize
     }> {
         return Observable.create(observer => {
@@ -91,7 +91,7 @@ export class CmsMiniDisplayService {
                     this.mMiniDisplaySize = this.miniDisplayInitialSize(aContainer);
 
                     // initialize mini-display tiler list
-                    let miniDisplayTilerList: ITile[] = this.calculateAdjustedViewTilerRectangles(display.tiles);
+                    let miniDisplayTilerList: Tile[] = this.calculateAdjustedViewTilerRectangles(display.tiles);
 
                     // initialize mini-display content list
                     let miniDisplayContentList: TileContent[] = this.calculateAdjustedViewSourceRectangles(display.content, []);
@@ -115,8 +115,8 @@ export class CmsMiniDisplayService {
     /**
      * This method creates a new list of adjusted tiler rectangles for mini-display after conversion from actual display.
      */
-    calculateAdjustedViewTilerRectangles(aDisplayTilerList: ITile[]): ITile[] {
-        let miniDisplayTilerList: ITile[];
+    calculateAdjustedViewTilerRectangles(aDisplayTilerList: Tile[]): Tile[] {
+        let miniDisplayTilerList: Tile[];
         // creating a new list of adjusted tiler rectangles for mini-display after conversion from actual display
 
         if (aDisplayTilerList !== undefined && aDisplayTilerList.length > 0) {
@@ -133,8 +133,8 @@ export class CmsMiniDisplayService {
      * This method creates a new list of adjusted source rectangles for mini-display after conversion from actual display.
      */
     calculateAdjustedViewSourceRectangles(
-        aDisplayContentList: TileContent[], 
-        previousDisplayContentList: TileContent[], 
+        aDisplayContentList: TileContent[],
+        previousDisplayContentList: TileContent[],
         updateLastModifed: boolean = true
     ): TileContent[] {
 
@@ -155,43 +155,38 @@ export class CmsMiniDisplayService {
      */
     calculateAdjustedViewSourceRectangle(
         aDisplayContent: TileContent,
-        previousDisplayContentList: TileContent[], 
+        previousDisplayContentList: TileContent[],
         updateLastModifed: boolean = true
     ): TileContent {
-        
+
         let existingContent: TileContent;
 
         if (aDisplayContent !== null || aDisplayContent !== undefined) {
             var adjustedRect = this.getModelToViewBounds(aDisplayContent);
 
-            aDisplayContent.absoluteSize = {
-                x: aDisplayContent.x,
-                y: aDisplayContent.y,
-                width: aDisplayContent.width,
-                height: aDisplayContent.height
-            };
+            aDisplayContent.absoluteSize = new Tile(aDisplayContent);
 
             aDisplayContent.x = adjustedRect.x;
             aDisplayContent.y = adjustedRect.y;
             aDisplayContent.width = adjustedRect.width;
             aDisplayContent.height = adjustedRect.height;
-            
-            if(previousDisplayContentList.length > 0) {
+
+            if (previousDisplayContentList.length > 0) {
                 existingContent = previousDisplayContentList.find(displayContent => displayContent.id === aDisplayContent.id);
-                
-                if(existingContent) {
-					// update last date as content alerady exist
-                    aDisplayContent.lastModified = existingContent.lastModified;              
+
+                if (existingContent) {
+                    // update last date as content alerady exist
+                    aDisplayContent.lastModified = existingContent.lastModified;
                 }
                 else {
-					// update new date as content is newly addedd
-                    aDisplayContent.lastModified = Date.now().toString();                                       
+                    // update new date as content is newly addedd
+                    aDisplayContent.lastModified = Date.now().toString();
                 }
             }
             else {
                 aDisplayContent.lastModified = Date.now().toString();
             }
-            
+
             return aDisplayContent;
         }
 
@@ -204,13 +199,17 @@ export class CmsMiniDisplayService {
      * @pending - arrays are reference type. we must know that.
      * Finally the conversion is done to calculate everything in %age
      */
-    private getModelToViewBounds(aOriginalTileGeometry: ITile): ITile {
-        let leftPosition = aOriginalTileGeometry.x * this.mMiniDisplaySize.width / this.mDisplaySize.width,
-            topPosition = aOriginalTileGeometry.y * this.mMiniDisplaySize.height / this.mDisplaySize.height,
+    private getModelToViewBounds(aOriginalTileGeometry: Tile): Tile {
+        if (!(aOriginalTileGeometry instanceof Tile)) {
+            aOriginalTileGeometry = new Tile(aOriginalTileGeometry);
+        }
+
+        let leftPosition = aOriginalTileGeometry.left * this.mMiniDisplaySize.width / this.mDisplaySize.width,
+            topPosition = aOriginalTileGeometry.top * this.mMiniDisplaySize.height / this.mDisplaySize.height,
             width = aOriginalTileGeometry.width * this.mMiniDisplaySize.width / this.mDisplaySize.width,
             height = aOriginalTileGeometry.height * this.mMiniDisplaySize.height / this.mDisplaySize.height,
             margin = 4,
-            newRect: ITile;
+            tile: Tile;
 
         // adds the specified margin around the tile by adjusting tile position and size. 
         leftPosition = (leftPosition + margin);
@@ -225,14 +224,14 @@ export class CmsMiniDisplayService {
         height = height - (margin * 2);
         height /= this.mMiniDisplaySize.height / 100;
 
-        newRect = {
+        tile = new Tile({
             x: leftPosition,
             y: topPosition,
             width: width,
             height: height
-        }
+        });
 
-        return newRect;
+        return tile;
     }
 
 	/**

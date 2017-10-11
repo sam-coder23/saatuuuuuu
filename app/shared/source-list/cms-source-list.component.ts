@@ -23,7 +23,7 @@ import { AppConfig } from "../../config";
 import { CmsSettingsService } from "./../../launchpad/settings/cms-settings.service";
 import { TileContent } from "../../cms/models/cms-tile-content";
 import { Layout } from "../../cms/models/cms-layout";
-import { ITile } from "../../cms/models/cms-tile";
+import { Tile } from "../../cms/models/cms-tile";
 import { ITilePreset } from "../../cms/models/cms-tile-preset";
 import { TranslateService } from "@ngx-translate/core";
 
@@ -339,12 +339,15 @@ export class CmsSourceListComponent implements OnInit, OnChanges, OnDestroy {
      */
     private shareSourceOnTile(source: Source, tileIndex: number): void {
         if (this.selectedDisplay.tiles && this.selectedDisplay.tiles[tileIndex]) {
-            this.mCmsServerApi.loadContentOnTile(this.displayId, {
+
+            var tile = new Tile({
                 "x": this.selectedDisplay.tiles[tileIndex].left,
                 "y": this.selectedDisplay.tiles[tileIndex].top,
                 "width": this.selectedDisplay.tiles[tileIndex].width,
                 "height": this.selectedDisplay.tiles[tileIndex].height
-            }, source).then(() => {
+            });
+
+            this.mCmsServerApi.loadContentOnTile(this.displayId, tile, source).then(() => {
                 source.selected = true;
                 // store selected source in selection
                 this.mClipboard.selectedSources.push(source);

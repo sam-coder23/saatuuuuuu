@@ -4,7 +4,7 @@
  * the terms of the license agreement you entered into with Barco.
  */
 
-import { ITile } from "./cms-tile";
+import { Tile } from "./cms-tile";
 import { TileContent } from "./cms-tile-content";
 import { CmsResource } from "./cms-resource";
 
@@ -28,7 +28,7 @@ export class Display extends CmsResource {
         return this.resolution.height;
     }
 
-    tiles: ITile[];
+    tiles: Tile[];
     content: TileContent[];
 
     constructor(display) {

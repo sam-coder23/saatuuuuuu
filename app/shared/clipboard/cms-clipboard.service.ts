@@ -9,7 +9,7 @@ import { Injectable } from "@angular/core";
 import { Source } from "./../../cms/models/cms-source";
 import { Observable } from "rxjs/Observable";
 import { Subject } from "rxjs/Subject";
-import { ITile } from "./../../cms/models/cms-tile";
+import { Tile } from "./../../cms/models/cms-tile";
 import { CmsSettingsService } from "./../../launchpad/settings/cms-settings.service";
 import { IManageWallContent } from "./../../cms/models/cms-user-profile-settings";
 import { AppConfig } from "../../config";
@@ -38,7 +38,7 @@ export class CmsClipboardService {
     clipboardUpdated: Observable<Source>;
 
     // Holds tile geometry that requires a clipboard source directly
-    tile: ITile;
+    tile: Tile;
 
     constructor(private cmsApiService: CmsApiService,
         private cmsSettingsService: CmsSettingsService,

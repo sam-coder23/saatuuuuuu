@@ -19,7 +19,7 @@ import { Display } from "../models/cms-display";
 import { Layout } from "../models/cms-layout";
 import { Source } from "../models/cms-source";
 import { ICmsEvent } from "../models/cms-event";
-import { ITile } from "./../models/cms-tile";
+import { Tile } from "./../models/cms-tile";
 import { UserConfig, User } from "../../launchpad/models/cms-user.model";
 import { APIRequest } from "./api-request";
 import { IUserProfileSettings } from "../models/cms-user-profile-settings";
@@ -341,8 +341,10 @@ export class CmsApiService {
      * @param: tile: ITile :: Contains info on which content is pushed
      * @param: content: Source :: It is the source info to be pushed on tile
      */
-    loadContentOnTile(displayId: number, tile: ITile, content: Source): Promise<Response> {
+    public loadContentOnTile(displayId: number, tile: Tile, content: Source): Promise<Response> {
         this.appConfig.log("CmsApiService: loadContentOnTile...");
+        tile = new Tile(tile);
+        
         try {
             let url = `displays/${displayId}/content`,
                 body = {

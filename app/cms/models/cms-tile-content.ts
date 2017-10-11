@@ -4,7 +4,7 @@
  * the terms of the license agreement you entered into with Barco.
  */
 
-import { ITile } from "./cms-tile";
+import { Tile } from "./cms-tile";
 import { Source } from "./cms-source";
 
 /**
@@ -19,5 +19,5 @@ export class TileContent extends Source {
 	lastModified: string;
 
     // keeps absolute tile info as per display wall
-    absoluteSize: ITile
+    absoluteSize: Tile
 }

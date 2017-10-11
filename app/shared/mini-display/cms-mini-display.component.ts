@@ -8,7 +8,7 @@ import { Component, OnInit, OnChanges, SimpleChanges, Input, Output, OnDestroy, 
 import { Router } from "@angular/router";
 
 import { CmsResource } from "./../../cms/models/cms-resource";
-import { ITile } from "../../cms/models/cms-tile";
+import { Tile } from "../../cms/models/cms-tile";
 import { TileContent } from "../../cms/models/cms-tile-content";
 import { ISize } from "../../cms/models/cms-size";
 import { CmsEventEmitterService } from "../../cms/api/cms-event-emitter.service";
@@ -68,13 +68,13 @@ export class CmsMiniDisplayComponent implements OnInit, OnChanges, OnDestroy {
     private mMiniDisplaySize: ISize;
 
     // the array will contain tiler list converted for mini display
-    miniDisplayTilerList: ITile[] = [];
+    miniDisplayTilerList: Tile[] = [];
 
     // the array will contain tiler content list converted for mini display
     miniDisplayContentList: TileContent[] = [];
 
     // the array will contain tiler list coming from display
-    displayTilerList: ITile[] = [];
+    displayTilerList: Tile[] = [];
 
     // it will contain actual display size
     private mDisplaySize: ISize;
@@ -132,18 +132,8 @@ export class CmsMiniDisplayComponent implements OnInit, OnChanges, OnDestroy {
         this.miniDisplayHelper.display = this.display;
 
         this.initDisplayTileInfoWithContent();
-
-        this.mMiniDisplayCmsEvent = CmsEventEmitterService.get(CMS_EVENTS.MiniDisplay).subscribe((res: { eventType: string, body: any, displayId: number }) => {
-            // return if event received is for other display
-            if (res.displayId !== this.display.id && res.eventType !== "ResourceUpdated" && res.eventType !== "ResourceDeleted") {
-                return;
-            }
-
-            this.appConfig.log("CmsMiniDisplayComponent: Display change event received.");
-            this.handleMiniDisplayChangeEvent(res.eventType, res.body);
-        });
-
-        this.addEventListeners();
+        this.subscribeCMSEvents();
+        this.addMiniDisplayEventListeners();
         this.configureTouchGestures();
         this.subscribeScroller();
         this.subscribeWindowResize();
@@ -196,9 +186,9 @@ export class CmsMiniDisplayComponent implements OnInit, OnChanges, OnDestroy {
             this.miniDisplayHelper.getMiniDisplayTilerInfoWithContent(this.display.id, container)
                 .subscribe((response: {
                     displaySize: ISize,
-                    miniDisplayTilerList: ITile[],
+                    miniDisplayTilerList: Tile[],
                     miniDisplayContentList: TileContent[],
-                    displayTilerList: ITile[],
+                    displayTilerList: Tile[],
                     miniDisplaySize: ISize
                 }) => {
                     this.appConfig.log("CmsMiniDisplayComponent: initDisplayTileInfoWithContent");
@@ -470,7 +460,7 @@ export class CmsMiniDisplayComponent implements OnInit, OnChanges, OnDestroy {
             ],
 
             domEvents: false,
-            
+
         });
 
         this.configurePinchZoomOnMiniDisplay(manager);
@@ -521,15 +511,15 @@ export class CmsMiniDisplayComponent implements OnInit, OnChanges, OnDestroy {
 
         this.touchstartSubscription = Observable.fromEvent(document, "touchstart").subscribe(enablePinch);
 
-        this.touchendSubscription = Observable.fromEvent(document, "touchend").subscribe(disablePinch);  
+        this.touchendSubscription = Observable.fromEvent(document, "touchend").subscribe(disablePinch);
 
         manager.on("pinchin", (e) => {
-            this.outController = 0;            
+            this.outController = 0;
             this.zoom(1);
         });
 
         manager.on("pinchout", (e) => {
-            if(this.outController == 0) {
+            if (this.outController == 0) {
                 this.outController = 1;
                 e.preventDefault();
                 return false;
@@ -593,7 +583,7 @@ export class CmsMiniDisplayComponent implements OnInit, OnChanges, OnDestroy {
     /**
      * Add event listeners related to this component 
      */
-    private addEventListeners(): void {
+    private addMiniDisplayEventListeners(): void {
         // add WheelEvent listener for zoom in and out
         let container: HTMLElement[] = this.domManager.GetElementsByClassName("cms-mini-display-container");
         if (container.length > 0) {
@@ -629,5 +619,18 @@ export class CmsMiniDisplayComponent implements OnInit, OnChanges, OnDestroy {
     private fitByHeight() {
         this.zoomLevel = this.miniDisplayHelper.fitHeightZoomLevel;
         this.zoom(null);
+    }
+
+
+    private subscribeCMSEvents() {
+        this.mMiniDisplayCmsEvent = CmsEventEmitterService.get(CMS_EVENTS.MiniDisplay).subscribe((res: { eventType: string, body: any, displayId: number }) => {
+            // return if event received is for other display
+            if (res.displayId !== this.display.id && res.eventType !== "ResourceUpdated" && res.eventType !== "ResourceDeleted") {
+                return;
+            }
+
+            this.appConfig.log("CmsMiniDisplayComponent: Display change event received.");
+            this.handleMiniDisplayChangeEvent(res.eventType, res.body);
+        });
     }
 }

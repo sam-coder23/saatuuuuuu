@@ -1,6 +1,6 @@
 import { Component, Input } from "@angular/core";
 import { ITilePreset } from "../../cms/models/cms-tile-preset";
-import { ITile } from "../../cms/models/cms-tile";
+import { Tile } from "../../cms/models/cms-tile";
 
 @Component({
     selector: "cms-tile-grid",
@@ -34,7 +34,7 @@ export class TileGridComponent {
         };
     }
 
-    public tileStyle(tile: ITile) {
+    public tileStyle(tile: Tile) {
 
         let tilePresetBase = {
             height: this.tilePreset.base.rowBound,
@@ -46,15 +46,13 @@ export class TileGridComponent {
             width: this.displayBase.width / tilePresetBase.width
         };
 
-        let tileStyleModel: ITile = {
-            left: tile.left * ratioDisplayBaseToTilePresetBase.width,
-            top: tile.top * ratioDisplayBaseToTilePresetBase.height,
-            width: (tile.width * ratioDisplayBaseToTilePresetBase.width) - this.border,
-            height: (tile.height * ratioDisplayBaseToTilePresetBase.height) - this.border
+        let tileStyle = {
+            left: `${tile.left * ratioDisplayBaseToTilePresetBase.width}px`,
+            top: `${tile.top * ratioDisplayBaseToTilePresetBase.height}px`,
+            width: `${(tile.width * ratioDisplayBaseToTilePresetBase.width) - this.border}px`,
+            height: `${(tile.height * ratioDisplayBaseToTilePresetBase.height) - this.border}px`
         };
 
-        let tileStyle = Object.assign({}, tileStyleModel);
-        Object.keys(tileStyleModel).forEach(key => tileStyle[key] += "px");
         return tileStyle;
     }
 
