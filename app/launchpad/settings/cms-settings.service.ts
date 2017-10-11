@@ -34,7 +34,7 @@ export class CmsSettingsService {
      * @description
      * The constructor initializes various services.
      */
-    constructor(private translate: TranslateService, private cmsServerApi: CmsApiService, private router: Router, private storageManager: StorageManager, private appConfig: AppConfig) { 
+    constructor(private translate: TranslateService, private cmsServerApi: CmsApiService, private router: Router, private storageManager: StorageManager, private appConfig: AppConfig) {
     }
 
     /**
@@ -72,9 +72,9 @@ export class CmsSettingsService {
                 }
             })
             .catch((error) => {
-                 if(failure){
-                     failure();
-                 }
+                if (failure) {
+                    failure();
+                }
             });
     }
 
@@ -84,38 +84,44 @@ export class CmsSettingsService {
      */
     public applyUserSelectedLanguage(): void {
         let defaultLanguage = this.appConfig.defaultLanguage;
-        
-		// if language is not available
+
+        // if language is not available
         if (!this.mUserSettings) {
             this.appConfig.log("Error loading user settings.");
+
+            // set user selected language
+            this.translate.use(defaultLanguage);
+            this.setTextDirectionByLanguageKey(defaultLanguage);
         } else {
             if (!(this.mUserSettings.language && this.mUserSettings.language.length > 0)) {
                 this.mUserSettings.language = defaultLanguage;
+
+                // set user selected language
+                this.translate.use(this.mUserSettings.language);
+                this.setTextDirectionByLanguageKey(this.mUserSettings.language);
             }
         }
-        
-		
-		// set user selected language
-        this.translate.use(this.mUserSettings.language);
-        this.setTextDirectionByLanguageKey(this.mUserSettings.language);
-		
-		// fetch localization licence info and set default language if licence is not available
+
+        // fetch localization licence info and set default language if licence is not available
         this.cmsServerApi.getSystemInfo()
             .subscribe(
-                response => {
-                    if (response) {
-                        let localizationLicense = response.licenseinfo && response.licenseinfo.localization;
+            response => {
+                if (response) {
+                    let localizationLicense = response.LicenseInfo && response.LicenseInfo.localization;
 
-                        if (!localizationLicense) {
+                    if (!localizationLicense) {
+                        this.translate.use(defaultLanguage);
+                        this.setTextDirectionByLanguageKey(defaultLanguage);
+
+                        if (this.mUserSettings) {
                             this.mUserSettings.language = defaultLanguage;
-                            this.translate.use(defaultLanguage);
-                            this.setTextDirectionByLanguageKey(this.mUserSettings.language);
-                            this.updateUserProfileData(this.mUserSettings);                        
+                            this.updateUserProfileData(this.mUserSettings);
                         }
                     }
-                },
+                }
+            },
             error => {
-                    this.appConfig.log("cmsServerApi.getSystemInfo api fail Error");
+                this.appConfig.log("cmsServerApi.getSystemInfo api fail Error");
             });
     }
 
@@ -126,6 +132,8 @@ export class CmsSettingsService {
      * @Param data: IUserProfileSettings :: contain data-model of user settings
      */
     public updateUserProfileData(data: IUserProfileSettings, callback?): void {
+        if (!data) { return };
+
         this.mUserSettings = data;
 
         this.cmsServerApi.updateUserProfileSettings(data)
@@ -214,7 +222,7 @@ export class CmsSettingsService {
 
         switch (selectedOption) {
             case "show-available-walls-list":
-                this.router.navigate(["/displays-panel"]);                
+                this.router.navigate(["/displays-panel"]);
                 break;
 
             case "auto-connect-to-most-recent-wall":
@@ -311,7 +319,7 @@ export class CmsSettingsService {
      */
     public setTextDirectionByLanguageKey(languageKey) {
         let html = document.getElementsByTagName("html")[0];
-        html.setAttribute("dir", this.isRTLLanguage(languageKey) ? "rtl": "ltr");        
+        html.setAttribute("dir", this.isRTLLanguage(languageKey) ? "rtl" : "ltr");
     }
 
     /**
@@ -324,10 +332,10 @@ export class CmsSettingsService {
     /**
      * This method set application language as per browser language 
      */
-    public setBrowserLanguage(){
+    public setBrowserLanguage() {
         let browserLang = this.translate.getBrowserLang();
         let languagesRegEx = CmsLanguages.languagesRegExPattern;
-        
+
         this.translate.use(browserLang.match(languagesRegEx) ? browserLang : this.appConfig.defaultLanguage);
 
         //update text direction
