@@ -125,7 +125,6 @@ export class CmsSourceListComponent implements OnInit, OnChanges, OnDestroy {
         this.mScroller.max = null;
         this.mScroller.count = this.cmsSettingsService.mUserSettings.defaultPageSize || 20;
 
-        debugger;
         this.mScrollTarget = this.domManager.FirstChild();
         this.getSources();
 
