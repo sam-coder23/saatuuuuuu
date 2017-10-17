@@ -7,7 +7,7 @@
 import { Component, OnInit } from "@angular/core";
 import { Router } from "@angular/router";
 import { TranslateService } from "@ngx-translate/core";
-
+import * as CoreComponent from "core-components/app";
 import { CmsApiService } from "../../cms/api/cms-api.service";
 import { IUserProfileSettings } from "../../cms/models/cms-user-profile-settings";
 import { CmsSettingsService } from "./cms-settings.service";
@@ -15,6 +15,7 @@ import { CmsColorPickerComponent } from "../../shared/colorpicker/cms-colorpicke
 import { Display } from "../../cms/models/cms-display";
 import { CMSConstants } from "../../cms/models/cms-constants";
 import { AppConfig } from "../../config";
+
 
 /**
  * This is a panel component that defines the layout and feature of settings page.
@@ -26,9 +27,29 @@ import { AppConfig } from "../../config";
     styles: [require("to-string!./cms-settings-panel.component.scss")]
 })
 export class CmsSettingsPanelComponent implements OnInit {
+    private i18n: any;
     // to show or hide loading process
     private mLoading: boolean = true;
-
+    private fontColorModel: {
+        data: { 
+            value: string 
+        },
+        value: string,
+        key: string,
+        defaultTabLabel: string,
+        cancelText: string,
+        label: string
+    };
+    private backgroundColorModel:  {
+        data: { 
+            value: string 
+        },
+        value: string,
+        key: string,
+        defaultTabLabel: string,
+        cancelText: string,
+        label: string
+    };
     // user profile setting values
     private mUserSettings: IUserProfileSettings;
 
@@ -74,6 +95,10 @@ export class CmsSettingsPanelComponent implements OnInit {
     }
 
     ngOnInit() {
+        this.translate.get("settings").subscribe(response => {
+            this.i18n = response;
+        });
+
         if (!this.cmsSettingsService.mUserSettings) {
             this.cmsSettingsService.setUserProfileSettings(() => this.loadUserProfileSettings());
         } else {
@@ -83,6 +108,7 @@ export class CmsSettingsPanelComponent implements OnInit {
         /**
          * Method to check for license of localization.
          */
+
         this.checkForLocalizationLicense();
 
     }
@@ -102,6 +128,25 @@ export class CmsSettingsPanelComponent implements OnInit {
     }
 
     /**
+     * 
+     * @param pValue
+     * returns the model to be assigned to the color picker's model.
+     * 
+     */
+    private getColorPickerModel(pValue: string): any {
+        return {
+            data: {
+                value: pValue
+            },
+            value: pValue,
+            key: "value",
+            defaultTabLabel: this.i18n.defaultColorPickerTabLabel,
+            cancelText: this.i18n.cancel,
+            label: ""
+        };
+    }
+
+    /**
      * @description
      * This method update user-interface as per user settings 
      */
@@ -110,7 +155,8 @@ export class CmsSettingsPanelComponent implements OnInit {
 
         //get local settings from cms-settings-service 
         this.mUserSettings = this.cmsSettingsService.mUserSettings;
-
+        this.fontColorModel = this.getColorPickerModel(this.mUserSettings.sourceLabels.fontColor);
+        this.backgroundColorModel = this.getColorPickerModel(this.mUserSettings.sourceLabels.background);
         this.mUserSelectedLanguage = this.cmsSettingsService.getUserSelectedLanguageByKey(this.mUserSettings.language);
 
         // check if recent display exists
@@ -268,7 +314,7 @@ export class CmsSettingsPanelComponent implements OnInit {
      */
     private updateFontColor(event): void {
         if (event) {
-            let fontColor = event[0];
+            let fontColor = event.value;
             if (fontColor) {
                 this.mUserSettings.sourceLabels.fontColor = fontColor;
                 this.cmsSettingsService.updateUserProfileData(this.mUserSettings);
@@ -282,7 +328,7 @@ export class CmsSettingsPanelComponent implements OnInit {
      */
     private updateBackgroundColor(event): void {
         if (event) {
-            let backgroundColor = event[0];
+            let backgroundColor = event.value;
             if (backgroundColor) {
                 this.mUserSettings.sourceLabels.​background = backgroundColor
                 this.cmsSettingsService.updateUserProfileData(this.mUserSettings);

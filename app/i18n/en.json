@@ -87,7 +87,9 @@
         "autoLogOff": "Auto log-off",
         "timeOutInMinute": "Time out to log off in case of inactivity (minutes)",
         "listPageSizes": "List page sizes",
-        "defaultPageSize": "Default page size"
+        "defaultPageSize": "Default page size",
+        "defaultColorPickerTabLabel": "Custom",
+        "cancel" : "Cancel"
     },
     "about": {
         "about": "About CMS Launch Pad",
