@@ -146,7 +146,8 @@ class MockCmsApiService {
 class MockCmsClipboardService {
     selectedSources = [
         { id: 1 },
-        { id: 2 }
+        { id: 2 },
+        { id: 3 }
     ]
 }
 
@@ -267,7 +268,7 @@ describe("CmsSourceListComponent", () => {
     //     });
     // }))
 
-    it("component should be defined and new data should be populated on Changes", async(() => {
+    it("component should be defined and new data should be populated on Changes and listen 'Source Updated' event", async(() => {
         expect(component).toBeDefined();
         expect(component.changeEmitter).toBeDefined();
         expect(component.errorEmitter).toBeDefined();
@@ -275,6 +276,7 @@ describe("CmsSourceListComponent", () => {
        
         expect(debugInstance["mScroller"].dataCount).toBe(0);
         debugInstance.mScroller.count = sources.length+1;
+        expect(debugInstance.mSourceListCmsEvent).toBeNull();
         component.ngOnChanges(null);
         fixture.whenStable().then(() => {
             expect(debugInstance.mScroller.max).toEqual(debugInstance.mSources.length);
@@ -283,6 +285,22 @@ describe("CmsSourceListComponent", () => {
             expect(debugInstance.mScroller.max).not.toBeNull();
             expect(debugInstance.mScroller.count).toEqual(cmsSettingsService.mUserSettings.defaultPageSize);
             expect(debugInstance.mScrollTarget.id).toEqual("source-list-card-container");
+
+            debugInstance.mClipboard.selectedSources = [];
+            debugInstance.mClipboard.selectedSources.push(sources[0]);
+            expect(debugInstance.mSourceListCmsEvent).not.toBeNull();
+            expect(debugInstance.mClipboard.selectedSources[0].disabled).toBeFalsy()
+
+            let sourceUpdated = Object.assign({}, sources[0]); 
+            debugInstance.mSourceListCmsEvent.next(
+                {
+                    "eventType": "ResourceDeleted",
+                    "body": sourceUpdated
+                }
+            );
+            fixture.whenStable().then(() => {
+                expect(debugInstance.mClipboard.selectedSources[0].disabled).toBeTruthy();
+            });
         });
         fixture.detectChanges();
         let container = document.getElementById("source-list-card-container");
@@ -337,15 +355,21 @@ describe("CmsSourceListComponent", () => {
         debugInstance.mClipboard.selectedSources.push(sources[0]);
         debugInstance.getSources();
         expect(debugInstance.mSources.length).toEqual(1);
-
     });
 
     it("should return 0 if there are no sources or tile Id for a valid source", ()=>{
         expect(debugInstance.tileIdForSourceCount(0)).toEqual(0);
         debugInstance.tilePresets = [];
         expect(debugInstance.tileIdForSourceCount(1)).toEqual(0);
+
         debugInstance.tilePresets.push(TilePresets[0]);
-        expect(debugInstance.tileIdForSourceCount(1)).toEqual(TilePresets[0].id);
+        expect(debugInstance.tileIdForSourceCount(2)).toEqual(TilePresets[0].id);
+
+        debugInstance.tilePresets.push(TilePresets[1]);
+        expect(debugInstance.tileIdForSourceCount(4)).toEqual(TilePresets[1].id);
+
+        debugInstance.tilePresets.push(TilePresets[2]);
+        expect(debugInstance.tileIdForSourceCount(6)).toEqual(TilePresets[2].id);
     });
     
     it("should not return anything if the max scroll is not reached", ()=>{
@@ -368,6 +392,7 @@ describe("CmsSourceListComponent", () => {
 
 
     it("should call CmsFavoriteService.markObjectAsFavorite when the selected source is unfavorite", () => {
+        sources[0].disabled = false;
         fixture.detectChanges();
         component.toggleSourceFavorite(sources[0]);
         let args = spyMarkObjectAsFavorite.calls.mostRecent().args;

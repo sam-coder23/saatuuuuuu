@@ -94,14 +94,14 @@ body { background-color: #eeeeee; padding: 0; margin: 5px; overflow-y: scroll; }
 </head>
 
 <body id="HTMLReporter" class="html-reporter showDetails">
-<h1>Tested in Chrome 61.0.3163 (Windows 10 0.0.0) on Thu Oct 12 2017</h1>
+<h1>Tested in Chrome 61.0.3163 (Windows 7 0.0.0) on Tue Oct 17 2017</h1>
 
 <div class="alert">
 
 
-<!-- <span class="failingAlert bar">Failed 4 specs</span> -->
+<!-- <span class="failingAlert bar">Failed 2 specs</span> -->
 <span class="failingAlert bar"><span class="fold-buttons"><a href="#" onclick="fold();">Fold</a> | 
-  <a href="#" onclick="unfold();">Unfold</a></span>76 specs, 4 failed, 1 pending</span>
+  <a href="#" onclick="unfold();">Unfold</a></span>83 specs, 2 failed, 1 pending</span>
 <span class="resultsMenu bar">
 <a class="summaryMenuItem" onclick="showSummary();" href="#">Spec List<a>|<a 
    class="detailsMenuItem" onclick="showFailures();" href="#">Failures</a>
@@ -138,6 +138,43 @@ body { background-color: #eeeeee; padding: 0; margin: 5px; overflow-y: scroll; }
     
       <div class="specSummary passed">
       <span class="description">Service should be able to clear storage data</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">Service: App Config</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should be defined</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should return Server Url and Host</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should not execute console log for the function log when args are null</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should not execute console log for the function warn when args are null</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should not execute console log for the function error when args are null</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should execute console log for the function log when args are not null</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should execute console log for the function warn when args are not null</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should execute console log for the function error when args are not null</span>
       </div>
     
     </div>
@@ -275,7 +312,7 @@ body { background-color: #eeeeee; padding: 0; margin: 5px; overflow-y: scroll; }
     
     </div>
   
-    <div class="suite failed">
+    <div class="suite passed">
       <span class="description">CmsClipboardComponent</span>
     
       <div class="specSummary passed">
@@ -292,10 +329,6 @@ body { background-color: #eeeeee; padding: 0; margin: 5px; overflow-y: scroll; }
     
       <div class="specSummary passed">
       <span class="description">Init clipboard and grid component and load clipboard with large status</span>
-      </div>
-    
-      <div class="specSummary failed">
-      <span class="description">Check tile click in grid component</span>
       </div>
     
       <div class="specSummary passed">
@@ -362,10 +395,10 @@ body { background-color: #eeeeee; padding: 0; margin: 5px; overflow-y: scroll; }
     
     </div>
   
-    <div class="suite failed">
+    <div class="suite passed">
       <span class="description">CmsGridComponent</span>
     
-      <div class="specSummary failed">
+      <div class="specSummary passed">
       <span class="description">should be a defined component</span>
       </div>
     
@@ -403,7 +436,7 @@ body { background-color: #eeeeee; padding: 0; margin: 5px; overflow-y: scroll; }
       <span class="description">CmsSourceListComponent</span>
     
       <div class="specSummary passed">
-      <span class="description">component should be defined and new data should be populated on Changes</span>
+      <span class="description">component should be defined and new data should be populated on Changes and listen 'Source Updated' event</span>
       </div>
     
       <div class="specSummary passed">
@@ -496,12 +529,12 @@ body { background-color: #eeeeee; padding: 0; margin: 5px; overflow-y: scroll; }
     <span class="description">CmsSourcesPanelComponent should have filter button available with ID === sources-panel-favorite-button </span>
     <div class="stackTrace">
       <div class="resultMessage">Expected '' to be 'testSearchString'.
-    at http://127.0.0.1:9876/base/test/test.js?ee72d8a40b1b9fd5a1e5677ae39bd6efad2461aa:120613:45 [ProxyZone]
-    at ProxyZoneSpec.onInvokeTask (http://127.0.0.1:9876/base/test/test.js?ee72d8a40b1b9fd5a1e5677ae39bd6efad2461aa:117227:40) [ProxyZone]
-    at ZoneDelegate.invokeTask (http://127.0.0.1:9876/base/test/test.js?ee72d8a40b1b9fd5a1e5677ae39bd6efad2461aa:115239:37) [ProxyZone]
-    at Zone.runTask (http://127.0.0.1:9876/base/test/test.js?ee72d8a40b1b9fd5a1e5677ae39bd6efad2461aa:115043:48) [&lt;root&gt; =&gt; ProxyZone]
-    at ZoneTask.invoke (http://127.0.0.1:9876/base/test/test.js?ee72d8a40b1b9fd5a1e5677ae39bd6efad2461aa:115293:39) [&lt;root&gt;]
-    at data.args.(anonymous function) (http://127.0.0.1:9876/base/test/test.js?ee72d8a40b1b9fd5a1e5677ae39bd6efad2461aa:116404:26) [&lt;root&gt;]</div>
+    at http://127.0.0.1:9876/base/test/test.js?79385eea673c9714c38203a11c4d41b359618c82:120879:45 [ProxyZone]
+    at ProxyZoneSpec.onInvokeTask (http://127.0.0.1:9876/base/test/test.js?79385eea673c9714c38203a11c4d41b359618c82:117257:40) [ProxyZone]
+    at ZoneDelegate.invokeTask (http://127.0.0.1:9876/base/test/test.js?79385eea673c9714c38203a11c4d41b359618c82:115269:37) [ProxyZone]
+    at Zone.runTask (http://127.0.0.1:9876/base/test/test.js?79385eea673c9714c38203a11c4d41b359618c82:115073:48) [&lt;root&gt; =&gt; ProxyZone]
+    at ZoneTask.invoke (http://127.0.0.1:9876/base/test/test.js?79385eea673c9714c38203a11c4d41b359618c82:115323:39) [&lt;root&gt;]
+    at data.args.(anonymous function) (http://127.0.0.1:9876/base/test/test.js?79385eea673c9714c38203a11c4d41b359618c82:116434:26) [&lt;root&gt;]</div>
     </div>
   </div>
   
@@ -509,47 +542,12 @@ body { background-color: #eeeeee; padding: 0; margin: 5px; overflow-y: scroll; }
     <span class="description">CmsSourcesPanelComponent should show error message if error comes from Source List</span>
     <div class="stackTrace">
       <div class="resultMessage">Expected false to be true.
-    at http://127.0.0.1:9876/base/test/test.js?ee72d8a40b1b9fd5a1e5677ae39bd6efad2461aa:120625:53 [ProxyZone]
-    at ProxyZoneSpec.onInvokeTask (http://127.0.0.1:9876/base/test/test.js?ee72d8a40b1b9fd5a1e5677ae39bd6efad2461aa:117227:40) [ProxyZone]
-    at ZoneDelegate.invokeTask (http://127.0.0.1:9876/base/test/test.js?ee72d8a40b1b9fd5a1e5677ae39bd6efad2461aa:115239:37) [ProxyZone]
-    at Zone.runTask (http://127.0.0.1:9876/base/test/test.js?ee72d8a40b1b9fd5a1e5677ae39bd6efad2461aa:115043:48) [&lt;root&gt; =&gt; ProxyZone]
-    at ZoneTask.invoke (http://127.0.0.1:9876/base/test/test.js?ee72d8a40b1b9fd5a1e5677ae39bd6efad2461aa:115293:39) [&lt;root&gt;]
-    at data.args.(anonymous function) (http://127.0.0.1:9876/base/test/test.js?ee72d8a40b1b9fd5a1e5677ae39bd6efad2461aa:116404:26) [&lt;root&gt;]</div>
-    </div>
-  </div>
-  
-  
-  
-  <div class="specDetail failed">
-    <span class="description">CmsClipboardComponent Check tile click in grid component</span>
-    <div class="stackTrace">
-      <div class="resultMessage">Expected spy displays to have been called with [ [ 'displays', 31, 'sources-panel' ] ] but it was never called.
-    at http://127.0.0.1:9876/base/test/test.js?ee72d8a40b1b9fd5a1e5677ae39bd6efad2461aa:120900:46 [ProxyZone]
-    at ProxyZoneSpec.onInvoke (http://127.0.0.1:9876/base/test/test.js?ee72d8a40b1b9fd5a1e5677ae39bd6efad2461aa:117203:40) [ProxyZone]
-    at Zone.run (http://127.0.0.1:9876/base/test/test.js?ee72d8a40b1b9fd5a1e5677ae39bd6efad2461aa:115003:44) [ProxyZone =&gt; ProxyZone]
-    at http://127.0.0.1:9876/base/test/test.js?ee72d8a40b1b9fd5a1e5677ae39bd6efad2461aa:115556:58 [ProxyZone]
-    at ProxyZoneSpec.onInvokeTask (http://127.0.0.1:9876/base/test/test.js?ee72d8a40b1b9fd5a1e5677ae39bd6efad2461aa:117227:40) [ProxyZone]</div>
-    </div>
-  </div>
-  
-  
-  
-  <div class="specDetail failed">
-    <span class="description">CmsGridComponent should be a defined component</span>
-    <div class="stackTrace">
-      <div class="resultMessage">Expected '' to be 'recordsFetched'.
-    at http://127.0.0.1:9876/base/test/test.js?ee72d8a40b1b9fd5a1e5677ae39bd6efad2461aa:121567:33 [ProxyZone]
-    at ProxyZoneSpec.onInvokeTask (http://127.0.0.1:9876/base/test/test.js?ee72d8a40b1b9fd5a1e5677ae39bd6efad2461aa:117227:40) [ProxyZone]
-    at ZoneDelegate.invokeTask (http://127.0.0.1:9876/base/test/test.js?ee72d8a40b1b9fd5a1e5677ae39bd6efad2461aa:115239:37) [ProxyZone]
-    at Zone.runTask (http://127.0.0.1:9876/base/test/test.js?ee72d8a40b1b9fd5a1e5677ae39bd6efad2461aa:115043:48) [&lt;root&gt; =&gt; ProxyZone]
-    at ZoneTask.invoke (http://127.0.0.1:9876/base/test/test.js?ee72d8a40b1b9fd5a1e5677ae39bd6efad2461aa:115293:39) [&lt;root&gt;]
-    at data.args.(anonymous function) (http://127.0.0.1:9876/base/test/test.js?ee72d8a40b1b9fd5a1e5677ae39bd6efad2461aa:116404:26) [&lt;root&gt;],Expected '' to be 'recordsFetched'.
-    at http://127.0.0.1:9876/base/test/test.js?ee72d8a40b1b9fd5a1e5677ae39bd6efad2461aa:121593:33 [ProxyZone]
-    at ProxyZoneSpec.onInvokeTask (http://127.0.0.1:9876/base/test/test.js?ee72d8a40b1b9fd5a1e5677ae39bd6efad2461aa:117227:40) [ProxyZone]
-    at ZoneDelegate.invokeTask (http://127.0.0.1:9876/base/test/test.js?ee72d8a40b1b9fd5a1e5677ae39bd6efad2461aa:115239:37) [ProxyZone]
-    at Zone.runTask (http://127.0.0.1:9876/base/test/test.js?ee72d8a40b1b9fd5a1e5677ae39bd6efad2461aa:115043:48) [&lt;root&gt; =&gt; ProxyZone]
-    at ZoneTask.invoke (http://127.0.0.1:9876/base/test/test.js?ee72d8a40b1b9fd5a1e5677ae39bd6efad2461aa:115293:39) [&lt;root&gt;]
-    at data.args.(anonymous function) (http://127.0.0.1:9876/base/test/test.js?ee72d8a40b1b9fd5a1e5677ae39bd6efad2461aa:116404:26) [&lt;root&gt;]</div>
+    at http://127.0.0.1:9876/base/test/test.js?79385eea673c9714c38203a11c4d41b359618c82:120891:53 [ProxyZone]
+    at ProxyZoneSpec.onInvokeTask (http://127.0.0.1:9876/base/test/test.js?79385eea673c9714c38203a11c4d41b359618c82:117257:40) [ProxyZone]
+    at ZoneDelegate.invokeTask (http://127.0.0.1:9876/base/test/test.js?79385eea673c9714c38203a11c4d41b359618c82:115269:37) [ProxyZone]
+    at Zone.runTask (http://127.0.0.1:9876/base/test/test.js?79385eea673c9714c38203a11c4d41b359618c82:115073:48) [&lt;root&gt; =&gt; ProxyZone]
+    at ZoneTask.invoke (http://127.0.0.1:9876/base/test/test.js?79385eea673c9714c38203a11c4d41b359618c82:115323:39) [&lt;root&gt;]
+    at data.args.(anonymous function) (http://127.0.0.1:9876/base/test/test.js?79385eea673c9714c38203a11c4d41b359618c82:116434:26) [&lt;root&gt;]</div>
     </div>
   </div>
   
@@ -565,7 +563,7 @@ document.body.onkeypress = function (e) {
   switch (e.keyCode) {
     case 102: toggleFold(); break;
     case 49: showSummary(); break;
-    case 50: showFailures(); break;case 50: showFailures(); break;case 50: showFailures(); break;
+    case 50: showFailures(); break;
   }
 };
 

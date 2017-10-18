@@ -85,57 +85,6 @@ export const MockCmsResource: Array<CmsResource> = [
     }
 ];
 
-export const MockTilePreset = [
-    {
-        "id": 9,
-        "name": "1x1",
-        "description": "",
-        "tags": "",
-        "base": {
-            "rowBound": 1,
-            "colBound": 1
-        },
-        "tiles": [
-            {
-                "left": 0,
-                "top": 0,
-                "width": 1,
-                "height": 1
-            }
-        ],
-        "isDefault": false,
-        "noOfTiles": 1,
-        "isGrid": false
-    },
-    {
-        "id": 10,
-        "name": "2x1",
-        "description": "",
-        "tags": "",
-        "base": {
-            "rowBound": 1,
-            "colBound": 2
-        },
-        "tiles": [
-            {
-                "left": 0,
-                "top": 0,
-                "width": 1,
-                "height": 1
-            },
-            {
-                "left": 1,
-                "top": 0,
-                "width": 1,
-                "height": 1
-            }
-        ],
-        "isDefault": false,
-        "noOfTiles": 2,
-        "isGrid": false
-    }
-]
-
 export const MockMiniDisplayContents = [
     {
         "id": 21,

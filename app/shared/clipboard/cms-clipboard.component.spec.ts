@@ -169,25 +169,6 @@ describe("CmsClipboardComponent", () => {
         });
     });
 
-    it("Check tile click in grid component", (done) => {
-        componentGrid.miniTiles = MockMiniDisplayTiler;
-        componentGrid.tiles = MockDisplayTiler;
-        componentGrid.contents = MockMiniDisplayContents;
-        cmsSettingsService.setUserProfileSettings();
-        cmsMiniDisplayService.display = MockDisplay[0];
-        fixture.whenStable().then(() => {
-            fixtureGrid.detectChanges();
-            fixtureGrid.nativeElement.querySelector(".tiles .tile").click();
-            fixture.whenStable().then(() => {
-                fixture.detectChanges();
-                fixture.whenStable().then(() => {
-                    expect(router.navigate).toHaveBeenCalledWith(["displays", cmsMiniDisplayService.display.id, "sources-panel"]);
-                    done();
-                });
-            });
-        });
-    });
-
     it("Check mouse event functionality", (done) => {
         componentGrid.miniTiles = MockMiniDisplayTiler;
         componentGrid.tiles = MockDisplayTiler;

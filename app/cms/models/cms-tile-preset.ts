@@ -13,7 +13,8 @@ export interface ITilePreset {
         "width": number,
         "height": number
     }[],
-    "isDefault"?: boolean,
+    "isDefaultForAllDisplays"?: boolean,
     "noOfTiles"?: number,
-    "isGrid"?: boolean
+    "isGrid"?: boolean,
+    "defaultForDisplays"?: Array<any>;
 }

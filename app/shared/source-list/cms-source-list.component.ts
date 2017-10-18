@@ -26,6 +26,7 @@ import { Layout } from "../../cms/models/cms-layout";
 import { Tile } from "../../cms/models/cms-tile";
 import { ITilePreset } from "../../cms/models/cms-tile-preset";
 import { TranslateService } from "@ngx-translate/core";
+import { TilePresetManager } from "../../utils/tilepreset-manager.util";
 
 /**
  * This a source list component that fetches the combined list of available sources, perspectives and display specific
@@ -73,7 +74,7 @@ export class CmsSourceListComponent implements OnInit, OnChanges, OnDestroy {
     public tilePresets: ITilePreset[];
 
     // it saves the CMS events subscription and unsubscribe them on component destruction
-    private mSourceListCmsEvent: EventEmitter<any>;
+    private mSourceListCmsEvent: EventEmitter<any> = null;
 
     //Define domManager variable of DomaManager type to handle dom related stuff
     private domManager: DomManager;
@@ -92,7 +93,7 @@ export class CmsSourceListComponent implements OnInit, OnChanges, OnDestroy {
         aFavoriteService: CmsFavoriteService,
         private appConfig: AppConfig,
         private translateService: TranslateService) {
-        
+
         this.mCmsServerApi = aCmsServerApi;
         this.element = el;
         this.mScroller = aScroller;
@@ -139,7 +140,7 @@ export class CmsSourceListComponent implements OnInit, OnChanges, OnDestroy {
      * Unsubscribe observables and detach event handlers to avoid memory leaks.
      */
     ngOnDestroy() {
-        if(this.mScroller) {
+        if (this.mScroller) {
             this.mScroller.removeScrollListener();
         }
         if (this.mSourceListCmsEvent) {
@@ -250,7 +251,6 @@ export class CmsSourceListComponent implements OnInit, OnChanges, OnDestroy {
 
     }
 
-
     /**
      * On selecting favorite button on card, the respective source will be marked as favorite\unfavorite.
      */
@@ -268,7 +268,6 @@ export class CmsSourceListComponent implements OnInit, OnChanges, OnDestroy {
             this.mFavoriteService.markObjectAsFavorite(source.id, source.type, this.mSources);
         }
     }
-
 
     /**
      * Event listener to handle source list related events.
@@ -292,6 +291,13 @@ export class CmsSourceListComponent implements OnInit, OnChanges, OnDestroy {
 
         // send change event to sources panel to show refresh button
         this.changeEmitter.emit();
+    }
+
+    /**
+     * @param sourceCount 
+     */
+    private tileIdForSourceCount(sourceCount: number): number {
+        return TilePresetManager.GetTileId(this.tilePresets, sourceCount, this.displayId);
     }
 
     /**
@@ -356,34 +362,5 @@ export class CmsSourceListComponent implements OnInit, OnChanges, OnDestroy {
         }, (error) => {
             console.log(error);
         });
-    }
-
-    /**
-     * @param sourceCount 
-     */
-    private tileIdForSourceCount(sourceCount: number): number {
-        let tileIdIndex: number;
-
-        if (sourceCount < 1) {
-            return 0;
-        }
-
-        if (this.tilePresets) {
-            tileIdIndex = this.tilePresets.findIndex(tilePreset => tilePreset.noOfTiles === sourceCount && tilePreset.isDefault);
-
-            if (!(tileIdIndex >= 0)) {
-                tileIdIndex = this.tilePresets.findIndex(tilePreset => tilePreset.noOfTiles === sourceCount);
-            }
-
-            if (!(tileIdIndex >= 0)) {
-                tileIdIndex = this.tilePresets.findIndex(tilePreset => tilePreset.noOfTiles >= sourceCount);
-            }
-        }
-
-        if (tileIdIndex >= 0) {
-            return this.tilePresets[tileIdIndex].id;
-        }
-
-        return 0;
     }
 }
