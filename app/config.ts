@@ -24,7 +24,8 @@ class AppConfig {
             protocol = location.protocol;
         this.host = location.host;
 
-        this.serverURL = "https://10.98.0.231/cms-rest/v1";
+        this.serverURL = protocol + '//' + this.host + this.apiURL;
+        //this.serverURL = "https://10.98.0.231/cms-rest/v1";
 
         this.log("Application is using services available on the following url - ", this.serverURL);
         this.defaultLanguage = "en";
