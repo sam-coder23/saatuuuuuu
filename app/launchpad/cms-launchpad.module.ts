@@ -27,9 +27,6 @@ import { CmsLoginComponent, CmsCanActivateViaAuthorizationService } from "./logi
 /* Displays Panel */
 import { CmsDisplaysPanelComponent } from "./displays-panel/cms-displays-panel.component";
 
-/* Layouts Panel */
-import { CmsLayoutsPanelComponent } from "./layouts-panel/cms-layouts-panel.component";
-import { CmsSaveLayoutComponent } from "./layouts-panel/save-layout/cms-save-layout.component";
 
 /* Display Panel */
 import { CmsDisplayPanelComponent } from "./display-panel/cms-display-panel.component";
@@ -89,8 +86,6 @@ import { RobotModule, BuilderService } from "core-components/app";
     CmsDisplayPanelComponent,
     CmsOptionsComponent,
     CmsDisplaysPanelComponent,
-    CmsLayoutsPanelComponent,
-    CmsSaveLayoutComponent,
     CmsSourcesPanelComponent,
     CmsSettingsPanelComponent,
     CmsSettingsLanguagePanelComponent,

@@ -34,10 +34,7 @@ export class CmsOptionsComponent implements OnInit {
 
     // zoom level of mini-Display
     @Input("zoom") mZoomLevel: number;
-
-    // save layout option state for side-nav options
-    @Input("isSaveLayoutEnabled") isSaveLayoutEnabled: boolean;
-
+    
     // Create a "close" event
     @Output("close") closeEmitter = new EventEmitter();
 
@@ -159,11 +156,5 @@ export class CmsOptionsComponent implements OnInit {
     // private addCloseEventListener() {
     //     window.document.addEventListener("keyup", this.closeHandler.bind(this));
     // }
-
-    /**
-     * This method navigate to layouts list while click on "save a new layout" option.
-     */
-    private goToLayoutsPanelForSaveLayout(event) {
-        this.router.navigate([`/displays/${this.displayId}/layouts-panel`, { action: "saveLayout" }]);
-    }
+    
 }

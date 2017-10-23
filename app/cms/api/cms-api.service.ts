@@ -16,7 +16,6 @@ import "rxjs/add/operator/catch";
 import { CMS_EVENTS } from "./cms-events.enum";
 import { CmsEventEmitterService } from "./cms-event-emitter.service";
 import { Display } from "../models/cms-display";
-import { Layout } from "../models/cms-layout";
 import { Source } from "../models/cms-source";
 import { ICmsEvent } from "../models/cms-event";
 import { Tile } from "./../models/cms-tile";
@@ -114,25 +113,6 @@ export class CmsApiService {
     }
 
     /**
-     * Fetch layout list from CMS Server.
-     * @method getLayoutList
-     * @param {number} displayId
-     * @param {number} start
-     * @param {number} count
-     * @param {number} detail
-     * @param {string} search
-     * @param {boolean} favorite
-     * @return {Layout[]} Observable
-     */
-    getLayoutList(displayId: number, search: string = "", favorite: boolean = false, start: number = 1, count: number = 2147483647): Observable<Layout[]> {
-        if (isNaN(displayId)) {
-            return Observable.throw("Cannot get layout list without display id.");
-        }
-        let params = "displays/" + displayId + "/layouts?start=" + start + "&count=" + count + "&filter=" + encodeURIComponent(search) + "&onlyfavorite=" + favorite;
-        return this.apiRequest.get(params);
-    }
-
-    /**
      * Fetch selected display detail info from CMS Server.
      * Display"s tile array will be returned along with display"s detail information and content array.
      * @method getSelectedDisplayContent
@@ -144,32 +124,6 @@ export class CmsApiService {
             var display = new Display(response);
             return display;
         });
-    }
-
-    /**
-     * Save a new layout on the wall with `post` http method.
-     * @method saveLayout
-     * @param: displayId: number
-     * @param: layoutName: string
-     */
-    saveLayout(displayId: number, layoutName: string): Promise<Response> {
-        let url = `displays/${displayId}/layouts`,
-            body = {
-                "name": layoutName
-            };
-
-        this.appConfig.log(
-            "CmsApiService: saveLayout:: Saving layout with the name[" + layoutName + "] for display [Id:" + displayId + "]..."
-        );
-
-        return this.http
-            .post(this.apiRequest.GetURL(url), body, this.apiRequest.requestOption)
-            .toPromise()
-            .then(response => {
-                this.appConfig.log("CmsApiService: Save Layout API response");
-                return response;
-            })
-            .catch(this.promiseApiHandleError.bind(this));
     }
 
     /**
@@ -250,16 +204,6 @@ export class CmsApiService {
                 return response;
             })
             .catch(this.promiseApiHandleError.bind(this));
-    }
-
-    /**
-     * Load a selected layout on the wall
-     * @method loadLayout
-     * @param {number} aDisplayId It hold the display id
-     * @param {number} aLayoutId It hold the display id
-      */
-    loadLayout(aDisplayId: number, aLayoutId: number) {
-        return this.apiRequest.put(`displays/${aDisplayId}/content?layout=${aLayoutId}`);
     }
 
     /**
@@ -533,11 +477,6 @@ export class CmsApiService {
         // match the uri as "/displays/{id}/content"
         else if (uri.match(/(\/displays\/)(\d+)(\/content)$/g)) {
             this.updateDisplayContent(verb, uri, eventObject);
-        }
-
-        // match the uri as "/displays/{id}/layouts" or "/displays/{id}/layouts/{id}"
-        else if (uri.match(/(\/displays\/)(\d+)(\/layouts)$/g) || uri.match(/(\/displays\/)(\d+)(\/layouts\/)(\d+)$/g)) {
-            CmsEventEmitterService.get(CMS_EVENTS.LayoutList).emit(eventObject);
         }
 
         // match the uri as "/displays/{id}/content/{id}"

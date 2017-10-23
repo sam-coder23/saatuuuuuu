@@ -1,6 +1,6 @@
 @import "variables.global";
 
-.cms-dialog-overlay{
+.cms-dialog-overlay {
     position: absolute;
     top: 0;
     left: 0;
@@ -19,29 +19,28 @@
     -moz-animation-duration: 500ms;
 }
 
-.cms-dialog-content-block{
+.cms-dialog-content-block {
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    z-index: 2;
 
     @include layout-column();
     @include layout-align-center();
 }
 
-.cms-dialog-content{
-   align-self: center;
-    
+.cms-dialog-content {
+    align-self: center;
     animation-name: cms-opacity-animation;
     animation-duration: 500ms;
+    z-index: 2;    
 
-   md-card{
+    md-card {
        max-width: 350px;
-   }
+    }
 
-   md-card-content {
+    md-card-content {
         font-size: 16px;
         
         .message{
@@ -50,27 +49,27 @@
             line-height: 24px;
         }
 
-        .action-buttons{
+        .action-buttons {
             @include layout-row();
             @include layout-align-space-around();
             
             margin-top: 40px;
         }
 
-        button{
+        button {
             color: $blue_500;
             width: 50%;
         }
 
-        .cms-dialog-message-container{
+        .cms-dialog-message-container {
             @include layout-column();
             @include layout-align-center();
         }
 
-        md-progress-circle{
+        md-progress-circle {
             width: 60px;
         }
-   }
+    }
 }
 
 @keyframes cms-opacity-animation { from { opacity: 0 } }

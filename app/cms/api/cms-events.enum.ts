@@ -12,7 +12,6 @@
 export enum CMS_EVENTS {
     MiniDisplay,
     DisplayList,
-    LayoutList,
     SourceList,
     DisplayPanel,
     Application

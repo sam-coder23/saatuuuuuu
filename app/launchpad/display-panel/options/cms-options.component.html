@@ -24,14 +24,7 @@
                 <span>{{'options.exit' | translate}}</span>
             </button>
         </div>
-        <hr *ngIf="!(disableOptionOnDisplayUnavailable || !isSaveLayoutEnabled)">
-        <div class="options" *ngIf="!(disableOptionOnDisplayUnavailable || !isSaveLayoutEnabled)">
-            <button md-button id="options-savelayout-button" (click)="goToLayoutsPanelForSaveLayout($event)">
-                <i class="material-icons">save</i>
-                <span>{{'options.saveNewLayout' | translate}}</span>
-            </button>
-        </div>
-        <hr>
+        <hr *ngIf="!disableOptionOnDisplayUnavailable">
         <div class="options">
             <button md-button disabled="true" id="options-zoom-button">
                 <i class="material-icons">pageview</i>

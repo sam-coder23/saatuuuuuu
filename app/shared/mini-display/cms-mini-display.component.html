@@ -1,11 +1,5 @@
 <div id="mini-display-container" class="cms-mini-display-container" tabindex="0" (mouseenter)="setFocusOnMiniDisplayContainer()">
     <div class="cms-mini-display" [ngStyle]="mMiniDisplayStyle">
-        <div class="cms-mini-display-loadLayoutButton layout-row layout-align-center" *ngIf="!mShowDisplayContent">
-            <button id="miniDisplay-loadLayout-button" md-button md-raised-button *ngIf="!mShowDisplayContent" routerLink="/displays/{{display.id}}/layouts-panel">
-                <i class="material-icons" aria-label="LoadALayout">add</i>
-                {{ 'miniDisplay.loadLayout' | translate }}
-            </button>
-        </div>
         <cms-grid *ngIf="mShowDisplayContent" [miniTiles]="miniDisplayTilerList" [tiles]="displayTilerList" [contents]="miniDisplayContentList"></cms-grid>
     </div>
 </div>

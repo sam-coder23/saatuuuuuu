@@ -4,9 +4,6 @@
         <button id="dashboard-options-button" md-icon-button (click)="viewOptions = true;">
             <i class="material-icons" aria-label="Options">menu</i>
         </button>
-        <button id="dashboard-layouts-button" md-icon-button routerLink="/displays/{{display.id}}/layouts-panel" *ngIf="isDisplaySelected">
-            <i class="material-icons" aria-label="Layouts">dashboard</i>
-        </button>
         <button id="dashboard-sources-button" md-icon-button (click)="showConfirmationPopup = true;">
             <i class="material-icons" aria-label="Sources">grid_off</i>
         </button>
@@ -23,7 +20,7 @@
 </md-toolbar>
 
 <!-- @pending  We need to add handlers and put some business logic before updating our variables -->
-<cms-options *ngIf="viewOptions" (close)="viewOptions = false;" [zoom]="zoomLevel" (fitHeight)="fitHeight()" [isSaveLayoutEnabled]="isSaveLayoutEnabled"></cms-options>
+<cms-options *ngIf="viewOptions" (close)="viewOptions = false;" [zoom]="zoomLevel" (fitHeight)="fitHeight()"></cms-options>
 
 <cms-mini-display *ngIf="isDisplaySelected" [display]="display" (onZoom)="zoomLevel = $event" (close)="setFocusOnMiniDisplayContainer()" (displayUpdate)="onDisplayUpdate($event)" [fitHeight]="fitHeightCount"></cms-mini-display>
 

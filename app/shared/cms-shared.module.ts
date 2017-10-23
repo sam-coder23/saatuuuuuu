@@ -29,9 +29,6 @@ import { CmsGridComponent } from "./mini-display/grid/cms-grid.component";
 /* Display List */
 import { CmsDisplayListComponent } from "./display-list/cms-display-list.component";
 
-/* Layout List */
-import { CmsLayoutListComponent } from "./layout-list/cms-layout-list.component";
-
 /* Source List */
 import { CmsSourceListComponent } from "./source-list/cms-source-list.component";
 
@@ -40,8 +37,6 @@ import { CmsVirtualScrollService } from "./cms-virtual-scroll.service";
 import { CmsFavoriteService } from "./cms-favorite.service";
 
 import { CmsClipboardComponent } from "./clipboard/cms-clipboard.component";
-
-import { CmsDialogComponent } from "./dialog/cms-dialog.component";
 
 /* clipboard service to be registered at module level */
 import { CmsClipboardService } from "./clipboard/cms-clipboard.service";
@@ -77,10 +72,8 @@ import { RobotModule, BuilderService } from "core-components/app";
     CmsMiniDisplayComponent,
     CmsGridComponent,
     CmsDisplayListComponent,
-    CmsLayoutListComponent,
     CmsSourceListComponent,
     CmsClipboardComponent,
-    CmsDialogComponent,
     CmsColorPickerComponent,
     TileGridComponent,
     CmsTileListComponent
@@ -90,10 +83,8 @@ import { RobotModule, BuilderService } from "core-components/app";
     CmsMiniDisplayComponent,
     CmsGridComponent,
     CmsDisplayListComponent,
-    CmsLayoutListComponent,
     CmsSourceListComponent,
     CmsClipboardComponent,
-    CmsDialogComponent,
     CmsColorPickerComponent,
     TileGridComponent,
     CmsTileListComponent

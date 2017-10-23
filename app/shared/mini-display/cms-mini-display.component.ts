@@ -54,9 +54,6 @@ export class CmsMiniDisplayComponent implements OnInit, OnChanges, OnDestroy {
      */
     @Output("displayUpdate") displayUpdateEventEmitter: EventEmitter<any> = new EventEmitter<any>();
 
-    // required for save layout option enable/disable
-    @Output("onSaveLayoutStateUpdate") saveLayoutStateUpdateEventEmitter: EventEmitter<boolean> = new EventEmitter<boolean>();
-
     // it will contain mini display style
     mMiniDisplayStyle = {
         width: "98%",
@@ -439,10 +436,6 @@ export class CmsMiniDisplayComponent implements OnInit, OnChanges, OnDestroy {
      */
     private checkDisplayContentVisibility() {
         this.mShowDisplayContent = (this.miniDisplayTilerList !== undefined && this.miniDisplayTilerList.length > 0) || (this.miniDisplayContentList !== undefined && this.miniDisplayContentList.length > 0);
-
-        // this flag check for available content on mini display
-        // emit event for enable/disable save layout option in side-nav
-        this.saveLayoutStateUpdateEventEmitter.emit(this.mShowDisplayContent);
     }
 
     /**

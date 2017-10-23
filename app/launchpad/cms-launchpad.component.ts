@@ -43,7 +43,22 @@ import "../resources/fonts/material-fonts.css";
         {{dialogMessage}}
       </popup-body>
     </nd-popup>
-    <cms-dialog *ngIf="showProgressDialog" [message]="dialogMessage" [type]="'progress'" (okPress)="onDialogConfirmation()"></cms-dialog>`
+    <div *ngIf="showProgressDialog"  class="cms-dialog-content-block">
+      <div class="cms-dialog-content">
+        <md-card>
+          <md-card-content>
+            <div class="cms-dialog-message-container">
+              <md-progress-circle color="primary" mode="indeterminate"></md-progress-circle>
+            </div>
+            <div class="message">
+              {{dialogMessage}}
+            </div>
+          </md-card-content>
+        </md-card>
+      </div>
+    <div class="cms-dialog-overlay"></div>
+  </div>`,
+  styles: [require("to-string!./cms-launchpad.component.scss")]
 })
 export class CmsLaunchpadComponent implements OnInit, OnDestroy {
 

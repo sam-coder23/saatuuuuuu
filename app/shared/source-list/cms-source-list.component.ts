@@ -22,7 +22,6 @@ import { DomManager } from "../../utils/dom-manager.util";
 import { AppConfig } from "../../config";
 import { CmsSettingsService } from "./../../launchpad/settings/cms-settings.service";
 import { TileContent } from "../../cms/models/cms-tile-content";
-import { Layout } from "../../cms/models/cms-layout";
 import { Tile } from "../../cms/models/cms-tile";
 import { ITilePreset } from "../../cms/models/cms-tile-preset";
 import { TranslateService } from "@ngx-translate/core";

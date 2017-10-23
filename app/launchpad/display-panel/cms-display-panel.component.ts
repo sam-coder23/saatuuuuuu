@@ -80,9 +80,6 @@ export class CmsDisplayPanelComponent implements OnInit, OnDestroy {
     // it saves the CMS events subscription and unsubscribe them on component destruction
     private mDisplayPanelCmsEvent: EventEmitter<any>;
 
-    // hold save layout state
-    public isSaveLayoutEnabled: boolean;
-
     private showConfirmationPopup: boolean = false;
 
     /**
@@ -101,7 +98,6 @@ export class CmsDisplayPanelComponent implements OnInit, OnDestroy {
         this.zoomLevel = 100;
         this.fitHeightCount = 0;
         this.settings = this.cmsSettingsService.mUserSettings ? this.cmsSettingsService.mUserSettings.manageWallContent : null;
-        this.isSaveLayoutEnabled = false;
     }
 
     /**

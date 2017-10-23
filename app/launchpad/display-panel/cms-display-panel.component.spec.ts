@@ -137,7 +137,6 @@ describe("CmsDisplayPanelComponent - Test Suite", () => {
         expect(component.zoomLevel).toEqual(100);
         expect(component.fitHeightCount).toEqual(0);
         expect(component.settings).not.toBeNull();
-        expect(component.isSaveLayoutEnabled).toBeFalsy();
     });
 
 

@@ -8,7 +8,6 @@ import { ModuleWithProviders } from "@angular/core";
 import { Routes, RouterModule } from "@angular/router";
 
 import { CmsDisplaysPanelComponent } from "./displays-panel/cms-displays-panel.component";
-import { CmsLayoutsPanelComponent } from "./layouts-panel/cms-layouts-panel.component";
 import { CmsDisplayPanelComponent } from "./display-panel/cms-display-panel.component";
 import { CmsLoginComponent, CmsCanActivateViaAuthorizationService } from "./login/index";
 import { CmsSourcesPanelComponent } from "./sources-panel/cms-sources-panel.component";
@@ -26,7 +25,6 @@ export const routes: Routes = [
   { path: "display-panel/:id", component: CmsDisplayPanelComponent, canActivate: [CmsCanActivateViaAuthorizationService] },
   { path: "displays-panel", component: CmsDisplaysPanelComponent, canActivate: [CmsCanActivateViaAuthorizationService] },
   { path: "displays/:id/sources-panel", component: CmsSourcesPanelComponent, canActivate: [CmsCanActivateViaAuthorizationService] },
-  { path: "displays/:id/layouts-panel", component: CmsLayoutsPanelComponent, canActivate: [CmsCanActivateViaAuthorizationService] },
   { path: "settings", component: CmsSettingsPanelComponent, canActivate: [CmsCanActivateViaAuthorizationService] },
   { path: "settings/language/:key", component: CmsSettingsLanguagePanelComponent, canActivate: [CmsCanActivateViaAuthorizationService] },
   { path: "about", component: CmsAboutPanelComponent, canActivate: [CmsCanActivateViaAuthorizationService] },
