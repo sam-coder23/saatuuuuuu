@@ -14,6 +14,7 @@ import { CmsResource } from "./cms-resource";
 export class Display extends CmsResource {
     type: string;
     online: boolean;
+    tilerId?: number;
     private resolution: {
         width: number;
         height: number;
@@ -39,5 +40,6 @@ export class Display extends CmsResource {
         this.resolution = display.resolution;
         this.tiles = display.tiles;
         this.content = display.content;
+        this.tilerId = display.tilerId
     }
 }

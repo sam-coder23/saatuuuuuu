@@ -18,6 +18,14 @@
                         </div>
                     </md-card-content>
                 </div>
+                <div class="card-action-section layout-column layout-align-space-between">
+                    <button class="card-default" md-icon-button>
+                        <i class="material-icons">bookmark_border</i>
+                    </button>
+                    <button class="card-select" md-icon-button>
+                        <i class="material-icons">{{tilePreset?.isSelected ? 'check_box' : 'check_box_outline_blank'}}</i>
+                    </button>
+                </div>
             </div>
         </md-card>
     </div>

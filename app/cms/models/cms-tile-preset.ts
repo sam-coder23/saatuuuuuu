@@ -16,5 +16,6 @@ export interface ITilePreset {
     "isDefaultForAllDisplays"?: boolean,
     "noOfTiles"?: number,
     "isGrid"?: boolean,
-    "defaultForDisplays"?: Array<any>;
+    "defaultForDisplays"?: Array<any>,
+	"isSelected"?: boolean
 }
