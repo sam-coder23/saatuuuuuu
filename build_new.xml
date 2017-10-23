@@ -1,0 +1,37 @@
+<project name="TCR-UI" default="build">
+ 
+ <property environment="env" />
+ <property name="build.sandbox" value="../../../../CMS" />
+ <property file="${build.sandbox}/build.properties" />
+ 
+ <!--======================================================
+  This project is used to compile TCR-UI code in CMS. 
+  ========================================================-->
+    
+ <target name="build" depends="delete.CrisisRoomUI.war, installDependencies, compileCrisisRoomUI, create.CrisisRoomUI.war" />
+ 
+   <!-- create CrisisRoomUI.war -->
+   <target name="create.CrisisRoomUI.war">
+		<jar destfile="CrisisRoomUI.war" update="true" >
+			<zipfileset dir="./dist" includes="**/**" excludes="build_new.xml, .svn, .js.map, .git"/>
+		</jar>
+   </target>
+      
+	<!-- Install NPM Dependencies -->
+   	<target name="installDependencies">
+		<exec dir="${build.temp}/launchpad-git-src" executable="cmd.exe">
+			<arg value="/C npm install"/></exec>
+	</target>
+	
+	<!-- Compile code -->
+	<target name="compileCrisisRoomUI">
+		<exec dir="${build.temp}/launchpad-git-src" executable="cmd.exe">
+			<arg value="/C npm run build:production"/></exec>
+	</target>
+
+  <!-- Delete CrisisRoomUI.war if it exists -->
+  <target name="delete.CrisisRoomUI.war">
+	     <delete file="CrisisRoomUI.war" failonerror="false" />
+  </target> 
+   
+</project>

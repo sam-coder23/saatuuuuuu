@@ -1,8 +1,8 @@
-How to generate generate WebUI.war -
+How to generate generate CrisisRoomUI.war -
 
 Following files are needed to achive this -
-files:    "build_new.xml"
-This is palced at the root of the project
+files: "build_new.xml"
+This is placed at the root of the project
 
 Step 1 -
 Install NodeJS version 4.5.0 in "C:\Lang\nodejs".

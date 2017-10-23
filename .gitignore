@@ -1,3 +1,5 @@
 node_modules/**
 tslint/
 test-report/
+dist/
+npm-debug.log

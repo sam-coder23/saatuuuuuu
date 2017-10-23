@@ -72,18 +72,11 @@ module.exports = {
     new HtmlWebpackPlugin({ 
       template: "index.html",
       chunksSortMode: function(first, second) {
-        console.log(first);
-        console.log(second);
         return (first.names[0].indexOf("polyfills") >= 0)? -1 : 1;
       },
       chunks: ["polyfills", "app"],
     }),
     new CopyWebpackPlugin([
-	    /*{
-        context: ".",
-        from: "index.html"
-      },
-      */
       {
         context: ".",
         from: "WEB-INF/*.xml"
@@ -128,7 +121,7 @@ module.exports = {
         dead_code : true,
         drop_debugger: true,
         unused: true,
-        drop_console: false
+        drop_console: true
       },
       output: {
         comments: false
