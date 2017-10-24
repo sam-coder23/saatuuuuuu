@@ -98,7 +98,6 @@ export class CmsSettingsPanelComponent implements OnInit {
         this.translate.get("settings").subscribe(response => {
             this.i18n = response;
         });
-
         if (!this.cmsSettingsService.mUserSettings) {
             this.cmsSettingsService.setUserProfileSettings(() => this.loadUserProfileSettings());
         } else {
@@ -108,7 +107,6 @@ export class CmsSettingsPanelComponent implements OnInit {
         /**
          * Method to check for license of localization.
          */
-
         this.checkForLocalizationLicense();
 
     }
@@ -126,7 +124,7 @@ export class CmsSettingsPanelComponent implements OnInit {
                 this.localizationLicense = response.LicenseInfo.localization;
             });
     }
-
+    
     /**
      * 
      * @param pValue

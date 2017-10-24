@@ -15,7 +15,7 @@ export class Display extends CmsResource {
     type: string;
     online: boolean;
     tilerId?: number;
-    private resolution: {
+    public resolution: {
         width: number;
         height: number;
     }

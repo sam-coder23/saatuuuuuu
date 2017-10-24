@@ -1,0 +1,158 @@
+import { CmsResource } from "../../cms/models/cms-resource";
+import { CmsSettingsService } from "../../launchpad/settings/cms-settings.service";
+import { IUserProfileSettings } from "../../cms/models/cms-user-profile-settings";
+
+class MockDisplay extends CmsResource {
+    type: string;
+    online: boolean;
+    resolution: {
+        width: number;
+        height: number;
+    };
+    width : number;
+    height: number;
+    tiles: any;
+    content: any;
+
+}
+
+export const displays: MockDisplay[] = [
+    {
+        "id": 1,
+        "name": "Crisis room wall XYZ",
+        "type": "DisplayWall",
+        "description": "",
+        "snapshotPath": "https://10.98.0.231//mediaconfiguration?action=get&path=images%2Fsnapshots%2Fdisplays%2F1.jpeg",
+        "resolution": {
+            "width": 1920,
+            "height": 1080
+        },
+        "online": true,
+        "favorite": false,
+        "disabled": false,
+        "width": 1920,
+        "height": 1080,
+        "tiles" : [],
+        "content" : []
+    },
+    {
+        "id": 2,
+        "name": "Crisis room wall ABC",
+        "type": "DisplayWall",
+        "description": "",
+        "snapshotPath": "https://10.98.0.231//mediaconfiguration?action=get&path=images%2Fsnapshots%2Fdisplays%2F1.jpeg",
+        "resolution": {
+            "width": 1920,
+            "height": 1080
+        },
+        "online": true,
+        "favorite": false,
+        "disabled": true,
+        "width": 1920,
+        "height": 1080,
+        "tiles": [],
+        "content" : []        
+    },
+    {
+        "id": 3,
+        "name": "Crisis room wall 123",
+        "type": "DisplayWall",
+        "description": "",
+        "snapshotPath": "https://10.98.0.231//mediaconfiguration?action=get&path=images%2Fsnapshots%2Fdisplays%2F1.jpeg",
+        "resolution": {
+            "width": 1920,
+            "height": 1080
+        },
+        "online": true,
+        "favorite": true,
+        "disabled": false,
+        "width": 1920,
+        "height": 1080,
+        "tiles": [],
+        "content" : []        
+    },
+    {
+        "id": 4,
+        "name": "Crisis room wall - jEFF",
+        "type": "DisplayWall",
+        "description": "",
+        "snapshotPath": "https://10.98.0.231//mediaconfiguration?action=get&path=images%2Fsnapshots%2Fdisplays%2F1.jpeg",
+        "resolution": {
+            "width": 1920,
+            "height": 1080
+        },
+        "online": true,
+        "favorite": false,
+        "disabled": false,
+        "width": 1920,
+        "height": 1080,
+        "tiles" : [],
+        "content" : []
+    },
+    {
+        "id": 5,
+        "name": "Crisis room wall -Commutor",
+        "type": "DisplayWall",
+        "description": "",
+        "snapshotPath": "https://10.98.0.231//mediaconfiguration?action=get&path=images%2Fsnapshots%2Fdisplays%2F1.jpeg",
+        "resolution": {
+            "width": 1920,
+            "height": 1080
+        },
+        "online": true,
+        "favorite": false,
+        "disabled": false,
+        "width": 1920,
+        "height": 1080,
+        "tiles" : [],
+        "content" : []
+    },
+    {
+        "id": 6,
+        "name": "Crisis room wall - Knight",
+        "type": "DisplayWall",
+        "description": "",
+        "snapshotPath": "https://10.98.0.231//mediaconfiguration?action=get&path=images%2Fsnapshots%2Fdisplays%2F1.jpeg",
+        "resolution": {
+            "width": 1920,
+            "height": 1080
+        },
+        "online": true,
+        "favorite": false,
+        "disabled": false,
+        "width": 1920,
+        "height": 1080,
+        "tiles" : [],
+        "content" : []
+    }
+];
+
+export const settings: IUserProfileSettings = {
+    "language": "en",
+    "wallConnection": {
+        "atStartup": {
+            "status": "show-available-walls-list",
+            "selectedDisplayId": 37,
+            "recentDisplayId": 37
+        }
+    },
+    "sourceLabels": {
+        "displaySourceNameLabels": true,
+        "useMultipleLines": false,
+        "fontColor": "#FFFFFF",
+        "fontSize": 14,
+        "background": "#BDBDBD",
+        "transparency": 50
+    },
+    "manageWallContent": {
+        "requireConfirmationforLoadingLayouts": true,
+        "allowChangingSources": true,
+        "clipboard": {
+            "isEnabled": true,
+            "status": "large"
+        }
+    },
+    "logOffTime": 0,
+    "defaultPageSize": 3
+};
+

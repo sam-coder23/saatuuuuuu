@@ -209,6 +209,7 @@ describe("CmsSourceListComponent", () => {
                         nativeElement: HTMLElement
                     }
                 },
+
                 {
                     provide: CmsClipboardService,
                     useClass: MockCmsClipboardService
@@ -389,8 +390,7 @@ describe("CmsSourceListComponent", () => {
         expect(cmsFavoriteService.markObjectAsFavorite).not.toHaveBeenCalled();
         expect(cmsFavoriteService.markObjectAsFavorite).not.toHaveBeenCalled();
     });
-
-
+    
     it("should call CmsFavoriteService.markObjectAsFavorite when the selected source is unfavorite", () => {
         sources[0].disabled = false;
         fixture.detectChanges();

@@ -1,5 +1,5 @@
 <div id="display-list-card-container" class="display-list-cards">
-    <div class="display-list-unavailable" *ngIf="mDisplays.length === 0">
+    <div class="display-list-unavailable" *ngIf="mDisplays && mDisplays.length === 0">
         <span>{{ 'displayList.unavailable' | translate }}</span>
         <nd-popup *ngIf="showConfirmationPopup" id="display-list-confirmation-popup" class="confirm-popup" title="{{'displayList.confirmationTitlePopup' | translate }}"
             (done)="onConfirmation()" (closing)="showConfirmationPopup = false;" okText="{{'common.ok' | translate}}">
@@ -8,7 +8,7 @@
             </popup-body>
        </nd-popup>
     </div>
-    <div *ngIf="mDisplays.length > 0">
+    <div *ngIf="mDisplays && mDisplays.length > 0">
         <cms-card *ngFor="let display of mDisplays" [card]="display" (select)="connectWall(display)" (toggleFavorite)="toggleDisplayFavorite(display)" [ngClass]="{disabled: display.disabled}"> </cms-card>
     </div>
 </div>

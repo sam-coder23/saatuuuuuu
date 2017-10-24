@@ -241,7 +241,6 @@ export class CmsDisplayListComponent implements OnInit, OnChanges, OnDestroy {
     private handleDisplayListEvents(event: ICmsEvent) {
         //show confimation dialog
         this.showConfirmationPopup = false;
-
         if (event.verb.toLowerCase() === "deleted") {
             let id = (<{ id: number }>event.body).id;
 
