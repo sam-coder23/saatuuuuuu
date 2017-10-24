@@ -4,10 +4,10 @@
         <button id="dashboard-options-button" md-icon-button (click)="viewOptions = true;">
             <i class="material-icons" aria-label="Options">menu</i>
         </button>
-        <button id="dashboard-sources-button" md-icon-button (click)="showConfirmationPopup = true;">
+        <button id="dashboard-clear-wall-button" md-icon-button (click)="showClearWallPopup = true;" *ngIf="isDisplaySelected">
             <i class="material-icons" aria-label="Sources">grid_off</i>
         </button>
-        <button id="dashboard-displayList-button" class="display-name-button" md-button md-raised-button routerLink="/displays-panel">{{displayName}}</button>
+        <button id="dashboard-displayList-button" class="display-name-button" md-button md-raised-button routerLink="/displays-panel">{{ displayName }}</button>
     </div>
 
      <button id="display-panel-back-button" md-icon-button  *ngIf="isLongPressed" (click)="backToDisplayPanel()">
@@ -16,11 +16,11 @@
 
     <span class="fill-remaining-space"></span>
 
-    <cms-clipboard [id]="'cmsclipboard'+ settings?.clipboard?.status"></cms-clipboard>
+    <cms-clipboard></cms-clipboard>
 </md-toolbar>
 
 <!-- @pending  We need to add handlers and put some business logic before updating our variables -->
-<cms-options *ngIf="viewOptions" (close)="viewOptions = false;" [zoom]="zoomLevel" (fitHeight)="fitHeight()"></cms-options>
+<cms-options *ngIf="viewOptions" (close)="viewOptions = false;" [zoom]="zoomLevel" (fitHeight)="fitHeight()" [isSaveLayoutEnabled]="isSaveLayoutEnabled"></cms-options>
 
 <cms-mini-display *ngIf="isDisplaySelected" [display]="display" (onZoom)="zoomLevel = $event" (close)="setFocusOnMiniDisplayContainer()" (displayUpdate)="onDisplayUpdate($event)" [fitHeight]="fitHeightCount"></cms-mini-display>
 
@@ -28,9 +28,9 @@
     <span>{{ 'displayPanel.unavailable' | translate }}</span>
 </div>
 
-<nd-popup *ngIf="showConfirmationPopup" id="display-panel-confirmation-popup" class="confirm-popup" title="{{'displayPanel.confirmationTitlePopup' | translate }}"
- (done)="clearMiniDisplayWall()" (closing)="showConfirmationPopup = false;" okText="{{'common.yes' | translate}}" cancelText="{{'common.no' | translate}}">
+<nd-popup id="display-panel-clear-wall-popup" *ngIf="showClearWallPopup" class="confirm-popup" title="{{'displayPanel.clearWallConfirmationPopupTitle' | translate }}"
+ (done)="clearMiniDisplayWall()" (closing)="showClearWallPopup = false;" okText="{{'common.yes' | translate}}" cancelText="{{'common.no' | translate}}">
     <popup-body>
-        {{'displayPanel.confirmationPopupMessage' | translate}}
+        {{'displayPanel.clearWallConfirmationPopupMessage' | translate}}
     </popup-body>
 </nd-popup>

@@ -24,8 +24,8 @@
     "displayPanel": {
         "unavailable": "No Display",
         "selectDisplay": "Select a display",
-        "confirmationTitlePopup": "Clear Display Wall",
-        "confirmationPopupMessage": "Are you sure you want to clear the display wall?"
+        "clearWallConfirmationPopupTitle": "Clear Display Wall",
+        "clearWallConfirmationPopupMessage": "Are you sure you want to clear the display wall?"
     },
     "displayList": {
         "connectTo": "Select a display wall",
@@ -92,6 +92,7 @@
         "cancel" : "Cancel"
     },
     "about": {
+        "daysRemaining": "{{value}} days left for evaluation.",
         "about": "About CMS Launch Pad",
         "version": "Version:",
         "licensed": "Licensed to:",

@@ -55,32 +55,32 @@ export class CmsDisplayPanelComponent implements OnInit, OnDestroy {
     // counter for fit height, to be changed whenever fit height is triggered from options panel
     public fitHeightCount: number;
 
-    //Holds settings related to wall content
-    public settings: IManageWallContent;
-
     //@pending - var name To control visibility of Options sidebar
     public viewOptions: boolean;
 
     //Holds currently selected display from display list
-    private display: CmsResource;
+    public display: CmsResource;
 
     // hold long press state
-    private isLongPressed: boolean;
+    public isLongPressed: boolean;
 
     // hold subscription for isLongPressed
-    private longPressSubcription;
+    public longPressSubcription;
 
     // we are using selected display id as string as it can also provide string value as "nodisplay"
     public displayId: string;
 
-    private displayName: string;
+    public displayName: string;
 
-    private isDisplaySelected: boolean;
+    public isDisplaySelected: boolean;
 
     // it saves the CMS events subscription and unsubscribe them on component destruction
-    private mDisplayPanelCmsEvent: EventEmitter<any>;
+    public mDisplayPanelCmsEvent: EventEmitter<any>;
 
-    private showConfirmationPopup: boolean = false;
+    // hold save layout state
+    public isSaveLayoutEnabled: boolean;
+
+    private showClearWallPopup: boolean = false;
 
     /**
      * The constructor initializes various dependencies.
@@ -97,7 +97,7 @@ export class CmsDisplayPanelComponent implements OnInit, OnDestroy {
         this.viewOptions = false;
         this.zoomLevel = 100;
         this.fitHeightCount = 0;
-        this.settings = this.cmsSettingsService.mUserSettings ? this.cmsSettingsService.mUserSettings.manageWallContent : null;
+        this.isSaveLayoutEnabled = false;
     }
 
     /**
@@ -114,10 +114,7 @@ export class CmsDisplayPanelComponent implements OnInit, OnDestroy {
         else {
             this.isDisplaySelected = false;
 
-            // display name using TranslateService
-            this.translate.get("displayPanel.selectDisplay").subscribe((response: string) => {
-                this.displayName = response;
-            });
+            this.localiseKeys();
 
             this.mDisplayPanelCmsEvent = CmsEventEmitterService.get(CMS_EVENTS.DisplayPanel).subscribe((res: { eventType: string, body: any, displayId: number }) => {
                 this.appConfig.log("CmsDisplayPanelComponent: New Display added! Routing to display list.");
@@ -163,10 +160,10 @@ export class CmsDisplayPanelComponent implements OnInit, OnDestroy {
         if (display === null) {
             this.appConfig.error("Display not found! Routing to display list.");
             this.router.navigate(["/displays-panel"]);
+        } else {
+            this.display = <CmsResource>JSON.parse(display);
+            this.displayName = this.display.name;
         }
-
-        this.display = <CmsResource>JSON.parse(display);
-        this.displayName = this.display.name;
     }
 
 
@@ -183,7 +180,7 @@ export class CmsDisplayPanelComponent implements OnInit, OnDestroy {
     /**
      * This method revert back to display panel state when longpress is released and remose source icon is disappeared
      */
-    private backToDisplayPanel() {
+    public backToDisplayPanel() {
         this.cmsSettingsService.updateIsLongPress(false);
     }
 
@@ -193,7 +190,7 @@ export class CmsDisplayPanelComponent implements OnInit, OnDestroy {
      * case of display title and content update 
      * @method {void} onDisplayUpdate
      */
-    private onDisplayUpdate(display: any): void {
+    public onDisplayUpdate(display: any): void {
         this.displayName = display.name;
         this.appConfig.log(`CmsDisplayPanelComponent: onDisplayUpdate:: Display [id: ${display.id}] name updated to [Name: ${display.name}].`);
     }
@@ -202,13 +199,24 @@ export class CmsDisplayPanelComponent implements OnInit, OnDestroy {
      * This will be reponsible to clear the mini display wall
      * @method {void} clearMiniDisplayWall
      */
-    private clearMiniDisplayWall() {
+    public clearMiniDisplayWall() {
         let displayId = parseInt(this.displayId);
+        if (isNaN(displayId)) {
+            return;
+        }
         this.mCmsServerApi.putContentsOnDisplay(displayId, 0, {}).subscribe(response => {
             this.cmsClipboardService.selectedSources.length = 0;
         }, error => {
             console.error(error);
         });
-        this.showConfirmationPopup = false;
+        this.showClearWallPopup = false;
+    }
+
+
+    private localiseKeys(): void {
+        // display name using TranslateService
+        this.translate.get("displayPanel.selectDisplay").subscribe((response: string) => {
+            this.displayName = response;
+        });
     }
 }

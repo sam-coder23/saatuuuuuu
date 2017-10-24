@@ -84,7 +84,7 @@ export class CmsSettingsService {
      */
     public applyUserSelectedLanguage(): void {
         let defaultLanguage = this.appConfig.defaultLanguage;
-
+        
         // if language is not available
         if (!this.mUserSettings) {
             this.appConfig.log("Error loading user settings.");

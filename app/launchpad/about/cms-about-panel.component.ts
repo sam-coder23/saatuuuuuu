@@ -33,7 +33,7 @@ export class CmsAboutPanelComponent implements OnInit {
         server: "",
         version:"",
         serverVersion:"",
-        daysremaining:""
+        daysRemaining:""
     }
 
     private copyRightText: string;
@@ -57,17 +57,19 @@ export class CmsAboutPanelComponent implements OnInit {
          this.cmsServerApi.getSystemInfo()
             .subscribe(
                 response => {
-                    this.systemInfo.licensedTo = response.licenseinfo.customername;
-                    this.systemInfo.projectName = response.licenseinfo.projectname;
-                    this.systemInfo.server = response.serverinfo.ip;
-                    this.systemInfo.serverVersion = response.serverinfo.version;
+                    this.systemInfo.licensedTo = response.LicenseInfo.customerName;
+                    this.systemInfo.projectName = response.LicenseInfo.projectName;
+                    this.systemInfo.server = response.ServerInfo.ip;
+                    this.systemInfo.serverVersion = response.ServerInfo.version;
                     
-                    if(response.licenseinfo.licensestatus){
-                        if(response.licenseinfo.licensestatus === "LicenseAccepted"){
+                    if(response.LicenseInfo.licenseStatus){
+                        if(response.LicenseInfo.licenseStatus === "LicenseAccepted"){
                          this.systemInfo.licenseStatus = "License valid";
                         }else{
-                            this.systemInfo.daysremaining = response.licenseinfo.daysremaining + " day(s) left for evaluation";
-                            this.systemInfo.licenseStatus = response.licenseinfo.licensestatus + ", " + this.systemInfo.daysremaining;
+                            this.translate.get("about.daysRemaining", { value: response.LicenseInfo.daysRemaining }).subscribe((response: string) => {
+                                this.systemInfo.daysRemaining = response;
+                            });
+                            this.systemInfo.licenseStatus = response.LicenseInfo.licenseStatus + ", " + this.systemInfo.daysRemaining;
                         }
                     }
 

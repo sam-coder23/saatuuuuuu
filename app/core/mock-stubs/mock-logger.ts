@@ -14,4 +14,15 @@ export class MockLogger {
     public log(...args: any[]): any[] {
         return args;
     }
+
+
+    
+
+    /**
+     * returns logged arguments
+     * @param args 
+     */
+    public error(...args: any[]): any[] {
+        return this.log(args);
+    }
 }

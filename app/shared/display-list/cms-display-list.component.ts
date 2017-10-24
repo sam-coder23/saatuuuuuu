@@ -23,6 +23,7 @@ import { CmsSettingsService } from "../../launchpad/settings/cms-settings.servic
 import { TranslateService } from "@ngx-translate/core";
 import { CMSConstants } from "../../cms/models/cms-constants";
 import { AppConfig } from "../../config";
+import { DISPLAY_TYPE } from "../../cms/api/display-type.enum";
 
 
 /**
@@ -136,9 +137,12 @@ export class CmsDisplayListComponent implements OnInit, OnChanges, OnDestroy {
             .subscribe(
             (displays: Display[]) => {
                 this.mScroller.dataCount = displays.length;
-                this.mDisplays.push(...displays);
 
-                // if max display has been loaded then set maxDisplays else again addScrollListener  
+                let filteredDisplays = displays.filter(display => display.type !== DISPLAY_TYPE[DISPLAY_TYPE.OperatorWorkStation]);
+                
+                this.mDisplays.push(...filteredDisplays);
+
+                // if max display has been loaded then set maxDisplays else again addScrollListener
                 if (displays.length < this.mScroller.count) {
                     this.mScroller.max = this.mDisplays.length;
                 }
