@@ -75,7 +75,6 @@ describe("CmsTileListComponent", () => {
     let component: CmsTileListComponent;
     let fixture: ComponentFixture<CmsTileListComponent>;
     let debugInstance;
-
     let cmsClipboardService: MockCmsClipboardService, activatedRoute: MockActivatedRoute;
 
     let spyPutContentsOnDisplay: jasmine.Spy;
@@ -112,7 +111,6 @@ describe("CmsTileListComponent", () => {
             fixture = TestBed.createComponent(CmsTileListComponent);
             component = fixture.componentInstance;
             debugInstance = fixture.debugElement.componentInstance;
-
             activatedRoute = fixture.debugElement.injector.get(ActivatedRoute);
             cmsClipboardService = fixture.debugElement.injector.get(CmsClipboardService);
             let cmsApiService = fixture.debugElement.injector.get(CmsApiService);
@@ -134,13 +132,17 @@ describe("CmsTileListComponent", () => {
             expect(debugInstance.eventSubscription).not.toBeNull();
 
             // source count is 2, so expect only 1 tile preset is shown after filtering
-            expect(component.tilePresets.length).toEqual(1);
+            expect(component.tilePresets.length).toEqual(2);
+
+            // check default property
+            let carddefaultElement: DebugElement = fixture.debugElement.query(By.css("#card-default"));
+            expect(carddefaultElement).toBeDefined();
+            expect(component.tilePresets[0].isDefaultForAllDisplays).toBeFalsy();
 
             // check isSelected property
-            let cardElement: DebugElement = fixture.debugElement.query(By.css(".card-select"));
-            expect(cardElement).toBeDefined();
+            let cardSelectElement: DebugElement = fixture.debugElement.query(By.css(".card-select"));
+            expect(cardSelectElement).toBeDefined();
             expect(component.tilePresets[0].isSelected).toBeTruthy();
-
         });
     }));
 
@@ -178,7 +180,7 @@ describe("CmsTileListComponent", () => {
 
         // provide same display with not existing tilerId
         let displayUpdated = Object.assign({}, MockDisplays[0]);
-            displayUpdated.tilerId = 5;
+        displayUpdated.tilerId = 5;
 
         // trigger "DiplayUpdated" event  with not existing tilerId   
         debugInstance.eventSubscription.next(
@@ -195,4 +197,54 @@ describe("CmsTileListComponent", () => {
             expect(component.tilePresets[0].isSelected).toBeFalsy();
         });
     }));
+
+    it("should show defaultTiler with respective default icon", () => {
+        component.sourceCount = cmsClipboardService.selectedSources.length;
+
+        fixture.detectChanges();
+        fixture.whenStable().then(() => {
+            let cardElement: DebugElement = fixture.debugElement.query(By.css("#card-default"));
+            expect(cardElement).toBeDefined();
+
+            expect(component.tilePresets[0].isDefaultForAllDisplays).toBeFalsy();
+            expect(component.tilePresets[1].isDefaultForAllDisplays).toBeTruthy();
+
+            let cardElements: DebugElement[] = fixture.debugElement.queryAll(By.css("#card-default"));
+            expect(cardElements[0].nativeNode.innerText).toBe("bookmark_border");
+            expect(cardElements[1].nativeNode.innerText).toBe("bookmark");
+        });
+    });
+
+    //TODO: Test writing in progress
+    // it("component should listen 'Tile' event", async(() => {
+    //     component.sourceCount = cmsClipboardService.selectedSources.length;
+    //     expect(debugInstance.tileListEventSubscription).toBeNull();
+
+    //     fixture.detectChanges();
+
+    //     // check for event subscription
+    //     expect(debugInstance.tileListEventSubscription).not.toBeNull();
+
+    //     // 2nd tile must be default
+    //     expect(component.tilePresets[1].isDefaultForAllDisplays).toBeTruthy();
+
+    //     // provide same display with not existing tilerId
+    //     let displayUpdated = Object.assign({}, MockDisplays[0]);
+    //     displayUpdated.tilerId = 5;
+
+    //     // trigger "DiplayUpdated" event  with not existing tilerId   
+    //     debugInstance.eventSubscription.next(
+    //         {
+    //             "eventType": "DisplayUpdated",
+    //             "body": displayUpdated,
+    //             "displayId": 1
+    //         }
+    //     );
+
+    //     fixture.detectChanges();
+    //     fixture.whenStable().then(() => {
+    //         // current tile must be not selected
+    //         expect(component.tilePresets[0].isDefaultForAllDisplays).toBeFalsy();
+    //     });
+    // }));
 });

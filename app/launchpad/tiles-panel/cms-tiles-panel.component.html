@@ -9,9 +9,9 @@
         <span class="fill-remaining-space"></span>
 
 
-        <!--<button id="tiles-panel-reload-button" md-icon-button *ngIf="mStates.reload" (click)="reloadList()">
+        <button id="tiles-panel-reload-button" md-icon-button *ngIf="mStates.reload" (click)="reloadList()">
             <i class="material-icons">refresh</i>
-        </button>-->
+        </button>
         <button id="log-off" md-icon-button routerLink="/login">
             <i class="material-icons">power_settings_new</i>
         </button>
@@ -19,7 +19,7 @@
 </div>
 
 <div class="tiles-panel-main">
-    <cms-tile-list [sourceCount]="sourceCount" [displayResolution]="displayResolution"></cms-tile-list>
+    <cms-tile-list [sourceCount]="sourceCount" [displayResolution]="displayResolution" (change)="onListChanged()" *ngIf="mStates.list"></cms-tile-list>
 </div>
 
 <div class="page-toolbar bottom">

@@ -248,6 +248,10 @@ export class CmsApiService {
                         else if (cmsEvent && cmsEvent.uri && cmsEvent.uri.match("/users/current")) {
                             this.handleUserEvents(cmsEvent);
                         }
+                        // HANDLE TILE EVENTS
+                        else if (cmsEvent && cmsEvent.uri && cmsEvent.uri.match("/tilers")) {
+                            this.handleTilersEvent(cmsEvent);
+                        }
                     }
                 )
                 return res;
@@ -288,7 +292,7 @@ export class CmsApiService {
     public loadContentOnTile(displayId: number, tile: Tile, content: Source): Promise<Response> {
         this.appConfig.log("CmsApiService: loadContentOnTile...");
         tile = new Tile(tile);
-        
+
         try {
             let url = `displays/${displayId}/content`,
                 body = {
@@ -719,6 +723,53 @@ export class CmsApiService {
         // match the uri as "/sources/{id}"
         else if (uri.match(/(\/sources\/)(\d+)$/g)) {
             this.updateSingleSource(verb, uri, eventObject);
+        }
+    }
+
+    /**
+     * This method emits the event related to tilers. 
+     * The components need to subscribe for the events they want to listen.
+     * 
+     * Whenever any event is received from CMS, it is emitted using CmsEventEmitterService.
+     * @syntax: CmsEventEmitterService.get(CMS_EVENTS.<event-name>).emit(aResponse)
+     * Check CMS_EVENTS for details on events.
+     */
+    private handleTilersEvent(eventObject: ICmsEvent) {
+        let verb: string = eventObject.verb ? (eventObject.verb).toLowerCase() : "",
+            uri = eventObject.uri;
+        let response: any;
+
+        this.appConfig.log("CmsApiService: handleTilersEvent...");
+        // match the uri as "/tilers"
+        if (uri.match(/(\/tilers)$/g)) {
+            if (verb === "posted") {
+                this.appConfig.log("CmsApiService: handleTilersEvent:: add a tile to the list");
+                //TODO:TBD = "TilerResourceAdded" not used further need to check
+                response = {
+                    eventType: "TilerResourceAdded",
+                    body: eventObject.body
+                };
+            } else if (verb === "deleted") {
+                this.appConfig.log("CmsApiService: handleTilersEvent:: remove a tile from the list");
+                response = {
+                    eventType: "TilerResourceDeleted",
+                    body: eventObject.body
+                };
+            }
+            // send event to tilers list
+            CmsEventEmitterService.get(CMS_EVENTS.TileList).emit(response);
+        }
+        // match the uri as "/tilers/{id}"
+        else if (uri.match(/(\/tilers\/)(\d+)$/g)) {
+            if (verb === "put") {
+                this.appConfig.log("CmsApiService: handleTilersEvent:: update a tile from the list");
+                response = {
+                    eventType: "TilerResourceUpdated",
+                    body: eventObject.body
+                };
+            }
+            // send event to tilers list
+            CmsEventEmitterService.get(CMS_EVENTS.TileList).emit(response);
         }
     }
 

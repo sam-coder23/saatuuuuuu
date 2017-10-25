@@ -67,6 +67,12 @@ describe("CmsTilesPanelComponent - Test Suite", () => {
 
         expect(component["mDisplayId"]).toEqual(1);
         expect(component["sourceCount"]).toEqual(1);
+
+        expect(component.mStates.list).toBeTruthy();
+        expect(component.mStates.reload).toBeFalsy();
+
+        let reloadButton: DebugElement = fixture.debugElement.query(By.css("#tiles-panel-reload-button"));
+        expect(reloadButton).toBeFalsy();
     });
 
 
@@ -83,5 +89,16 @@ describe("CmsTilesPanelComponent - Test Suite", () => {
 
         expect(spyNavigateByUrl.calls.count()).toEqual(1);
         expect(spyNavigateByUrl.calls.argsFor(0)[0]).toEqual(`display-panel/${component["mDisplayId"]}`);
+    });
+
+    it("should set reload to TRUE on list change", () => {
+        component.onListChanged();
+        expect(component.mStates.reload).toBeTruthy();
+    });
+
+    it("should set reload and list to FALSE on reload list", () => {
+        component.reloadList();
+        expect(component.mStates.reload).toBeFalsy();
+        expect(component.mStates.list).toBeFalsy();
     });
 });

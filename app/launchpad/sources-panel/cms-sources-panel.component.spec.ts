@@ -227,7 +227,7 @@ describe("CmsSourcesPanelComponent", () => {
         expect(component.mStates.reload).toBeTruthy();
     });
 
-    it("should set reload ad list to FALSE on reload list", () => {
+    it("should set reload and list to FALSE on reload list", () => {
         component.reloadList();
         expect(component.mStates.reload).toBeFalsy();
         expect(component.mStates.list).toBeFalsy();

@@ -31,13 +31,19 @@ export class CmsTilesPanelComponent implements OnInit {
     private displayResolution: { "width": number, "height": number };
     private sourceCount: number;
 
+    // all boolean states for the template
+    mStates = {
+        reload: false,
+        list: true
+    };
+
     constructor(private activatedRoute: ActivatedRoute,
         private router: Router) {
 
         this.displayResolution = {
             height: 130,
             width: 230
-        }
+        };
     }
 
     ngOnInit() {
@@ -53,5 +59,23 @@ export class CmsTilesPanelComponent implements OnInit {
 
     public navigateBack(): void {
         window.history.back();
+    }
+
+    /**
+ * Reload sources list
+ */
+    reloadList(): void {
+        this.mStates.reload = false;
+        this.mStates.list = false;
+        window.setTimeout(() => {
+            this.mStates.list = true
+        }, 0);
+    }
+
+    /**
+ * On list modified event
+ */
+    onListChanged(): void {
+        this.mStates.reload = true;
     }
 }

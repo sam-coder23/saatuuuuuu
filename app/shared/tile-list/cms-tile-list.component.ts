@@ -1,10 +1,13 @@
-import { Component, OnInit, OnDestroy, Input, EventEmitter, Output } from "@angular/core";
+import { Component, OnInit, Input, EventEmitter, ElementRef, Output, OnChanges, SimpleChanges, OnDestroy } from "@angular/core";
 import { CmsApiService } from "../../cms/api/cms-api.service";
 import { ITilePreset } from "../../cms/models/cms-tile-preset";
 import { CmsClipboardService } from "../clipboard/cms-clipboard.service";
 import { ActivatedRoute } from "@angular/router";
+import { TilePresetManager } from "../../utils/tilepreset-manager.util";
+import { Subscription } from "rxjs/Rx";
 import { CmsEventEmitterService } from "./../../cms/api/cms-event-emitter.service";
 import { CMS_EVENTS } from "../../cms/api/cms-events.enum";
+import { ICmsEvent } from "../../cms/models/cms-event";
 import { Validation } from "../../core/util/Validation";
 import { CMSConstants } from "./../../cms/models/cms-constants";
 
@@ -17,23 +20,25 @@ import { CMSConstants } from "./../../cms/models/cms-constants";
 export class CmsTileListComponent implements OnInit, OnDestroy {
     @Input()
     sourceCount: number = 0;
-
     @Input()
     displayResolution: { "width": number, "height": number };
-
     public tilePresets: ITilePreset[];
-
     @Output("select") tileSelectEmitter = new EventEmitter();
-
+    // an event to emit changes to sources-panel
+    @Output("change") changeEmitter = new EventEmitter();
+    private tileListEventSubscription: Subscription;
+    public defaultTilerID: number;
+    private displayID: number;
     // it saves the CMS events subscription and unsubscribe them on component destruction
     private eventSubscription: EventEmitter<any> = null;
 
     constructor(
         private activatedRoute: ActivatedRoute,
         private cmsServerApi: CmsApiService,
-        private clipboard: CmsClipboardService) {
-
+        private clipboard: CmsClipboardService,
+    ) {
         this.tilePresets = [];
+        this.displayID = parseInt(this.activatedRoute.params["value"]["id"]);
     }
 
     ngOnInit() {
@@ -43,21 +48,28 @@ export class CmsTileListComponent implements OnInit, OnDestroy {
         this.getTilePresets();
     }
 
-    public ngOnDestroy() {
+    ngOnDestroy() {
         // Unsubscribe cms events for tile list component
         if (!Validation.IsNullOrUndefined(this.eventSubscription)) {
             this.eventSubscription.unsubscribe();
         }
+
+        if (!Validation.IsNullOrUndefined(this.tileListEventSubscription)) {
+            this.tileListEventSubscription.unsubscribe();
+        }
     }
 
-    /**
-     * Fetch tile presets based on source count.
-     * @method getTilePresets
-     * @return void
-     */
-    public getTilePresets() {
+    private getTilePresets() {
+
+        if (!this.tileListEventSubscription) {
+            this.tileListEventSubscription = CmsEventEmitterService.get(CMS_EVENTS.TileList)
+                .subscribe((event: ICmsEvent) => this.handleTilePresetListEvents(event));
+        }
+
         this.cmsServerApi.getTilers().subscribe(tilePresets => {
             this.tilePresets = tilePresets.filter(tilePreset => tilePreset.noOfTiles === this.sourceCount);
+            this.defaultTilerID = TilePresetManager.GetTileId(this.tilePresets, this.sourceCount, this.displayID);
+
             this.markTileSelected();
             // subscribe for display change events
             if (Validation.IsNullOrUndefined(this.eventSubscription)) {
@@ -95,8 +107,6 @@ export class CmsTileListComponent implements OnInit, OnDestroy {
     loadTilePreset(tilePreset: ITilePreset) {
         this.selectTile(tilePreset);
 
-        let displayId = parseInt(this.activatedRoute.params["value"]["id"]);
-
         let requestPayload = {
             "resources": [...this.clipboard.selectedSources]
         };
@@ -105,7 +115,7 @@ export class CmsTileListComponent implements OnInit, OnDestroy {
         requestPayload.resources.forEach(resource => {
             resource.selected = undefined;
         });
-        this.cmsServerApi.putContentsOnDisplay(displayId, tilePreset.id, requestPayload).subscribe(response => {
+        this.cmsServerApi.putContentsOnDisplay(this.displayID, tilePreset.id, requestPayload).subscribe(response => {
             this.tileSelectEmitter.emit();
         }, error => {
             console.error(error);
@@ -113,9 +123,26 @@ export class CmsTileListComponent implements OnInit, OnDestroy {
     }
 
     /**
-     * This method mark a tile selected based on current display tilerId.
+ * This will call the functionality written inside of this block
+ * once it will get any changes in input of this component
+ * @Hook ngOnChanges
+ * @param {SimpleChanges} changes
+ */
+    ngOnChanges(changes: SimpleChanges) {
+        this.tilePresets = [];
+        this.getTilePresets();
+    }
+
+    /**
+     * Event listener to handle Tiler list related events
+     */
+    private handleTilePresetListEvents(event: ICmsEvent) {
+        this.changeEmitter.emit();
+    }
+
+    /* This method mark a tile selected based on current display tilerId.
      * @method markTileSelected
-     * @return void
+    * @return void
      */
     private markTileSelected() {
         let displayId = parseInt(this.activatedRoute.params["value"]["id"]);
@@ -133,7 +160,7 @@ export class CmsTileListComponent implements OnInit, OnDestroy {
      * @return void
      */
     private selectTile(tilePreset) {
-        if(Validation.IsNullOrUndefined(tilePreset)){ return; }
+        if (Validation.IsNullOrUndefined(tilePreset)) { return; }
 
         // unmark previous selected tile
         for (let index = 0; index < this.tilePresets.length; index++) {
