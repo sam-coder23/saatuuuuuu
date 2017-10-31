@@ -5,24 +5,20 @@
  */
 
 import { Subscription } from "rxjs/Rx";
-import { Component, OnInit, ElementRef, OnDestroy, EventEmitter, Input, Output, OnChanges, SimpleChanges } from "@angular/core";
+import { Component, OnInit, OnDestroy, EventEmitter, Input, Output, OnChanges, SimpleChanges } from "@angular/core";
 import { Router, ActivatedRoute, Params } from "@angular/router";
-
 import { CmsApiService } from "../../cms/api/cms-api.service";
 import { CmsEventEmitterService } from "./../../cms/api/cms-event-emitter.service";
 import { CmsClipboardService } from "./../clipboard/cms-clipboard.service";
 import { CMS_EVENTS } from "../../cms/api/cms-events.enum";
-import { CmsVirtualScrollService } from "../cms-virtual-scroll.service";
 import { CMS_SESSION_STORAGE_ITEM } from "../../cms/models/cms-session-storage-item";
 import { ICmsEvent } from "../../cms/models/cms-event";
 import { Display } from "../../cms/models/cms-display";
 import { StorageManager } from "../../cms/api/cms-storagemanager.service";
-import { DomManager } from "../../utils/dom-manager.util";
 import { CmsFavoriteService } from "../cms-favorite.service";
 import { CmsSettingsService } from "../../launchpad/settings/cms-settings.service";
 import { TranslateService } from "@ngx-translate/core";
 import { CMSConstants } from "../../cms/models/cms-constants";
-import { AppConfig } from "../../config";
 import { DISPLAY_TYPE } from "../../cms/api/display-type.enum";
 
 
@@ -45,7 +41,7 @@ import { DISPLAY_TYPE } from "../../cms/api/display-type.enum";
  * @pending - as of dataCount is used to control the rendering however ngLife cycle has to be seen in detail to get rid
  * of this. If we refactor this there are other components those has to be refactoered as well.
  */
-export class CmsDisplayListComponent implements OnInit, OnChanges, OnDestroy {
+export class CmsDisplayListComponent implements OnChanges, OnDestroy {
 
     /**
      * These filter properties will hold the filtering data
@@ -56,17 +52,10 @@ export class CmsDisplayListComponent implements OnInit, OnChanges, OnDestroy {
     @Input() searchFilter: string;
 
     mDisplays: Display[];
-
-    private mScrollTarget: HTMLElement;
     private eventSubscription: Subscription;
 
     private mRouter: Router;
     private mCmsServerApi: CmsApiService;
-    private element: ElementRef;
-    private mScroller: CmsVirtualScrollService;
-
-    //Define domManager variable of DomaManager type to handle dom related stuff
-    private domManager: DomManager;
     private action: string;
 
     @Output("change") changeEmitter = new EventEmitter();
@@ -77,20 +66,9 @@ export class CmsDisplayListComponent implements OnInit, OnChanges, OnDestroy {
     /**
      * The constructor initializes various dependencies.
      */
-    constructor(aRouter: Router, aCmsServerApi: CmsApiService, el: ElementRef, aScroller: CmsVirtualScrollService, private cmsClipboardService: CmsClipboardService, private storageManager: StorageManager, private cmsSettingsService: CmsSettingsService, private route: ActivatedRoute, private favoriteService: CmsFavoriteService, private translate: TranslateService, private appConfig: AppConfig) {
+    constructor(aRouter: Router, aCmsServerApi: CmsApiService, private cmsClipboardService: CmsClipboardService, private storageManager: StorageManager, private cmsSettingsService: CmsSettingsService, private route: ActivatedRoute, private favoriteService: CmsFavoriteService, private translate: TranslateService) {
         this.mRouter = aRouter;
         this.mCmsServerApi = aCmsServerApi;
-        this.element = el;
-        this.mScroller = aScroller;
-        this.domManager = new DomManager(this.element);
-    }
-
-    /**
-     * On initialization of display-list component, fetching list of displays from CMS Server API service
-     * and initializing displays array.
-     */
-    ngOnInit() {
-
     }
 
     /**
@@ -100,19 +78,8 @@ export class CmsDisplayListComponent implements OnInit, OnChanges, OnDestroy {
      * @param {SimpleChanges} changes
      */
     ngOnChanges(cahnges: SimpleChanges) {
-        this.mScroller.removeScrollListener();
         this.mDisplays = [];
-        this.mScroller.dataCount = 0;
-        this.mScroller.max = null;
-        this.mScroller.count = this.cmsSettingsService.mUserSettings.defaultPageSize || 20;
-        this.mScrollTarget = this.domManager.FirstChild();
         this.getDisplays();
-
-        this.mScroller.addScrollListener(this.mScrollTarget, function () {
-            if (this.mScroller.max == null) {
-                this.getDisplays();
-            }
-        }.bind(this));
     }
 
     /**
@@ -120,7 +87,6 @@ export class CmsDisplayListComponent implements OnInit, OnChanges, OnDestroy {
      * Unsubscribe observables and detach event handlers to avoid memory leaks.
      */
     ngOnDestroy() {
-        this.mScroller.removeScrollListener();
         if (this.eventSubscription)
             this.eventSubscription.unsubscribe();
     }
@@ -129,24 +95,12 @@ export class CmsDisplayListComponent implements OnInit, OnChanges, OnDestroy {
      * This method gets all displays from CMS Server API.
      */
     getDisplays() {
-        if (this.mScroller.max != null) {
-            return;
-        }
-
-        return this.mCmsServerApi.getDisplayList(this.mDisplays.length + 1, this.mScroller.count, this.searchFilter, this.favoriteFilter)
+        return this.mCmsServerApi.getDisplayList(1, 0, this.searchFilter, this.favoriteFilter)
             .subscribe(
             (displays: Display[]) => {
-                this.mScroller.dataCount = displays.length;
-
                 let filteredDisplays = displays.filter(display => display.type !== DISPLAY_TYPE[DISPLAY_TYPE.OperatorWorkStation]);
                 
                 this.mDisplays.push(...filteredDisplays);
-
-                // if max display has been loaded then set maxDisplays else again addScrollListener
-                if (displays.length < this.mScroller.count) {
-                    this.mScroller.max = this.mDisplays.length;
-                }
-                this.mScroller.loading = false;
 
                 // subscribe for display list change events
                 if (!this.eventSubscription) {
@@ -160,7 +114,6 @@ export class CmsDisplayListComponent implements OnInit, OnChanges, OnDestroy {
                 }
             },
             error => {
-                this.mScroller.loading = false;
                 this.showDialogMessage();
             });
     }

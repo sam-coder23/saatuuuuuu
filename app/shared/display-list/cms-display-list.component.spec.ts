@@ -10,7 +10,6 @@ import { HttpModule, Http } from "@angular/http";
 import { TranslateModule, TranslateLoader, TranslateService } from "@ngx-translate/core";
 import { TranslateHttpLoader } from "@ngx-translate/http-loader";
 import { CmsApiService } from "../../cms/api/cms-api.service";
-import { CmsVirtualScrollService } from "../cms-virtual-scroll.service";
 import { CmsSettingsService } from "../../launchpad/settings/cms-settings.service";
 import { CmsClipboardService } from "../clipboard/cms-clipboard.service";
 import { StorageManager } from "../../cms/api/cms-storagemanager.service";
@@ -83,13 +82,12 @@ describe("CmsDisplayListComponent", () => {
     let cmsApiService: CmsApiService;
     let cmsFavoriteService: CmsFavoriteService;
     let cmsClipboardService: CmsClipboardService;
-    let cmsScrollService: CmsVirtualScrollService;
     let translateService: TranslateService;
     let routerService: Router;
     let storageManager: StorageManager;
     let i18n: any;
     let debugInstance, nativeElement;
-    let spyMarkObjectAsFavorite: jasmine.Spy, spyMarkObjectAsUnfavorite, spyRemoveScroll, spyAddScroll, spyRouter, spyUpdateSpecificDisplay, spyUpdateRecentDisplay, spyRemove;
+    let spyMarkObjectAsFavorite: jasmine.Spy, spyMarkObjectAsUnfavorite, spyRouter, spyUpdateSpecificDisplay, spyUpdateRecentDisplay, spyRemove;
     beforeEach(async(() => {
         TestBed.configureTestingModule({
             declarations: [CmsDisplayListComponent],
@@ -101,12 +99,6 @@ describe("CmsDisplayListComponent", () => {
                 {
                     provide: CmsApiService,
                     useClass: MockCmsApiService
-                },
-                {
-                    provide: ElementRef,
-                    useValue: {
-                        nativeElement: HTMLElement
-                    }
                 },
                 {
                     provide: CmsClipboardService,
@@ -125,7 +117,6 @@ describe("CmsDisplayListComponent", () => {
                     useClass: MockCmsFavoriteService
                 },
                 StorageManager,
-                CmsVirtualScrollService,
                 AppConfig,
                 TranslateService
             ],
@@ -147,7 +138,6 @@ describe("CmsDisplayListComponent", () => {
             debugInstance = fixture.debugElement.componentInstance;
             cmsClipboardService = fixture.debugElement.injector.get(CmsClipboardService);
             cmsSettingsService = fixture.debugElement.injector.get(CmsSettingsService);
-            cmsScrollService = fixture.debugElement.injector.get(CmsVirtualScrollService);
             routerService = fixture.debugElement.injector.get(Router);
             storageManager = fixture.debugElement.injector.get(StorageManager);
 
@@ -159,8 +149,6 @@ describe("CmsDisplayListComponent", () => {
 
             spyRemove = spyOn(storageManager, "remove").and.returnValue(Observable.of(null));
             spyRouter = spyOn(routerService, "navigate").and.returnValue(Observable.of(null));
-            spyAddScroll = spyOn(cmsScrollService, "addScrollListener").and.returnValue(Observable.of(null));
-            spyRemoveScroll = spyOn(cmsScrollService, "removeScrollListener").and.returnValue(Observable.of(null));
             spyMarkObjectAsFavorite = spyOn(cmsFavoriteService, "markObjectAsFavorite").and.returnValue(Observable.of(null));
             spyMarkObjectAsUnfavorite = spyOn(cmsFavoriteService, "markObjectAsUnfavorite").and.returnValue(Observable.of(null));
             spyUpdateRecentDisplay =  spyOn(cmsSettingsService, "updateWallConnectionRecentDisplayId").and.returnValue(Observable.of(null));
@@ -171,13 +159,10 @@ describe("CmsDisplayListComponent", () => {
     it("component should be defined", async(() => {
         expect(component).toBeDefined();
         expect(debugInstance.mCmsServerApi).toBeDefined();
-        expect(debugInstance.element).toBeDefined();
-        expect(debugInstance.mScroller).toBeDefined();
     }));
 
     it("should remove scroll event on Destroy LifeCycle Hook", async(() => {
         component.ngOnDestroy();
-        expect(cmsScrollService.removeScrollListener).toHaveBeenCalled();
         debugInstance.eventSubscription = null;
     }));
 
@@ -212,12 +197,7 @@ describe("CmsDisplayListComponent", () => {
         fixture.detectChanges();
         component.ngOnChanges(null);
         fixture.whenStable().then(() => {
-            expect(cmsScrollService.removeScrollListener).toHaveBeenCalled();
             expect(debugInstance.mDisplays).toEqual(displays);
-            expect(debugInstance.mScroller.dataCount).toEqual(displays.length);
-            expect(debugInstance.mScroller.max).toBeNull();
-            expect(debugInstance.mScroller.count).toEqual(settings.defaultPageSize);
-            expect(cmsScrollService.addScrollListener).toHaveBeenCalled();
         });
     });
 
@@ -300,21 +280,11 @@ describe("CmsDisplayListComponent", () => {
         expect(args[0]).toEqual([`/displays/${displays[0].id}/sources-panel`]);
     });
 
-    it("should not return any more displays if there are still displays to scroll to", ()=>{
-        debugInstance.mScroller.max = displays.length;
-        debugInstance.mDisplays = [];
-        debugInstance.getDisplays();
-        expect(debugInstance.mDisplays.length).toEqual(0);
-    });
-
     it("should add displays on scroll to the displays list", ()=>{
-        debugInstance.mScroller.max = null;
         debugInstance.mDisplays = [];
         debugInstance.showConfirmationPopup = true;
         debugInstance.getDisplays();
         expect(debugInstance.mDisplays.length).toEqual(displays.length);
-        expect(debugInstance.mScroller.loading).toBeFalsy();
-        expect(debugInstance.mScroller.max).toBeNull();
         expect(debugInstance.eventSubscription).toBeDefined();
         debugInstance.eventSubscription.next(
             {
@@ -334,7 +304,6 @@ describe("CmsDisplayListComponent", () => {
     it("should show a dialog popup whenever there are no displays turning up from API", ()=>{
         let displayList;
         debugInstance.mDisplays = [];
-        debugInstance.mScroller.max = null;
         debugInstance.searchFilter = "";
         debugInstance.mDialogMessage = "";
         debugInstance.favoriteFilter = false;
