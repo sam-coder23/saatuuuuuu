@@ -4,36 +4,37 @@
  * the terms of the license agreement you entered into with Barco.
  */
 import { Injectable } from "@angular/core";
+import { CMSConstants } from "./cms/models/cms-constants";
 
 @Injectable()
-export /**
- * This class contains configuration regarding 
- * API stuf
+export
+/**
+ * This class contains application level configuration 
  * @class APIConfig
  * @constructor constructor
  */
 class AppConfig {
-    public serverURL:string;
-    public defaultLanguage: string;
-    public copyRightYear: string;
-    private apiURL = "/cms-rest/v1";
+    private serverURL:string;
+    private defaultLanguage: string;
+    private copyrightYear: string;
     private host: string;
 
+    /**
+     * Initialse api server url, default language and copyright year
+     * Api server url being initialized based on window host and location
+     * @constructor
+     */
     constructor() {
-        let location = window.document.location,
-            protocol = location.protocol;
+        let location = window.document.location;
+
         this.host = location.host;
-
-        this.serverURL = protocol  + "//" + this.host + this.apiURL;
-        //this.serverURL = "https://10.98.0.231/cms-rest/v1";
-
-        this.log("Application is using services available on the following url - ", this.serverURL);
-        this.defaultLanguage = "en";
-        this.copyRightYear = "2016";
+        this.serverURL = `${location.protocol}//${this.host}/cms-rest/v1`;
+        this.defaultLanguage = CMSConstants.DefaultLanguage;
+        this.copyrightYear = CMSConstants.CopyrightYear;
     }
 
     /**
-     * This method will return the server url
+     * This method will return the api server url
      * @method ServerURL
      * @return This will return string type data
      */
@@ -49,6 +50,24 @@ class AppConfig {
     public get Host(): string {
         return this.host;
     }
+
+    /**
+     * This method is responsible for returing default language 
+     * @method DefaultLanguage
+     * @return {string}
+     */
+    public get DefaultLanguage(): string {
+        return this.defaultLanguage;
+    }
+
+    /**
+     * This method is responsible for returing the copyright year 
+     * @method CopyrightYear
+     * @return {string}
+     */
+    public get CopyrightYear(): string {
+        return this.copyrightYear;
+    }    
 
     /**
      * This is just a wrapper arroud the console info log

@@ -1,14 +1,16 @@
 import { TestBed, inject, async } from "@angular/core/testing";
 import { AppConfig } from "./config";
+import { CMSConstants } from "./cms/models/cms-constants";
 
 describe("Service: App Config", () => {
 
     let appConfig, spyOnConsole;
-    let serverURLExpectedValue = "https://10.98.0.231/cms-rest/v1";
+    let serverURLExpectedValue = "";
     let hostExpectedValue = window.document.location.host;
-    let defaultLanguageExpectedValue = "en";
-    let copyRightYearExpectedValue = "2016";
+    let defaultLanguageExpectedValue = CMSConstants.DefaultLanguage;
+    let copyrightYearExpectedValue = CMSConstants.CopyrightYear;
 
+    serverURLExpectedValue = `${window.document.location.protocol}//${window.document.location.host}/cms-rest/v1`;    
 
     beforeEach(async () =>
         TestBed.configureTestingModule({
@@ -17,22 +19,21 @@ describe("Service: App Config", () => {
             ]
         }));
 
-    beforeEach(() => {
+    beforeEach(() => {        
         appConfig = new AppConfig();
         spyOnConsole = spyOn(console, "log").and.returnValue(null);
     });
 
     it("should be defined", () => {
         expect(appConfig).toBeDefined();
-        expect(appConfig.serverURL).toBe(serverURLExpectedValue);
-        expect(appConfig.defaultLanguage).toBe(defaultLanguageExpectedValue);
-        expect(appConfig.copyRightYear).toBe(copyRightYearExpectedValue);
-        expect(appConfig.host).toBe(hostExpectedValue);
     });
 
     it("should return Server Url and Host", () => {
         expect(appConfig.ServerURL).toBe(serverURLExpectedValue);
         expect(appConfig.Host).toBe(hostExpectedValue);
+        expect(appConfig.DefaultLanguage).toBe(defaultLanguageExpectedValue);
+        expect(appConfig.CopyrightYear).toBe(copyrightYearExpectedValue);
+        
     });
 
     it("should not execute console log for the function log when args are null", () => {

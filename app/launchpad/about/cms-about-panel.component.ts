@@ -34,18 +34,13 @@ export class CmsAboutPanelComponent implements OnInit {
         version:"",
         serverVersion:"",
         daysRemaining:""
-    }
-
+    };
     private copyRightText: string;
 
-     constructor(private cmsServerApi: CmsApiService, private location:Location, private translate: TranslateService,  private appConfig: AppConfig) {
-         
-      }
+    constructor(private cmsServerApi: CmsApiService, private location:Location, private translate: TranslateService,  private appConfig: AppConfig) {
+    }
 
-     ngOnInit() { 
-        /**
-         * Fetching system info.
-         */ 
+     public ngOnInit() { 
          this.getSystemInfo();
      }
 
@@ -94,19 +89,17 @@ export class CmsAboutPanelComponent implements OnInit {
       * Just go back from the about panel.
       * @method goBack
       */    
-      goBack(){
+      public goBack(){
          this.location.back();
       }
 
       /**
        * This method fetch year from client and update copyright text
        */
-      updateCopyrightText() {
-          this.translate.get("about.copyrightText", { value: this.appConfig.copyRightYear }).subscribe((response: string) => {
-              this.copyRightText = response;
-
-              // hide loading state
-              this.loading = false;
+      public updateCopyrightText() {
+          this.translate.get("about.copyrightText", { value: this.appConfig.CopyrightYear }).subscribe((response: string) => {
+              this.copyRightText = response;              
+              this.loading = false; // hide loading state
           });
       }
 }

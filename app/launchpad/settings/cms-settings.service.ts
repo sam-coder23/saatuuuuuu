@@ -83,7 +83,7 @@ export class CmsSettingsService {
      *  This method sets user selected language on the basis of localization licesnse
      */
     public applyUserSelectedLanguage(): void {
-        let defaultLanguage = this.appConfig.defaultLanguage;
+        let defaultLanguage = this.appConfig.DefaultLanguage;
         
         // if language is not available
         if (!this.mUserSettings) {
@@ -336,7 +336,7 @@ export class CmsSettingsService {
         let browserLang = this.translate.getBrowserLang();
         let languagesRegEx = CmsLanguages.languagesRegExPattern;
 
-        this.translate.use(browserLang.match(languagesRegEx) ? browserLang : this.appConfig.defaultLanguage);
+        this.translate.use(browserLang.match(languagesRegEx) ? browserLang : this.appConfig.DefaultLanguage);
 
         //update text direction
         this.setTextDirectionByLanguageKey(browserLang);

@@ -11,4 +11,6 @@ export class CMSConstants {
     static NoDisplay = "nodisplay";
     static RTLLanguages = ["ar"];
     static DisplayUpdated = "DisplayUpdated";
+    static DefaultLanguage = "en";
+    static CopyrightYear = "2016";
 }

@@ -46,10 +46,10 @@ class APIRequest {
      */
     public GetURL(url: string) {
         if (url.lastIndexOf("?") !== -1) {
-            url = `${url}&_=${Date.now()}`
+            url = `${url}&_=${Date.now()}`;
         }
         else {
-            url = `${url}?_=${Date.now()}`
+            url = `${url}?_=${Date.now()}`;
         }
 
         return this.serverURL + "/" + url;

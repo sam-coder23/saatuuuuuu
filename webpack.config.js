@@ -2,27 +2,19 @@ var path = require("path");
 var webpack = require("webpack");
 var HtmlWebpackPlugin = require("html-webpack-plugin");
 
-var IP = "127.0.0.1";
-
-var ENV = process.env.ENV = "development";
-var HOST = process.env.HOST || IP;
-var PORT = process.env.PORT || 3000;
-
-var metadata = {
-  host: HOST,
-  port: PORT,
-  ENV: ENV
-};
-
 module.exports = {
-  metadata: metadata,
-
   devtool: "source-map",
 
   devServer: {
     outputPath: path.join(__dirname, "dist"),
     historyApiFallback: true,
-    stats: "minimal"
+    stats: "minimal",
+    proxy: {
+      "/cms-rest/**":  {
+        target: "https://10.98.0.231/",
+        secure: false
+      }
+    }
   },
 
   debug: true,
@@ -82,10 +74,6 @@ module.exports = {
         loader: "url-loader?limit=30000&name=[name]-[hash].[ext]"
       }
     ]
-  },
-
-  proxy: {
-    "**": IP + ":3000"
   },
 
   sassLoader: {
