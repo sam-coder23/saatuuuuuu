@@ -31,7 +31,6 @@ export class CmsDisplayNameComponent implements OnInit, OnDestroy {
         this.unsubscribeDisplayEvents();
     }
 
-
     /**
      * This method will set the selected display's name.
      * @method setDisplayName
@@ -46,7 +45,6 @@ export class CmsDisplayNameComponent implements OnInit, OnDestroy {
             }
         }
     }
-
 
     /**
      * subscribeDisplayEvents

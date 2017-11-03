@@ -5,10 +5,12 @@ import { CMS_SESSION_STORAGE_ITEM } from "../../cms/models/cms-session-storage-i
 import { Subscriber } from "rxjs";
 import { CmsEventEmitterService } from "../../cms/api/cms-event-emitter.service";
 import { CMS_EVENTS } from "../../cms/api/cms-events.enum";
+import { Injector } from "@angular/core";
 
 describe("CmsDisplayNameComponent", () => {
     let component: CmsDisplayNameComponent;
     let fixture: ComponentFixture<CmsDisplayNameComponent>;
+    let injector: Injector;
     let debugInstance, nativeElement, debugInstanceGrid, nativeElementGrid,
         cmsClipboardService, cmsSettingsService, cmsMiniDisplayService, spyLoadContentOnTile;
 
@@ -27,13 +29,12 @@ describe("CmsDisplayNameComponent", () => {
 
         fixture = TestBed.createComponent(CmsDisplayNameComponent);
         component = fixture.componentInstance;
-
+        injector = fixture.debugElement.injector;
         setDisplay();
     });
 
     afterEach(() => {
         removeDisplay();
-        component.ngOnDestroy();
     });
 
 
@@ -76,10 +77,12 @@ describe("CmsDisplayNameComponent", () => {
 
 
     function removeDisplay() {
-        window.sessionStorage.removeItem(CMS_SESSION_STORAGE_ITEM.Display);
+        let storage: StorageManager = injector.get(StorageManager);
+        storage.remove(CMS_SESSION_STORAGE_ITEM.Display);
     }
 
     function setDisplay() {
-        window.sessionStorage.setItem(CMS_SESSION_STORAGE_ITEM.Display, JSON.stringify(display));
+        let storage: StorageManager = injector.get(StorageManager);
+        storage.set(CMS_SESSION_STORAGE_ITEM.Display, JSON.stringify(display));
     }
 })

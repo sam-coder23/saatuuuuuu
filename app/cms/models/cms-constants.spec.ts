@@ -8,7 +8,6 @@ describe("CMSConstants", () => {
         })
     });
     it("should expect the static values not to be changed", async(() => {
-      expect(CMSConstants.NoDisplay).toEqual("nodisplay");
       expect(typeof CMSConstants.RTLLanguages).not.toBeUndefined();
       expect(CMSConstants.RTLLanguages).toContain("ar");
       expect(CMSConstants.DisplayUpdated).toContain("DisplayUpdated");
