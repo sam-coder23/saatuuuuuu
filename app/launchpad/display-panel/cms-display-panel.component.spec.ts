@@ -4,7 +4,7 @@
  * ## Constructor ##
  * Option menu should be hidden;
  * Zoom level should be 100%;
- * Don't allow user to save a new ;
+ * Don't allow user to save a new layout
  * 
  * 
  * ## loadDisplay ##
@@ -17,15 +17,7 @@
  * ## ngOnInit ##
  * 
  * Display id should be defined from the route params;
- * if 
- *      display id is not "nodisplay" then isDisplaySelected flag should be set to true 
- *      and display should be loaded;
- * else 
- *      isDisplaySelected flag should be set to false;
- *      displayName be set as per no display;
- *      Check mDisplayPanelCmsEvent is set for CMS_EVENTS.DisplayPanel 
- *          and on event router navigates to "/displays-panel" ;
- * 
+ * expect loadDisplay should be called
  * expect longPressSubcription is set and on next isLongPressed is set;
  * 
  * 
@@ -43,9 +35,8 @@
  * expect updateIsLongPress(false) to be called;
  * 
  * 
- * ## onDisplayUpdate ##
- * expect a new name to be set for display after event from server
- * 
+ * ## logoff ##
+ * expect a popup on logoff
  * 
  * ## clearMiniDisplayWall ## 
  * expect the API to clear display wall is called and it is resolved;
@@ -210,82 +201,49 @@ describe("CmsDisplayPanelComponent - Test Suite", () => {
 
     it("should load a saved display", () => {
         /**
-         * Negative case - should navigate to displays-panel if no display is selected
-         */
-
-        removeDisplay();
-
-        let router: Router = injector.get(Router);
-        let spyNavigate = spyOn(router, "navigate").and.returnValue(null);
-        component.loadDisplay();
-        expect(spyNavigate.calls.count()).toEqual(1);
-        expect(spyNavigate.calls.argsFor(0)[0]).toEqual(["/displays-panel"]);
-
-        /**
-         * Positive case - Display should be successfully loaded from the storage manager
+         * Display should be successfully loaded from the storage manager
          */
         removeDisplay();
         setDisplay();
         component.loadDisplay();
-        expect(component.displayName).toEqual(display.name);
         expect(component.display.id).toEqual(display.id);
         expect(JSON.stringify(component.display)).toEqual(JSON.stringify(display));
     });
 
     it("should load a display if displayId is available", fakeAsync(() => {
         /**
-         * Positive Case: When display id is available then display is loaded
+         * When display id is available then display is loaded
          */
-        let settingsService: CmsSettingsService = injector.get(CmsSettingsService);
-        let spyLoadDisplay = spyOn(component, "loadDisplay").and.returnValue(null);
+
+        removeDisplay();
+        setDisplay();
 
         fixture.detectChanges();
         tick();
 
         expect(component.displayId).toEqual(activatedRoute.params["value"]["id"]);
-        expect(component.isDisplaySelected).toBeTruthy();
+        // make sure the subject is subscribed
+        expect(component.longPressSubcription instanceof Subscriber).toBeTruthy();
+
+        let spyLoadDisplay = spyOn(component, "loadDisplay").and.returnValue(null);
+        component.ngOnInit();
+        
         expect(spyLoadDisplay.calls.count()).toEqual(1);
-
-        // make sure the subject is subscribed
-        expect(component.longPressSubcription instanceof Subscriber).toBeTruthy();
     }));
 
-
-    it("should hide mini display if no display info is available", async(() => {
-        activatedRoute.params = Observable.of({
-            id: "nodisplay"
-        });
-
-        fixture.detectChanges();
-
-        expect(component.isDisplaySelected).toBeFalsy();
-        expect(component.displayName).toEqual("Select a display");
-
-        // make sure the subject is subscribed
-        expect(component.mDisplayPanelCmsEvent instanceof Subscriber).toBeTruthy();
-        // make sure the subject is subscribed
-        expect(component.longPressSubcription instanceof Subscriber).toBeTruthy();
-    }));
 
 
     it("should unsubscribe subscriptions on OnDestroy", fakeAsync(() => {
-        activatedRoute.params = Observable.of({
-            id: "nodisplay"
-        });
-
         let settingsService: CmsSettingsService = injector.get(CmsSettingsService);
         settingsService.longPressedSubject.next(true);
-
 
         fixture.detectChanges();
         tick();
 
-        expect(component.mDisplayPanelCmsEvent.closed).toBeFalsy();
         expect(component.longPressSubcription.closed).toBeFalsy();
 
         component.ngOnDestroy();
 
-        expect(component.mDisplayPanelCmsEvent.closed).toBeTruthy();
         expect(component.longPressSubcription.closed).toBeTruthy();
     }));
 
@@ -310,26 +268,11 @@ describe("CmsDisplayPanelComponent - Test Suite", () => {
     });
 
 
-    it("should update display name on event", () => {
-        component.displayName = "abc display";
-
-        component.onDisplayUpdate(display);
-
-        expect(component.displayName).toEqual(display.name);
-    });
-
-
     it("should clear display wall", fakeAsync(() => {
         let api: CmsApiService = injector.get(CmsApiService);
         let spy = spyOn(api, "putContentsOnDisplay").and.returnValue(Observable.of(null));
 
-        component.displayId = "nodisplay";
-        component.clearMiniDisplayWall();
-
-        expect(spy.calls.count()).toEqual(0);
-
-
-        component.displayId = "1";
+        component.displayId = 1;
         component.clearMiniDisplayWall();
 
         tick();
@@ -337,7 +280,14 @@ describe("CmsDisplayPanelComponent - Test Suite", () => {
         expect(spy.calls.count()).toEqual(1);
         expect(spy.calls.argsFor(0)[0]).toEqual(1);
         expect(spy.calls.argsFor(0)[1]).toEqual(0);
+        expect(spy.calls.argsFor(0)[2]).toEqual({});
     }));
+
+    it("should display a popup on logoff", () => {
+        // display a popup on logoff
+        component.logoff();
+        expect(component["showClearWallPopup"]).toBeTruthy();
+    });
 
     it("should clear clipboard selected sources when clear wall is resolved", fakeAsync(() => {
         let clipboardService: CmsClipboardService = injector.get(CmsClipboardService);

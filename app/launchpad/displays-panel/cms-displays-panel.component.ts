@@ -11,6 +11,7 @@ import { StorageManager} from "../../cms/api/cms-storagemanager.service";
 import { Display } from "../../cms/models/cms-display";
 import { Observable } from "rxjs/Rx";
 import { AppConfig } from "../../config";
+import { Validation } from "../../core/util/Validation";
 
 /**
  * This is a panel component that defines the layout of a page which includes toolbar and display list.
@@ -120,7 +121,7 @@ export class CmsDisplaysPanelComponent implements OnInit, AfterViewInit {
      * This method returns the selected display if any.
      */
     private isDisplaySelected(): boolean {
-        return this.storageManager.get(CMS_SESSION_STORAGE_ITEM.Display) !== null;
+        return !Validation.IsNull(this.storageManager.get(CMS_SESSION_STORAGE_ITEM.Display));
     }
 
     /**

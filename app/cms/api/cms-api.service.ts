@@ -469,7 +469,7 @@ export class CmsApiService {
                 // send event to display list
                 CmsEventEmitterService.get(CMS_EVENTS.DisplayList).emit(eventObject);
                 // send event to display panel
-                CmsEventEmitterService.get(CMS_EVENTS.DisplayPanel).emit(eventObject);
+                CmsEventEmitterService.get(CMS_EVENTS.Display).emit(eventObject);
             }
         }
 

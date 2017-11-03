@@ -27,8 +27,7 @@ import { AppConfig } from "../../../config";
 
 export class CmsOptionsComponent implements OnInit {
 
-    // we are using selected display id as string as it can also provide string value as "nodisplay"
-    private displayId: string;
+    private displayId: number;
 
     private keyManager = new KeyManager();
 
@@ -71,13 +70,8 @@ export class CmsOptionsComponent implements OnInit {
 
         // fetch selected display id from url parameter
         this.route.params.forEach((params: Params) => {
-            this.displayId = params["id"];
+            this.displayId = parseInt(params["id"]);
         });
-
-        // disable certain options based on display unavailablity
-        if (this.displayId === CMSConstants.NoDisplay) {
-            this.disableOptionOnDisplayUnavailable = true;
-        }
     }
 
     /**

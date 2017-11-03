@@ -1,37 +1,22 @@
 @import "variables.global";
 
-.toolbar-theme{
+.page-toolbar {
+    @include page-header-fixed();
+}
 
-    .dashboard-toolbar-row{
+.toolbar-theme {
+
+    .dashboard-toolbar-row {
         @include layout-row();
         overflow: hidden;
     }
 
-    .display-name-button{
-        white-space: nowrap; 
-        overflow: hidden;
-        text-overflow: ellipsis;
-        -ms-text-overflow:ellipsis; 
-        flex-shrink: 1;
-        margin: 1px 13px 3px 13px;
-        box-sizing: border-box;
-    }
-
-    button{
+    button {
         flex-shrink: 0
     }
 
 }
 
-.display-unavailable {
-   width: 100%;
-   height: calc(100vh - 64px);
-   flex-grow: 1;
-   @include layout-row();
-   @include layout-align-center();
-}
-
-.display-unavailable span {
-   font-size: 18px;
-   color: $grey_600;
+.bottom {
+    bottom: 0px;
 }

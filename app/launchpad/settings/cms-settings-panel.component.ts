@@ -31,8 +31,8 @@ export class CmsSettingsPanelComponent implements OnInit {
     // to show or hide loading process
     private mLoading: boolean = true;
     private fontColorModel: {
-        data: { 
-            value: string 
+        data: {
+            value: string
         },
         value: string,
         key: string,
@@ -40,9 +40,9 @@ export class CmsSettingsPanelComponent implements OnInit {
         cancelText: string,
         label: string
     };
-    private backgroundColorModel:  {
-        data: { 
-            value: string 
+    private backgroundColorModel: {
+        data: {
+            value: string
         },
         value: string,
         key: string,
@@ -124,7 +124,7 @@ export class CmsSettingsPanelComponent implements OnInit {
                 this.localizationLicense = response.LicenseInfo.localization;
             });
     }
-    
+
     /**
      * 
      * @param pValue
@@ -160,9 +160,6 @@ export class CmsSettingsPanelComponent implements OnInit {
         // check if recent display exists
         if (this.mUserSettings.wallConnection.atStartup.recentDisplayId !== "") {
             this.checkForRecentDisplay(this.mUserSettings.wallConnection.atStartup.recentDisplayId);
-        }
-        else {
-            this.recentDisplayId = CMSConstants.NoDisplay;
         }
 
         // check if page size exists
@@ -217,7 +214,6 @@ export class CmsSettingsPanelComponent implements OnInit {
                     this.recentDisplayId = display["id"].toString();
                 }
             }, (error) => {
-                this.recentDisplayId = CMSConstants.NoDisplay;
                 this.appConfig.log("CmsSettingsPanelComponent: checkForRecentDisplay");
             });
     }
@@ -440,5 +436,8 @@ export class CmsSettingsPanelComponent implements OnInit {
             });
     }
 
+    private navigateBack() {
+        history.back();
+    }
 }
 

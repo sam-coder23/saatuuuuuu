@@ -257,10 +257,6 @@ describe("CmsDisplayListComponent", () => {
         component.onConfirmation();
         let args = spyRouter.calls.mostRecent().args;
         expect(args[0]).toEqual(["/settings"]);
-        debugInstance.route.params = [{ "action": "jargonText" }];
-        component.onConfirmation();
-        args = spyRouter.calls.mostRecent().args;
-        expect(args[0]).toEqual([`/display-panel/${CMSConstants.NoDisplay}`]);
     });
 
     it("should connect the display to the wall, and redirect to the sources list", () => {

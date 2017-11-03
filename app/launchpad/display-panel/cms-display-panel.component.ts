@@ -23,6 +23,7 @@ import { CMS_EVENTS } from "../../cms/api/cms-events.enum";
 import { TranslateService } from "@ngx-translate/core";
 import { CMSConstants } from "./../../cms/models/cms-constants";
 import { AppConfig } from "../../config";
+import { Validation } from "../../core/util/Validation";
 
 
 /**
@@ -67,15 +68,8 @@ export class CmsDisplayPanelComponent implements OnInit, OnDestroy {
     // hold subscription for isLongPressed
     public longPressSubcription;
 
-    // we are using selected display id as string as it can also provide string value as "nodisplay"
-    public displayId: string;
-
-    public displayName: string;
-
-    public isDisplaySelected: boolean;
-
-    // it saves the CMS events subscription and unsubscribe them on component destruction
-    public mDisplayPanelCmsEvent: EventEmitter<any>;
+    // selected display id
+    public displayId: number;
 
     // hold save layout state
     public isSaveLayoutEnabled: boolean;
@@ -105,22 +99,16 @@ export class CmsDisplayPanelComponent implements OnInit, OnDestroy {
      */
     public ngOnInit() {
         this.route.params.forEach((params: Params) => {
-            this.displayId = params["id"];
+            this.displayId = parseInt(params["id"]);
         });
-        if (this.displayId !== CMSConstants.NoDisplay) {
-            this.isDisplaySelected = true;
-            this.loadDisplay();
+        if (isNaN(this.displayId)) {
+            return;
         }
-        else {
-            this.isDisplaySelected = false;
-
-            this.localiseKeys();
-
-            this.mDisplayPanelCmsEvent = CmsEventEmitterService.get(CMS_EVENTS.DisplayPanel).subscribe((res: { eventType: string, body: any, displayId: number }) => {
-                this.appConfig.log("CmsDisplayPanelComponent: New Display added! Routing to display list.");
-                this.router.navigate(["/displays-panel"]);
-            });
+        if (!this.loadDisplay()) {
+            this.router.navigateByUrl("/displays-panel");
+            return;
         }
+
 
         // subscribe to observable and update local "isLongPressed" property
         if (this.cmsSettingsService.longPressedSubject) {
@@ -139,12 +127,7 @@ export class CmsDisplayPanelComponent implements OnInit, OnDestroy {
      * Unsubscribe observables and detach event handlers to avoid memory leaks.
      */
     public ngOnDestroy() {
-        // Unsubscribe cms events for display panel component
-        if (this.mDisplayPanelCmsEvent !== undefined) {
-            this.mDisplayPanelCmsEvent.unsubscribe();
-        }
-
-        if (this.longPressSubcription !== undefined) {
+        if (!Validation.IsNullOrUndefined(this.longPressSubcription)) {
             this.longPressSubcription.unsubscribe();
         }
     }
@@ -153,16 +136,16 @@ export class CmsDisplayPanelComponent implements OnInit, OnDestroy {
      * This method will load the selected display.
      * @method loadDisplay
      */
-    public loadDisplay(): void {
+    public loadDisplay(): boolean {
         let display = this.storageManager.get(CMS_SESSION_STORAGE_ITEM.Display);
 
         // If selected display is not available, route to display list.
-        if (display === null) {
+        if (Validation.IsNullOrUndefined(display)) {
             this.appConfig.error("Display not found! Routing to display list.");
-            this.router.navigate(["/displays-panel"]);
+            return false;
         } else {
             this.display = <CmsResource>JSON.parse(display);
-            this.displayName = this.display.name;
+            return true;
         }
     }
 
@@ -184,28 +167,15 @@ export class CmsDisplayPanelComponent implements OnInit, OnDestroy {
         this.cmsSettingsService.updateIsLongPress(false);
     }
 
-    /**
-     * This will be reponsible to update the display property 
-     * once it will get notify from its children component in 
-     * case of display title and content update 
-     * @method {void} onDisplayUpdate
-     */
-    public onDisplayUpdate(display: any): void {
-        this.displayName = display.name;
-        this.appConfig.log(`CmsDisplayPanelComponent: onDisplayUpdate:: Display [id: ${display.id}] name updated to [Name: ${display.name}].`);
-    }
 
     /**
      * This will be reponsible to clear the mini display wall
      * @method {void} clearMiniDisplayWall
      */
     public clearMiniDisplayWall() {
-        let displayId = parseInt(this.displayId);
-        if (isNaN(displayId)) {
-            return;
-        }
-        this.mCmsServerApi.putContentsOnDisplay(displayId, 0, {}).subscribe(response => {
+        this.mCmsServerApi.putContentsOnDisplay(this.displayId, 0, {}).subscribe(response => {
             this.cmsClipboardService.selectedSources.length = 0;
+            this.navigateToLoginRoute();
         }, error => {
             console.error(error);
         });
@@ -213,10 +183,30 @@ export class CmsDisplayPanelComponent implements OnInit, OnDestroy {
     }
 
 
-    private localiseKeys(): void {
-        // display name using TranslateService
-        this.translate.get("displayPanel.selectDisplay").subscribe((response: string) => {
-            this.displayName = response;
-        });
+    /**
+     * logoff
+     */
+    public logoff() {
+        //  ask for clear grid confirmation
+        this.showClearWallPopup = true;
+    }
+
+    /**
+     * navigateToLoginRoute
+     */
+    public navigateToLoginRoute() {
+        this.router.navigateByUrl("/login");
+    }
+
+    /**
+     * closingClearWallPopup
+     */
+    public closingClearWallPopup() {
+        this.showClearWallPopup = false;
+        this.navigateToLoginRoute();
+    }
+
+    private navigateBack() {
+        history.back();
     }
 }

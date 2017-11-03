@@ -73,12 +73,12 @@ let router = {
  */
 class MockActivatedRoute {
     params: [{
-        id: string;
+        id: number;
     }];
 
     constructor() {
         this.params = [{
-            id: "nodisplay"
+            id: 1
         }];
     }
 }

@@ -173,10 +173,9 @@ export class CmsDisplayListComponent implements OnChanges, OnDestroy {
             if (actionParam === "selectDisplayForAutoConnect") {
                 this.mRouter.navigate(["/settings"]);
             }
-            else {
-                this.mRouter.navigate([`/display-panel/${CMSConstants.NoDisplay}`]);
-            }
         });
+
+        this.showConfirmationPopup = false;
     }
 
     /**

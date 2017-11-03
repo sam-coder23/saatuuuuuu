@@ -1,35 +1,44 @@
 <md-toolbar id="dashboard-toolbar" class="toolbar-theme">
-    
+
     <div class="dashboard-toolbar-row" *ngIf="!isLongPressed">
         <button id="dashboard-options-button" md-icon-button (click)="viewOptions = true;">
             <i class="material-icons" aria-label="Options">menu</i>
         </button>
-        <button id="dashboard-clear-wall-button" md-icon-button (click)="showClearWallPopup = true;" *ngIf="isDisplaySelected">
-            <i class="material-icons" aria-label="Sources">grid_off</i>
-        </button>
-        <button id="dashboard-displayList-button" class="display-name-button" md-button md-raised-button routerLink="/displays-panel">{{ displayName }}</button>
     </div>
 
-     <button id="display-panel-back-button" md-icon-button  *ngIf="isLongPressed" (click)="backToDisplayPanel()">
+    <button id="display-panel-back-button" md-icon-button *ngIf="isLongPressed" (click)="backToDisplayPanel()">
         <i class="material-icons">arrow_back</i>
-     </button>
+    </button>
+
+    <span class="fill-remaining-space"></span>
+
+    <cms-display-name></cms-display-name>
 
     <span class="fill-remaining-space"></span>
 
     <cms-clipboard></cms-clipboard>
+
+    <button id="log-off" md-icon-button (click)="logoff()">
+        <i class="material-icons">power_settings_new</i>
+    </button>
 </md-toolbar>
 
 <!-- @pending  We need to add handlers and put some business logic before updating our variables -->
 <cms-options *ngIf="viewOptions" (close)="viewOptions = false;" [zoom]="zoomLevel" (fitHeight)="fitHeight()" [isSaveLayoutEnabled]="isSaveLayoutEnabled"></cms-options>
 
-<cms-mini-display *ngIf="isDisplaySelected" [display]="display" (onZoom)="zoomLevel = $event" (close)="setFocusOnMiniDisplayContainer()" (displayUpdate)="onDisplayUpdate($event)" [fitHeight]="fitHeightCount"></cms-mini-display>
+<cms-mini-display *ngIf="display" [display]="display" (onZoom)="zoomLevel = $event" (close)="setFocusOnMiniDisplayContainer()"
+    [fitHeight]="fitHeightCount"></cms-mini-display>
 
-<div class="display-unavailable" *ngIf="!isDisplaySelected">
-    <span>{{ 'displayPanel.unavailable' | translate }}</span>
-</div>
+<md-toolbar id="bottom-toolbar" class="page-toolbar toolbar-theme bottom">
+    <button md-button md-raised-button (click)="navigateBack()">{{ 'common.back' | translate}}</button>
+
+    <span class="fill-remaining-space"></span>
+
+    <button md-button md-raised-button (click)="logoff()">{{ 'common.next' | translate}}</button>
+</md-toolbar>
 
 <nd-popup id="display-panel-clear-wall-popup" *ngIf="showClearWallPopup" class="confirm-popup" title="{{'displayPanel.clearWallConfirmationPopupTitle' | translate }}"
- (done)="clearMiniDisplayWall()" (closing)="showClearWallPopup = false;" okText="{{'common.yes' | translate}}" cancelText="{{'common.no' | translate}}">
+    (done)="clearMiniDisplayWall()" (closing)="closingClearWallPopup();" okText="{{'common.yes' | translate}}" cancelText="{{'common.no' | translate}}">
     <popup-body>
         {{'displayPanel.clearWallConfirmationPopupMessage' | translate}}
     </popup-body>

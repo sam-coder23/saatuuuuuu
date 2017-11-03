@@ -1,7 +1,7 @@
 <div class="page-toolbar">
 	<!-- PAGE HEADER -->
 	<md-toolbar id="setting-panel-toolbar" class="toolbar-theme">
-		<button id="setting-panel-back-button" md-icon-button routerLink="/display-panel/{{recentDisplayId}}">
+		<button id="setting-panel-back-button" md-icon-button (click)="navigateBack();">
             <i class="material-icons">arrow_back</i>
         </button>
 

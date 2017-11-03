@@ -24,12 +24,12 @@ import { CmsSettingsService } from "./../../settings/cms-settings.service";
     selector: "cms-settings-language-panel",
     template: require("to-string!./cms-settings-language-panel.component.html"),
     styles: [require("to-string!./cms-settings-language-panel.component.scss")]
-    
+
 })
 export class CmsSettingsLanguagePanelComponent implements OnInit {
     /**
      * Properties
-     */  
+     */
 
     // User selected language key
     private mUserSelectedLanguageKey: string;
@@ -44,7 +44,7 @@ export class CmsSettingsLanguagePanelComponent implements OnInit {
     /**
      * The constructor initializes various services.
      */
-    constructor(private translate: TranslateService, private cmsServerApi: CmsApiService, private router: Router,  private route: ActivatedRoute,  private cmsSettingsService: CmsSettingsService) {
+    constructor(private translate: TranslateService, private cmsServerApi: CmsApiService, private router: Router, private route: ActivatedRoute, private cmsSettingsService: CmsSettingsService) {
     }
 
     /**
@@ -59,19 +59,23 @@ export class CmsSettingsLanguagePanelComponent implements OnInit {
     /**
      * This method set lanaguage via user click action
      */
-    private setLanguage(languageKey: string): void{
+    private setLanguage(languageKey: string): void {
         // set language key
         this.translate.use(languageKey);
         this.mUserSelectedLanguageKey = languageKey
 
         //update user settings in service
         let userprofileSettings = this.cmsSettingsService.mUserSettings;
-            userprofileSettings.language = languageKey;
+        userprofileSettings.language = languageKey;
 
         //update text direction
         this.cmsSettingsService.setTextDirectionByLanguageKey(languageKey);
-        
+
         //update user setiings in DB
-        this.cmsSettingsService.updateUserProfileData(userprofileSettings, ()=> this.router.navigate(["/settings"]));
+        this.cmsSettingsService.updateUserProfileData(userprofileSettings, () => this.router.navigate(["/settings"]));
+    }
+
+    private navigateBack() {
+        history.back();
     }
 }

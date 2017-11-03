@@ -47,6 +47,7 @@ import { TileGridComponent } from "./tile-grid/tile-grid.component";
 import { CmsTileListComponent } from "./tile-list/cms-tile-list.component";
 
 import { RobotModule, BuilderService } from "core-components/app";
+import { CmsDisplayNameComponent } from "./display-name/cms-display-name.component";
 
 /**
  * This module defines various components that are designed keeping in mind their reusability in future.
@@ -76,7 +77,8 @@ import { RobotModule, BuilderService } from "core-components/app";
     CmsClipboardComponent,
     CmsColorPickerComponent,
     TileGridComponent,
-    CmsTileListComponent
+    CmsTileListComponent,
+    CmsDisplayNameComponent
   ],
   exports: [
     CmsCardComponent,
@@ -87,7 +89,8 @@ import { RobotModule, BuilderService } from "core-components/app";
     CmsClipboardComponent,
     CmsColorPickerComponent,
     TileGridComponent,
-    CmsTileListComponent
+    CmsTileListComponent,
+    CmsDisplayNameComponent
   ],
   providers: [
     MdIconRegistry,

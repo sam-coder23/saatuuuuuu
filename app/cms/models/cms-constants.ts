@@ -8,7 +8,6 @@
  * This static class defines keys as constants to be used at number of places commonly.
  */
 export class CMSConstants {
-    static NoDisplay = "nodisplay";
     static RTLLanguages = ["ar"];
     static DisplayUpdated = "DisplayUpdated";
     static DefaultLanguage = "en";

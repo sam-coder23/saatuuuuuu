@@ -22,8 +22,6 @@
         "aboutCmsLaunchPad": "About CMS Launch Pad"
     },
     "displayPanel": {
-        "unavailable": "No Display",
-        "selectDisplay": "Select a display",
         "clearWallConfirmationPopupTitle": "Clear Display Wall",
         "clearWallConfirmationPopupMessage": "Are you sure you want to clear the display wall?"
     },
@@ -124,6 +122,7 @@
         "confirmationTitlePopup": "Information Alert"
     },
     "common": {
+        "back": "Back",
         "next": "Next",
         "yes": "Yes",
         "no": "No",

@@ -1,13 +1,12 @@
 <div class="page-toolbar">
     <md-toolbar id="tiles-panel-toolbar" class="toolbar-theme">
-        <button id="tiles-panel-back-button" md-icon-button (click)="navigateBack()">
-            <i class="material-icons">arrow_back</i>
-        </button>
-
         <span id="tiles-panel-title">{{ 'tilePresetList.layouts' | translate }}</span>
 
         <span class="fill-remaining-space"></span>
 
+        <cms-display-name></cms-display-name>
+
+        <span class="fill-remaining-space"></span>
 
         <button id="tiles-panel-reload-button" md-icon-button *ngIf="mStates.reload" (click)="reloadList()">
             <i class="material-icons">refresh</i>
@@ -24,6 +23,7 @@
 
 <div class="page-toolbar bottom">
     <md-toolbar id="tiles-panel-bottom-toolbar" class="toolbar-theme">
+        <button id="back-button" md-button md-raised-button (click)="navigateBack()">{{ 'common.back' | translate}}</button>
         <span class="fill-remaining-space"></span>
         <button id="tiles-panel-next-button" md-button md-raised-button (click)="navigateNext()">{{ 'common.next' | translate}}</button>
     </md-toolbar>
