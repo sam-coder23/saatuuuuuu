@@ -32,33 +32,27 @@ let MockCmsSettingsService = {
     "mUserSettings": {
         "language": "en",
         "wallConnection": {
-            "atStartup": {
-                "status": "show-available-walls-list",
-                "selectedDisplayId": 37,
-                "recentDisplayId": 37
-            }
+            "startUpAction": "show-available-walls-list",
+            "specificDisplay": "Board Meeting Room",
+            "recentDisplay": "Board Meeting Room"
         },
-        "sourceLabels": {
+        "sourceLabel": {
             "displaySourceNameLabels": true,
             "useMultipleLines": false,
             "fontColor": "#FFFFFF",
             "fontSize": 14,
-            "background": "#BDBDBD",
+            "backgroundColor": "#BDBDBD",
             "transparency": 50
         },
-        "manageWallContent": {
-            "requireConfirmationforLoadingLayouts": true,
+        "wallContent": {
+            "requireConfirmationForLoadingLayouts": true,
             "allowChangingSources": true,
-            "clipboard": {
-                "isEnabled": true,
-                "status": "large"
-            }
+            "clipboardEnabled": true,
+            "clipboardSize": "large"
         },
         "logOffTime": 0,
-        "defaultPageSize": 50,
-
+        "pageSize": 50
     }
-
 };
 
 let serverInfo = {
@@ -420,7 +414,7 @@ describe("Component CmsSettingsPanelComponent", () => {
                 expect(autoConnectToMostRecentWallRadioButton).not.toBeNull();
                 autoConnectToMostRecentWallRadioButton.dispatchEvent(new Event("change"));
                 let e = { source: "MdRadioButton", value: "auto-connect-to-most-recent-wall" };
-                MockCmsSettingsService.mUserSettings.wallConnection.atStartup.status = "auto-connect-to-most-recent-wall";
+                MockCmsSettingsService.mUserSettings.wallConnection.startUpAction = "auto-connect-to-most-recent-wall";
                 debugInstance.updateUserSettingsByAction(e);
             })
         })

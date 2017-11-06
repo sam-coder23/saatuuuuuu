@@ -65,9 +65,9 @@
         "multipleLines": "Birden fazla hat kullan",
         "fontColor": "Yaz\u0131tipi rengi",
         "fontSize": "Yaz\u0131tipi boyutu",
-        "background": "Arka Plan",
+        "backgroundColor": "Arka Plan",
         "transparency": "\u015eeffafl\u0131k (%)",
-        "manageWallContent": "Duvar i\u00e7eri\u011fini y\u00f6net",
+        "wallContent": "Duvar i\u00e7eri\u011fini y\u00f6net",
         "requireConfirmationLayouts": "Yerle\u015fimleri y\u00fcklemek i\u00e7in onay gerektir",
         "allowChangingSources": "Kaynaklar\u0131 de\u011fi\u015ftirmeyi etkinle\u015ftir",
         "clipboard": "Pano",
@@ -82,7 +82,7 @@
         "autoLogOff": "Otomatik \u00e7\u0131k\u0131\u015f yap",
         "timeOutInMinute": "\u0130\u015flem yap\u0131lmad\u0131\u011f\u0131nda \u00e7\u0131k\u0131\u015f yapma s\u00fcresi (dakika)",
         "listPageSizes": "List page sizes",
-        "defaultPageSize": "Default page size"
+        "pageSize": "Default page size"
     },
     "about": {
         "about": "CMS Launch Pad Hakk\u0131nda",

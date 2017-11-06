@@ -1,4 +1,4 @@
-import { ComponentFixture, TestBed, async, inject} from "@angular/core/testing";
+import { ComponentFixture, TestBed, async, inject } from "@angular/core/testing";
 import { By } from "@angular/platform-browser";
 import { Location } from "@angular/common";
 import { DebugElement, CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA, ElementRef } from "@angular/core";
@@ -28,30 +28,26 @@ let mockCmsSettingsData = {
     "mUserSettings": {
         "language": "en",
         "wallConnection": {
-            "atStartup": {
-                "status": "show-available-walls-list",
-                "selectedDisplayId": 37,
-                "recentDisplayId": 37
-            }
+            "startUpAction": "show-available-walls-list",
+            "specificDisplay": "Board Meeting Room",
+            "recentDisplay": "Board Meeting Room"
         },
-        "sourceLabels": {
+        "sourceLabel": {
             "displaySourceNameLabels": true,
             "useMultipleLines": false,
             "fontColor": "#FFFFFF",
             "fontSize": 14,
-            "background": "#BDBDBD",
+            "backgroundColor": "#BDBDBD",
             "transparency": 50
         },
-        "manageWallContent": {
-            "requireConfirmationforLoadingLayouts": true,
+        "wallContent": {
+            "requireConfirmationForLoadingLayouts": true,
             "allowChangingSources": true,
-            "clipboard": {
-                "isEnabled": true,
-                "status": "large"
-            }
+            "clipboardEnabled": true,
+            "clipboardSize": "large"
         },
         "logOffTime": 0,
-        "defaultPageSize": 50,
+        "pageSize": 50
     }
 };
 

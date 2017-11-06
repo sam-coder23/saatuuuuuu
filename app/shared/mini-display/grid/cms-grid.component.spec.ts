@@ -62,34 +62,30 @@ let clipboardSource: Source = {
 let spyUnloadContentFromDisplay: jasmine.Spy;
 let spyContentClickHandler: jasmine.Spy;
 
-let mUserSettings: IUserProfileSettings = {
-    "language": "en",
-    "wallConnection": {
-        "atStartup": {
-            "status": "show-available-walls-list",
-            "selectedDisplayId": 37,
-            "recentDisplayId": 37
-        }
-    },
-    "sourceLabels": {
-        "displaySourceNameLabels": true,
-        "useMultipleLines": false,
-        "fontColor": "#FFFFFF",
-        "fontSize": 14,
-        "background": "#BDBDBD",
-        "transparency": 50
-    },
-    "manageWallContent": {
-        "requireConfirmationforLoadingLayouts": true,
-        "allowChangingSources": false,
-        "clipboard": {
-            "isEnabled": true,
-            "status": "large"
-        }
-    },
-    "logOffTime": 0,
-    "defaultPageSize": 50
-}
+let mUserSettings: IUserProfileSettings =  {
+  "language": "en",
+  "wallConnection": {
+    "startUpAction": "show-available-walls-list",
+    "specificDisplay": "Board Meeting Room",
+    "recentDisplay": "Board Meeting Room"
+  },
+  "sourceLabel": {
+    "displaySourceNameLabels": true,
+    "useMultipleLines": false,
+    "fontColor": "#FFFFFF",
+    "fontSize": 14,
+    "backgroundColor": "#BDBDBD",
+    "transparency": 50
+  },
+  "wallContent": {
+    "requireConfirmationForLoadingLayouts": true,
+    "allowChangingSources": false,
+    "clipboardEnabled": true,
+    "clipboardSize": "large"
+  },
+  "logOffTime": 0,
+  "pageSize": 50
+};
 
 export class MockElementRef extends ElementRef { }
 
@@ -203,7 +199,7 @@ describe("CmsGridComponent", () => {
     it("should not call contentClickHandler on click of contentClickWrapper", async(() => {
         let event: MouseEvent;
         debugInstance.isLongPressed = true;
-        mUserSettings.manageWallContent.allowChangingSources = true;
+        mUserSettings.wallContent.allowChangingSources = true;
         cmsSettingsService.setUserProfileSettings();
         fixture.whenStable().then(() => {
             component.contentClickWrapper(event, content);
@@ -216,7 +212,7 @@ describe("CmsGridComponent", () => {
     it("should call contentClickHandler on click of contentClickWrapper", async(() => {
         let event: MouseEvent;
         debugInstance.isLongPressed = false;
-        mUserSettings.manageWallContent.allowChangingSources = true;
+        mUserSettings.wallContent.allowChangingSources = true;
         cmsSettingsService.setUserProfileSettings();
         fixture.whenStable().then(() => {
             component.contentClickWrapper(event, content);
@@ -227,7 +223,7 @@ describe("CmsGridComponent", () => {
     }));
 
     it("should not call contentClickHandler", async(() => {
-        mUserSettings.manageWallContent.allowChangingSources = false;
+        mUserSettings.wallContent.allowChangingSources = false;
         cmsSettingsService.setUserProfileSettings();
         fixture.whenStable().then(() => {
             debugInstance.contentClickHandler(content);
@@ -236,7 +232,7 @@ describe("CmsGridComponent", () => {
     }));
 
     it("should call contentClickHandler", async(() => {
-        mUserSettings.manageWallContent.allowChangingSources = true;
+        mUserSettings.wallContent.allowChangingSources = true;
         cmsSettingsService.setUserProfileSettings();
         fixture.whenStable().then(() => {
             debugInstance.contentClickHandler(content);

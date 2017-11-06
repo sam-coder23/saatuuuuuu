@@ -17,7 +17,6 @@ import { CMS_SESSION_STORAGE_ITEM } from "../../cms/models/cms-session-storage-i
 import { Source } from "./../../cms/models/cms-source";
 import { StorageManager } from "../../cms/api/cms-storagemanager.service";
 import { CmsSettingsService } from "./../../launchpad/settings/cms-settings.service";
-import { IManageWallContent } from "./../../cms/models/cms-user-profile-settings";
 import { CmsEventEmitterService } from "../../cms/api/cms-event-emitter.service";
 import { CMS_EVENTS } from "../../cms/api/cms-events.enum";
 import { TranslateService } from "@ngx-translate/core";

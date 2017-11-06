@@ -11,10 +11,11 @@ import { Observable } from "rxjs/Observable";
 import { Subject } from "rxjs/Subject";
 import { Tile } from "./../../cms/models/cms-tile";
 import { CmsSettingsService } from "./../../launchpad/settings/cms-settings.service";
-import { IManageWallContent } from "./../../cms/models/cms-user-profile-settings";
+import { IWallContent } from "./../../cms/models/cms-user-profile-settings";
 import { AppConfig } from "../../config";
 import { StorageManager } from "../../cms/api/cms-storagemanager.service";
 import { CMS_SESSION_STORAGE_ITEM } from "../../cms/models/cms-session-storage-item";
+import { CMSConstants } from "./../../cms/models/cms-constants";
 
 /**
  * CmsClipboardService works as a clipboard and helps various components to get and set a clipboard source.
@@ -61,8 +62,8 @@ export class CmsClipboardService {
     }
 
     // returns settings related to wall content
-    private get settings(): IManageWallContent {
-        return (this.cmsSettingsService.mUserSettings ? this.cmsSettingsService.mUserSettings.manageWallContent : null);
+    private get settings(): IWallContent {
+        return (this.cmsSettingsService.mUserSettings ? this.cmsSettingsService.mUserSettings.wallContent : null);
     }
 
     /**
@@ -110,7 +111,7 @@ export class CmsClipboardService {
      * isClipboardEnabled defines whether the user wants to use clipboard feature
      */
     public isClipboardEnabled(): boolean {
-        return this.settings && this.settings.clipboard && this.settings.clipboard.isEnabled;
+        return this.settings &&  this.settings.clipboardEnabled;
     }
 
     /**
@@ -119,8 +120,10 @@ export class CmsClipboardService {
      * status can be "icon", "small", "large"
      */
     public clipboardDisplayStatus(): string {
-        if (this.settings && this.settings.clipboard) {
-            return this.settings.clipboard.status;
+        if (this.settings && this.settings.clipboardEnabled) {
+            return this.settings.clipboardSize;
+        }else{
+            return CMSConstants.DEFAULT_CLIPBOARD_SIZE;
         }
     }
 

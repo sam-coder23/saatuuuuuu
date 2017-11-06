@@ -31,7 +31,7 @@ let router = {
 class MockCmsApiService {
 
     getUserProfileSettings(): Promise<IUserProfileSettings> {
-        MockUserProfileSettings.manageWallContent.clipboard.isEnabled = true;
+        MockUserProfileSettings.wallContent.clipboardEnabled = true;
         return Promise.resolve(MockUserProfileSettings);
     }
 

@@ -32,7 +32,7 @@ export class CmsVirtualScrollService {
 
     constructor(private cmsSettingsService: CmsSettingsService) { 
         this.loading = false;
-        this.count = cmsSettingsService.mUserSettings.defaultPageSize || 20;
+        this.count = cmsSettingsService.mUserSettings.pageSize || 20;
     }
 
     // add scroll event listener on scrollTarget

@@ -7,32 +7,28 @@ export const MockUser: UserConfig = {
 }
 
 export const MockUserProfileSettings: IUserProfileSettings = {
-  "language": "en",
-  "wallConnection": {
-    "atStartup": {
-      "status": "show-available-walls-list",
-      "selectedDisplayId": 50,
-      "recentDisplayId": 50
-    }
-  },
-  "sourceLabels": {
-    "displaySourceNameLabels": true,
-    "useMultipleLines": false,
-    "fontColor": "#FFFFFF",
-    "fontSize": 14,
-    "background": "#BDBDBD",
-    "transparency": 50
-  },
-  "manageWallContent": {
-    "requireConfirmationforLoadingLayouts": true,
-    "allowChangingSources": true,
-    "clipboard": {
-      "isEnabled": true,
-      "status": "large"
-    }
-  },
-  "logOffTime": 0,
-  "defaultPageSize": 50
+     "language": "en",
+    "wallConnection": {
+        "startUpAction": "show-available-walls-list",
+        "specificDisplay": "Board Meeting Room",
+        "recentDisplay": "Board Meeting Room"
+    },
+    "sourceLabel": {
+        "displaySourceNameLabels": true,
+        "useMultipleLines": false,
+        "fontColor": "#FFFFFF",
+        "fontSize": 14,
+        "backgroundColor": "#BDBDBD",
+        "transparency": 50
+    },
+    "wallContent": {
+        "requireConfirmationForLoadingLayouts": true,
+        "allowChangingSources": true,
+        "clipboardEnabled": true,
+        "clipboardSize": "large"
+    },
+    "logOffTime": 0,
+    "pageSize": 50
 }
 
 export const MoclLicenseinfo = {

@@ -113,9 +113,9 @@ export class CmsSettingsService {
                         this.translate.use(defaultLanguage);
                         this.setTextDirectionByLanguageKey(defaultLanguage);
 
-                        if (this.mUserSettings) {
-                            this.mUserSettings.language = defaultLanguage;
-                            this.updateUserProfileData(this.mUserSettings);
+                        if(this.mUserSettings){
+                           this.mUserSettings.language = defaultLanguage;
+                           this.updateUserProfileData(this.mUserSettings);
                         }
                     }
                 }
@@ -155,18 +155,22 @@ export class CmsSettingsService {
       *
       * @Param display :: display wall info json
       */
-    public updateWallConnectionRecentDisplayId(display): void {
-        this.mUserSettings.wallConnection.atStartup.recentDisplayId = display.id;
-        this.updateUserProfileData(this.mUserSettings);
+    public updateWallConnectionRecentDisplay(display): void {
+        if (display) {
+            this.mUserSettings.wallConnection.recentDisplay = display.name;
+            this.updateUserProfileData(this.mUserSettings);
+        }
     }
 
     /**
-      * @description This method update displayId related to wall connection
+      * @description This method update displayName related to wall connection
       * @param display : display wall info json
      */
-    public updateWallConnectionSpecificDisplayId(display): void {
-        this.mUserSettings.wallConnection.atStartup.selectedDisplayId = display.id;
-        this.updateUserProfileData(this.mUserSettings, () => this.router.navigate(["/settings"]));
+    public updateWallConnectionSpecificDisplay(display): void {
+        if (display) {
+            this.mUserSettings.wallConnection.specificDisplay = display.name;
+            this.updateUserProfileData(this.mUserSettings, () => this.router.navigate(["/settings"]));
+        }
     }
 
     /**
@@ -182,7 +186,7 @@ export class CmsSettingsService {
     }
 
     /**
-     * This method increase count value as per it"s index and nearest high value
+     * This method increase count value as per it's index and nearest high value
      */
     public increaseCount(count: number, data: any): number {
         let countIndex = data.indexOf(count);
@@ -216,21 +220,21 @@ export class CmsSettingsService {
      * This method connect to wall as per user selection of wall connection at startup
      */
     public connectToWallAtStartup(): void {
-        let selectedOption = this.mUserSettings.wallConnection.atStartup.status;
-        let selectedDisplayId = this.mUserSettings.wallConnection.atStartup.selectedDisplayId;
-        let recentDisplayId = this.mUserSettings.wallConnection.atStartup.recentDisplayId;
+        let selectedOption = this.mUserSettings.wallConnection.startUpAction;
+        let selectedDisplayName = this.mUserSettings.wallConnection.specificDisplay;
+        let recentDisplayName = this.mUserSettings.wallConnection.recentDisplay;
 
         switch (selectedOption) {
-            case "show-available-walls-list":
+            case CMSConstants.WALL_CONNECTION.DISPLAY_WALL_LIST:
                 this.router.navigate(["/displays-panel"]);
                 break;
 
-            case "auto-connect-to-most-recent-wall":
-                this.autoConnectToMostRecentWall(recentDisplayId);
+            case CMSConstants.WALL_CONNECTION.RECENT_WALL:
+                this.autoConnectToMostRecentWall(recentDisplayName);
                 break;
 
-            case "auto-connect-to-specific-wall":
-                this.autoConnectToSpecificWall(selectedDisplayId);
+            case CMSConstants.WALL_CONNECTION.SPECIFIC_WALL:
+                this.autoConnectToSpecificWall(selectedDisplayName);
                 break;
         }
     }
@@ -240,18 +244,32 @@ export class CmsSettingsService {
      * @description 
      * This method connect to most recent wall at startup
      */
-    private autoConnectToMostRecentWall(recentDisplayId: any): void {
-        if (recentDisplayId === "") {
+    private autoConnectToMostRecentWall(recentDisplayName: string): void {
+        let start = 1, count = 1, search = recentDisplayName, isFavorite = false, display;
+
+        if (recentDisplayName === "") {
             this.router.navigate(["/displays-panel"]);
             return;
         }
 
-        // get display wall details as per displayId
-        this.cmsServerApi.getSelectedDisplayContent(recentDisplayId)
-            .subscribe((display: Display) => {
-                if (display) {
-                    window.sessionStorage.setItem(CMS_SESSION_STORAGE_ITEM.Display, JSON.stringify(display));
-                    this.router.navigate([`/display-panel/${display.id}`]);
+        // get display wall details as per displayName
+        this.cmsServerApi.getDisplayList(start, count, search, isFavorite)
+            .subscribe((displays: Display[]) => {
+                if (displays.length) {
+
+                    // filter display by name
+                    for (let displayIndex = 0; displayIndex < displays.length; displayIndex++) {
+                        if (displays[displayIndex].name === recentDisplayName) {
+                            display = displays[displayIndex];
+                            break;
+                        }
+                    };
+
+                    if (display) {
+                        this.storageManager.set(CMS_SESSION_STORAGE_ITEM.Display, JSON.stringify(display));
+                        this.router.navigate([`/display-panel/${display.id}`]);
+                    }
+
                 }
             }, (error) => {
                 this.router.navigate(["/displays-panel"]);
@@ -263,20 +281,33 @@ export class CmsSettingsService {
      * @description 
      * This method connect to specific wall at startup
      */
-    private autoConnectToSpecificWall(selectedDisplayId: any): void {
-        if (selectedDisplayId === "") {
+    private autoConnectToSpecificWall(selectedDisplayName: string): void {
+        let start = 1, count = 1, search = selectedDisplayName, isFavorite = false, display;
+
+        if (selectedDisplayName === "") {
             this.router.navigate(["/displays-panel"]);
             return;
         }
 
-        this.cmsServerApi.getSelectedDisplayContent(selectedDisplayId)
-            .subscribe((display: Display) => {
-                if (display) {
-                    //update recentDisplayId on user profile data 
-                    this.updateWallConnectionRecentDisplayId(display);
+        this.cmsServerApi.getDisplayList(start, count, search, isFavorite)
+            .subscribe((displays: Display[]) => {
+                if (displays.length) {
 
-                    window.sessionStorage.setItem(CMS_SESSION_STORAGE_ITEM.Display, JSON.stringify(display));
-                    this.router.navigate([`/display-panel/${display.id}`]);
+                    // filter display by name
+                    for (let displayIndex = 0; displayIndex < displays.length; displayIndex++) {
+                        if (displays[displayIndex].name === selectedDisplayName) {
+                            display = displays[displayIndex];
+                            break;
+                        }
+                    };
+
+                    if (display) {
+                        //update recentDisplay on user profile data 
+                        this.updateWallConnectionRecentDisplay(display);
+                        
+                        this.storageManager.set(CMS_SESSION_STORAGE_ITEM.Display, JSON.stringify(display));
+                        this.router.navigate([`/display-panel/${display.id}`]);
+                    }
                 }
             }, (error) => {
                 this.router.navigate(["/displays-panel"]);

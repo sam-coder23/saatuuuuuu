@@ -65,9 +65,9 @@
         "multipleLines": "Usar varias l\u00edneas",
         "fontColor": "Color de la fuente",
         "fontSize": "Tama\u00f1o de la fuente",
-        "background": "Fondo",
+        "backgroundColor": "Fondo",
         "transparency": "Transparencia (%)",
-        "manageWallContent": "Gestionar el contenido de la pantalla mural",
+        "wallContent": "Gestionar el contenido de la pantalla mural",
         "requireConfirmationLayouts": "Requerir confirmaci\u00f3n para cargar dise\u00f1os",
         "allowChangingSources": "Activar cambio de entrada",
         "clipboard": "Portapapeles",
@@ -82,7 +82,7 @@
         "autoLogOff": "Cerrar sesi\u00f3n autom\u00e1ticamente",
         "timeOutInMinute": "Tiempo para cerrar sesi\u00f3n en caso de inactividad (minutos)",
         "listPageSizes": "List page sizes",
-        "defaultPageSize": "Default page size"
+        "pageSize": "Default page size"
     },
     "about": {
         "about": "Acerca del Panel de inicio de CMS",

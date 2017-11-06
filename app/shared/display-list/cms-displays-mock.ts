@@ -9,7 +9,7 @@ class MockDisplay extends CmsResource {
         width: number;
         height: number;
     };
-    width : number;
+    width: number;
     height: number;
     tiles: any;
     content: any;
@@ -32,8 +32,8 @@ export const displays: MockDisplay[] = [
         "disabled": false,
         "width": 1920,
         "height": 1080,
-        "tiles" : [],
-        "content" : []
+        "tiles": [],
+        "content": []
     },
     {
         "id": 2,
@@ -51,7 +51,7 @@ export const displays: MockDisplay[] = [
         "width": 1920,
         "height": 1080,
         "tiles": [],
-        "content" : []        
+        "content": []
     },
     {
         "id": 3,
@@ -69,7 +69,7 @@ export const displays: MockDisplay[] = [
         "width": 1920,
         "height": 1080,
         "tiles": [],
-        "content" : []        
+        "content": []
     },
     {
         "id": 4,
@@ -86,8 +86,8 @@ export const displays: MockDisplay[] = [
         "disabled": false,
         "width": 1920,
         "height": 1080,
-        "tiles" : [],
-        "content" : []
+        "tiles": [],
+        "content": []
     },
     {
         "id": 5,
@@ -104,8 +104,8 @@ export const displays: MockDisplay[] = [
         "disabled": false,
         "width": 1920,
         "height": 1080,
-        "tiles" : [],
-        "content" : []
+        "tiles": [],
+        "content": []
     },
     {
         "id": 6,
@@ -122,37 +122,33 @@ export const displays: MockDisplay[] = [
         "disabled": false,
         "width": 1920,
         "height": 1080,
-        "tiles" : [],
-        "content" : []
+        "tiles": [],
+        "content": []
     }
 ];
 
 export const settings: IUserProfileSettings = {
     "language": "en",
     "wallConnection": {
-        "atStartup": {
-            "status": "show-available-walls-list",
-            "selectedDisplayId": 37,
-            "recentDisplayId": 37
-        }
+        "startUpAction": "show-available-walls-list",
+        "specificDisplay": "Board Meeting Room",
+        "recentDisplay": "Board Meeting Room"
     },
-    "sourceLabels": {
+    "sourceLabel": {
         "displaySourceNameLabels": true,
         "useMultipleLines": false,
         "fontColor": "#FFFFFF",
         "fontSize": 14,
-        "background": "#BDBDBD",
+        "backgroundColor": "#BDBDBD",
         "transparency": 50
     },
-    "manageWallContent": {
-        "requireConfirmationforLoadingLayouts": true,
+    "wallContent": {
+        "requireConfirmationForLoadingLayouts": true,
         "allowChangingSources": true,
-        "clipboard": {
-            "isEnabled": true,
-            "status": "large"
-        }
+        "clipboardEnabled": true,
+        "clipboardSize": "large"
     },
     "logOffTime": 0,
-    "defaultPageSize": 3
+    "pageSize": 3
 };
 

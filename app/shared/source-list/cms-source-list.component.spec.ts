@@ -155,32 +155,29 @@ class MockCmsSettingsService {
     mUserSettings: IUserProfileSettings = {
         "language": "en",
         "wallConnection": {
-            "atStartup": {
-                "status": "show-available-walls-list",
-                "selectedDisplayId": 37,
-                "recentDisplayId": 37
-            }
+            "startUpAction": "show-available-walls-list",
+            "specificDisplay": "Board Meeting Room",
+            "recentDisplay": "Board Meeting Room"
         },
-        "sourceLabels": {
+        "sourceLabel": {
             "displaySourceNameLabels": true,
             "useMultipleLines": false,
             "fontColor": "#FFFFFF",
             "fontSize": 14,
-            "background": "#BDBDBD",
+            "backgroundColor": "#BDBDBD",
             "transparency": 50
         },
-        "manageWallContent": {
-            "requireConfirmationforLoadingLayouts": true,
+        "wallContent": {
+            "requireConfirmationForLoadingLayouts": true,
             "allowChangingSources": true,
-            "clipboard": {
-                "isEnabled": true,
-                "status": "large"
-            }
+            "clipboardEnabled": true,
+            "clipboardSize": "large"
         },
         "logOffTime": 0,
-        "defaultPageSize": 50
+        "pageSize": 50
     }
 }
+
 
 
 describe("CmsSourceListComponent", () => {
@@ -188,12 +185,12 @@ describe("CmsSourceListComponent", () => {
     let fixture: ComponentFixture<CmsSourceListComponent>;
     let cmsClipboardService: MockCmsClipboardService;
     let cmsSettingsService: CmsSettingsService;
-    let cmsApiService : CmsApiService;
-    let cmsFavoriteService : CmsFavoriteService;
+    let cmsApiService: CmsApiService;
+    let cmsFavoriteService: CmsFavoriteService;
     let i18n: any;
     let debugInstance, nativeElement;
     let sourceAvail: String;
-   
+
     let spyPutContentsOnDisplay: jasmine.Spy, spyMarkObjectAsFavorite, spyMarkObjectAsUnfavorite;
     beforeEach(async(() => {
         TestBed.configureTestingModule({
@@ -274,9 +271,9 @@ describe("CmsSourceListComponent", () => {
         expect(component.changeEmitter).toBeDefined();
         expect(component.errorEmitter).toBeDefined();
         fixture.detectChanges();
-       
+
         expect(debugInstance["mScroller"].dataCount).toBe(0);
-        debugInstance.mScroller.count = sources.length+1;
+        debugInstance.mScroller.count = sources.length + 1;
         expect(debugInstance.mSourceListCmsEvent).toBeNull();
         component.ngOnChanges(null);
         fixture.whenStable().then(() => {
@@ -284,7 +281,7 @@ describe("CmsSourceListComponent", () => {
             expect(debugInstance.mSources.length).toEqual(sources.length);
             expect(debugInstance.mScroller.dataCount).toBe(sources.length);
             expect(debugInstance.mScroller.max).not.toBeNull();
-            expect(debugInstance.mScroller.count).toEqual(cmsSettingsService.mUserSettings.defaultPageSize);
+            expect(debugInstance.mScroller.count).toEqual(cmsSettingsService.mUserSettings.pageSize);
             expect(debugInstance.mScrollTarget.id).toEqual("source-list-card-container");
 
             debugInstance.mClipboard.selectedSources = [];
@@ -292,7 +289,7 @@ describe("CmsSourceListComponent", () => {
             expect(debugInstance.mSourceListCmsEvent).not.toBeNull();
             expect(debugInstance.mClipboard.selectedSources[0].disabled).toBeFalsy()
 
-            let sourceUpdated = Object.assign({}, sources[0]); 
+            let sourceUpdated = Object.assign({}, sources[0]);
             debugInstance.mSourceListCmsEvent.next(
                 {
                     "eventType": "ResourceDeleted",
@@ -310,15 +307,15 @@ describe("CmsSourceListComponent", () => {
         expect(container.classList).toContain("bottom-up");
     }));
 
-    it("should not render list and apply class when there are no sources on Init", async(()=>{
-        debugInstance.mSources =[];
+    it("should not render list and apply class when there are no sources on Init", async(() => {
+        debugInstance.mSources = [];
         component.displayId = NaN;
         debugInstance.selectedOnly = false;
         expect(component).toBeDefined();
         expect(fixture.nativeElement.querySelectorAll("cms-card").length).toEqual(0);
         expect(document.getElementById("source-list-card-container").classList).not.toContain("bottom-up");
         fixture.detectChanges();
-        fixture.whenStable().then(()=>{
+        fixture.whenStable().then(() => {
             let defaultText = document.getElementsByClassName("source-list-unavailable");
             expect((defaultText[0].children[0].innerHTML)).toBe("sourceList.unavailable");
         });
@@ -326,21 +323,21 @@ describe("CmsSourceListComponent", () => {
         expect(debugInstance.mSources.length).toEqual(0);
     }));
 
-    it("should return the source as selected when a undisabled source is clicked", ()=>{
+    it("should return the source as selected when a undisabled source is clicked", () => {
         let render = debugInstance.renderer();
         expect(render).not.toBeDefined();
     });
 
-    it("should return the undefined when there is no display to render", ()=>{
+    it("should return the undefined when there is no display to render", () => {
         debugInstance.mClipboard.selectedSources = [];
         debugInstance.mClipboard.selectedSources.push(sources[0]);
-        
+
         let render = debugInstance.renderer(sources[0]);
         expect(render.selected).toBeTruthy();
         expect(render).toEqual(sources[0]);
     });
 
-    it("should return the updated display list for selected source", ()=>{
+    it("should return the updated display list for selected source", () => {
         debugInstance.mClipboard.selectedSources = [];
         debugInstance.mClipboard.selectedSources.push(sources[0]);
         let render = debugInstance.renderer(sources[0]);
@@ -348,7 +345,7 @@ describe("CmsSourceListComponent", () => {
         expect(render).toEqual(sources[0])
     })
 
-    it("should only add the clipboard selected sources to select source list", ()=>{
+    it("should only add the clipboard selected sources to select source list", () => {
         component.displayId = mDisplay.id;
         debugInstance.mSources = [];
         debugInstance.selectedOnly = true;
@@ -358,7 +355,7 @@ describe("CmsSourceListComponent", () => {
         expect(debugInstance.mSources.length).toEqual(1);
     });
 
-    it("should return 0 if there are no sources or tile Id for a valid source", ()=>{
+    it("should return 0 if there are no sources or tile Id for a valid source", () => {
         expect(debugInstance.tileIdForSourceCount(0)).toEqual(0);
         debugInstance.tilePresets = [];
         expect(debugInstance.tileIdForSourceCount(1)).toEqual(0);
@@ -372,8 +369,8 @@ describe("CmsSourceListComponent", () => {
         debugInstance.tilePresets.push(TilePresets[2]);
         expect(debugInstance.tileIdForSourceCount(6)).toEqual(TilePresets[2].id);
     });
-    
-    it("should not return anything if the max scroll is not reached", ()=>{
+
+    it("should not return anything if the max scroll is not reached", () => {
         component.displayId = mDisplay.id;
         debugInstance.mSources = [];
         debugInstance.selectedOnly = false;
@@ -382,7 +379,7 @@ describe("CmsSourceListComponent", () => {
         expect(debugInstance.mSources.length).toEqual(0);
     });
 
-    it("should not let user mark favorite or unfavorite on a disabled source", ()=>{
+    it("should not let user mark favorite or unfavorite on a disabled source", () => {
         fixture.detectChanges();
         fixture.whenStable().then(() => {
         });
@@ -390,7 +387,7 @@ describe("CmsSourceListComponent", () => {
         expect(cmsFavoriteService.markObjectAsFavorite).not.toHaveBeenCalled();
         expect(cmsFavoriteService.markObjectAsFavorite).not.toHaveBeenCalled();
     });
-    
+
     it("should call CmsFavoriteService.markObjectAsFavorite when the selected source is unfavorite", () => {
         sources[0].disabled = false;
         fixture.detectChanges();

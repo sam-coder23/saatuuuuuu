@@ -99,7 +99,7 @@ export class CmsDisplayListComponent implements OnChanges, OnDestroy {
             .subscribe(
             (displays: Display[]) => {
                 let filteredDisplays = displays.filter(display => display.type !== DISPLAY_TYPE[DISPLAY_TYPE.OperatorWorkStation]);
-                
+
                 this.mDisplays.push(...filteredDisplays);
 
                 // subscribe for display list change events
@@ -131,11 +131,11 @@ export class CmsDisplayListComponent implements OnChanges, OnDestroy {
             let actionParam = params["action"];
 
             if (actionParam === "selectDisplayForAutoConnect") {
-                this.cmsSettingsService.updateWallConnectionSpecificDisplayId(display);
+                this.cmsSettingsService.updateWallConnectionSpecificDisplay(display);
             }
             else {
                 //update recentDisplayId on user profile data 
-                this.cmsSettingsService.updateWallConnectionRecentDisplayId(display);
+                this.cmsSettingsService.updateWallConnectionRecentDisplay(display);
 
                 window.sessionStorage.setItem(CMS_SESSION_STORAGE_ITEM.Display, JSON.stringify(display));
                 this.cmsClipboardService.clear();
@@ -144,6 +144,7 @@ export class CmsDisplayListComponent implements OnChanges, OnDestroy {
             }
         });
     }
+
 
     /**
      * On selecting favorite button on card, the respective display will be marked as favorite\unfavorite.

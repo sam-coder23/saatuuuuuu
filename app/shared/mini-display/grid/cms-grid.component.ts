@@ -120,11 +120,11 @@ export class CmsGridComponent implements OnInit, OnChanges, OnDestroy {
         //get user settings from cms-settings-service
         let userSettings = this.cmsSettingsService.mUserSettings
 
-        let isSourceLableEnabled = userSettings.sourceLabels.displaySourceNameLabels ? "block" : "none";
-        let fontSize = userSettings.sourceLabels.fontSize;
-        let fontColor = userSettings.sourceLabels.fontColor;
-        let background = userSettings.sourceLabels.background;
-        let transparency = userSettings.sourceLabels.transparency;
+        let isSourceLableEnabled = userSettings.sourceLabel.displaySourceNameLabels ? "block" : "none";
+        let fontSize = userSettings.sourceLabel.fontSize;
+        let fontColor = userSettings.sourceLabel.fontColor;
+        let background = userSettings.sourceLabel.backgroundColor;
+        let transparency = userSettings.sourceLabel.transparency;
 
         if (transparency < 100) {
             transparency = (100 - transparency) / 100;
@@ -132,7 +132,7 @@ export class CmsGridComponent implements OnInit, OnChanges, OnDestroy {
             transparency = 0;
         }
 
-        let multiline = userSettings.sourceLabels.useMultipleLines ? "normal" : "nowrap";
+        let multiline = userSettings.sourceLabel.useMultipleLines ? "normal" : "nowrap";
         let sourcelabelStyles = `font-size: ${fontSize}px; color: ${fontColor}; white-space: ${multiline}; display: ${isSourceLableEnabled}`;
         let sourceLableBackgroundStyles = `background: ${background}; opacity: ${transparency}`;
 
@@ -221,8 +221,8 @@ export class CmsGridComponent implements OnInit, OnChanges, OnDestroy {
     private onLongPress() {
         //get user settings from cms-settings-service
         let userSettings = this.cmsSettingsService.mUserSettings;
-        let isAllowChangingSources = userSettings.manageWallContent.allowChangingSources;
-        let isClipboardEnabled = userSettings.manageWallContent.clipboard.isEnabled;
+        let isAllowChangingSources = userSettings.wallContent.allowChangingSources;
+        let isClipboardEnabled = userSettings.wallContent.clipboardEnabled;
         let tileContent = this.contents.length;
 
         // enable longPress if isAllowChangingSources: true, isClipboardEnabled: false and tileConetnt is available
@@ -278,8 +278,8 @@ export class CmsGridComponent implements OnInit, OnChanges, OnDestroy {
     private disableTileHighlight(): void {
         //get user settings from cms-settings-service
         let userSettings = this.cmsSettingsService.mUserSettings;
-        let isAllowChangingSources = userSettings.manageWallContent.allowChangingSources;
-        let isClipboardEnabled = userSettings.manageWallContent.clipboard.isEnabled;
+        let isAllowChangingSources = userSettings.wallContent.allowChangingSources;
+        let isClipboardEnabled = userSettings.wallContent.clipboardEnabled;
 
         if (!isAllowChangingSources || this.isLongPressed) {
             this.isTileHighlightDisabled = true;

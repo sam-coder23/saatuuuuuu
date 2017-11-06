@@ -12,4 +12,10 @@ export class CMSConstants {
     static DisplayUpdated = "DisplayUpdated";
     static DefaultLanguage = "en";
     static CopyrightYear = "2016";
+    static WALL_CONNECTION = {
+        DISPLAY_WALL_LIST : "show-available-walls-list",
+        SPECIFIC_WALL : "auto-connect-to-specific-wall",
+        RECENT_WALL : "auto-connect-to-most-recent-wall"
+    };
+    static DEFAULT_CLIPBOARD_SIZE = "large";
 }

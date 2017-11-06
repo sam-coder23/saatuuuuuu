@@ -281,8 +281,8 @@ export class CmsLaunchpadComponent implements OnInit, OnDestroy {
     if (userSettings && isUserLoggedIn) {
       let userAutoLogOffTime = userSettings.logOffTime;
 
-      // if userAutoLogOffTime in user settings is not "never"
-      if (userAutoLogOffTime) {
+      // if userAutoLogOffTime in user settings is not "never" and greater than 0
+      if (userAutoLogOffTime > 0) {
         //update local property from sessionStorage
         this.userLastActionTime = this.storageManager.get(CMS_SESSION_STORAGE_ITEM.UserLastActionTime)
 

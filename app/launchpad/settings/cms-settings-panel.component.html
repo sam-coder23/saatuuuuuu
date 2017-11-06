@@ -53,8 +53,8 @@
 				<md-card class="setting-card">
 					<md-card-subtitle id="setting-panel-wallconnection-subtitle">{{ 'settings.wallConnection' | translate }}</md-card-subtitle>
 					<md-card-content>
-						<md-radio-group name="wallConnection_AtStartup" [value]="mUserSettings.wallConnection.atStartup.status" [(ngModel)]="mUserSettings.wallConnection.atStartup.status"
-						 (change)="updateUserSettingsByAction($event)" id="wallconnection-radiogroup">
+						<md-radio-group name="wallConnection-atstartup" [value]="mUserSettings.wallConnection.startUpAction" [(ngModel)]="mUserSettings.wallConnection.startUpAction"
+							(change)="updateUserSettingsByAction($event)" id="wallconnection-radiogroup">
 							<md-list dense>
 								<md-list-item id="setting-panel-wallconnection-atstartup-subtitle">
 									{{ 'settings.atStartup' | translate }}
@@ -72,16 +72,16 @@
 										<md-radio-button value="auto-connect-to-specific-wall" id="auto-connect-to-specific-wall-radio-button">{{ 'settings.connectToSpecificWall' | translate }}</md-radio-button>
 									</div>
 									<div class="button-block">
-										<button md-raised-button class="wall-connection-button" [disabled]="!(mUserSettings.wallConnection.atStartup.status === 'auto-connect-to-specific-wall')"
-										 (click)="goToSelectDisplayForAutoConnect($event)" type="button" id="auto-connect-to-specific-wall-select-button">
-											<span *ngIf="mUserSettings.wallConnection.atStartup.selectedDisplayId ===''">{{ 'settings.selectDisplay' | translate }}</span>
+										<button md-raised-button class="wall-connection-button" [disabled]="!(mUserSettings.wallConnection.startUpAction === wallConnection.SPECIFIC_WALL)"
+											(click)="goToSelectDisplayForAutoConnect($event)" type="button" id="auto-connect-to-specific-wall-select-button">
+											<span *ngIf="!mUserSettings.wallConnection.specificDisplay">{{ 'settings.selectDisplay' | translate }}</span>
 											<span *ngIf="displayWallName ==='nodisplayfound'">{{ 'settings.noDisplayWallFound' | translate }}</span>
 											<span *ngIf="displayWallName !=='nodisplayfound'">{{ displayWallName }}</span>
 											</button>
 									</div>
 								</md-list-item>
 							</md-list>
-						</md-radio-group>
+							</md-radio-group>
 					</md-card-content>
 				</md-card>
 
@@ -92,22 +92,22 @@
 						<md-list dense>
 							<md-list-item>
 								<div class="fill-remaining-space">{{ 'settings.displaySourceName' | translate }}</div>
-								<md-slide-toggle [checked]="mUserSettings.sourceLabels.displaySourceNameLabels" name="sourceLabels_DisplaySourceNameLabels"
-								 [(ngModel)]="mUserSettings.sourceLabels.displaySourceNameLabels" (change)="updateUserSettingsByAction($event)" id="display-sourcename-labels-slider-button"></md-slide-toggle>
+								<md-slide-toggle [checked]="mUserSettings.sourceLabel.displaySourceNameLabels" name="sourceLabel-display-source-name-label"
+									[(ngModel)]="mUserSettings.sourceLabel.displaySourceNameLabels" (change)="updateUserSettingsByAction($event)" id="display-sourcename-labels-slider-button"></md-slide-toggle>
 							</md-list-item>
 							<md-divider></md-divider>
 							<md-list-item>
-								<div class="fill-remaining-space list-text" [class.disabled]="!mUserSettings.sourceLabels.displaySourceNameLabels">{{ 'settings.multipleLines' | translate }}</div>
-								<md-slide-toggle [checked]="mUserSettings.sourceLabels.useMultipleLines" name="sourceLabels_UseMultipleLines" [(ngModel)]="mUserSettings.sourceLabels.useMultipleLines"
-								 (change)="updateUserSettingsByAction($event)" [disabled]="!mUserSettings.sourceLabels.displaySourceNameLabels" id="use-multiplelines-sourcename-labels-slider-button"></md-slide-toggle>
+								<div class="fill-remaining-space list-text" [class.disabled]="!mUserSettings.sourceLabel.displaySourceNameLabels">{{ 'settings.multipleLines' | translate }}</div>
+								<md-slide-toggle [checked]="mUserSettings.sourceLabel.useMultipleLines" name="sourceLabel-use-multiple-lines" [(ngModel)]="mUserSettings.sourceLabel.useMultipleLines"
+									(change)="updateUserSettingsByAction($event)" [disabled]="!mUserSettings.sourceLabel.displaySourceNameLabels" id="use-multiplelines-sourcename-labels-slider-button"></md-slide-toggle>
 							</md-list-item>
 							<md-divider></md-divider>
 
 							<!-- COLOR AND FONT SIZE PART -->
-							<md-list-item class="list-main-row" [class.disabled]="!mUserSettings.sourceLabels.displaySourceNameLabels" id="source-labels-fonts-settings">
+							<md-list-item class="list-main-row" [class.disabled]="!mUserSettings.sourceLabel.displaySourceNameLabels" id="source-labels-fonts-settings">
 								<div class="cell-block title-box">
 									<div class="cell-block-content" id="font-color-title">{{ 'settings.fontColor' | translate }}</div>
-									<div class="cell-block-content" id="background-title">{{ 'settings.background' | translate }}</div>
+									<div class="cell-block-content" id="background-title">{{ 'settings.backgroundColor' | translate }}</div>
 								</div>
 
 								<div class="cell-block color-box">
@@ -129,25 +129,25 @@
 								<div class="block setting-button-box">
 									<!-- Font Size -->
 									<div class="setting-button-group cell-block-content">
-										<button md-raised-button class="setting-square-button aSmall" (click)="decreaseFontSize()" [disabled]="fontSizeSteps[0] === fonSize.value"
-										 id="font-decrease-button">A</button>
-										<md-input-container class="setting-square-input">
-											<input md-input type="text" [value]="mUserSettings.sourceLabels.fontSize" name="source-label-font-size" [(ngModel)]="mUserSettings.sourceLabels.fontSize"
-											 (change)="updateFontSize($event)" #fonSize id="font-size-input">
-										</md-input-container>
-										<button md-raised-button class="setting-square-button aLarge" (click)="increaseFontSize()" [disabled]="fontSizeSteps[fontSizeSteps.length-1] === fonSize.value"
-										 id="font-increase-button">A</button>
+										<button md-raised-button class="setting-square-button small-label" (click)="decreaseFontSize()" [disabled]="fontSizeSteps[0] === fonSize.value"
+											id="font-decrease-button">A</button>
+											<md-input-container class="setting-square-input">
+												<input md-input type="text" [value]="mUserSettings.sourceLabel.fontSize" name="sourceLabel-font-size" [(ngModel)]="mUserSettings.sourceLabel.fontSize"
+													(change)="updateFontSize($event)" #fonSize id="font-size-input">
+											</md-input-container>
+											<button md-raised-button class="setting-square-button large-label" (click)="increaseFontSize()" [disabled]="fontSizeSteps[fontSizeSteps.length-1] === fonSize.value"
+												id="font-increase-button">A</button>
 									</div>
 									<!-- Transparency -->
 									<div class="setting-button-group cell-block-content">
 										<button md-raised-button class="setting-square-button" (click)="decreaseTransparency()" [disabled]="transparencySteps[0] === transparency.value"
-										 id="transparency-decrease-button">-</button>
-										<md-input-container class="setting-square-input">
-											<input md-input type="text" name="source-labels-transparency" [value]="mUserSettings.sourceLabels.transparency" [(ngModel)]="mUserSettings.sourceLabels.transparency"
-											 (change)="updateTransparency($event)" #transparency id="transparency-input">
-										</md-input-container>
-										<button md-raised-button class="setting-square-button" (click)="increaseTransparency()" [disabled]="transparencySteps[transparencySteps.length-1] === transparency.value"
-										 id="transparency-increase-button">+</button>
+											id="transparency-decrease-button">-</button>
+											<md-input-container class="setting-square-input">
+												<input md-input type="text" name="sourceLabel-transparency" [value]="mUserSettings.sourceLabel.transparency" [(ngModel)]="mUserSettings.sourceLabel.transparency"
+													(change)="updateTransparency($event)" #transparency id="transparency-input">
+											</md-input-container>
+											<button md-raised-button class="setting-square-button" (click)="increaseTransparency()" [disabled]="transparencySteps[transparencySteps.length-1] === transparency.value"
+												id="transparency-increase-button">+</button>
 									</div>
 								</div>
 							</md-list-item>
@@ -157,36 +157,36 @@
 
 				<!-- WALL CONTENT PART -->
 				<md-card class="setting-card">
-					<md-card-subtitle id="setting-panel-managewallcontent-subtitle">{{ 'settings.manageWallContent' | translate }}</md-card-subtitle>
+					<md-card-subtitle id="setting-panel-wallcontent-subtitle">{{ 'settings.wallContent' | translate }}</md-card-subtitle>
 					<md-card-content>
 						<md-list dense>
 							<md-list-item>
 								<div class="fill-remaining-space" id="require-confirmation-layouts-text">{{ 'settings.requireConfirmationLayouts' | translate }}</div>
-								<md-slide-toggle name="manageWallContent_RequireConfirmationforLoadingLayouts" [checked]="mUserSettings.manageWallContent.requireConfirmationforLoadingLayouts"
-								 [(ngModel)]="mUserSettings.manageWallContent.requireConfirmationforLoadingLayouts" (change)="updateUserSettingsByAction($event)"
-								 id="require-confirmation-layouts-slider-button"></md-slide-toggle>
+								<md-slide-toggle name="wallcontent-require-confirmation-for-loading-layout" [checked]="mUserSettings.wallContent.requireConfirmationForLoadingLayouts"
+									[(ngModel)]="mUserSettings.wallContent.requireConfirmationForLoadingLayouts" (change)="updateUserSettingsByAction($event)"
+									id="require-confirmation-layouts-slider-button"></md-slide-toggle>
 							</md-list-item>
 							<md-divider></md-divider>
 							<md-list-item>
 								<div class="fill-remaining-space" id="allow-changing-sources-text">{{ 'settings.allowChangingSources' | translate }}</div>
-								<md-slide-toggle name="manageWallContent_AllowChangingSources" [checked]="mUserSettings.manageWallContent.allowChangingSources"
-								 [(ngModel)]="mUserSettings.manageWallContent.allowChangingSources" (change)="updateUserSettingsByAction($event)"
-								 id="allow-changing-sources-slider-button"></md-slide-toggle>
+								<md-slide-toggle name="wallContent-allow-changing-sources" [checked]="mUserSettings.wallContent.allowChangingSources"
+									[(ngModel)]="mUserSettings.wallContent.allowChangingSources" (change)="updateUserSettingsByAction($event)"
+									id="allow-changing-sources-slider-button"></md-slide-toggle>
 							</md-list-item>
 							<md-divider></md-divider>
 
 
 							<!-- CLIPBOARD PART -->
 							<md-list-item>
-								<div class="fill-remaining-space list-text" id="setting-panel-clipboard-subtitle" [class.disabled]="!mUserSettings.manageWallContent.allowChangingSources">{{ 'settings.clipboard' | translate }}</div>
-								<md-slide-toggle name="manageWallContent_Clipboard" [disabled]="!mUserSettings.manageWallContent.allowChangingSources" [checked]="mUserSettings.manageWallContent.clipboard.isEnabled"
-								 [(ngModel)]="mUserSettings.manageWallContent.clipboard.isEnabled" (change)="updateUserSettingsByAction($event)" id="setting-panel-clipboard-slider-button"></md-slide-toggle>
+								<div class="fill-remaining-space list-text" id="setting-panel-clipboard-subtitle" [class.disabled]="!mUserSettings.wallContent.allowChangingSources">{{ 'settings.clipboard' | translate }}</div>
+								<md-slide-toggle name="wallContent-clipboard" [disabled]="!mUserSettings.wallContent.allowChangingSources" [checked]="mUserSettings.wallContent.clipboardEnabled"
+									[(ngModel)]="mUserSettings.wallContent.clipboardEnabled" (change)="updateUserSettingsByAction($event)" id="setting-panel-clipboard-slider-button"></md-slide-toggle>
 							</md-list-item>
 
-							<md-radio-group name="manageWallContent_Clipboard_Status" class="clipboard-row" [value]="mUserSettings.manageWallContent.clipboard.status"
-							 [(ngModel)]="mUserSettings.manageWallContent.clipboard.status" (change)="updateUserSettingsByAction($event)" [disabled]="!mUserSettings.manageWallContent.clipboard.isEnabled || !mUserSettings.manageWallContent.allowChangingSources"
-							 [class.disabled]="!mUserSettings.manageWallContent.clipboard.isEnabled || !mUserSettings.manageWallContent.allowChangingSources"
-							 id="clipboard-radiogroup">
+							<md-radio-group name="wallContent-clipboard-status" class="clipboard-row" [value]="mUserSettings.wallContent.clipboardSize"
+								[(ngModel)]="mUserSettings.wallContent.clipboardSize" (change)="updateUserSettingsByAction($event)" [disabled]="!mUserSettings.wallContent.clipboardEnabled || !mUserSettings.wallContent.allowChangingSources"
+								[class.disabled]="!mUserSettings.wallContent.clipboardEnabled || !mUserSettings.wallContent.allowChangingSources"
+								id="clipboard-radiogroup">
 								<md-list-item>
 									<md-radio-button value="icon" id="clipboard-icon-radio-button">
 										<span class="md-line">{{ 'settings.icon' | translate }}</span>
@@ -198,7 +198,7 @@
 								<md-list-item>
 									<md-radio-button value="large" id="clipboard-large-radio-button">{{ 'settings.large' | translate }}</md-radio-button>
 								</md-list-item>
-							</md-radio-group>
+								</md-radio-group>
 						</md-list>
 					</md-card-content>
 				</md-card>
@@ -209,9 +209,9 @@
 					<md-card-content>
 						<md-list dense>
 							<md-list-item>
-								<div class="fill-remaining-space">{{ 'settings.defaultPageSize' | translate }}</div>
+								<div class="fill-remaining-space">{{ 'settings.pageSize' | translate }}</div>
 
-								<md-select name="defaultPageSize" [(ngModel)]="mUserSettings.defaultPageSize" (ngModelChange)="updateUserSettingsByAction($event)">
+								<md-select name="pageSize" [(ngModel)]="mUserSettings.pageSize" (ngModelChange)="updateUserSettingsByAction($event)">
 									<md-option *ngFor="let pageSize of pageSizes" [value]="pageSize">
 										{{ pageSize }}
 									</md-option>

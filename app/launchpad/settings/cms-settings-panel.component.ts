@@ -89,15 +89,15 @@ export class CmsSettingsPanelComponent implements OnInit {
 
     //hold no display information
     private noDisplayAvailable: boolean = false;
+	
+	  //hold wall connection constant information
+    private wallConnection = CMSConstants.WALL_CONNECTION;
 
     constructor(private cmsServerApi: CmsApiService, private router: Router, private cmsSettingsService: CmsSettingsService, private translate: TranslateService, private appConfig: AppConfig) {
         this.localizationLicense = 0;
     }
 
     ngOnInit() {
-        this.translate.get("settings").subscribe(response => {
-            this.i18n = response;
-        });
         if (!this.cmsSettingsService.mUserSettings) {
             this.cmsSettingsService.setUserProfileSettings(() => this.loadUserProfileSettings());
         } else {
@@ -153,18 +153,24 @@ export class CmsSettingsPanelComponent implements OnInit {
 
         //get local settings from cms-settings-service 
         this.mUserSettings = this.cmsSettingsService.mUserSettings;
-        this.fontColorModel = this.getColorPickerModel(this.mUserSettings.sourceLabels.fontColor);
-        this.backgroundColorModel = this.getColorPickerModel(this.mUserSettings.sourceLabels.background);
+
+        this.translate.get("settings").subscribe(response => {
+            this.i18n = response;
+
+            this.fontColorModel = this.getColorPickerModel(this.mUserSettings.sourceLabel.fontColor);
+            this.backgroundColorModel = this.getColorPickerModel(this.mUserSettings.sourceLabel.backgroundColor);
+        });
+
         this.mUserSelectedLanguage = this.cmsSettingsService.getUserSelectedLanguageByKey(this.mUserSettings.language);
 
         // check if recent display exists
-        if (this.mUserSettings.wallConnection.atStartup.recentDisplayId !== "") {
-            this.checkForRecentDisplay(this.mUserSettings.wallConnection.atStartup.recentDisplayId);
+        if (this.mUserSettings.wallConnection.recentDisplay !== "") {
+            this.checkForRecentDisplay(this.mUserSettings.wallConnection.recentDisplay);
         }
 
         // check if page size exists
-        if (!this.mUserSettings.defaultPageSize) {
-            this.mUserSettings.defaultPageSize = this.pageSizeDefault;
+        if (!this.mUserSettings.pageSize) {
+            this.mUserSettings.pageSize = this.pageSizeDefault;
         }
 
         // show display wall name as per selected wall connection
@@ -182,18 +188,29 @@ export class CmsSettingsPanelComponent implements OnInit {
      * @description
      * This method fetch display wall name and update {{displayWallName}}
      * 
-     * @param: displayId: number ​:: Display ID to which specified content belong to.
+     * @param: displayId: number :: Display Name to which specified content belong to.
      */
-    private showDisplayWallNameById(displayId: number): void {
-        this.cmsServerApi.getSelectedDisplayContent(displayId)
-            .subscribe((display: Display) => {
-                if (display) {
-                    this.displayWallName = display["name"];
+    private showDisplayWallName(displayName: string): void {
+        let start = 1, count = 1, search = displayName, isFavorite = false, display;
+        this.cmsServerApi.getDisplayList(start, count, search, isFavorite)
+            .subscribe((displays: Display[]) => {
+                if (displays.length) {
 
-                    // update as selected display wall for future selection
-                    this.mUserSettings.wallConnection.atStartup.selectedDisplayId = display["id"];
-                    this.cmsSettingsService.updateUserProfileData(this.mUserSettings);
+                    // filter display by name
+                    for (let displayIndex = 0; displayIndex < displays.length; displayIndex++) {
+                        if (displays[displayIndex].name === displayName) {
+                            display = displays[displayIndex];
+                            break;
+                        }
+                    };
 
+                    if (display){
+                        this.displayWallName = display.name;
+
+                        // update as selected display wall for future selection
+                        this.mUserSettings.wallConnection.specificDisplay = display.name;
+                        this.cmsSettingsService.updateUserProfileData(this.mUserSettings);
+                    }
                 }
             }, (error) => {
                 this.displayWallName = "nodisplayfound";
@@ -205,13 +222,28 @@ export class CmsSettingsPanelComponent implements OnInit {
      * @description
      * This method fetch display wall name and update {{displayWallName}}
      * 
-     * @param: displayId: number ​:: Display ID to which specified content belong to.
+     * @param: displayName: string ​:: Display ID to which specified content belong to.
      */
-    private checkForRecentDisplay(displayId: number): void {
-        this.cmsServerApi.getSelectedDisplayContent(displayId)
-            .subscribe((display: Display) => {
-                if (display) {
-                    this.recentDisplayId = display["id"].toString();
+    private checkForRecentDisplay(displayName: string): void {
+        let start = 1, count = 1, search = displayName, isFavorite = false, display;
+        this.cmsServerApi.getDisplayList(start, count, search, isFavorite)
+            .subscribe((displays: Display[]) => {
+                if (displays.length) {
+
+                    // filter display by name
+                    for (let displayIndex = 0; displayIndex < displays.length; displayIndex++) {
+                        if (displays[displayIndex].name === displayName) {
+                            display = displays[displayIndex];
+                            break;
+                        }
+                    };
+
+                    if (display) {
+                        this.recentDisplayId = display["id"].toString();
+                    }
+                    else {
+                        this.recentDisplayId = "";
+                    }
                 }
             }, (error) => {
                 this.appConfig.log("CmsSettingsPanelComponent: checkForRecentDisplay");
@@ -243,8 +275,8 @@ export class CmsSettingsPanelComponent implements OnInit {
      * This method update font-size in user profile settings on server
      */
     private updateFontSize(): void {
-        let fontSize = this.mUserSettings.sourceLabels.fontSize;
-        this.mUserSettings.sourceLabels.fontSize = this.cmsSettingsService.validateCountData(fontSize, this.fontSizeSteps, this.fontSizeDefault);
+        let fontSize = this.mUserSettings.sourceLabel.fontSize;
+        this.mUserSettings.sourceLabel.fontSize = this.cmsSettingsService.validateCountData(fontSize, this.fontSizeSteps, this.fontSizeDefault);
         if (fontSize) {
             this.cmsSettingsService.updateUserProfileData(this.mUserSettings);
         }
@@ -255,8 +287,8 @@ export class CmsSettingsPanelComponent implements OnInit {
      * This method increase font-size in user profile settings on server and on UI
      */
     private increaseFontSize(): void {
-        let fontSize = this.mUserSettings.sourceLabels.fontSize;
-        this.mUserSettings.sourceLabels.fontSize = this.cmsSettingsService.increaseCount(fontSize, this.fontSizeSteps);
+        let fontSize = this.mUserSettings.sourceLabel.fontSize;
+        this.mUserSettings.sourceLabel.fontSize = this.cmsSettingsService.increaseCount(fontSize, this.fontSizeSteps);
         this.updateFontSize();
     }
 
@@ -265,8 +297,8 @@ export class CmsSettingsPanelComponent implements OnInit {
       * This method decrease font-size in user profile settings on server and on UI
       */
     private decreaseFontSize(): void {
-        let fontSize = this.mUserSettings.sourceLabels.fontSize;
-        this.mUserSettings.sourceLabels.fontSize = this.cmsSettingsService.decreaseCount(fontSize, this.fontSizeSteps);
+        let fontSize = this.mUserSettings.sourceLabel.fontSize;
+        this.mUserSettings.sourceLabel.fontSize = this.cmsSettingsService.decreaseCount(fontSize, this.fontSizeSteps);
         this.updateFontSize();
     }
 
@@ -275,8 +307,8 @@ export class CmsSettingsPanelComponent implements OnInit {
      * This method update transparency in user profile settings on server
      */
     private updateTransparency(): void {
-        let transparency = this.mUserSettings.sourceLabels.transparency;
-        this.mUserSettings.sourceLabels.transparency = this.cmsSettingsService.validateCountData(transparency, this.transparencySteps, this.transparencyDefault);
+        let transparency = this.mUserSettings.sourceLabel.transparency;
+        this.mUserSettings.sourceLabel.transparency = this.cmsSettingsService.validateCountData(transparency, this.transparencySteps, this.transparencyDefault);
         if (transparency || transparency === 0) {
             this.cmsSettingsService.updateUserProfileData(this.mUserSettings);
         }
@@ -287,8 +319,8 @@ export class CmsSettingsPanelComponent implements OnInit {
      * This method increase transparency in user profile settings on server and on UI
      */
     private increaseTransparency(): void {
-        let transparency = this.mUserSettings.sourceLabels.transparency;
-        this.mUserSettings.sourceLabels.transparency = this.cmsSettingsService.increaseCount(transparency, this.transparencySteps);
+        let transparency = this.mUserSettings.sourceLabel.transparency;
+        this.mUserSettings.sourceLabel.transparency = this.cmsSettingsService.increaseCount(transparency, this.transparencySteps);
         this.updateTransparency();
     }
 
@@ -297,8 +329,8 @@ export class CmsSettingsPanelComponent implements OnInit {
      * This method decrease transparency in user profile settings on server and on UI
      */
     private decreaseTransparency(): void {
-        let transparency = this.mUserSettings.sourceLabels.transparency;
-        this.mUserSettings.sourceLabels.transparency = this.cmsSettingsService.decreaseCount(transparency, this.transparencySteps);
+        let transparency = this.mUserSettings.sourceLabel.transparency;
+        this.mUserSettings.sourceLabel.transparency = this.cmsSettingsService.decreaseCount(transparency, this.transparencySteps);
         this.updateTransparency();
     }
 
@@ -310,7 +342,7 @@ export class CmsSettingsPanelComponent implements OnInit {
         if (event) {
             let fontColor = event.value;
             if (fontColor) {
-                this.mUserSettings.sourceLabels.fontColor = fontColor;
+                this.mUserSettings.sourceLabel.fontColor = fontColor;
                 this.cmsSettingsService.updateUserProfileData(this.mUserSettings);
             }
         }
@@ -324,7 +356,7 @@ export class CmsSettingsPanelComponent implements OnInit {
         if (event) {
             let backgroundColor = event.value;
             if (backgroundColor) {
-                this.mUserSettings.sourceLabels.​background = backgroundColor
+                this.mUserSettings.sourceLabel.​backgroundColor = backgroundColor
                 this.cmsSettingsService.updateUserProfileData(this.mUserSettings);
             }
         }
@@ -395,13 +427,13 @@ export class CmsSettingsPanelComponent implements OnInit {
      * This method show display wall name as per selected wall connection
      */
     private showDisplayWallNameByWallConnection() {
-        if (this.mUserSettings.wallConnection.atStartup.selectedDisplayId !== "" && this.mUserSettings.wallConnection.atStartup.status === "auto-connect-to-specific-wall") {
+        if (this.mUserSettings.wallConnection.specificDisplay !== "" && this.mUserSettings.wallConnection.startUpAction === CMSConstants.WALL_CONNECTION.SPECIFIC_WALL) {
             //show selected display name
-            this.showDisplayWallNameById(this.mUserSettings.wallConnection.atStartup.selectedDisplayId);
+            this.showDisplayWallName(this.mUserSettings.wallConnection.specificDisplay);
         }
-        else if (this.mUserSettings.wallConnection.atStartup.recentDisplayId !== "") {
+        else if (this.mUserSettings.wallConnection.recentDisplay !== "") {
             //show recent display name
-            this.showDisplayWallNameById(this.mUserSettings.wallConnection.atStartup.recentDisplayId);
+            this.showDisplayWallName(this.mUserSettings.wallConnection.recentDisplay);
         }
 
         // check if any display exist or not
@@ -426,8 +458,8 @@ export class CmsSettingsPanelComponent implements OnInit {
                     this.noDisplayAvailable = false;
 
                     // wall exists and no recent wall selected
-                    if (this.mUserSettings.wallConnection.atStartup.recentDisplayId === "") {
-                        this.showDisplayWallNameById(displays[0]["id"]);
+                    if (this.mUserSettings.wallConnection.recentDisplay === "") {
+                        this.showDisplayWallName(displays[0].name);
                     }
                 }
             },

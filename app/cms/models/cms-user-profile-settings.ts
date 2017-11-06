@@ -6,41 +6,34 @@
 
 /**
  * The interface defines the model for User Profile Setiings.
- * 
- * @author: CHERA, AKAAR
- * @version: CMS 3.0
  */
 export interface IWallConnection {
-    "atStartup": {
-        "status": string,
-        "selectedDisplayId": any,
-        "recentDisplayId": any
-    }
+    "startUpAction": string,
+    "specificDisplay": string,
+    "recentDisplay": string
 }
 
-export interface ISourceLabels {
+export interface ISourceLabel {
     "displaySourceNameLabels": boolean,
     "useMultipleLines": boolean,
     "fontColor": string,
     "fontSize": number,
-    "background": string,
+    "backgroundColor": string,
     "transparency": number
 }
 
-export interface IManageWallContent {
-    "requireConfirmationforLoadingLayouts": boolean,
+export interface IWallContent {
+    "requireConfirmationForLoadingLayouts": boolean,
     "allowChangingSources": boolean,
-    "clipboard": {
-        "isEnabled": boolean,
-        "status": string
-    }
+    "clipboardEnabled": boolean,
+    "clipboardSize": string
 }
 
 export interface IUserProfileSettings {
     "language": string,
     "wallConnection": IWallConnection,
-    "sourceLabels": ISourceLabels,
-    "manageWallContent": IManageWallContent,
+    "sourceLabel": ISourceLabel,
+    "wallContent": IWallContent,
     "logOffTime": number,
-    "defaultPageSize": number
+    "pageSize": number
 }

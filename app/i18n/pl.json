@@ -65,9 +65,9 @@
         "multipleLines": "U\u017cyj wielu linii",
         "fontColor": "Kolor czcionki",
         "fontSize": "Rozmiar czcionki",
-        "background": "T\u0142o",
+        "backgroundColor": "T\u0142o",
         "transparency": "Przezroczysto\u015b\u0107 (%)",
-        "manageWallContent": "Zarz\u0105dzaj zawarto\u015bci\u0105 na \u015bcianie",
+        "wallContent": "Zarz\u0105dzaj zawarto\u015bci\u0105 na \u015bcianie",
         "requireConfirmationLayouts": "Wymagaj potwierdzenia za\u0142adowania uk\u0142ad\u00f3w",
         "allowChangingSources": "W\u0142\u0105cz zmian\u0119 \u017ar\u00f3de\u0142",
         "clipboard": "Schowek",
@@ -82,7 +82,7 @@
         "autoLogOff": "Wyloguj automatycznie",
         "timeOutInMinute": "Czas do wylogowania w przypadku braku aktywno\u015bci (minuty)",
         "listPageSizes": "List page sizes",
-        "defaultPageSize": "Default page size"
+        "pageSize": "Default page size"
     },
     "about": {
         "about": "Informacje o aplikacji CMS Launch Pad",

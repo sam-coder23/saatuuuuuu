@@ -65,9 +65,9 @@
         "multipleLines": "Mehrere Leitungen verwenden",
         "fontColor": "Schriftfarbe",
         "fontSize": "Schriftgrad",
-        "background": "Hintergrund",
+        "backgroundColor": "Hintergrund",
         "transparency": "Transparenz (%)",
-        "manageWallContent": "Wandinhalt verwalten",
+        "wallContent": "Wandinhalt verwalten",
         "requireConfirmationLayouts": "Best\u00e4tigung zum Laden der Layouts erforderlich",
         "allowChangingSources": "\u00c4ndern der Quellen aktivieren",
         "clipboard": "Zwischenablage",
@@ -82,7 +82,7 @@
         "autoLogOff": "Automatisches Abmelden",
         "timeOutInMinute": "Zeitablauf f\u00fcr das Abmelden bei Inaktivit\u00e4t (Minuten)",
         "listPageSizes": "List page sizes",
-        "defaultPageSize": "Default page size"
+        "pageSize": "Default page size"
     },
     "about": {
         "about": "Informationen zu CMS Launch Pad",

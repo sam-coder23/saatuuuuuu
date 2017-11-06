@@ -65,9 +65,9 @@
         "multipleLines": "Utiliser plusieurs lignes",
         "fontColor": "Couleur de la police",
         "fontSize": "Taille de la police",
-        "background": "Arri\u00e8re-plan",
+        "backgroundColor": "Arri\u00e8re-plan",
         "transparency": "Transparence (%)",
-        "manageWallContent": "G\u00e9rer le contenu du mur",
+        "wallContent": "G\u00e9rer le contenu du mur",
         "requireConfirmationLayouts": "Demander une confirmation pour le chargement des dispositions",
         "allowChangingSources": "Activer la modification des sources",
         "clipboard": "Presse-papier",
@@ -81,7 +81,7 @@
         "never": "jamais",
         "autoLogOff": "D\u00e9connexion automatique",
         "timeOutInMinute": "D\u00e9lai de d\u00e9connexion en cas d\u2019inactivit\u00e9 (minutes)",
-        "listPageSizes": "List page sizes",
+        "pageSize": "List page sizes",
         "defaultPageSize": "Default page size"
     },
     "about": {

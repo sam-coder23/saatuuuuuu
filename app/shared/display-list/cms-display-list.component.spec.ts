@@ -41,11 +41,11 @@ class MockCmsEventEmitterService{
 
 class MockSettingsService {
     mUserSettings = settings;
-    updateWallConnectionSpecificDisplayId() {
+    updateWallConnectionSpecificDisplay() {
         return Observable.of(null);
     }
 
-    updateWallConnectionRecentDisplayId() {
+    updateWallConnectionRecentDisplay() {
         return Observable.of(null);
     }
 }
@@ -151,8 +151,8 @@ describe("CmsDisplayListComponent", () => {
             spyRouter = spyOn(routerService, "navigate").and.returnValue(Observable.of(null));
             spyMarkObjectAsFavorite = spyOn(cmsFavoriteService, "markObjectAsFavorite").and.returnValue(Observable.of(null));
             spyMarkObjectAsUnfavorite = spyOn(cmsFavoriteService, "markObjectAsUnfavorite").and.returnValue(Observable.of(null));
-            spyUpdateRecentDisplay =  spyOn(cmsSettingsService, "updateWallConnectionRecentDisplayId").and.returnValue(Observable.of(null));
-            spyUpdateSpecificDisplay = spyOn(cmsSettingsService, "updateWallConnectionSpecificDisplayId").and.returnValue(Observable.of(null));
+            spyUpdateRecentDisplay =  spyOn(cmsSettingsService, "updateWallConnectionRecentDisplay").and.returnValue(Observable.of(null));
+            spyUpdateSpecificDisplay = spyOn(cmsSettingsService, "updateWallConnectionSpecificDisplay").and.returnValue(Observable.of(null));
         });
     }));
 
@@ -261,14 +261,14 @@ describe("CmsDisplayListComponent", () => {
 
     it("should connect the display to the wall, and redirect to the sources list", () => {
         component.connectWall(displays[1]);
-        expect(cmsSettingsService.updateWallConnectionRecentDisplayId).not.toHaveBeenCalled();
-        expect(cmsSettingsService.updateWallConnectionSpecificDisplayId).not.toHaveBeenCalled();     
+        expect(cmsSettingsService.updateWallConnectionRecentDisplay).not.toHaveBeenCalled();
+        expect(cmsSettingsService.updateWallConnectionSpecificDisplay).not.toHaveBeenCalled();     
         debugInstance.route.params = [{ "action": "selectDisplayForAutoConnect" }];
         component.connectWall(displays[0]);
-        expect(cmsSettingsService.updateWallConnectionSpecificDisplayId).toHaveBeenCalled(); 
+        expect(cmsSettingsService.updateWallConnectionSpecificDisplay).toHaveBeenCalled(); 
         debugInstance.route.params = [{ "action": "jargonText" }];
         component.connectWall(displays[0]);
-        expect(cmsSettingsService.updateWallConnectionRecentDisplayId).toHaveBeenCalled();
+        expect(cmsSettingsService.updateWallConnectionRecentDisplay).toHaveBeenCalled();
         let displayStringify = JSON.stringify(displays[0]);
         expect(window.sessionStorage.getItem(CMS_SESSION_STORAGE_ITEM.Display)).toEqual(displayStringify);
         let args = spyRouter.calls.mostRecent().args;
