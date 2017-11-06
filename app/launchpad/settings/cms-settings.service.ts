@@ -55,7 +55,7 @@ export class CmsSettingsService {
         }
     }
 
-    
+
     /**
      * @description
      * This method fetch user profile settings and update local property and execute optional callback function
@@ -84,7 +84,7 @@ export class CmsSettingsService {
      */
     public applyUserSelectedLanguage(): void {
         let defaultLanguage = this.appConfig.DefaultLanguage;
-        
+
         // if language is not available
         if (!this.mUserSettings) {
             this.appConfig.log("Error loading user settings.");
@@ -113,9 +113,9 @@ export class CmsSettingsService {
                         this.translate.use(defaultLanguage);
                         this.setTextDirectionByLanguageKey(defaultLanguage);
 
-                        if(this.mUserSettings){
-                           this.mUserSettings.language = defaultLanguage;
-                           this.updateUserProfileData(this.mUserSettings);
+                        if (this.mUserSettings) {
+                            this.mUserSettings.language = defaultLanguage;
+                            this.updateUserProfileData(this.mUserSettings);
                         }
                     }
                 }
@@ -224,21 +224,39 @@ export class CmsSettingsService {
         let selectedDisplayName = this.mUserSettings.wallConnection.specificDisplay;
         let recentDisplayName = this.mUserSettings.wallConnection.recentDisplay;
 
-        switch (selectedOption) {
-            case CMSConstants.WALL_CONNECTION.DISPLAY_WALL_LIST:
-                this.router.navigate(["/displays-panel"]);
-                break;
+        this.cmsServerApi.getDisplayList().subscribe((displays: Display[]) => {
+            //Check for if only one display is available.
+            if (displays.length === 1) {
+                this.navigateToSourcePanel(displays);
+                return;
+            }
 
-            case CMSConstants.WALL_CONNECTION.RECENT_WALL:
-                this.autoConnectToMostRecentWall(recentDisplayName);
-                break;
+            switch (selectedOption) {
+                case CMSConstants.WALL_CONNECTION.DISPLAY_WALL_LIST:
+                    this.router.navigate(["/displays-panel"]);
+                    break;
 
-            case CMSConstants.WALL_CONNECTION.SPECIFIC_WALL:
-                this.autoConnectToSpecificWall(selectedDisplayName);
-                break;
-        }
+                case CMSConstants.WALL_CONNECTION.RECENT_WALL:
+                    this.autoConnectToMostRecentWall(recentDisplayName);
+                    break;
+
+                case CMSConstants.WALL_CONNECTION.SPECIFIC_WALL:
+                    this.autoConnectToSpecificWall(selectedDisplayName);
+                    break;
+            }
+        });
     }
 
+    /**
+     * @description 
+     * This method navigates directly to the source panel if there is only one display available.
+     */
+    private navigateToSourcePanel(displays: Display[]) {
+        //update recentDisplayId on user profile data         
+        this.updateWallConnectionRecentDisplay(displays[0]);
+        this.storageManager.set(CMS_SESSION_STORAGE_ITEM.Display, JSON.stringify(displays[0]));
+        this.router.navigate([`/displays/${displays[0].id}/sources-panel`]);
+    }
 
     /**
      * @description 
@@ -304,7 +322,7 @@ export class CmsSettingsService {
                     if (display) {
                         //update recentDisplay on user profile data 
                         this.updateWallConnectionRecentDisplay(display);
-                        
+
                         this.storageManager.set(CMS_SESSION_STORAGE_ITEM.Display, JSON.stringify(display));
                         this.router.navigate([`/display-panel/${display.id}`]);
                     }

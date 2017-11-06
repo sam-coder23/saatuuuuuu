@@ -130,6 +130,7 @@ export class CmsDisplayListComponent implements OnChanges, OnDestroy {
         this.route.params.forEach((params: Params) => {
             let actionParam = params["action"];
 
+            // Check for change in settings for specific selected wall.
             if (actionParam === "selectDisplayForAutoConnect") {
                 this.cmsSettingsService.updateWallConnectionSpecificDisplay(display);
             }
@@ -137,7 +138,7 @@ export class CmsDisplayListComponent implements OnChanges, OnDestroy {
                 //update recentDisplayId on user profile data 
                 this.cmsSettingsService.updateWallConnectionRecentDisplay(display);
 
-                window.sessionStorage.setItem(CMS_SESSION_STORAGE_ITEM.Display, JSON.stringify(display));
+                this.storageManager.set(CMS_SESSION_STORAGE_ITEM.Display, JSON.stringify(display));
                 this.cmsClipboardService.clear();
                 this.cmsClipboardService.selectedSources.length = 0;
                 this.mRouter.navigate([`/displays/${display.id}/sources-panel`]);
