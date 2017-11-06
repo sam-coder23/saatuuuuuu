@@ -171,15 +171,6 @@ describe("CmsLoginComponent", () => {
         });
     });
 
-    it("Logout", () => {
-        componentOptions.logout();
-        fixtureOptions.whenStable().then(() => {
-            expect(cmsApiService.logout).toHaveBeenCalled();
-            // expect(storageManager.appStorage.length).toBe(0);
-            // expect(router.navigate).toHaveBeenCalledWith(["/login"]);
-        });
-    });
-
     it("User Login: Failure", () => {
         debugInstance.user = {username: "test", password: "password"};
         component.onLoginSubmit();

@@ -12,7 +12,6 @@
         "userDisabledError": "User account is disabled"
     },
     "options": {
-        "logoff": "Log Off",
         "refresh": "Refresh",
         "exit": "Exit",
         "saveNewLayout": "Save a new layout",

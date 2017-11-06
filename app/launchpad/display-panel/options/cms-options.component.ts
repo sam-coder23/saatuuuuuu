@@ -95,21 +95,6 @@ export class CmsOptionsComponent implements OnInit {
     }
 
     /**
-     * This method performs the logout for the user and redirects to login page on success.
-     */
-    public logout() {
-        this.cmsApiService.logout()
-            .subscribe(
-            response => {
-                this.cmsApiService.performOnlogout();
-            },
-            error => {
-                this.appConfig.log("OptionsComponent: Logout failed");
-            }
-            )
-    }
-
-    /**
      * This method performs browser refresh.
      */
     public refresh() {
