@@ -121,13 +121,19 @@ export class CmsSourceListComponent implements OnInit, OnChanges, OnDestroy {
         this.mScroller.max = null;
         this.mScroller.count = this.cmsSettingsService.mUserSettings.pageSize || 20;
         this.mScrollTarget = this.domManager.FirstChild();
+        this.mScrollTarget = this.domManager.getElementById("source-list-card-container");
         this.getSources();
 
-        this.mScroller.addScrollListener(this.mScrollTarget, function () {
-            if (this.mScroller.max == null) {
-                this.getSources();
-            }
-        }.bind(this));
+        if (this.mScrollTarget) {
+            this.mScroller.addScrollListener(this.mScrollTarget, function () {
+                if (this.mScroller.max == null) {
+                    this.getSources();
+                }
+            }.bind(this));
+        }
+        else {
+            this.appConfig.error("Scroll target not found on source list. Scrolling will not work.");
+        }
     }
 
     /**

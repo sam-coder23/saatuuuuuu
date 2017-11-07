@@ -18,7 +18,7 @@ class DomManager {
     private nativeElement;
 
     constructor(element: ElementRef) {
-        this.nativeElement = element.nativeElement
+        this.nativeElement = element.nativeElement  
     }
 
     /**
@@ -56,5 +56,14 @@ class DomManager {
      */
     public GetElementsByClassName(className: string) : HTMLElement[] {
         return <HTMLElement[]>this.nativeElement.getElementsByClassName(className);
+    }
+
+    /**
+    * @method getElementById This method is used to get the element with the help of id attribute
+    * @param {string} id attribute of the dom element eg. "source-list"
+    * @return {HTMLElement}
+    */
+    public getElementById(id: string) : HTMLElement {
+       return <HTMLElement>this.nativeElement.querySelector(`#${id}`);
     }
 }
