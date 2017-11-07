@@ -28,7 +28,7 @@
 </div>
 
 <div class="sources-panel-main">
-    <cms-source-list [displayId]="mDisplayId" [selectedOnly]="selectedOnly" (change)="onListChanged()" *ngIf="mStates.list" [searchFilter]="searchFilter"
+    <cms-source-list [tilePresets] = "tilePresets" [displayId]="mDisplayId"  [selectedOnly]="selectedOnly" (change)="onListChanged()" *ngIf="mStates.list" [searchFilter]="searchFilter"
         [favoriteFilter]="isFavoriteFilter" (error)="errorMessage = $event"></cms-source-list>
 </div>
 <div class="page-toolbar bottom">

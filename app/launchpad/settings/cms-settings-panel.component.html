@@ -154,55 +154,6 @@
 						</md-list>
 					</md-card-content>
 				</md-card>
-
-				<!-- WALL CONTENT PART -->
-				<md-card class="setting-card">
-					<md-card-subtitle id="setting-panel-wallcontent-subtitle">{{ 'settings.wallContent' | translate }}</md-card-subtitle>
-					<md-card-content>
-						<md-list dense>
-							<md-list-item>
-								<div class="fill-remaining-space" id="require-confirmation-layouts-text">{{ 'settings.requireConfirmationLayouts' | translate }}</div>
-								<md-slide-toggle name="wallcontent-require-confirmation-for-loading-layout" [checked]="mUserSettings.wallContent.requireConfirmationForLoadingLayouts"
-									[(ngModel)]="mUserSettings.wallContent.requireConfirmationForLoadingLayouts" (change)="updateUserSettingsByAction($event)"
-									id="require-confirmation-layouts-slider-button"></md-slide-toggle>
-							</md-list-item>
-							<md-divider></md-divider>
-							<md-list-item>
-								<div class="fill-remaining-space" id="allow-changing-sources-text">{{ 'settings.allowChangingSources' | translate }}</div>
-								<md-slide-toggle name="wallContent-allow-changing-sources" [checked]="mUserSettings.wallContent.allowChangingSources"
-									[(ngModel)]="mUserSettings.wallContent.allowChangingSources" (change)="updateUserSettingsByAction($event)"
-									id="allow-changing-sources-slider-button"></md-slide-toggle>
-							</md-list-item>
-							<md-divider></md-divider>
-
-
-							<!-- CLIPBOARD PART -->
-							<md-list-item>
-								<div class="fill-remaining-space list-text" id="setting-panel-clipboard-subtitle" [class.disabled]="!mUserSettings.wallContent.allowChangingSources">{{ 'settings.clipboard' | translate }}</div>
-								<md-slide-toggle name="wallContent-clipboard" [disabled]="!mUserSettings.wallContent.allowChangingSources" [checked]="mUserSettings.wallContent.clipboardEnabled"
-									[(ngModel)]="mUserSettings.wallContent.clipboardEnabled" (change)="updateUserSettingsByAction($event)" id="setting-panel-clipboard-slider-button"></md-slide-toggle>
-							</md-list-item>
-
-							<md-radio-group name="wallContent-clipboard-status" class="clipboard-row" [value]="mUserSettings.wallContent.clipboardSize"
-								[(ngModel)]="mUserSettings.wallContent.clipboardSize" (change)="updateUserSettingsByAction($event)" [disabled]="!mUserSettings.wallContent.clipboardEnabled || !mUserSettings.wallContent.allowChangingSources"
-								[class.disabled]="!mUserSettings.wallContent.clipboardEnabled || !mUserSettings.wallContent.allowChangingSources"
-								id="clipboard-radiogroup">
-								<md-list-item>
-									<md-radio-button value="icon" id="clipboard-icon-radio-button">
-										<span class="md-line">{{ 'settings.icon' | translate }}</span>
-									</md-radio-button>
-								</md-list-item>
-								<md-list-item>
-									<md-radio-button value="small" id="clipboard-small-radio-button">{{ 'settings.small' | translate }}</md-radio-button>
-								</md-list-item>
-								<md-list-item>
-									<md-radio-button value="large" id="clipboard-large-radio-button">{{ 'settings.large' | translate }}</md-radio-button>
-								</md-list-item>
-								</md-radio-group>
-						</md-list>
-					</md-card-content>
-				</md-card>
-
 				<!-- List page sizes -->
 				<md-card class="setting-card">
 					<md-card-subtitle id="setting-panel-list-page-sizes-subtitle">{{ 'settings.listPageSizes' | translate }}</md-card-subtitle>

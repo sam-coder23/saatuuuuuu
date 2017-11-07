@@ -24,14 +24,6 @@ describe("Service: StorageManager", () => {
                 "background": "#BDBDBD",
                 "transparency": 50
             },
-            "manageWallContent": {
-                "requireConfirmationforLoadingLayouts": true,
-                "allowChangingSources": true,
-                "clipboard": {
-                    "isEnabled": true,
-                    "status": "large"
-                }
-            },
             "logOffTime": 0,
             "defaultPageSize": 50
         },

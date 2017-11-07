@@ -98,8 +98,6 @@ export class CmsLaunchpadComponent implements OnInit, OnDestroy {
       .addSvgIcon("fit_height", sanitizer.bypassSecurityTrustResourceUrl("resources/icons/fit_height.svg"))
       .addSvgIcon("display_offline", sanitizer.bypassSecurityTrustResourceUrl("resources/icons/display_offline_black_36.svg"))
       .addSvgIcon("display_online", sanitizer.bypassSecurityTrustResourceUrl("resources/icons/display_online_black_36.svg"))
-      .addSvgIcon("clear_clipboard_black", sanitizer.bypassSecurityTrustResourceUrl("resources/icons/clear_clipboard_black.svg"))
-      .addSvgIcon("clear_clipboard_white", sanitizer.bypassSecurityTrustResourceUrl("resources/icons/clipboard_clear_white_36px.svg"));
   }
 
   /**
@@ -256,7 +254,6 @@ export class CmsLaunchpadComponent implements OnInit, OnDestroy {
     rootElement.addEventListener("scroll", () => this.calculateUserLastActionTimes(), true);
     rootElement.addEventListener("click", () => this.calculateUserLastActionTimes(), true);
     rootElement.addEventListener("input", () => this.calculateUserLastActionTimes(), true);
-    rootElement.addEventListener("onClipboardDrag", () => this.calculateUserLastActionTimes(), true);
   }
 
   /**

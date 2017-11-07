@@ -284,7 +284,7 @@ export class CmsApiService {
     }
 
     /**
-     * Load clipboard content on cms-tile of mini display with `post` http method.
+     * Load  content on cms-tile of mini display with `post` http method.
      * @method loadContentOnTile
      * @param: displayId: number :: To load content on tile of this display id
      * @param: tile: ITile :: Contains info on which content is pushed

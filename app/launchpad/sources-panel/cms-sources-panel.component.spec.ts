@@ -18,8 +18,21 @@ import { CmsApiService } from "../../cms/api/cms-api.service";
 import { Source } from "./../../cms/models/cms-source";
 import { CmsSourceListComponent } from "./../../shared/source-list/cms-source-list.component";
 import { MockRouterStub } from "../../core/mock-stubs/mock-router-stub";
+import { ITilePreset } from "../../cms/models/cms-tile-preset";
+import { TilePresets } from "../../shared/tile-grid/tile-grid.mock";
 import { CmsSettingsService } from "../settings/cms-settings.service";
 import { CMSConstants } from "../../cms/models/cms-constants";
+
+class MockCmsApiService {
+    getTilers(): Observable<ITilePreset[]> {
+        return Observable.of(TilePresets);
+    }
+
+    putContentsOnDisplay(displayId: number, tilerId: number, body: any) {
+        return Observable.of(null);
+    }
+
+}
 
 describe("CmsSourcesPanelComponent", () => {
     /**
@@ -86,6 +99,8 @@ describe("CmsSourcesPanelComponent", () => {
     let cmsSettingService: CmsSettingsService;
     let route: ActivatedRoute;
     let panelTitle: string;
+    let cmsApiService: CmsApiService;
+    let spyPutContentsOnDisplay: jasmine.Spy;
 
     beforeEach(async(() => {
         TestBed.configureTestingModule({
@@ -95,7 +110,10 @@ describe("CmsSourcesPanelComponent", () => {
                 StorageManager,
                 TranslateService,
                 StorageManager,
-                CmsApiService,
+                {
+                  provide: CmsApiService,
+                  useClass: MockCmsApiService
+                },
                 {
                     provide: Router,
                     useClass: MockRouterStub
@@ -130,7 +148,9 @@ describe("CmsSourcesPanelComponent", () => {
 
             injector = getTestBed();
             cmsSettingService = injector.get(CmsSettingsService);
+            cmsApiService = injector.get(CmsApiService);
             translateService = injector.get(TranslateService);
+            spyPutContentsOnDisplay = spyOn(cmsApiService, "putContentsOnDisplay").and.returnValue(Observable.of(null));
 
             translateService.setDefaultLang("en");
             translateService.get("sourceList.connectTo", { value: CMSConstants.MAXSELECTION }).subscribe((response: string) => {
@@ -283,4 +303,14 @@ describe("CmsSourcesPanelComponent", () => {
             expect(searchBox.focus).toHaveBeenCalled();
         });
     }));
+
+    
+    it("should call CmsApiService.putContentsOnDisplay when source is selected", () => {
+        fixture.detectChanges();
+        component.navigateNext();
+        let args = spyPutContentsOnDisplay.calls.mostRecent().args;
+        expect(args[0]).toEqual(debugInstance.displayId);
+        expect(args[1]).toEqual(debugInstance.tilePresets[0].id);
+        expect(args[2].resources).toEqual(debugInstance.cmsSettingService.selectedSources);
+    });
 })

@@ -7,7 +7,6 @@
 import { Component, OnInit, ElementRef, OnDestroy, EventEmitter, Output, Input, OnChanges, SimpleChanges } from "@angular/core";
 import { Router } from "@angular/router";
 import { Subscription } from "rxjs/Rx";
-
 import { CmsApiService } from "../../cms/api/cms-api.service";
 import { CmsEventEmitterService } from "./../../cms/api/cms-event-emitter.service";
 import { CMS_EVENTS } from "../../cms/api/cms-events.enum";
@@ -58,6 +57,8 @@ export class CmsSourceListComponent implements OnInit, OnChanges, OnDestroy {
     // id of selected display
     @Input() displayId: number;
 
+    @Input() tilePresets: ITilePreset[];
+
     // list of sources to be created as card list
     public mSources: Source[];
 
@@ -69,7 +70,6 @@ export class CmsSourceListComponent implements OnInit, OnChanges, OnDestroy {
     private element: ElementRef;
     private mScroller: CmsVirtualScrollService;
     private mFavoriteService: CmsFavoriteService;
-    public tilePresets: ITilePreset[];
 
     // it saves the CMS events subscription and unsubscribe them on component destruction
     private mSourceListCmsEvent: EventEmitter<any> = null;
@@ -106,7 +106,6 @@ export class CmsSourceListComponent implements OnInit, OnChanges, OnDestroy {
      */
     ngOnInit() {
         this.getDisplayDetails();
-        this.loadTilers();
     }
 
     /**
@@ -190,56 +189,25 @@ export class CmsSourceListComponent implements OnInit, OnChanges, OnDestroy {
     /**
      * On selecting a card, the respective source will be copied to selectedSources of cms seting.
      */
-    updateSelection(selected: boolean, source: Source) {
+  
+    public updateSelection(selected: boolean, source: Source) {
         let tileId: number;
         if (source.selected) {
-            let requestPayload = {
-                "resources": [...this.cmsSettingsService.selectedSources]
-            };
-            console.log(requestPayload);
-            let index = requestPayload.resources.findIndex(resource => resource.id === source.id);
-            requestPayload.resources.splice(index, 1);
-
-            // API rejects extra properties
-            requestPayload.resources.forEach(resource => {
-                resource.selected = undefined;
-            });
-
-            tileId = this.tileIdForSourceCount(requestPayload.resources.length);
-
-            this.mCmsServerApi.putContentsOnDisplay(this.displayId, tileId, requestPayload).subscribe(response => {
-                index = this.cmsSettingsService.selectedSources.findIndex(resource => resource.id === source.id);
-                this.cmsSettingsService.selectedSources.splice(index, 1);
-                source.selected = false;
-                this.errorEmitter.emit("");
-            }, error => {
-                console.error(error);
-            });
+            let index = this.cmsSettingsService.selectedSources.findIndex(resource => resource.id === source.id);
+            this.cmsSettingsService.selectedSources.splice(index, 1);
+            tileId = this.tileIdForSourceCount(this.cmsSettingsService.selectedSources.length);
+            source.selected = false;
+            this.errorEmitter.emit("");
         } else if (this.cmsSettingsService.selectedSources.length < CMSConstants.MAXSELECTION) {
-            let requestPayload = {
-                "resources": [...this.cmsSettingsService.selectedSources, source]
-            };
-
-            // API rejects extra properties
-            requestPayload.resources.forEach(resource => {
-                resource.selected = undefined;
-            });
-
-            tileId = this.tileIdForSourceCount(requestPayload.resources.length);
-
+            this.cmsSettingsService.selectedSources.push(source);
+            source.selected = true;
+            tileId = this.tileIdForSourceCount(this.cmsSettingsService.selectedSources.length);   
             if (tileId === 0) {
                 this.translateService.get("sourceList.tileLayoutNotAvailable").subscribe((value) => {
                     this.errorEmitter.emit(value);
                 });
                 return;
             }
-
-            this.mCmsServerApi.putContentsOnDisplay(this.displayId, tileId, requestPayload).subscribe(response => {
-                this.cmsSettingsService.selectedSources.push(source);
-                source.selected = true;
-            }, error => {
-                console.error(error);
-            });
         } else {
             this.translateService.get("sourceList.maxSelection", { value: CMSConstants.MAXSELECTION }).subscribe((value) => {
                 this.errorEmitter.emit(value);
@@ -275,14 +243,6 @@ export class CmsSourceListComponent implements OnInit, OnChanges, OnDestroy {
             var source = this.mSources.find(source => source.id === aResponseBody.id);
             if (source) {
                 source.disabled = true;
-            }
-
-            // clean up the clipboard if it contained the deleted source
-            var clipboardSource = JSON.parse(this.storageManager.get(CMS_SESSION_STORAGE_ITEM.Clipboard));
-            //window.sessionStorage.getItem("clipboard")
-            if (clipboardSource && clipboardSource.id === aResponseBody.id) {
-                this.storageManager.remove(CMS_SESSION_STORAGE_ITEM.Clipboard);
-                //window.sessionStorage.removeItem(CMS_SESSION_STORAGE_ITEM.Clipboard);
             }
         }
 
@@ -350,15 +310,5 @@ export class CmsSourceListComponent implements OnInit, OnChanges, OnDestroy {
         } else {
             this.appConfig.error("No tile found to share content.");
         }
-    }
-
-    public loadTilers() {
-        this.mCmsServerApi.getTilers().subscribe((tilers) => {
-            this.tilePresets = tilers.sort((a, b) => {
-                return a.noOfTiles - b.noOfTiles;
-            });
-        }, (error) => {
-            console.log(error);
-        });
     }
 }

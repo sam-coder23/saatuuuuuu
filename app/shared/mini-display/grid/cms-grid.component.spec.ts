@@ -112,12 +112,6 @@ let mUserSettings: IUserProfileSettings = {
         "backgroundColor": "#BDBDBD",
         "transparency": 50
     },
-    "wallContent": {
-        "requireConfirmationForLoadingLayouts": true,
-        "allowChangingSources": false,
-        "clipboardEnabled": true,
-        "clipboardSize": "large"
-    },
     "logOffTime": 0,
     "pageSize": 50
 };

@@ -120,14 +120,6 @@ class MockCmsFavoriteService {
 }
 
 class MockCmsApiService {
-    getTilers(): Observable<ITilePreset[]> {
-        return Observable.of(TilePresets);
-    }
-
-    putContentsOnDisplay(displayId: number, tilerId: number, body: any) {
-        return Observable.of(null);
-    }
-
     getSelectedDisplayContent(displayId): Observable<MockDisplay> {
         return Observable.of(mDisplay);
     }
@@ -139,7 +131,6 @@ class MockCmsApiService {
     loadContentOnTile(){
 
     }
-
 }
 
 class MockCmsSettingsService {
@@ -157,12 +148,6 @@ class MockCmsSettingsService {
             "fontSize": 14,
             "backgroundColor": "#BDBDBD",
             "transparency": 50
-        },
-        "wallContent": {
-            "requireConfirmationForLoadingLayouts": true,
-            "allowChangingSources": true,
-            "clipboardEnabled": true,
-            "clipboardSize": "large"
         },
         "logOffTime": 0,
         "pageSize": 50
@@ -229,6 +214,7 @@ describe("CmsSourceListComponent", () => {
             nativeElement = fixture.nativeElement;
             debugInstance = fixture.debugElement.componentInstance;
             component.displayId = mDisplay.id;
+            component.tilePresets = TilePresets;
 
             cmsSettingsService = fixture.debugElement.injector.get(CmsSettingsService);
 
@@ -238,7 +224,7 @@ describe("CmsSourceListComponent", () => {
 
             spyMarkObjectAsFavorite = spyOn(cmsFavoriteService, "markObjectAsFavorite").and.returnValue(Observable.of(null));
             spyMarkObjectAsUnfavorite = spyOn(cmsFavoriteService, "markObjectAsUnfavorite").and.returnValue(Observable.of(null));
-            spyPutContentsOnDisplay = spyOn(cmsApiService, "putContentsOnDisplay").and.returnValue(Observable.of(null));
+           
             // translateService.setDefaultLang("en");
         });
     }));
@@ -343,15 +329,6 @@ describe("CmsSourceListComponent", () => {
         expect(debugInstance.tileIdForSourceCount(0)).toEqual(0);
         debugInstance.tilePresets = [];
         expect(debugInstance.tileIdForSourceCount(1)).toEqual(0);
-
-        debugInstance.tilePresets.push(TilePresets[0]);
-        expect(debugInstance.tileIdForSourceCount(2)).toEqual(TilePresets[0].id);
-
-        debugInstance.tilePresets.push(TilePresets[1]);
-        expect(debugInstance.tileIdForSourceCount(4)).toEqual(TilePresets[1].id);
-
-        debugInstance.tilePresets.push(TilePresets[2]);
-        expect(debugInstance.tileIdForSourceCount(6)).toEqual(TilePresets[2].id);
     });
 
     it("should not return anything if the max scroll is not reached", () => {

@@ -304,9 +304,6 @@ html[dir="rtl"]{
         -ms-transform: scaleX(1);
    } 
 
-    #clipboard-preview{
-        left: 50px;
-    }  
 }
 
 html[dir="ltr"]{
@@ -315,9 +312,6 @@ html[dir="ltr"]{
         right: 8px;
     }
 
-    #clipboard-preview{
-        right: 50px;
-    }
 }
 
 

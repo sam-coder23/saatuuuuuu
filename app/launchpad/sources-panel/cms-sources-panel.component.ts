@@ -12,6 +12,10 @@ import { AppConfig } from "../../config";
 import { CMS_SESSION_STORAGE_ITEM } from "../../cms/models/cms-session-storage-item";
 import { StorageManager } from "../../cms/api/cms-storagemanager.service";
 import { TranslateService } from "@ngx-translate/core";
+import { CmsSourceListComponent } from "../../shared/source-list/cms-source-list.component"
+import { TilePresetManager } from "../../utils/tilepreset-manager.util";
+import { ITilePreset } from "../../cms/models/cms-tile-preset";
+import { CmsApiService } from "../../cms/api/cms-api.service";
 import { CmsSettingsService } from "../settings/cms-settings.service";
 import { CMSConstants } from "../../cms/models/cms-constants";
 
@@ -25,7 +29,8 @@ import { CMSConstants } from "../../cms/models/cms-constants";
     styles: [require("to-string!./cms-sources-panel.component.scss")]
 })
 export class CmsSourcesPanelComponent implements OnInit {
-
+    private tilePresets: ITilePreset[];
+    private mCmsServerApi: CmsApiService;
     /**
       * Filter property which will filter the source list
       * @property {boolean} isFavoriteFilter
@@ -52,19 +57,21 @@ export class CmsSourcesPanelComponent implements OnInit {
 
     private panelTitle: string;
 
+    private tileId: number;
     private maxSelection = CMSConstants.MAXSELECTION;
 
     /**
      * The constructor initializes various dependencies.
      */
     constructor(aRoute: ActivatedRoute, el: ElementRef, private appConfig: AppConfig, private storageManager: StorageManager,
-        private router: Router, private cmsSettingService: CmsSettingsService, private translate: TranslateService) {
-
+        private router: Router, private cmsSettingService: CmsSettingsService, private translate: TranslateService, private aCmsServerApi: CmsApiService) {
         this.isFavoriteFilter = (this.storageManager.get(CMS_SESSION_STORAGE_ITEM.SourcesFavoriteFilter) === "true") || false;
         this.searchFilter = this.storageManager.get(CMS_SESSION_STORAGE_ITEM.SourcesSearchFilter) || "";
         this.searchKey = this.searchFilter;
         this.mRoute = aRoute;
         this.domManager = new DomManager(el);
+        this.mCmsServerApi = aCmsServerApi;
+        this.loadTilers();
     }
 
     /**
@@ -153,14 +160,38 @@ export class CmsSourcesPanelComponent implements OnInit {
      */
     public navigateNext(): void {
         let url = `/displays/${this.mDisplayId}/tiles-panel?sourceCount=${this.cmsSettingService.selectedSources.length}`;
+        this.updateDisplayWall();
         this.router.navigateByUrl(url);
     }
 
+    private updateDisplayWall() {
+        let requestPayload = {
+            "resources": [...this.cmsSettingService.selectedSources]
+        };
+        requestPayload.resources.forEach(resource => {
+            resource.selected = undefined;
+        });
+        this.tileId = TilePresetManager.GetTileId(this.tilePresets, this.cmsSettingService.selectedSources.length, this.mDisplayId);
+        this.mCmsServerApi.putContentsOnDisplay(this.mDisplayId, this.tileId, requestPayload).subscribe(response => {
+        }, error => {
+            console.error(error);
+        });
+    }
 
     /**
      * navigateBack
      */
     public navigateBack(): void {
         this.router.navigateByUrl(`/displays-panel`);
+    }
+
+    public loadTilers() {
+        this.mCmsServerApi.getTilers().subscribe((tilers) => {
+            this.tilePresets = tilers.sort((a, b) => {
+                return a.noOfTiles - b.noOfTiles;
+            });
+        }, (error) => {
+            console.log(error);
+        });
     }
 }

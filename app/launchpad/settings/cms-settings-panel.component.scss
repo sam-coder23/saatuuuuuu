@@ -155,14 +155,7 @@
         width: 175px;
     }
 
-    .clipboard-row{
-        &.disabled{
-            md-radio-button{
-                pointer-events: none;
-                opacity: 0.5;
-            }
-        }
-    }
+
 
     // handling specific wall text truncation with button
     .specific-wall-row{

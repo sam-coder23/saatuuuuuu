@@ -40,12 +40,6 @@ let mockCmsSettingsData = {
             "backgroundColor": "#BDBDBD",
             "transparency": 50
         },
-        "wallContent": {
-            "requireConfirmationForLoadingLayouts": true,
-            "allowChangingSources": true,
-            "clipboardEnabled": true,
-            "clipboardSize": "large"
-        },
         "logOffTime": 0,
         "pageSize": 50
     }

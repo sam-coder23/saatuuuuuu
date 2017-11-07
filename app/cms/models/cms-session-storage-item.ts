@@ -10,7 +10,6 @@
 export class CMS_SESSION_STORAGE_ITEM {
     static User = "User";
     static Display = "Display";
-    static Clipboard = "Clipboard";
     static Settings = "Settings";
     static UserLastActionTime = "UserLastActionTime";
     static LayoutsSearchFilter = "LayoutsSearchFilter";
@@ -19,5 +18,4 @@ export class CMS_SESSION_STORAGE_ITEM {
     static LayoutsFavoriteFilter = "LayoutsFavoriteFilter";
     static DisplaysFavoriteFilter = "DisplaysFavoriteFilter";
     static SourcesFavoriteFilter = "SourcesFavoriteFilter";
-    static ClipboardSelectedSources = "ClipboardSelectedSources";
 }

@@ -91,12 +91,6 @@ describe("Service: CmsSettingsService", () => {
                 "backgroundColor": "#BDBDBD",
                 "transparency": 50
             },
-            "wallContent": {
-                "requireConfirmationForLoadingLayouts": false,
-                "allowChangingSources": true,
-                "clipboardEnabled": true,
-                "clipboardSize": "large"
-            },
             "logOffTime": "0",
             "pageSize": 0
         }

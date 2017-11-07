@@ -22,18 +22,10 @@ export interface ISourceLabel {
     "transparency": number
 }
 
-export interface IWallContent {
-    "requireConfirmationForLoadingLayouts": boolean,
-    "allowChangingSources": boolean,
-    "clipboardEnabled": boolean,
-    "clipboardSize": string
-}
-
 export interface IUserProfileSettings {
     "language": string,
     "wallConnection": IWallConnection,
     "sourceLabel": ISourceLabel,
-    "wallContent": IWallContent,
     "logOffTime": number,
     "pageSize": number
 }
