@@ -1,18 +1,14 @@
-<div id="mini-display-grid" class="grid" [ngClass]="{clickDisabled: isClickDisabled,  tileHighlightDisabled: isTileHighlightDisabled}">
+<div id="mini-display-grid" class="grid">
     <div class="tiles" *ngIf="miniTiles && miniTiles.length">
-        <div class="tile" *ngFor="let tile of miniTiles; let tileIndex = index;" [ngStyle]="formattedStyle(tile)" (click)="tileClickHandler(tiles[tileIndex])">
+        <div class="tile" *ngFor="let tile of miniTiles; let tileIndex = index;" [ngStyle]="formattedStyle(tile)">
         </div>
     </div>
     <div class="contents" *ngIf="contents && contents.length">
-        <div class="content" *ngFor="let content of contents" [ngStyle]="formattedStyle(content)" (click)="contentClickWrapper($event, content)">
+        <div class="content" *ngFor="let content of contents" [ngStyle]="formattedStyle(content)" (click)="contentClick(content)"
+            [ngClass]="{'box-shadow' : showSelected(content.id)}">
             <div class="source-label-container">
                 {{content.name}}
             </div>
-
-            <!-- Resmove source button and only visible if long pressed -->
-            <button class="unshare-source-button" *ngIf="isLongPressed" (click)="unLoadContent(content)">
-            <i class="material-icons"><img src="resources/icons/clear_clipboard_black.svg"></i>
-        </button>
         </div>
     </div>
 </div>

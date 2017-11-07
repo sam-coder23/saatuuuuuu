@@ -9,7 +9,6 @@ import { Component, OnInit, OnDestroy, EventEmitter, Input, Output, OnChanges, S
 import { Router, ActivatedRoute, Params } from "@angular/router";
 import { CmsApiService } from "../../cms/api/cms-api.service";
 import { CmsEventEmitterService } from "./../../cms/api/cms-event-emitter.service";
-import { CmsClipboardService } from "./../clipboard/cms-clipboard.service";
 import { CMS_EVENTS } from "../../cms/api/cms-events.enum";
 import { CMS_SESSION_STORAGE_ITEM } from "../../cms/models/cms-session-storage-item";
 import { ICmsEvent } from "../../cms/models/cms-event";
@@ -37,7 +36,7 @@ import { DISPLAY_TYPE } from "../../cms/api/display-type.enum";
 /**
  * This class is reponsible display the list of display
  * @class CmsDisplayListComponent
- * @constructor constructor  This will inject following dependency Router, CmsApiService, ElementRef, CmsVirtualScrollService, CmsClipboardServic etc/
+ * @constructor constructor  This will inject following dependency Router, CmsApiService, ElementRef, CmsVirtualScrollService etc/
  * @pending - as of dataCount is used to control the rendering however ngLife cycle has to be seen in detail to get rid
  * of this. If we refactor this there are other components those has to be refactoered as well.
  */
@@ -66,7 +65,7 @@ export class CmsDisplayListComponent implements OnChanges, OnDestroy {
     /**
      * The constructor initializes various dependencies.
      */
-    constructor(aRouter: Router, aCmsServerApi: CmsApiService, private cmsClipboardService: CmsClipboardService, private storageManager: StorageManager, private cmsSettingsService: CmsSettingsService, private route: ActivatedRoute, private favoriteService: CmsFavoriteService, private translate: TranslateService) {
+    constructor(aRouter: Router, aCmsServerApi: CmsApiService, private storageManager: StorageManager, private cmsSettingsService: CmsSettingsService, private route: ActivatedRoute, private favoriteService: CmsFavoriteService, private translate: TranslateService) {
         this.mRouter = aRouter;
         this.mCmsServerApi = aCmsServerApi;
     }
@@ -139,8 +138,7 @@ export class CmsDisplayListComponent implements OnChanges, OnDestroy {
                 this.cmsSettingsService.updateWallConnectionRecentDisplay(display);
 
                 this.storageManager.set(CMS_SESSION_STORAGE_ITEM.Display, JSON.stringify(display));
-                this.cmsClipboardService.clear();
-                this.cmsClipboardService.selectedSources.length = 0;
+                this.cmsSettingsService.selectedSources.length = 0;
                 this.mRouter.navigate([`/displays/${display.id}/sources-panel`]);
             }
         });

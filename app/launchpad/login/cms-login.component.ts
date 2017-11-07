@@ -15,7 +15,6 @@ import { CmsApiService } from "../../cms/api/cms-api.service";
 import { CMS_SESSION_STORAGE_ITEM } from "../../cms/models/cms-session-storage-item";
 import { CmsSettingsService } from "../settings/cms-settings.service";
 import { CmsMiniDisplayService } from "./../../shared/mini-display/cms-mini-display.service";
-import { CmsClipboardService } from "./../../shared/clipboard/cms-clipboard.service";
 import { AppConfig } from "../../config";
 
 
@@ -56,7 +55,6 @@ export class CmsLoginComponent implements OnInit, OnDestroy {
         private storageManager: StorageManager,
         private translate: TranslateService,
         private cmsMiniDisplayService: CmsMiniDisplayService,
-        private cmsClipboardService: CmsClipboardService,
         private appConfig: AppConfig) { }
 
     /**
@@ -70,9 +68,8 @@ export class CmsLoginComponent implements OnInit, OnDestroy {
         // Remove session variables
         this.storageManager.removeStorage();
         this.cmsMiniDisplayService.init();
-        this.cmsClipboardService.clear();
-        if (this.cmsClipboardService.selectedSources instanceof Array) {
-            this.cmsClipboardService.selectedSources.length = 0;
+        if (this.cmsSettingsService.selectedSources instanceof Array) {
+            this.cmsSettingsService.selectedSources.length = 0;
         }
     }
 

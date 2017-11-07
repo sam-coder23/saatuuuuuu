@@ -26,6 +26,7 @@ import { StorageManager } from "./cms-storagemanager.service";
 import { AppConfig } from "../../config";
 import { CMS_SESSION_STORAGE_ITEM } from "../models/cms-session-storage-item";
 import { ITilePreset } from "../models/cms-tile-preset";
+import { Validation } from "../../core/util/Validation";
 
 /**
  * This service is used to place CMS Server REST API calls for various functions. 
@@ -989,5 +990,20 @@ export class CmsApiService {
      */
     public getTilers(): Observable<ITilePreset[]> {
         return this.apiRequest.get("tilers");
+    }
+
+    /**
+     * This method updates geometery of the content on specified Display, API is only usefull for Geometery change
+     * @param displayId 
+     * @param contentId 
+     * @param body 
+     */
+    updateContentGeormetryOnDisplay(displayId: number, contentId: number, body: any) {
+        if (displayId > 0 && contentId > 0 && !Validation.IsNullOrUndefined(body)) {
+            let url = `displays/${displayId}/content/${contentId}`;
+            return this.apiRequest.put(url, body);
+        } else {
+            return Observable.throw("Invalid input for the API call");
+        }
     }
 }

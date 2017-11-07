@@ -12,7 +12,7 @@ describe("CmsDisplayNameComponent", () => {
     let fixture: ComponentFixture<CmsDisplayNameComponent>;
     let injector: Injector;
     let debugInstance, nativeElement, debugInstanceGrid, nativeElementGrid,
-        cmsClipboardService, cmsSettingsService, cmsMiniDisplayService, spyLoadContentOnTile;
+        cmsSettingsService, cmsMiniDisplayService, spyLoadContentOnTile;
 
     const display = {
         name: "My display",
@@ -71,7 +71,7 @@ describe("CmsDisplayNameComponent", () => {
         };
 
         CmsEventEmitterService.get(CMS_EVENTS.DisplayList).next(newDisplay);
-        
+
         expect(component.displayName).toEqual(newDisplay.body.name);
     });
 

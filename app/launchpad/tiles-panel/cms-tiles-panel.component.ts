@@ -11,7 +11,6 @@ import { Observable } from "rxjs/Rx";
 import { AppConfig } from "../../config";
 import { CMS_SESSION_STORAGE_ITEM } from "../../cms/models/cms-session-storage-item";
 import { StorageManager } from "../../cms/api/cms-storagemanager.service";
-import { CmsClipboardService } from "../../shared/clipboard/cms-clipboard.service";
 import { TranslateService } from "@ngx-translate/core";
 import { Display } from "../../cms/models/cms-display";
 import { CmsApiService } from "../../cms/api/cms-api.service";

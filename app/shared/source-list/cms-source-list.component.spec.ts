@@ -9,7 +9,6 @@ import { TilePresets } from "../tile-grid/tile-grid.mock";
 import { CmsApiService } from "../../cms/api/cms-api.service";
 import { CmsVirtualScrollService } from "../cms-virtual-scroll.service";
 import { CmsSettingsService } from "../../launchpad/settings/cms-settings.service";
-import { CmsClipboardService } from "../clipboard/cms-clipboard.service";
 import { StorageManager } from "../../cms/api/cms-storagemanager.service";
 import { CmsFavoriteService } from "../cms-favorite.service";
 import { AppConfig } from "../../config";
@@ -143,14 +142,6 @@ class MockCmsApiService {
 
 }
 
-class MockCmsClipboardService {
-    selectedSources = [
-        { id: 1 },
-        { id: 2 },
-        { id: 3 }
-    ]
-}
-
 class MockCmsSettingsService {
     mUserSettings: IUserProfileSettings = {
         "language": "en",
@@ -183,7 +174,6 @@ class MockCmsSettingsService {
 describe("CmsSourceListComponent", () => {
     let component: CmsSourceListComponent;
     let fixture: ComponentFixture<CmsSourceListComponent>;
-    let cmsClipboardService: MockCmsClipboardService;
     let cmsSettingsService: CmsSettingsService;
     let cmsApiService: CmsApiService;
     let cmsFavoriteService: CmsFavoriteService;
@@ -205,11 +195,6 @@ describe("CmsSourceListComponent", () => {
                     useValue: {
                         nativeElement: HTMLElement
                     }
-                },
-
-                {
-                    provide: CmsClipboardService,
-                    useClass: MockCmsClipboardService
                 },
                 {
                     provide: CmsFavoriteService,
@@ -245,7 +230,6 @@ describe("CmsSourceListComponent", () => {
             debugInstance = fixture.debugElement.componentInstance;
             component.displayId = mDisplay.id;
 
-            cmsClipboardService = fixture.debugElement.injector.get(CmsClipboardService);
             cmsSettingsService = fixture.debugElement.injector.get(CmsSettingsService);
 
             cmsApiService = fixture.debugElement.injector.get(CmsApiService);
@@ -284,10 +268,10 @@ describe("CmsSourceListComponent", () => {
             expect(debugInstance.mScroller.count).toEqual(cmsSettingsService.mUserSettings.pageSize);
             expect(debugInstance.mScrollTarget.id).toEqual("source-list-card-container");
 
-            debugInstance.mClipboard.selectedSources = [];
-            debugInstance.mClipboard.selectedSources.push(sources[0]);
+            debugInstance.cmsSettingsService.selectedSources = [];
+            debugInstance.cmsSettingsService.selectedSources.push(sources[0]);
             expect(debugInstance.mSourceListCmsEvent).not.toBeNull();
-            expect(debugInstance.mClipboard.selectedSources[0].disabled).toBeFalsy()
+            expect(debugInstance.cmsSettingsService.selectedSources[0].disabled).toBeFalsy()
 
             let sourceUpdated = Object.assign({}, sources[0]);
             debugInstance.mSourceListCmsEvent.next(
@@ -297,7 +281,7 @@ describe("CmsSourceListComponent", () => {
                 }
             );
             fixture.whenStable().then(() => {
-                expect(debugInstance.mClipboard.selectedSources[0].disabled).toBeTruthy();
+                expect(debugInstance.cmsSettingsService.selectedSources[0].disabled).toBeTruthy();
             });
         });
         fixture.detectChanges();
@@ -328,29 +312,29 @@ describe("CmsSourceListComponent", () => {
         expect(render).not.toBeDefined();
     });
 
-    it("should return the undefined when there is no display to render", () => {
-        debugInstance.mClipboard.selectedSources = [];
-        debugInstance.mClipboard.selectedSources.push(sources[0]);
-
+    it("should return the undefined when there is no display to render", ()=>{
+        debugInstance.cmsSettingsService.selectedSources = [];
+        debugInstance.cmsSettingsService.selectedSources.push(sources[0]);
+        
         let render = debugInstance.renderer(sources[0]);
         expect(render.selected).toBeTruthy();
         expect(render).toEqual(sources[0]);
     });
 
-    it("should return the updated display list for selected source", () => {
-        debugInstance.mClipboard.selectedSources = [];
-        debugInstance.mClipboard.selectedSources.push(sources[0]);
+    it("should return the updated display list for selected source", ()=>{
+        debugInstance.cmsSettingsService.selectedSources = [];
+        debugInstance.cmsSettingsService.selectedSources.push(sources[0]);
         let render = debugInstance.renderer(sources[0]);
         expect(render.selected).toBeTruthy();
         expect(render).toEqual(sources[0])
     })
 
-    it("should only add the clipboard selected sources to select source list", () => {
+    it("should only add the selected sources to select source list", ()=>{
         component.displayId = mDisplay.id;
         debugInstance.mSources = [];
         debugInstance.selectedOnly = true;
-        debugInstance.mClipboard.selectedSources = [];
-        debugInstance.mClipboard.selectedSources.push(sources[0]);
+        debugInstance.cmsSettingsService.selectedSources = [];
+        debugInstance.cmsSettingsService.selectedSources.push(sources[0]);
         debugInstance.getSources();
         expect(debugInstance.mSources.length).toEqual(1);
     });
@@ -414,7 +398,7 @@ describe("CmsSourceListComponent", () => {
         let args = spyPutContentsOnDisplay.calls.mostRecent().args;
         expect(args[0]).toEqual(mDisplay.id);
         expect(args[1]).toEqual(component.tilePresets[0].id);
-        expect(args[2].resources).toEqual(cmsClipboardService.selectedSources);
+        expect(args[2].resources).toEqual(cmsSettingsService.selectedSources);
     });
 
 })

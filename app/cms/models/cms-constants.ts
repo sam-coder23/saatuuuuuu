@@ -18,4 +18,5 @@ export class CMSConstants {
         RECENT_WALL : "auto-connect-to-most-recent-wall"
     };
     static DEFAULT_CLIPBOARD_SIZE = "large";
+    static MAXSELECTION = 20;
 }

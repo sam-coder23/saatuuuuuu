@@ -11,8 +11,9 @@ import { Observable } from "rxjs/Rx";
 import { AppConfig } from "../../config";
 import { CMS_SESSION_STORAGE_ITEM } from "../../cms/models/cms-session-storage-item";
 import { StorageManager } from "../../cms/api/cms-storagemanager.service";
-import { CmsClipboardService } from "../../shared/clipboard/cms-clipboard.service";
 import { TranslateService } from "@ngx-translate/core";
+import { CmsSettingsService } from "../settings/cms-settings.service";
+import { CMSConstants } from "../../cms/models/cms-constants";
 
 /**
  * This is a panel component that defines the layout of a page which includes toolbar and source list.
@@ -51,11 +52,13 @@ export class CmsSourcesPanelComponent implements OnInit {
 
     private panelTitle: string;
 
+    private maxSelection = CMSConstants.MAXSELECTION;
+
     /**
      * The constructor initializes various dependencies.
      */
     constructor(aRoute: ActivatedRoute, el: ElementRef, private appConfig: AppConfig, private storageManager: StorageManager,
-        private router: Router, private clipboard: CmsClipboardService, private translate: TranslateService) {
+        private router: Router, private cmsSettingService: CmsSettingsService, private translate: TranslateService) {
 
         this.isFavoriteFilter = (this.storageManager.get(CMS_SESSION_STORAGE_ITEM.SourcesFavoriteFilter) === "true") || false;
         this.searchFilter = this.storageManager.get(CMS_SESSION_STORAGE_ITEM.SourcesSearchFilter) || "";
@@ -73,7 +76,7 @@ export class CmsSourcesPanelComponent implements OnInit {
             this.mDisplayId = +params["id"];
         });
 
-        this.translate.get("sourceList.connectTo", { value: this.clipboard.maxSelection }).subscribe((response: string) => {
+        this.translate.get("sourceList.connectTo", { value: CMSConstants.MAXSELECTION }).subscribe((response: string) => {
             this.panelTitle = response;
         });
     }
@@ -149,7 +152,7 @@ export class CmsSourcesPanelComponent implements OnInit {
      * navigateNext
      */
     public navigateNext(): void {
-        let url = `/displays/${this.mDisplayId}/tiles-panel?sourceCount=${this.clipboard.selectedSources.length}`;
+        let url = `/displays/${this.mDisplayId}/tiles-panel?sourceCount=${this.cmsSettingService.selectedSources.length}`;
         this.router.navigateByUrl(url);
     }
 

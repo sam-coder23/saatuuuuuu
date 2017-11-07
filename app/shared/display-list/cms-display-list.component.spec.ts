@@ -11,7 +11,6 @@ import { TranslateModule, TranslateLoader, TranslateService } from "@ngx-transla
 import { TranslateHttpLoader } from "@ngx-translate/http-loader";
 import { CmsApiService } from "../../cms/api/cms-api.service";
 import { CmsSettingsService } from "../../launchpad/settings/cms-settings.service";
-import { CmsClipboardService } from "../clipboard/cms-clipboard.service";
 import { StorageManager } from "../../cms/api/cms-storagemanager.service";
 import { CmsFavoriteService } from "../cms-favorite.service";
 import { AppConfig } from "../../config";
@@ -65,23 +64,12 @@ class MockCmsFavoriteService {
     }
 }
 
-class MockCmsClipboardService {
-    selectedSources = [
-        { id: 1 },
-        { id: 2 }
-    ];
-    clear(){
-        this.selectedSources = [];
-    }
-}
-
 describe("CmsDisplayListComponent", () => {
     let component: CmsDisplayListComponent;
     let fixture: ComponentFixture<CmsDisplayListComponent>;
     let cmsSettingsService: CmsSettingsService;
     let cmsApiService: CmsApiService;
     let cmsFavoriteService: CmsFavoriteService;
-    let cmsClipboardService: CmsClipboardService;
     let translateService: TranslateService;
     let routerService: Router;
     let storageManager: StorageManager;
@@ -99,10 +87,6 @@ describe("CmsDisplayListComponent", () => {
                 {
                     provide: CmsApiService,
                     useClass: MockCmsApiService
-                },
-                {
-                    provide: CmsClipboardService,
-                    useClass: MockCmsClipboardService
                 },
                 {
                     provide: CmsSettingsService,
@@ -136,7 +120,6 @@ describe("CmsDisplayListComponent", () => {
             component = fixture.componentInstance;
             nativeElement = fixture.nativeElement;
             debugInstance = fixture.debugElement.componentInstance;
-            cmsClipboardService = fixture.debugElement.injector.get(CmsClipboardService);
             cmsSettingsService = fixture.debugElement.injector.get(CmsSettingsService);
             routerService = fixture.debugElement.injector.get(Router);
             storageManager = fixture.debugElement.injector.get(StorageManager);
@@ -272,7 +255,7 @@ describe("CmsDisplayListComponent", () => {
         let displayStringify = JSON.stringify(displays[0]);
         expect(window.sessionStorage.getItem(CMS_SESSION_STORAGE_ITEM.Display)).toEqual(displayStringify);
         let args = spyRouter.calls.mostRecent().args;
-        expect(debugInstance.cmsClipboardService.selectedSources.length).toEqual(0);
+        expect(debugInstance.cmsSettingsService.selectedSources.length).toEqual(0);
         expect(args[0]).toEqual([`/displays/${displays[0].id}/sources-panel`]);
     });
 

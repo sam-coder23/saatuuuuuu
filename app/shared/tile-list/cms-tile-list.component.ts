@@ -1,7 +1,6 @@
 import { Component, OnInit, Input, EventEmitter, ElementRef, Output, OnChanges, SimpleChanges, OnDestroy } from "@angular/core";
 import { CmsApiService } from "../../cms/api/cms-api.service";
 import { ITilePreset } from "../../cms/models/cms-tile-preset";
-import { CmsClipboardService } from "../clipboard/cms-clipboard.service";
 import { ActivatedRoute } from "@angular/router";
 import { TilePresetManager } from "../../utils/tilepreset-manager.util";
 import { Subscription } from "rxjs/Rx";
@@ -10,6 +9,7 @@ import { CMS_EVENTS } from "../../cms/api/cms-events.enum";
 import { ICmsEvent } from "../../cms/models/cms-event";
 import { Validation } from "../../core/util/Validation";
 import { CMSConstants } from "./../../cms/models/cms-constants";
+import { CmsSettingsService } from "../../launchpad/settings/cms-settings.service";
 
 @Component({
     selector: "cms-tile-list",
@@ -35,7 +35,7 @@ export class CmsTileListComponent implements OnInit, OnDestroy {
     constructor(
         private activatedRoute: ActivatedRoute,
         private cmsServerApi: CmsApiService,
-        private clipboard: CmsClipboardService,
+        private cmsSettingService: CmsSettingsService,
     ) {
         this.tilePresets = [];
         this.displayID = parseInt(this.activatedRoute.params["value"]["id"]);
@@ -91,7 +91,7 @@ export class CmsTileListComponent implements OnInit, OnDestroy {
             return false;
         }
 
-        if (!(this.sourceCount === this.clipboard.selectedSources.length)) {
+        if (!(this.sourceCount === this.cmsSettingService.selectedSources.length)) {
             return false;
         }
 
@@ -108,7 +108,7 @@ export class CmsTileListComponent implements OnInit, OnDestroy {
         this.selectTile(tilePreset);
 
         let requestPayload = {
-            "resources": [...this.clipboard.selectedSources]
+            "resources": [...this.cmsSettingService.selectedSources]
         };
 
         // API rejects extra properties

@@ -11,7 +11,6 @@ import { Router, ActivatedRoute, Params } from "@angular/router";
 import "rxjs/add/operator/toPromise";
 
 import { CmsApiService } from "../../cms/api/cms-api.service";
-import { CmsClipboardService } from "../../shared/clipboard/cms-clipboard.service";
 import { CmsResource } from "./../../cms/models/cms-resource";
 import { CMS_SESSION_STORAGE_ITEM } from "../../cms/models/cms-session-storage-item";
 import { Source } from "./../../cms/models/cms-source";
@@ -84,8 +83,7 @@ export class CmsDisplayPanelComponent implements OnInit, OnDestroy {
         private cmsSettingsService: CmsSettingsService,
         private translate: TranslateService,
         private appConfig: AppConfig,
-        private mCmsServerApi: CmsApiService,
-        private cmsClipboardService: CmsClipboardService) {
+        private mCmsServerApi: CmsApiService) {
 
         this.viewOptions = false;
         this.zoomLevel = 100;
@@ -173,7 +171,7 @@ export class CmsDisplayPanelComponent implements OnInit, OnDestroy {
      */
     public clearMiniDisplayWall() {
         this.mCmsServerApi.putContentsOnDisplay(this.displayId, 0, {}).subscribe(response => {
-            this.cmsClipboardService.selectedSources.length = 0;
+            this.cmsSettingsService.selectedSources.length = 0;
             this.navigateToLoginRoute();
         }, error => {
             console.error(error);

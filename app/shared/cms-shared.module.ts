@@ -36,11 +36,6 @@ import { CmsSourceListComponent } from "./source-list/cms-source-list.component"
 import { CmsVirtualScrollService } from "./cms-virtual-scroll.service";
 import { CmsFavoriteService } from "./cms-favorite.service";
 
-import { CmsClipboardComponent } from "./clipboard/cms-clipboard.component";
-
-/* clipboard service to be registered at module level */
-import { CmsClipboardService } from "./clipboard/cms-clipboard.service";
-
 /* colorpicker component */
 import { CmsColorPickerComponent } from "./colorpicker/cms-colorpicker.component";
 import { TileGridComponent } from "./tile-grid/tile-grid.component";
@@ -74,7 +69,6 @@ import { CmsDisplayNameComponent } from "./display-name/cms-display-name.compone
     CmsGridComponent,
     CmsDisplayListComponent,
     CmsSourceListComponent,
-    CmsClipboardComponent,
     CmsColorPickerComponent,
     TileGridComponent,
     CmsTileListComponent,
@@ -86,7 +80,6 @@ import { CmsDisplayNameComponent } from "./display-name/cms-display-name.compone
     CmsGridComponent,
     CmsDisplayListComponent,
     CmsSourceListComponent,
-    CmsClipboardComponent,
     CmsColorPickerComponent,
     TileGridComponent,
     CmsTileListComponent,
@@ -97,7 +90,6 @@ import { CmsDisplayNameComponent } from "./display-name/cms-display-name.compone
     CmsVirtualScrollService,
     CmsMiniDisplayService,
     CmsFavoriteService,
-    CmsClipboardService,
     BuilderService
   ],
   schemas: [NO_ERRORS_SCHEMA]

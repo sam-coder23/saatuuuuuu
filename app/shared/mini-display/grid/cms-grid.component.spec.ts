@@ -6,7 +6,6 @@ import { HttpModule, Http } from "@angular/http";
 import { TranslateModule, TranslateLoader } from "@ngx-translate/core";
 import { TranslateHttpLoader } from "@ngx-translate/http-loader";
 import { AppConfig } from "../../../config";
-import { CmsClipboardService } from "../../clipboard/cms-clipboard.service";
 import { CmsSettingsService } from "../../../launchpad/settings/cms-settings.service";
 import { CmsApiService } from "../../../cms/api/cms-api.service";
 import { CmsMiniDisplayService } from "../cms-mini-display.service";
@@ -18,13 +17,14 @@ import { IUserProfileSettings } from "../../../cms/models/cms-user-profile-setti
 import { Observable } from "rxjs/Observable";
 import { TileContent } from "../../../cms/models/cms-tile-content";
 import { Source } from "../../../cms/models/cms-source";
+import { Validation } from "../../../core/util/Validation";
 
-let content: TileContent = {
+let content1: TileContent = {
     absoluteSize: {
-        height: 600,
+        height: 2280,
         left: 0,
-        top: 600,
-        width: 960,
+        top: 0,
+        width: 3840,
         x: 0,
         y: 600
     },
@@ -42,49 +42,84 @@ let content: TileContent = {
     description: "",
     disabled: false,
     favorite: false
-}
+};
 
-let clipboardSource: Source = {
-    id: content.resourceId,
-    name: content.name,
-    type: content.type,
-    description: content.description,
-    snapshotPath: `${content.snapshotPath}`,
-    x: content.x,
-    y: content.y,
-    width: content.width,
-    height: content.height,
-    zOrder: content.zOrder,
+let content2: TileContent = {
+    absoluteSize: {
+        height: 2280,
+        left: 3840,
+        top: 0,
+        width: 3840,
+        x: 3840,
+        y: 0
+    },
+    height: 49.01234567901235,
+    id: 170,
+    lastModified: "1507553259660",
+    name: "DefaultProSource[NOICLT28523]",
+    resourceId: 21,
+    snapshotPath: "https://10.98.0.231//mediaconfiguration?action=get&path=images%2Fsnapshots%2Fperspectives%2F4.jpeg",
+    type: "Perspective",
+    width: 49.382716049382715,
+    x: 0.30864197530864196,
+    y: 50.49382716049383,
+    zOrder: 4,
+    description: "",
     disabled: false,
     favorite: false
 };
 
-let spyUnloadContentFromDisplay: jasmine.Spy;
-let spyContentClickHandler: jasmine.Spy;
+let swappedGeometeryContent: any[] = [{
+    id: 160,
+    name: "DefaultProSource[NOICLT28523]",
+    type: "Perspective",
+    resourceId: 21,
+    snapshotPath: "https://10.98.0.231//mediaconfiguration?action=get&path=images%2Fsnapshots%2Fperspectives%2F4.jpeg",
+    zOrder: 3,
+    height: 2280,
+    width: 3840,
+    x: 3840,
+    y: 0
+},
+{
+    id: 170,
+    name: "DefaultProSource[NOICLT28523]",
+    type: "Perspective",
+    resourceId: 21,
+    snapshotPath: "https://10.98.0.231//mediaconfiguration?action=get&path=images%2Fsnapshots%2Fperspectives%2F4.jpeg",
+    zOrder: 4,
+    height: 2280,
+    width: 3840,
+    x: 0,
+    y: 0
+}];
 
-let mUserSettings: IUserProfileSettings =  {
-  "language": "en",
-  "wallConnection": {
-    "startUpAction": "show-available-walls-list",
-    "specificDisplay": "Board Meeting Room",
-    "recentDisplay": "Board Meeting Room"
-  },
-  "sourceLabel": {
-    "displaySourceNameLabels": true,
-    "useMultipleLines": false,
-    "fontColor": "#FFFFFF",
-    "fontSize": 14,
-    "backgroundColor": "#BDBDBD",
-    "transparency": 50
-  },
-  "wallContent": {
-    "requireConfirmationForLoadingLayouts": true,
-    "allowChangingSources": false,
-    "clipboardEnabled": true,
-    "clipboardSize": "large"
-  },
-  "logOffTime": 0,
-  "pageSize": 50
+let spyContentClickHandler: jasmine.Spy;
+let updateContentGeormetryOnDisplay: jasmine.Spy;
+
+let mUserSettings: IUserProfileSettings = {
+    "language": "en",
+    "wallConnection": {
+        "startUpAction": "show-available-walls-list",
+        "specificDisplay": "Board Meeting Room",
+        "recentDisplay": "Board Meeting Room"
+    },
+    "sourceLabel": {
+        "displaySourceNameLabels": true,
+        "useMultipleLines": false,
+        "fontColor": "#FFFFFF",
+        "fontSize": 14,
+        "backgroundColor": "#BDBDBD",
+        "transparency": 50
+    },
+    "wallContent": {
+        "requireConfirmationForLoadingLayouts": true,
+        "allowChangingSources": false,
+        "clipboardEnabled": true,
+        "clipboardSize": "large"
+    },
+    "logOffTime": 0,
+    "pageSize": 50
 };
 
 export class MockElementRef extends ElementRef { }
@@ -101,6 +136,14 @@ class MockCmsApiService {
     getUserProfileSettings(): Promise<IUserProfileSettings> {
         return Promise.resolve(mUserSettings);
     }
+
+    updateContentGeormetryOnDisplay(displayId: number, contentId: number, body: any) {
+        if (displayId > 0 && contentId > 0 && !Validation.IsNullOrUndefined(body)) {
+            return Observable.of(null);
+        } else {
+            return Observable.throw("Invalid input for the API call");
+        }
+    }
 }
 
 class MockCmsMiniDisplayService {
@@ -114,8 +157,6 @@ describe("CmsGridComponent", () => {
     let component: CmsGridComponent;
     let fixture: ComponentFixture<CmsGridComponent>;
     let debugInstance, nativeElement;
-
-    let cmsClipboardService: CmsClipboardService;
     let cmsSettingsService: CmsSettingsService;
     let element: ElementRef;
     let cmsApiService: CmsApiService;
@@ -129,7 +170,6 @@ describe("CmsGridComponent", () => {
                 AppConfig,
                 APIRequest,
                 StorageManager,
-                CmsClipboardService,
                 CmsSettingsService,
                 { provide: CmsApiService, useClass: MockCmsApiService },
                 { provide: CmsMiniDisplayService, useClass: MockCmsMiniDisplayService },
@@ -153,93 +193,58 @@ describe("CmsGridComponent", () => {
             nativeElement = fixture.nativeElement;
             debugInstance = fixture.debugElement.componentInstance;
             cmsSettingsService = fixture.debugElement.injector.get(CmsSettingsService);
-            cmsClipboardService = fixture.debugElement.injector.get(CmsClipboardService);
             cmsMiniDisplayService = fixture.debugElement.injector.get(CmsMiniDisplayService);
         });
     }));
 
-    beforeEach(inject([AppConfig, CmsClipboardService, CmsApiService], (appConfig: AppConfig, cmsClipboardService: CmsClipboardService,
+    beforeEach(inject([AppConfig, CmsApiService], (appConfig: AppConfig,
         cmsApiService: CmsApiService, cmsMiniDisplayService: CmsMiniDisplayService, cmsSettingsService: CmsSettingsService) => {
         appConfig = appConfig;
-        cmsClipboardService = cmsClipboardService;
         cmsApiService = cmsApiService;
         cmsMiniDisplayService = cmsMiniDisplayService;
         cmsSettingsService = cmsSettingsService;
-        spyUnloadContentFromDisplay = spyOn(cmsApiService, "unloadContentFromDisplay").and.returnValue(Observable.of(null));
+        updateContentGeormetryOnDisplay = spyOn(cmsApiService, "updateContentGeormetryOnDisplay").and.callThrough();;
     }));
 
     it("should be a defined component", async(() => {
         expect(component).toBeDefined();
-    }));
-
-    it("should execute ngOnInit as required", async(() => {
-        cmsSettingsService.setUserProfileSettings();
-        cmsSettingsService.isLongPressed = true;
-        fixture.whenStable().then(() => {
-            component.ngOnInit();
-            fixture.detectChanges();
-            fixture.whenStable().then(() => {
-                expect(debugInstance.isTileHighlightDisabled).toBe(true);
-            });
-        });
-    }));
-
-    it("should not call unLoadContent when content is null", async(() => {
-        debugInstance.unLoadContent(null);
-        expect(spyUnloadContentFromDisplay.calls.any()).toBe(false, "unloadContentFromDisplay not yet called");
-    }));
-
-    it("should call unLoadContent when content and display object is not null", async(() => {
-        debugInstance.unLoadContent(content);
-        let args = spyUnloadContentFromDisplay.calls.mostRecent().args;
-        expect(cmsMiniDisplayService.display.id).toBe(args[0]);
-        expect(content.id).toBe(args[1]);
-    }));
-
-    it("should not call contentClickHandler on click of contentClickWrapper", async(() => {
-        let event: MouseEvent;
-        debugInstance.isLongPressed = true;
-        mUserSettings.wallContent.allowChangingSources = true;
-        cmsSettingsService.setUserProfileSettings();
-        fixture.whenStable().then(() => {
-            component.contentClickWrapper(event, content);
-            setTimeout(() => {
-                expect(cmsClipboardService.Clipboard).toBeNull();
-            }, 500);
-        });
+        expect(debugInstance.selectedContentList.length).toBe(0);
     }));
 
     it("should call contentClickHandler on click of contentClickWrapper", async(() => {
-        let event: MouseEvent;
-        debugInstance.isLongPressed = false;
-        mUserSettings.wallContent.allowChangingSources = true;
-        cmsSettingsService.setUserProfileSettings();
-        fixture.whenStable().then(() => {
-            component.contentClickWrapper(event, content);
-            setTimeout(() => {
-                expect(cmsClipboardService.Clipboard).toBeDefined();
-            }, 500);
-        });
+        component.contentClick(content1);
+        expect(debugInstance.selectedContent).toBeTruthy();
+
+        component.contentClick(content1);
+        expect(debugInstance.selectedContent).toBeNull();
+
+        component.contentClick(content1);
+        component.contentClick(content2);
+
+        expect(debugInstance.selectedContent).toBeNull();
+        expect(debugInstance.swappingContent).toBeNull();
     }));
 
-    it("should not call contentClickHandler", async(() => {
-        mUserSettings.wallContent.allowChangingSources = false;
-        cmsSettingsService.setUserProfileSettings();
-        fixture.whenStable().then(() => {
-            debugInstance.contentClickHandler(content);
-            expect(spyUnloadContentFromDisplay.calls.any()).toBe(false, "unloadContentFromDisplay not yet called");
-        });
+    it("should call updateContentGeormetryOnDisplay() 2 times to swap the geometery of the content", async(() => {
+        debugInstance.selectedContent = content1;
+        debugInstance.swappingContent = content2;
+
+        debugInstance.swapSource();
+        expect(updateContentGeormetryOnDisplay).toHaveBeenCalledTimes(2);
     }));
 
-    it("should call contentClickHandler", async(() => {
-        mUserSettings.wallContent.allowChangingSources = true;
-        cmsSettingsService.setUserProfileSettings();
-        fixture.whenStable().then(() => {
-            debugInstance.contentClickHandler(content);
-            let args = spyUnloadContentFromDisplay.calls.mostRecent().args;
-            expect(cmsMiniDisplayService.display.id).toBe(args[0]);
-            expect(content.id).toBe(args[1]);
-        });
-    }));
+    it("should swap the geometery and prepare content once swapContentGeometeryandCreateContent() is called", async(() => {
+        debugInstance.selectedContent = content1;
+        debugInstance.swappingContent = content2;
 
+        let swappedContentGeometeryOutput: any[] = debugInstance.swapContentGeometeryandCreateContent();
+
+        for (var index = 0; index < swappedContentGeometeryOutput.length; index++) {
+            expect(swappedContentGeometeryOutput[index].x).toBe(swappedGeometeryContent[index].x);
+            expect(swappedContentGeometeryOutput[index].y).toBe(swappedGeometeryContent[index].y);
+            expect(swappedContentGeometeryOutput[index].width).toBe(swappedGeometeryContent[index].width);
+            expect(swappedContentGeometeryOutput[index].height).toBe(swappedGeometeryContent[index].height);
+        }
+
+    }));
 });

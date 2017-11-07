@@ -15,7 +15,6 @@ import { CmsVirtualScrollService } from "../cms-virtual-scroll.service";
 import { Source } from "../../cms/models/cms-source";
 import { CMS_SESSION_STORAGE_ITEM } from "../../cms/models/cms-session-storage-item";
 import { ICmsEvent } from "../../cms/models/cms-event";
-import { CmsClipboardService } from "./../clipboard/cms-clipboard.service";
 import { CmsFavoriteService } from "../cms-favorite.service";
 import { StorageManager } from "./../../cms/api/cms-storagemanager.service";
 import { DomManager } from "../../utils/dom-manager.util";
@@ -26,6 +25,7 @@ import { Tile } from "../../cms/models/cms-tile";
 import { ITilePreset } from "../../cms/models/cms-tile-preset";
 import { TranslateService } from "@ngx-translate/core";
 import { TilePresetManager } from "../../utils/tilepreset-manager.util";
+import { CMSConstants } from "../../cms/models/cms-constants";
 
 /**
  * This a source list component that fetches the combined list of available sources, perspectives and display specific
@@ -68,7 +68,6 @@ export class CmsSourceListComponent implements OnInit, OnChanges, OnDestroy {
     private mCmsServerApi: CmsApiService;
     private element: ElementRef;
     private mScroller: CmsVirtualScrollService;
-    private mClipboard: CmsClipboardService;
     private mFavoriteService: CmsFavoriteService;
     public tilePresets: ITilePreset[];
 
@@ -87,7 +86,6 @@ export class CmsSourceListComponent implements OnInit, OnChanges, OnDestroy {
         el: ElementRef,
         aScroller: CmsVirtualScrollService,
         private cmsSettingsService: CmsSettingsService,
-        aClipboard: CmsClipboardService,
         private storageManager: StorageManager,
         aFavoriteService: CmsFavoriteService,
         private appConfig: AppConfig,
@@ -96,7 +94,6 @@ export class CmsSourceListComponent implements OnInit, OnChanges, OnDestroy {
         this.mCmsServerApi = aCmsServerApi;
         this.element = el;
         this.mScroller = aScroller;
-        this.mClipboard = aClipboard;
         this.mFavoriteService = aFavoriteService;
         this.domManager = new DomManager(this.element);
     }
@@ -157,7 +154,7 @@ export class CmsSourceListComponent implements OnInit, OnChanges, OnDestroy {
         }
 
         if (this.selectedOnly) {
-            this.mSources.push(...this.mClipboard.selectedSources);
+            this.mSources.push(...this.cmsSettingsService.selectedSources);
             return;
         }
 
@@ -191,14 +188,15 @@ export class CmsSourceListComponent implements OnInit, OnChanges, OnDestroy {
     }
 
     /**
-     * On selecting a card, the respective source will be copied to clipboard.
+     * On selecting a card, the respective source will be copied to selectedSources of cms seting.
      */
     updateSelection(selected: boolean, source: Source) {
         let tileId: number;
         if (source.selected) {
             let requestPayload = {
-                "resources": [...this.mClipboard.selectedSources]
+                "resources": [...this.cmsSettingsService.selectedSources]
             };
+            console.log(requestPayload);
             let index = requestPayload.resources.findIndex(resource => resource.id === source.id);
             requestPayload.resources.splice(index, 1);
 
@@ -210,16 +208,16 @@ export class CmsSourceListComponent implements OnInit, OnChanges, OnDestroy {
             tileId = this.tileIdForSourceCount(requestPayload.resources.length);
 
             this.mCmsServerApi.putContentsOnDisplay(this.displayId, tileId, requestPayload).subscribe(response => {
-                index = this.mClipboard.selectedSources.findIndex(resource => resource.id === source.id);
-                this.mClipboard.selectedSources.splice(index, 1);
+                index = this.cmsSettingsService.selectedSources.findIndex(resource => resource.id === source.id);
+                this.cmsSettingsService.selectedSources.splice(index, 1);
                 source.selected = false;
                 this.errorEmitter.emit("");
             }, error => {
                 console.error(error);
             });
-        } else if (this.mClipboard.selectedSources.length < this.mClipboard.maxSelection) {
+        } else if (this.cmsSettingsService.selectedSources.length < CMSConstants.MAXSELECTION) {
             let requestPayload = {
-                "resources": [...this.mClipboard.selectedSources, source]
+                "resources": [...this.cmsSettingsService.selectedSources, source]
             };
 
             // API rejects extra properties
@@ -237,13 +235,13 @@ export class CmsSourceListComponent implements OnInit, OnChanges, OnDestroy {
             }
 
             this.mCmsServerApi.putContentsOnDisplay(this.displayId, tileId, requestPayload).subscribe(response => {
-                this.mClipboard.selectedSources.push(source);
+                this.cmsSettingsService.selectedSources.push(source);
                 source.selected = true;
             }, error => {
                 console.error(error);
             });
         } else {
-            this.translateService.get("sourceList.maxSelection", { value: this.mClipboard.maxSelection }).subscribe((value) => {
+            this.translateService.get("sourceList.maxSelection", { value: CMSConstants.MAXSELECTION }).subscribe((value) => {
                 this.errorEmitter.emit(value);
             });
         }
@@ -306,7 +304,7 @@ export class CmsSourceListComponent implements OnInit, OnChanges, OnDestroy {
     private renderer(source: Source): Source {
         if (!source) return source;
 
-        let selectedSource = this.mClipboard.selectedSources.find((selectedSource) => {
+        let selectedSource = this.cmsSettingsService.selectedSources.find((selectedSource) => {
             return selectedSource.id === source.id && selectedSource.type === source.type;
         });
 
@@ -334,6 +332,7 @@ export class CmsSourceListComponent implements OnInit, OnChanges, OnDestroy {
      * @param tileIndex zero based tileIndex at which source to be shared
      */
     private shareSourceOnTile(source: Source, tileIndex: number): void {
+        debugger;
         if (this.selectedDisplay.tiles && this.selectedDisplay.tiles[tileIndex]) {
 
             var tile = new Tile({
@@ -346,7 +345,7 @@ export class CmsSourceListComponent implements OnInit, OnChanges, OnDestroy {
             this.mCmsServerApi.loadContentOnTile(this.displayId, tile, source).then(() => {
                 source.selected = true;
                 // store selected source in selection
-                this.mClipboard.selectedSources.push(source);
+                this.cmsSettingsService.selectedSources.push(source);
             });
         } else {
             this.appConfig.error("No tile found to share content.");

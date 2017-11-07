@@ -10,7 +10,6 @@ import { TranslateLoader, TranslateModule, TranslateService } from "@ngx-transla
 import { HttpModule, Http } from "@angular/http";
 import { TranslateHttpLoader } from "@ngx-translate/http-loader";
 import { AppConfig } from "../../config";
-import { CmsClipboardService } from "../../shared/clipboard/cms-clipboard.service";
 import { CmsMiniDisplayService } from "../../shared/mini-display/cms-mini-display.service";
 import { StorageManager } from "../../cms/api/cms-storagemanager.service";
 import { CmsSettingsService } from "../settings/cms-settings.service";
@@ -112,7 +111,6 @@ describe("CmsLoginComponent", () => {
                 StorageManager,
                 TranslateService,
                 CmsMiniDisplayService,
-                CmsClipboardService,
                 APIRequest,
                 AppConfig
             ],

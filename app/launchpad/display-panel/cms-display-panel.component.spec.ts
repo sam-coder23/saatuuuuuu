@@ -81,7 +81,6 @@ import { MockLogger } from "../../core/mock-stubs/mock-logger";
 import { CmsSettingsService } from "../settings/cms-settings.service";
 import { MockCmsSettingsServiceStub } from "../../core/mock-stubs/mock-cms-settings-service";
 import { CmsApiService } from "../../cms/api/cms-api.service";
-import { CmsClipboardService } from "../../shared/clipboard/cms-clipboard.service";
 import { CMS_SESSION_STORAGE_ITEM } from "../../cms/models/cms-session-storage-item";
 import { Subscriber } from "rxjs";
 
@@ -96,13 +95,6 @@ class MockCmsApiServiceStub {
     }
 }
 
-
-/**
- * Fake CmsClipboardService with the below stub
- */
-class MockCmsClipboardServiceStub {
-    selectedSources = [];
-}
 
 
 describe("CmsDisplayPanelComponent - Test Suite", () => {
@@ -145,10 +137,6 @@ describe("CmsDisplayPanelComponent - Test Suite", () => {
                 {
                     provide: CmsApiService,
                     useClass: MockCmsApiServiceStub
-                },
-                {
-                    provide: CmsClipboardService,
-                    useClass: MockCmsClipboardServiceStub
                 }
             ],
             imports: [
@@ -289,9 +277,9 @@ describe("CmsDisplayPanelComponent - Test Suite", () => {
         expect(component["showClearWallPopup"]).toBeTruthy();
     });
 
-    it("should clear clipboard selected sources when clear wall is resolved", fakeAsync(() => {
-        let clipboardService: CmsClipboardService = injector.get(CmsClipboardService);
-        clipboardService.selectedSources = [, , ,];
+    it("should clear selected sources when clear wall is resolved", fakeAsync(() => {
+          let settingsService: CmsSettingsService = injector.get(CmsSettingsService);
+        settingsService.selectedSources = [, , ,];
 
         fixture.detectChanges();
         tick();
@@ -300,7 +288,7 @@ describe("CmsDisplayPanelComponent - Test Suite", () => {
 
         tick();
 
-        expect(clipboardService.selectedSources.length).toEqual(0);
+        expect(settingsService.selectedSources.length).toEqual(0);
     }));
 
 

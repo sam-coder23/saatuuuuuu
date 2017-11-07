@@ -7,7 +7,7 @@ import { CmsApiService } from "../../cms/api/cms-api.service";
 import { Observable } from "rxjs/Observable";
 import { ITilePreset } from "../../cms/models/cms-tile-preset";
 import { TilePresets } from "../tile-grid/tile-grid.mock";
-import { CmsClipboardService } from "../clipboard/cms-clipboard.service";
+import { CmsSettingsService } from "../../launchpad/settings/cms-settings.service";
 import { TranslateModule, TranslateLoader } from "@ngx-translate/core";
 import { Http, HttpModule } from "@angular/http";
 import { TranslateHttpLoader } from "@ngx-translate/http-loader";
@@ -61,9 +61,9 @@ class MockCmsApiService {
 
 
 /**
- * Fake CmsClipboardService with the below stub
+ * Fake MockCmsSettingService with the below stub
  */
-class MockCmsClipboardService {
+class MockCmsSettingService {
     selectedSources = [
         { id: 1 },
         { id: 2 }
@@ -75,7 +75,7 @@ describe("CmsTileListComponent", () => {
     let component: CmsTileListComponent;
     let fixture: ComponentFixture<CmsTileListComponent>;
     let debugInstance;
-    let cmsClipboardService: MockCmsClipboardService, activatedRoute: MockActivatedRoute;
+    let cmsSettingService: MockCmsSettingService, activatedRoute: MockActivatedRoute;
 
     let spyPutContentsOnDisplay: jasmine.Spy;
 
@@ -92,8 +92,8 @@ describe("CmsTileListComponent", () => {
                     useClass: MockCmsApiService
                 },
                 {
-                    provide: CmsClipboardService,
-                    useClass: MockCmsClipboardService
+                    provide: CmsSettingsService,
+                    useClass: MockCmsSettingService
                 }
             ],
             imports: [
@@ -112,7 +112,7 @@ describe("CmsTileListComponent", () => {
             component = fixture.componentInstance;
             debugInstance = fixture.debugElement.componentInstance;
             activatedRoute = fixture.debugElement.injector.get(ActivatedRoute);
-            cmsClipboardService = fixture.debugElement.injector.get(CmsClipboardService);
+            cmsSettingService = fixture.debugElement.injector.get(CmsSettingsService);
             let cmsApiService = fixture.debugElement.injector.get(CmsApiService);
 
             spyPutContentsOnDisplay = spyOn(cmsApiService, "putContentsOnDisplay").and.returnValue(Observable.of(null));
@@ -124,7 +124,7 @@ describe("CmsTileListComponent", () => {
         expect(component.tilePresets.length).toEqual(0);
         expect(debugInstance.eventSubscription).toBeNull();
 
-        component.sourceCount = cmsClipboardService.selectedSources.length;
+        component.sourceCount = cmsSettingService.selectedSources.length;
 
         fixture.detectChanges();
         fixture.whenStable().then(() => {
@@ -148,7 +148,7 @@ describe("CmsTileListComponent", () => {
 
 
     it("should call CmsApiService.putContentsOnDisplay when tile layout is loaded", () => {
-        component.sourceCount = cmsClipboardService.selectedSources.length;
+        component.sourceCount = cmsSettingService.selectedSources.length;
 
         fixture.detectChanges();
 
@@ -163,11 +163,11 @@ describe("CmsTileListComponent", () => {
 
         expect(args[0]).toEqual(activatedRoute.params.value.id);
         expect(args[1]).toEqual(component.tilePresets[0].id);
-        expect(args[2].resources).toEqual(cmsClipboardService.selectedSources);
+        expect(args[2].resources).toEqual(cmsSettingService.selectedSources);
     });
 
     it("component should listen 'Display Updated' event", async(() => {
-        component.sourceCount = cmsClipboardService.selectedSources.length;
+        component.sourceCount = cmsSettingService.selectedSources.length;
         expect(debugInstance.eventSubscription).toBeNull();
 
         fixture.detectChanges();
@@ -199,7 +199,7 @@ describe("CmsTileListComponent", () => {
     }));
 
     it("should show defaultTiler with respective default icon", () => {
-        component.sourceCount = cmsClipboardService.selectedSources.length;
+        component.sourceCount = cmsSettingService.selectedSources.length;
 
         fixture.detectChanges();
         fixture.whenStable().then(() => {
@@ -217,7 +217,7 @@ describe("CmsTileListComponent", () => {
 
     //TODO: Test writing in progress
     // it("component should listen 'Tile' event", async(() => {
-    //     component.sourceCount = cmsClipboardService.selectedSources.length;
+    //     component.sourceCount = cmsSettingService.selectedSources.length;
     //     expect(debugInstance.tileListEventSubscription).toBeNull();
 
     //     fixture.detectChanges();

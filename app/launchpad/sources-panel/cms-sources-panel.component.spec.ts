@@ -10,7 +10,6 @@ import { Observable } from "rxjs/Rx";
 import { AppConfig } from "../../config";
 import { CMS_SESSION_STORAGE_ITEM } from "../../cms/models/cms-session-storage-item";
 import { StorageManager } from "../../cms/api/cms-storagemanager.service";
-import { CmsClipboardService } from "../../shared/clipboard/cms-clipboard.service";
 import { TranslateLoader, TranslateModule, TranslateService } from "@ngx-translate/core";
 import { TranslateHttpLoader } from "@ngx-translate/http-loader";
 import { MaterialModule } from "@angular/material";
@@ -19,6 +18,8 @@ import { CmsApiService } from "../../cms/api/cms-api.service";
 import { Source } from "./../../cms/models/cms-source";
 import { CmsSourceListComponent } from "./../../shared/source-list/cms-source-list.component";
 import { MockRouterStub } from "../../core/mock-stubs/mock-router-stub";
+import { CmsSettingsService } from "../settings/cms-settings.service";
+import { CMSConstants } from "../../cms/models/cms-constants";
 
 describe("CmsSourcesPanelComponent", () => {
     /**
@@ -31,10 +32,9 @@ describe("CmsSourcesPanelComponent", () => {
     });
 
     /**
-     * Fake CmsClipboardService with the below stub
+     * Fake MockCmsSettingService with the below stub
      */
-    class MockCmsClipboardService {
-        maxSelection = 10;
+    class MockCmsSettingService {
         selectedSources = [
             { id: 1 },
             { id: 2 },
@@ -83,7 +83,7 @@ describe("CmsSourcesPanelComponent", () => {
     let injector: Injector;
     let translateService: TranslateService;
     let storageManager: StorageManager;
-    let clipboardService: CmsClipboardService;
+    let cmsSettingService: CmsSettingsService;
     let route: ActivatedRoute;
     let panelTitle: string;
 
@@ -105,8 +105,8 @@ describe("CmsSourcesPanelComponent", () => {
                     useValue: activatedRoute
                 },
                 {
-                    provide: CmsClipboardService,
-                    useClass: MockCmsClipboardService
+                    provide: CmsSettingsService,
+                    useClass: MockCmsSettingService
                 }
             ],
             imports: [
@@ -129,11 +129,11 @@ describe("CmsSourcesPanelComponent", () => {
             debugInstance = fixture.debugElement.componentInstance;
 
             injector = getTestBed();
-            clipboardService = injector.get(CmsClipboardService);
+            cmsSettingService = injector.get(CmsSettingsService);
             translateService = injector.get(TranslateService);
 
             translateService.setDefaultLang("en");
-            translateService.get("sourceList.connectTo", { value: clipboardService.maxSelection }).subscribe((response: string) => {
+            translateService.get("sourceList.connectTo", { value: CMSConstants.MAXSELECTION }).subscribe((response: string) => {
                 panelTitle = response;
             });
 
@@ -168,8 +168,8 @@ describe("CmsSourcesPanelComponent", () => {
         fixture.detectChanges();
         fixture.whenStable().then(() => {
             let panelTitlewithMaxSelection = debugInstance.panelTitle.split("maximum ");
-            expect(panelTitlewithMaxSelection[1]).toContain(clipboardService.maxSelection);
-            expect(debugInstance.panelTitle).toEqual("Select sources (maximum " + clipboardService.maxSelection + ")");
+            expect(panelTitlewithMaxSelection[1]).toContain(CMSConstants.MAXSELECTION);
+            expect(debugInstance.panelTitle).toEqual("Select sources (maximum " + CMSConstants.MAXSELECTION + ")");
         });
     });
 
@@ -178,14 +178,14 @@ describe("CmsSourcesPanelComponent", () => {
         let bottomToolbar: DebugElement = fixture.debugElement.query(By.css(".page-toolbar.bottom"));
         expect(bottomToolbar).toBeTruthy();
 
-        clipboardService.selectedSources = sources;
+        cmsSettingService.selectedSources = sources;
         expect(bottomToolbar).toBeTruthy();
     });
 
     it("should show selected source count/maxsource in bottom toolbar", () => {
         fixture.detectChanges();
         let bottomToolbar: DebugElement = fixture.debugElement.query(By.css("#sources-panel-bottom-toolbar span:nth-child(1)"));
-        let selectedSource = clipboardService.selectedSources.length + "/" + clipboardService.maxSelection
+        let selectedSource = cmsSettingService.selectedSources.length + "/" + CMSConstants.MAXSELECTION
 
         expect(bottomToolbar.nativeElement.innerText).toBeTruthy(selectedSource);
     });
@@ -202,7 +202,7 @@ describe("CmsSourcesPanelComponent", () => {
         buttonNext.triggerEventHandler("click", null);
 
         expect(spyNavigateByUrl.calls.count()).toEqual(1);
-        expect(spyNavigateByUrl.calls.argsFor(0)[0]).toEqual(`/displays/${debugInstance.mDisplayId}/tiles-panel?sourceCount=${clipboardService.selectedSources.length}`);
+        expect(spyNavigateByUrl.calls.argsFor(0)[0]).toEqual(`/displays/${debugInstance.mDisplayId}/tiles-panel?sourceCount=${cmsSettingService.selectedSources.length}`);
     });
 
     it("should navigate to displays-panel onclick of navigates back", () => {

@@ -18,6 +18,7 @@ import { IUserProfileSettings } from "../../cms/models/cms-user-profile-settings
 import { Display } from "../../cms/models/cms-display";
 import { AppConfig } from "../../config";
 import { CMSConstants } from "../../cms/models/cms-constants";
+import { Source } from "./../../cms/models/cms-source";
 
 /**
  * This service is used to provide all methods related to.
@@ -29,6 +30,8 @@ export class CmsSettingsService {
     // Observable for longPress state
     longPressedSubject: Subject<boolean> = new Subject<boolean>();
     isLongPressed: boolean;
+
+    public selectedSources: Source[] = [];
 
     /**
      * @description
