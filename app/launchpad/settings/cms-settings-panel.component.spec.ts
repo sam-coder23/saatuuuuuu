@@ -24,11 +24,11 @@ import { CmsLanguages } from "../../i18n/cms-languages";
 import { CMS_SESSION_STORAGE_ITEM } from "../../cms/models/cms-session-storage-item";
 import { APIRequest } from "../../cms/api/api-request";
 
-let router = {
+let spyRouter = {
     navigate: jasmine.createSpy("settings")
 };
 
-let MockCmsSettingsService = {
+let mockCmsSettingsData = {
     "mUserSettings": {
         "language": "en",
         "wallConnection": {
@@ -180,7 +180,7 @@ let mockDisplaysData = {
 class MockCmsApiService {
 
     getUserProfileSettings(): Promise<any> {
-        return Promise.resolve(MockCmsSettingsService.mUserSettings);
+        return Promise.resolve(mockCmsSettingsData.mUserSettings);
     }
 
     getSystemInfo(): Observable<any> {
@@ -192,7 +192,7 @@ class MockCmsApiService {
     }
 
     updateUserProfileSettings(data): Promise<IUserProfileSettings> {
-        return Promise.resolve(MockCmsSettingsService.mUserSettings);
+        return Promise.resolve(mockCmsSettingsData.mUserSettings);
     }
 
     getDisplayList(start: number = 1, count: number = 2147483647, search: string = "", favorite: boolean = false) {
@@ -222,7 +222,7 @@ describe("Component CmsSettingsPanelComponent", () => {
                 CmsSettingsService,
                 {
                     provide: Router,
-                    useValue: router,
+                    useValue: spyRouter,
                 },
                 {
                     provide: ElementRef,
@@ -245,7 +245,7 @@ describe("Component CmsSettingsPanelComponent", () => {
                 TranslateModule.forRoot({
                     loader: {
                         provide: TranslateLoader,
-                        useFactory: (http: Http) => new TranslateHttpLoader(http, "base/app/i18n", ".json"),
+                        useFactory: (http: Http) => new TranslateHttpLoader(http, "base/app/i18n/", ".json"),
                         deps: [Http]
                     }
                 })
@@ -256,9 +256,7 @@ describe("Component CmsSettingsPanelComponent", () => {
             component = fixture.componentInstance;
             nativeElement = fixture.nativeElement;
             debugInstance = fixture.debugElement.componentInstance;
-
-            cmsSettingsPanelComponent = new CmsSettingsPanelComponent(cmsApiService, router, cmsSettingsService, translate, appConfig)
-
+            cmsSettingsPanelComponent = new CmsSettingsPanelComponent(cmsApiService, router, cmsSettingsService, translate, appConfig);
             cmsSettingsService = fixture.debugElement.injector.get(CmsSettingsService);
             cmsApiService = fixture.debugElement.injector.get(CmsApiService);
         });
@@ -329,8 +327,8 @@ describe("Component CmsSettingsPanelComponent", () => {
                 let loadingContent = fixture.nativeElement.querySelector("#loading-progress-indicator");
                 expect(loadingContent).toBeNull();
                 done();
-            })
-        })
+            });
+        });
     });
 
     /** CHECK SETTING CONTENT WRAPPER VISIBLE AFTER LOADING DONE */
@@ -342,8 +340,8 @@ describe("Component CmsSettingsPanelComponent", () => {
             fixture.whenStable().then(() => {
                 let settingsContentWrapper = fixture.nativeElement.querySelector(".settings-content-wrapper");
                 expect(settingsContentWrapper).not.toBeNull();
-            })
-        })
+            });
+        });
     });
 
     /** LANGUAGE SECTION */
@@ -356,8 +354,8 @@ describe("Component CmsSettingsPanelComponent", () => {
                 let settingPanelLanguageLink = fixture.nativeElement.querySelector("#setting-panel-language-link");
                 expect(settingPanelLanguageLink).toBeTruthy();
                 expect(settingPanelLanguageLink.disabled).toBe(true);
-            })
-        })
+            });
+        });
     });
 
     /** AUTO LOG OFF SECTION */
@@ -376,8 +374,8 @@ describe("Component CmsSettingsPanelComponent", () => {
                     let settingSquareInputElement = fixture.nativeElement.querySelector(".setting-square-input input").value;
                     expect(Number(settingSquareInputElement)).toEqual(debugInstance.logOffTimeSteps[1]);
                 });
-            })
-        })
+            });
+        });
         done();
     });
 
@@ -396,12 +394,13 @@ describe("Component CmsSettingsPanelComponent", () => {
                     let settingSquareInputElement = fixture.nativeElement.querySelector(".setting-square-input input").value;
                     expect(settingSquareInputElement).toEqual("settings.never");
                 });
-            })
-        })
+            });
+        });
         done();
     });
 
     /** WALL CONNECTION SECTION*/
+    /** AUTO CONNECT TO MOST RECENT WALL */
     it("should update updateUserSettingsByAction on radio auto-connect-to-most-recent-wall-radio-button change event ", (done) => {
         fixture.detectChanges();
         fixture.whenStable().then(() => {
@@ -413,11 +412,45 @@ describe("Component CmsSettingsPanelComponent", () => {
                 let autoConnectToMostRecentWallRadioButton = fixture.nativeElement.querySelector("#auto-connect-to-most-recent-wall-radio-button");
                 expect(autoConnectToMostRecentWallRadioButton).not.toBeNull();
                 autoConnectToMostRecentWallRadioButton.dispatchEvent(new Event("change"));
-                let e = { source: "MdRadioButton", value: "auto-connect-to-most-recent-wall" };
-                MockCmsSettingsService.mUserSettings.wallConnection.startUpAction = "auto-connect-to-most-recent-wall";
-                debugInstance.updateUserSettingsByAction(e);
-            })
-        })
+                let $event = { source: "MdRadioButton", value: "auto-connect-to-most-recent-wall" };
+                mockCmsSettingsData.mUserSettings.wallConnection.startUpAction = "auto-connect-to-most-recent-wall";
+                debugInstance.updateUserSettingsByAction($event);
+                fixture.detectChanges();
+                fixture.whenStable().then(() => {
+                    let wallConnectionStatus = JSON.parse(storageManager.get(CMS_SESSION_STORAGE_ITEM.Settings)).wallConnection.startUpAction;
+                    expect(wallConnectionStatus).toEqual($event.value);
+                });
+            });
+        });
+        done();
+    });
+
+    /** AUTO CONNECT TO SPECIFIC WALL */
+    it("should update updateUserSettingsByAction on radio auto-connect-to-specific-wall-select-button change event ", (done) => {
+        fixture.detectChanges();
+        fixture.whenStable().then(() => {
+            expect(debugInstance.mLoading).toBe(false);
+            fixture.detectChanges();
+            fixture.whenStable().then(() => {
+                let autoConnectToSpecificWallSelectButton = fixture.nativeElement.querySelector("#auto-connect-to-specific-wall-select-button");
+                expect(autoConnectToSpecificWallSelectButton).toBeTruthy();
+                expect(autoConnectToSpecificWallSelectButton.hasAttribute("disabled")).toBe(true);
+                let autoConnectToSpecificWallRadioButton = fixture.nativeElement.querySelector("#auto-connect-to-specific-wall-radio-button");
+                expect(autoConnectToSpecificWallRadioButton).toBeTruthy();
+                autoConnectToSpecificWallRadioButton.dispatchEvent(new Event("change"));
+                let $event = { source: "MdRadioButton", value: "auto-connect-to-specific-wall" };
+                mockCmsSettingsData.mUserSettings.wallConnection.startUpAction = "auto-connect-to-specific-wall";
+                debugInstance.updateUserSettingsByAction($event);
+                fixture.detectChanges();
+                fixture.whenStable().then(() => {
+                    let wallConnectionStatus = JSON.parse(storageManager.get(CMS_SESSION_STORAGE_ITEM.Settings)).wallConnection.startUpAction;
+                    expect(wallConnectionStatus).toEqual($event.value);
+                    expect(autoConnectToSpecificWallSelectButton.hasAttribute("disabled")).toBe(false);
+                    debugInstance.goToSelectDisplayForAutoConnect($event);
+                    expect(spyRouter.navigate).toHaveBeenCalledWith(["/displays-panel", { action: "selectDisplayForAutoConnect" }]);
+                });
+            });
+        });
         done();
     });
 
@@ -438,9 +471,9 @@ describe("Component CmsSettingsPanelComponent", () => {
                     let fontSizeInput = fixture.nativeElement.querySelector("#font-size-input");
                     expect(fontSizeInput).not.toBeNull();
                     expect(Number(fontSizeInput.value)).toEqual(debugInstance.fontSizeSteps[10]);
-                })
-            })
-        })
+                });
+            });
+        });
         done();
     });
 
@@ -461,9 +494,9 @@ describe("Component CmsSettingsPanelComponent", () => {
                     expect(fontSizeInput).not.toBeNull();
                     expect(Number(fontSizeInput.value)).toEqual(debugInstance.fontSizeSteps[11]);
 
-                })
-            })
-        })
+                });
+            });
+        });
         done();
     });
 
@@ -483,10 +516,9 @@ describe("Component CmsSettingsPanelComponent", () => {
                     let transparencyInput = fixture.nativeElement.querySelector("#transparency-input");
                     expect(transparencyInput).not.toBeNull();
                     expect(Number(transparencyInput.value)).toEqual(debugInstance.transparencySteps[4]);
-
-                })
-            })
-        })
+                });
+            });
+        });
         done();
     });
 
@@ -506,10 +538,140 @@ describe("Component CmsSettingsPanelComponent", () => {
                     let transparencyInput = fixture.nativeElement.querySelector("#transparency-input");
                     expect(transparencyInput).not.toBeNull();
                     expect(Number(transparencyInput.value)).toEqual(debugInstance.transparencySteps[5]);
-                })
-            })
-        })
+                });
+            });
+        });
         done();
     });
 
+    /** DISPLAY DEFAULT PAGE */
+    it("should display defalut page and update selected page ", (done) => {
+        fixture.detectChanges();
+        fixture.whenStable().then(() => {
+            expect(debugInstance.mLoading).toBe(false);
+            fixture.detectChanges();
+            fixture.whenStable().then(() => {
+                fixture.detectChanges();
+                fixture.whenStable().then(() => {
+                    let defaultPageSize = fixture.nativeElement.querySelector("md-select[name=" + "pageSize" + "]");
+                    fixture.detectChanges();
+                    fixture.whenStable().then(() => {
+                        expect(Number(defaultPageSize.getAttribute("ng-reflect-ng-model"))).toEqual(mockCmsSettingsData.mUserSettings.pageSize);
+                        let $event = { source: "MdRadioButton", value: "auto-connect-to-most-recent-wall" };
+                        mockCmsSettingsData.mUserSettings.pageSize = debugInstance.pageSizes[1];
+                        debugInstance.updateUserSettingsByAction($event);
+                        fixture.detectChanges();
+                        fixture.whenStable().then(() => {
+                            expect(Number(defaultPageSize.getAttribute("ng-reflect-ng-model"))).toEqual(mockCmsSettingsData.mUserSettings.pageSize);
+                        });
+                    });
+                });
+            });
+        });
+        done();
+    });
+    /** SOURCE LABELS */
+    /** CHECK TOGGLE OF DISPLAY SOURCE NAME SLIDER BUTTON */
+    it("should updateStteingByAction on toggle of display-sourcename-labels-slider-button ", (done) => {
+        fixture.detectChanges();
+        fixture.whenStable().then(() => {
+            expect(debugInstance.mLoading).toBe(false);
+            fixture.detectChanges();
+            fixture.whenStable().then(() => {
+                fixture.detectChanges();
+                fixture.whenStable().then(() => {
+                    let displaySourcenameLabelsSliderButton = fixture.nativeElement.querySelector("#display-sourcename-labels-slider-button");
+                    expect(displaySourcenameLabelsSliderButton).toBeTruthy();
+                    let $event = { source: "MdSlideToggle", checked: false };
+                    mockCmsSettingsData.mUserSettings.sourceLabel.displaySourceNameLabels = false;
+                    debugInstance.updateUserSettingsByAction($event);
+                    fixture.detectChanges();
+                    fixture.whenStable().then(() => {
+                        let displaySourceNameLabels = JSON.parse(storageManager.get(CMS_SESSION_STORAGE_ITEM.Settings)).sourceLabel.displaySourceNameLabels;
+                        expect(displaySourceNameLabels).toEqual($event.checked);
+                    });
+                });
+            });
+        });
+        done();
+    });
+
+    /** CHECK TOGGLE OF MULTIPLE LINES SOURCE NAME SLIDER BUTTON */
+    it("should updateStteingByAction on toggle of use-multiplelines-sourcename-labels-slider-button ", (done) => {
+        fixture.detectChanges();
+        fixture.whenStable().then(() => {
+            expect(debugInstance.mLoading).toBe(false);
+            fixture.detectChanges();
+            fixture.whenStable().then(() => {
+                fixture.detectChanges();
+                fixture.whenStable().then(() => {
+                    let useMultiplelinesSourcenameLabelsSliderButton = fixture.nativeElement.querySelector("#use-multiplelines-sourcename-labels-slider-button");
+                    expect(useMultiplelinesSourcenameLabelsSliderButton).toBeTruthy();
+                    let $event = { source: "MdSlideToggle", checked: true };
+                    mockCmsSettingsData.mUserSettings.sourceLabel.useMultipleLines = true;
+                    debugInstance.updateUserSettingsByAction($event);
+                    fixture.detectChanges();
+                    fixture.whenStable().then(() => {
+                        let useMultipleLines = JSON.parse(storageManager.get(CMS_SESSION_STORAGE_ITEM.Settings)).sourceLabel.useMultipleLines;
+                        expect(useMultipleLines).toEqual($event.checked);
+                    });
+                });
+            });
+        });
+        done();
+    });
+    /** COLOR PICKER */
+    /** FONT COLOR UPDATE */
+    it("should update selected font color ", (done) => {
+        fixture.detectChanges();
+        fixture.whenStable().then(() => {
+            expect(debugInstance.mLoading).toBe(false);
+            fixture.detectChanges();
+            fixture.whenStable().then(() => {
+                fixture.detectChanges();
+                fixture.whenStable().then(() => {
+                    let ndColorpickerFont = fixture.nativeElement.querySelector("nd-colorpicker[name=" + "font-color" + "]");
+                    expect(ndColorpickerFont).not.toBeNull();
+                    fixture.detectChanges();
+                    fixture.whenStable().then(() => {
+                        let $event = { value: "#B71C1C" };
+                        debugInstance.updateFontColor($event);
+                        fixture.detectChanges();
+                        fixture.whenStable().then(() => {
+                            let fontColor = JSON.parse(storageManager.get(CMS_SESSION_STORAGE_ITEM.Settings)).sourceLabel.fontColor;
+                            expect(fontColor).toEqual($event.value);
+                        });
+                    });
+                });
+            });
+        });
+        done();
+    });
+
+    /** BACKGROUND COLOR UPDATE */
+    it("should update selected background color ", (done) => {
+        fixture.detectChanges();
+        fixture.whenStable().then(() => {
+            expect(debugInstance.mLoading).toBe(false);
+            fixture.detectChanges();
+            fixture.whenStable().then(() => {
+                fixture.detectChanges();
+                fixture.whenStable().then(() => {
+                    let ndColorpickerBG = fixture.nativeElement.querySelector("nd-colorpicker[name=" + "background-color" + "]");
+                    expect(ndColorpickerBG).not.toBeNull();
+                    fixture.detectChanges();
+                    fixture.whenStable().then(() => {
+                        let $event = { value: "#9C27B0" };
+                        debugInstance.updateBackgroundColor($event);
+                        fixture.detectChanges();
+                        fixture.whenStable().then(() => {
+                            let BGColor = JSON.parse(storageManager.get(CMS_SESSION_STORAGE_ITEM.Settings)).sourceLabel.backgroundColor;
+                            expect(BGColor).toEqual($event.value);
+                        });
+                    });
+                });
+            });
+        });
+        done();
+    });
 });

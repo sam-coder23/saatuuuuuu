@@ -1,4 +1,4 @@
-import { ComponentFixture, TestBed, async, inject } from "@angular/core/testing";
+import { ComponentFixture, TestBed, async, inject} from "@angular/core/testing";
 import { By } from "@angular/platform-browser";
 import { Location } from "@angular/common";
 import { DebugElement, CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA, ElementRef } from "@angular/core";
@@ -59,7 +59,7 @@ class MockCmsApiService {
     getUserProfileSettings(): Promise<any> {
         return Promise.resolve(mockCmsSettingsData.mUserSettings);
     }
-    updateUserProfileSettings(): Promise<IUserProfileSettings> {
+    updateUserProfileSettings(): Promise<any> {
         return Promise.resolve(mockCmsSettingsData.mUserSettings);
     }
 }
@@ -164,8 +164,7 @@ describe("Component CmsSettingsLanguagePanelComponent", () => {
             expect(settingLanguagePanelTitleText).not.toBeNull();
             let settingLanguagePanelBackButton = fixture.nativeElement.querySelector("#setting-language-panel-back-button");
             expect(settingLanguagePanelBackButton).toBeTruthy();
-            expect(settingLanguagePanelBackButton.hasAttribute("routerLink")).toBe(true);
-            expect(settingLanguagePanelBackButton.getAttribute("routerLink")).toBe("/settings");
+            debugInstance.navigateBack();
         });
     });
 

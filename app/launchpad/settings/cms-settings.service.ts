@@ -288,7 +288,7 @@ export class CmsSettingsService {
 
                     if (display) {
                         this.storageManager.set(CMS_SESSION_STORAGE_ITEM.Display, JSON.stringify(display));
-                        this.router.navigate([`/display-panel/${display.id}`]);
+                        this.router.navigate([`/displays/${display.id}/sources-panel`]);
                     }
 
                 }
@@ -327,7 +327,7 @@ export class CmsSettingsService {
                         this.updateWallConnectionRecentDisplay(display);
 
                         this.storageManager.set(CMS_SESSION_STORAGE_ITEM.Display, JSON.stringify(display));
-                        this.router.navigate([`/display-panel/${display.id}`]);
+                        this.router.navigate([`/displays/${display.id}/sources-panel`]);
                     }
                 }
             }, (error) => {
