@@ -110,15 +110,18 @@ export class CmsLaunchpadComponent implements OnInit, OnDestroy {
     this.addAppSupportedLanguages();
 
     // on browser refresh create session with the server again
-    let user: IUserToken = JSON.parse(this.storageManager.get(CMS_SESSION_STORAGE_ITEM.User));
+    let user: IUserToken = this.getUserStorageData();
     if (user && user.loggedIn) {
       this.appConfig.log("CmsLaunchpadComponent: User is already logged in. Recreating session with server after refresh!!");
       this.cmsServerApi.reconnectSessionWithServer();
 
       // Read user settings from storage manager
-      this.cmsSettingsService.mUserSettings = JSON.parse(this.storageManager.get(CMS_SESSION_STORAGE_ITEM.Settings));
-      if (!this.cmsSettingsService.mUserSettings) {
-        this.appConfig.error("ERR_NO_USER_SETTINGS: No user settings found after refresh.");
+      let settingsStorageData = this.storageManager.get(CMS_SESSION_STORAGE_ITEM.Settings);
+      if (settingsStorageData) {
+        this.cmsSettingsService.mUserSettings = JSON.parse(settingsStorageData);
+        if (!this.cmsSettingsService.mUserSettings) {
+          this.appConfig.error("ERR_NO_USER_SETTINGS: No user settings found after refresh.");
+        }
       }
 
       // apply user"s selected language
@@ -133,9 +136,9 @@ export class CmsLaunchpadComponent implements OnInit, OnDestroy {
 
     this.applicationLevelEvent = CmsEventEmitterService.get(CMS_EVENTS.Application).subscribe((res: { eventName: string, eventType: string }) => {
       this.appConfig.log("CmsLaunchpadComponent: Application level event received. ", res.eventName);
-      
+
       // handle system events when user is logged in
-      let user: IUserToken = JSON.parse(this.storageManager.get(CMS_SESSION_STORAGE_ITEM.User));
+      let user: IUserToken = this.getUserStorageData();
       if (user && user.loggedIn) {
         this.applicationEventType = res.eventType;
 
@@ -150,6 +153,15 @@ export class CmsLaunchpadComponent implements OnInit, OnDestroy {
         this.appConfig.log("CmsLaunchpadComponent: System events will not be handled as user is not logged in.");
       }
     });
+  }
+
+  private getUserStorageData(): any {
+    let userStorageData = this.storageManager.get(CMS_SESSION_STORAGE_ITEM.User);
+    if (!userStorageData) {
+      this.router.navigate(["/login"]);
+      return null;
+    }
+    return JSON.parse(userStorageData);
   }
 
   /**
@@ -183,7 +195,7 @@ export class CmsLaunchpadComponent implements OnInit, OnDestroy {
   /**
    * prevent default behaviours of browser at app level
    */
-  preventBrowserDefaults(): void {
+  private preventBrowserDefaults(): void {
     // disable zoom in browser with ctrl + mousewheel
     EventManager.addEvent("wheel", this.onMouseWheel.bind(this));
 
@@ -291,7 +303,6 @@ export class CmsLaunchpadComponent implements OnInit, OnDestroy {
           let userCurrentActionTime = Date.now();
           let timeDiff = userCurrentActionTime - this.userLastActionTime;
           let minDiff = timeDiff / 60 / 1000;
-
           if (minDiff > userAutoLogOffTime) {
             //logoff user
             this.appConfig.log("CmsLaunchpadComponent: Performing auto logoff for the user due to inactivity...");
