@@ -18,11 +18,11 @@
         "zoom": "Zoom: ",
         "fitHeight": "Fit height",
         "settings": "Settings",
-        "aboutCmsLaunchPad": "About CMS Launch Pad"
+        "aboutCmsLaunchPad": "About"
     },
     "displayPanel": {
-        "clearWallConfirmationPopupTitle": "Clear Display Wall",
-        "clearWallConfirmationPopupMessage": "Are you sure you want to clear the display wall?"
+        "clearWallConfirmationPopupTitle": "Log Off",
+        "clearWallConfirmationPopupMessage": "Do you want to clear the display wall before logging off?"
     },
     "displayList": {
         "connectTo": "Select a display wall",
@@ -83,7 +83,7 @@
     },
     "about": {
         "daysRemaining": "{{value}} days left for evaluation.",
-        "about": "About CMS Launch Pad",
+        "about": "About CMS Launch Pad - CR",
         "version": "Version:",
         "licensed": "Licensed to:",
         "project": "Project name:",
