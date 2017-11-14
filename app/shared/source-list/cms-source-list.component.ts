@@ -195,7 +195,7 @@ export class CmsSourceListComponent implements OnInit, OnChanges, OnDestroy {
     /**
      * On selecting a card, the respective source will be copied to selectedSources of cms seting.
      */
-  
+
     public updateSelection(selected: boolean, source: Source) {
         let tileId: number;
         if (source.selected) {
@@ -207,7 +207,7 @@ export class CmsSourceListComponent implements OnInit, OnChanges, OnDestroy {
         } else if (this.cmsSettingsService.selectedSources.length < CMSConstants.MAXSELECTION) {
             this.cmsSettingsService.selectedSources.push(source);
             source.selected = true;
-            tileId = this.tileIdForSourceCount(this.cmsSettingsService.selectedSources.length);   
+            tileId = this.tileIdForSourceCount(this.cmsSettingsService.selectedSources.length);
             if (tileId === 0) {
                 this.translateService.get("sourceList.tileLayoutNotAvailable").subscribe((value) => {
                     this.errorEmitter.emit(value);
@@ -270,12 +270,25 @@ export class CmsSourceListComponent implements OnInit, OnChanges, OnDestroy {
     private renderer(source: Source): Source {
         if (!source) return source;
 
-        let selectedSource = this.cmsSettingsService.selectedSources.find((selectedSource) => {
-            return selectedSource.id === source.id && selectedSource.type === source.type;
+        /**
+         * Compares selected sources in the cmsSettingsService and each source in the source list by matching 
+         *      either with their id and type,
+         *      or by their name and when the selected source type is source and the source type in the source list is perspective. 
+         * Why matching is done based on name?
+         * Because when user selects a source and refresh the source list, perspective is returned in the source list
+         * and the source is hidden.
+         */
+        let selectedSourceIndex = this.cmsSettingsService.selectedSources.findIndex((selectedSource) => {
+            return (selectedSource.id === source.id && selectedSource.type === source.type)
+                || (source.name === selectedSource.name && source.type === CMSConstants.SOURCE_TYPE.PERSPECTIVE && selectedSource.type === CMSConstants.SOURCE_TYPE.SOURCE);
         });
 
-        if (selectedSource) {
+        if (selectedSourceIndex > -1) {
             source.selected = true;
+            if (source.type !== this.cmsSettingsService.selectedSources[selectedSourceIndex].type) {
+                // Replace selected source with perspective
+                this.cmsSettingsService.selectedSources[selectedSourceIndex] = source;
+            }
         }
 
         return source;
@@ -298,7 +311,6 @@ export class CmsSourceListComponent implements OnInit, OnChanges, OnDestroy {
      * @param tileIndex zero based tileIndex at which source to be shared
      */
     private shareSourceOnTile(source: Source, tileIndex: number): void {
-        debugger;
         if (this.selectedDisplay.tiles && this.selectedDisplay.tiles[tileIndex]) {
 
             var tile = new Tile({
