@@ -236,7 +236,7 @@ describe("CmsDisplayListComponent", () => {
 
     it("should route onConfimation of pop up", () => {
         component.ngOnChanges(null);
-        debugInstance.route.params = [{ "action": "selectDisplayForAutoConnect" }];
+        debugInstance.route.params = [{ "action": CMSConstants.SELECT_DISPLAY }];
         component.onConfirmation();
         let args = spyRouter.calls.mostRecent().args;
         expect(args[0]).toEqual(["/settings"]);
@@ -246,7 +246,7 @@ describe("CmsDisplayListComponent", () => {
         component.connectWall(displays[1]);
         expect(cmsSettingsService.updateWallConnectionRecentDisplay).not.toHaveBeenCalled();
         expect(cmsSettingsService.updateWallConnectionSpecificDisplay).not.toHaveBeenCalled();     
-        debugInstance.route.params = [{ "action": "selectDisplayForAutoConnect" }];
+        debugInstance.route.params = [{ "action": CMSConstants.SELECT_DISPLAY }];
         component.connectWall(displays[0]);
         expect(cmsSettingsService.updateWallConnectionSpecificDisplay).toHaveBeenCalled(); 
         debugInstance.route.params = [{ "action": "jargonText" }];

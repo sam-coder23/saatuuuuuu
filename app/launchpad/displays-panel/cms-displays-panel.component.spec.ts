@@ -11,8 +11,9 @@ import { CMS_SESSION_STORAGE_ITEM } from "../../cms/models/cms-session-storage-i
 import { StorageManager } from "../../cms/api/cms-storagemanager.service";
 import { Observable } from "rxjs/Rx";
 import { AppConfig } from "../../config";
-import { Router } from "@angular/router";
 import { Display } from "../../cms/models/cms-display";
+import { Router, ActivatedRoute, Params } from "@angular/router";
+import { CMSConstants } from "../../cms/models/cms-constants";
 
 describe("Component: CmsDisplaysPanelComponent", () => {
     let component: CmsDisplaysPanelComponent;
@@ -23,6 +24,8 @@ describe("Component: CmsDisplaysPanelComponent", () => {
 
     let storageManager: StorageManager;
     let appConfig: AppConfig;
+    let activatedRoute = new ActivatedRoute();
+    activatedRoute.params = Observable.of({});
 
     beforeEach(async(() => {
         TestBed.configureTestingModule({
@@ -32,7 +35,11 @@ describe("Component: CmsDisplaysPanelComponent", () => {
                 StorageManager,
                 TranslateService,
                 CmsApiService,
-                CMS_SESSION_STORAGE_ITEM
+                CMS_SESSION_STORAGE_ITEM,
+                {
+                    provide: ActivatedRoute,
+                    useValue: activatedRoute
+                }
             ],
             imports: [
                 HttpModule,
@@ -63,11 +70,26 @@ describe("Component: CmsDisplaysPanelComponent", () => {
 
     it("should be a defined component: ", async(() => {
         expect(component).toBeDefined();
+        fixture.detectChanges();
+        let backButton: DebugElement = fixture.debugElement.query(By.css("#displays-panel-back-button"));
+        expect(backButton).toBeFalsy();
+    }));
+
+    it("should make back button visible when routed from settings panel", async(() => {
+        debugInstance.route.params = [{ "action": CMSConstants.SELECT_DISPLAY }];
+        fixture.detectChanges();
+
+        let backButton: DebugElement = fixture.debugElement.query(By.css("#displays-panel-back-button"));
+        expect(backButton).toBeTruthy();
+
+        let spyNavigateByUrl = spyOn(window.history, "back").and.returnValue(null);
+        backButton.triggerEventHandler("click", null);
+        expect(spyNavigateByUrl.calls.count()).toEqual(1);
     }));
 
     it("should call onListChanged: ", async(() => {
         component.onListChanged();
-        cmsDisplaysPanelComponentInstance = new CmsDisplaysPanelComponent(storageManager, appConfig);
+        cmsDisplaysPanelComponentInstance = new CmsDisplaysPanelComponent(storageManager, appConfig, activatedRoute);
         let isDispSelected = cmsDisplaysPanelComponentInstance.isDisplaySelected();
         expect(debugInstance.viewState.reload).toBe(true);
         expect(debugInstance.viewState.back).toBe(isDispSelected);

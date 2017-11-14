@@ -7,11 +7,13 @@
 import { Component, OnInit, AfterViewInit } from "@angular/core";
 
 import { CMS_SESSION_STORAGE_ITEM } from "../../cms/models/cms-session-storage-item";
-import { StorageManager} from "../../cms/api/cms-storagemanager.service";
+import { StorageManager } from "../../cms/api/cms-storagemanager.service";
 import { Display } from "../../cms/models/cms-display";
 import { Observable } from "rxjs/Rx";
 import { AppConfig } from "../../config";
 import { Validation } from "../../core/util/Validation";
+import { Router, ActivatedRoute, Params } from "@angular/router";
+import { CMSConstants } from "../../cms/models/cms-constants";
 
 /**
  * This is a panel component that defines the layout of a page which includes toolbar and display list.
@@ -23,16 +25,17 @@ import { Validation } from "../../core/util/Validation";
     styles: [require("to-string!./cms-displays-panel.component.scss")]
 })
 export class CmsDisplaysPanelComponent implements OnInit, AfterViewInit {
-   /**
-     * Filter property which will filter the display list
-     * @property {boolean} isFavoriteFilter
-     * @property {string} searchFilter
-     */
+    /**
+      * Filter property which will filter the display list
+      * @property {boolean} isFavoriteFilter
+      * @property {string} searchFilter
+      */
     private isFavoriteFilter: boolean;
     public searchFilter: string;
     public searchKey: string;
+    private isBackButton: boolean = false;
 
-   
+
     // all boolean states for the template
     viewState = {
         back: false,
@@ -41,12 +44,12 @@ export class CmsDisplaysPanelComponent implements OnInit, AfterViewInit {
     }
 
     private selectedDisplayId: number;
-    
-    constructor(private storageManager: StorageManager, private appConfig: AppConfig) {
+
+    constructor(private storageManager: StorageManager, private appConfig: AppConfig, private route: ActivatedRoute) {
         this.isFavoriteFilter = (this.storageManager.get(CMS_SESSION_STORAGE_ITEM.DisplaysFavoriteFilter) === "true") || false;
         this.searchFilter = this.storageManager.get(CMS_SESSION_STORAGE_ITEM.DisplaysSearchFilter) || "";
         this.searchKey = this.searchFilter;
-     }
+    }
 
     /**
      * On Component initialization, disable back button if no display is selected.
@@ -54,45 +57,55 @@ export class CmsDisplaysPanelComponent implements OnInit, AfterViewInit {
     ngOnInit() {
         // disable back button if no display is selected
         this.viewState.back = this.isDisplaySelected();
-        
-        if(this.isDisplaySelected()){
+
+        if (this.isDisplaySelected()) {
             let display = <Display>JSON.parse(window.sessionStorage.getItem(CMS_SESSION_STORAGE_ITEM.Display));
             this.selectedDisplayId = display.id;
         }
+
+        this.route.params.forEach((params: Params) => {
+            let actionParam = params["action"];
+
+            // Check for change in settings for specific selected wall.
+            if (actionParam === CMSConstants.SELECT_DISPLAY) {
+                this.isBackButton = true;
+            }
+
+        });
     }
 
-   /**
-     * This will register the functionality written inside of this block
-     * once component intialize successfully 
-     * @Hook {void} ngAfterViewInit Ng Life cycle hook
-     */
-    ngAfterViewInit(){
+    /**
+      * This will register the functionality written inside of this block
+      * once component intialize successfully 
+      * @Hook {void} ngAfterViewInit Ng Life cycle hook
+      */
+    ngAfterViewInit() {
         /**
          * Making an Observable to get the string token from 
          * HTML search input control and update the searchFilter by
          * subscribing this Observable
          */
-        let searchInput =  document.getElementById("display-list-search-input");
+        let searchInput = document.getElementById("display-list-search-input");
         Observable.fromEvent(searchInput, "keyup")
-                 .map((e:any) => e.target.value.trim())
-                 .debounceTime(500)
-                 .subscribe(searchString => {
-                    this.searchFilter = searchString;
-                    this.storageManager.set(CMS_SESSION_STORAGE_ITEM.DisplaysSearchFilter, searchString);
-                });
+            .map((e: any) => e.target.value.trim())
+            .debounceTime(500)
+            .subscribe(searchString => {
+                this.searchFilter = searchString;
+                this.storageManager.set(CMS_SESSION_STORAGE_ITEM.DisplaysSearchFilter, searchString);
+            });
 
         /**
          * Making an Observable to prevent favorite filter on frequent clicks 
          * on favorite filter icon.
          * Updating display list by subscribing this Observable.
          */
-        let favoriteIcon =  document.getElementById("display-list-favorite-button");
+        let favoriteIcon = document.getElementById("display-list-favorite-button");
         Observable.fromEvent(favoriteIcon, "click")
-                 .debounceTime(350)
-                 .subscribe(res => {
-                    this.isFavoriteFilter = !this.isFavoriteFilter;
-                    this.storageManager.set(CMS_SESSION_STORAGE_ITEM.DisplaysFavoriteFilter, this.isFavoriteFilter);
-                });
+            .debounceTime(350)
+            .subscribe(res => {
+                this.isFavoriteFilter = !this.isFavoriteFilter;
+                this.storageManager.set(CMS_SESSION_STORAGE_ITEM.DisplaysFavoriteFilter, this.isFavoriteFilter);
+            });
     };
 
     /**
@@ -112,9 +125,8 @@ export class CmsDisplaysPanelComponent implements OnInit, AfterViewInit {
         this.viewState.reload = false;
         this.viewState.list = false;
         window.setTimeout(() => {
-             this.viewState.list = true
-        },0);
-       // window.setImmediate.call(this, () => this.viewState.list = true);
+            this.viewState.list = true
+        }, 0);
     }
 
     /**
@@ -127,14 +139,18 @@ export class CmsDisplaysPanelComponent implements OnInit, AfterViewInit {
     /**
      * Focus on search input box
      */
-    private initializeSearch(e): void{
+    private initializeSearch(e): void {
         let mdsearch = document.getElementById("display-list-search-input");
         let searchInput: NodeListOf<HTMLInputElement>;
-        if(mdsearch){
+        if (mdsearch) {
             searchInput = mdsearch.getElementsByTagName("input");
-            if(searchInput.length){
+            if (searchInput.length) {
                 searchInput[0].focus();
             }
         }
+    }
+
+    private navigateBack() {
+        history.back();
     }
 }

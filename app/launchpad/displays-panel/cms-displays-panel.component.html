@@ -1,5 +1,8 @@
 <div class="page-toolbar">
     <md-toolbar id="displays-panel-toolbar" class="toolbar-theme">
+        <button id="displays-panel-back-button" *ngIf="isBackButton" md-icon-button (click)="navigateBack()">
+            <i class="material-icons">arrow_back</i>
+        </button>
         <span id="displays-panel-back-button-text">{{ 'displayList.connectTo' | translate }}</span>
 
         <span class="fill-remaining-space"></span>

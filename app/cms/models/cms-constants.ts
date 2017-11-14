@@ -18,4 +18,5 @@ export class CMSConstants {
         RECENT_WALL : "auto-connect-to-most-recent-wall"
     };
     static MAXSELECTION = 20;
+    static SELECT_DISPLAY = "select-display";
 }

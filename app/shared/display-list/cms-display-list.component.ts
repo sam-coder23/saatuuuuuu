@@ -130,7 +130,7 @@ export class CmsDisplayListComponent implements OnChanges, OnDestroy {
             let actionParam = params["action"];
 
             // Check for change in settings for specific selected wall.
-            if (actionParam === "selectDisplayForAutoConnect") {
+            if (actionParam === CMSConstants.SELECT_DISPLAY) {
                 this.cmsSettingsService.updateWallConnectionSpecificDisplay(display);
             }
             else {
@@ -170,7 +170,7 @@ export class CmsDisplayListComponent implements OnChanges, OnDestroy {
         this.route.params.forEach((params: Params) => {
             let actionParam = params["action"];
 
-            if (actionParam === "selectDisplayForAutoConnect") {
+            if (actionParam === CMSConstants.SELECT_DISPLAY) {
                 this.mRouter.navigate(["/settings"]);
             }
         });
