@@ -76,7 +76,7 @@ describe("CmsTilesPanelComponent - Test Suite", () => {
     });
 
 
-    it("should have next button and onclick it navigates to display-panel/{:id} route", () => {
+    it("should have next button and onclick it navigates to next route", () => {
         fixture.detectChanges();
 
         let buttonNext: DebugElement = fixture.debugElement.query(By.css("#tiles-panel-next-button"));
@@ -89,6 +89,20 @@ describe("CmsTilesPanelComponent - Test Suite", () => {
 
         expect(spyNavigateByUrl.calls.count()).toEqual(1);
         expect(spyNavigateByUrl.calls.argsFor(0)[0]).toEqual(`display-panel/${component["mDisplayId"]}`);
+    });
+
+    it("should have back button and onclick it navigates to back history", () => {
+        fixture.detectChanges();
+
+        let buttonBack: DebugElement = fixture.debugElement.query(By.css("#tiles-panel-back-button"));
+        expect(buttonBack).toBeDefined();
+        
+        let spyWindowHistoryBack = spyOn(window.history, "back").and.returnValue(null);
+        
+        buttonBack.triggerEventHandler("click", null);
+
+        expect(spyWindowHistoryBack).toHaveBeenCalled();
+        expect(spyWindowHistoryBack.calls.count()).toEqual(1);
     });
 
     it("should set reload to TRUE on list change", () => {

@@ -111,8 +111,8 @@ describe("CmsSourcesPanelComponent", () => {
                 TranslateService,
                 StorageManager,
                 {
-                  provide: CmsApiService,
-                  useClass: MockCmsApiService
+                    provide: CmsApiService,
+                    useClass: MockCmsApiService
                 },
                 {
                     provide: Router,
@@ -210,10 +210,10 @@ describe("CmsSourcesPanelComponent", () => {
         expect(bottomToolbar.nativeElement.innerText).toBeTruthy(selectedSource);
     });
 
-    it("should have next button and onclick it navigates to displays/{:id}/tiles-panel?sourceCount={:selectedsourceCount} route", () => {
+    it("should have next button and onclick it navigates to next route", () => {
         fixture.detectChanges();
 
-        let buttonNext: DebugElement = fixture.debugElement.query(By.css("#sources-panel-bottom-toolbar button"));
+        let buttonNext: DebugElement = fixture.debugElement.query(By.css("#sources-panel-next-button"));
         expect(buttonNext).toBeTruthy();
 
         let router = fixture.debugElement.injector.get(Router);
@@ -225,7 +225,7 @@ describe("CmsSourcesPanelComponent", () => {
         expect(spyNavigateByUrl.calls.argsFor(0)[0]).toEqual(`/displays/${debugInstance.mDisplayId}/tiles-panel?sourceCount=${cmsSettingService.selectedSources.length}`);
     });
 
-    it("should navigate to displays-panel onclick of navigates back", () => {
+    it("should have back button and onclick should navigate back", () => {
         fixture.detectChanges();
 
         let buttonBack: DebugElement = fixture.debugElement.query(By.css("#sources-panel-back-button"));
@@ -254,6 +254,8 @@ describe("CmsSourcesPanelComponent", () => {
     });
 
     it("should set searchkey as set to session storage", () => {
+        fixture.detectChanges();
+
         let storageManager = fixture.debugElement.injector.get(StorageManager);
         let searchBox = fixture.nativeElement.querySelector("#sources-panel-search-input");
         expect(searchBox).toBeTruthy();
@@ -263,10 +265,13 @@ describe("CmsSourcesPanelComponent", () => {
         fixture.detectChanges();
         searchBox.dispatchEvent(new Event("keyup"));
 
-        setTimeout(() => {
-            expect(component.searchFilter).toBe(searchString);
-            expect(storageManager.get(CMS_SESSION_STORAGE_ITEM.SourcesSearchFilter)).toBe(searchString);
-        }, 500);
+        fixture.detectChanges();
+        fixture.whenStable().then(() => {
+            delay(500).then(() => {
+                expect(component.searchFilter).toBe(searchString);
+                expect(storageManager.get(CMS_SESSION_STORAGE_ITEM.SourcesSearchFilter)).toBe(searchString);
+            });
+        });
     });
 
     it("should have filter button available with ID === sources-panel-favorite-button ", () => {
@@ -278,17 +283,23 @@ describe("CmsSourcesPanelComponent", () => {
         fixture.detectChanges();
         favoriteIcon.dispatchEvent(new Event("click"));
 
-        setTimeout(() => {
-            expect(debugInstance.isFavoriteFilter).toBe(!favState);
-            expect(storageManager.get(CMS_SESSION_STORAGE_ITEM.SourcesFavoriteFilter)).toBe((!favState).toString());
-        }, 500);
+        fixture.detectChanges();
+        fixture.whenStable().then(() => {
+            delay(500).then(() => {
+                expect(debugInstance.isFavoriteFilter).toBe(!favState);
+                expect(storageManager.get(CMS_SESSION_STORAGE_ITEM.SourcesFavoriteFilter)).toBe((!favState).toString());
+            });
+        });
     });
 
     it("should show error message if error comes from Source List", () => {
+        fixture.detectChanges();
         debugInstance.errorMessage = "No tile found to share content.";
         fixture.detectChanges();
-        let errorSpan: DebugElement = fixture.debugElement.query(By.css(".error"));
-        expect(errorSpan).toBeTruthy();
+        fixture.whenStable().then(() => {
+            let errorSpan: DebugElement = fixture.debugElement.query(By.css(".error"));
+            expect(errorSpan).toBeDefined();
+        });
     });
 
     it("should initialize search and search element should have ID === sources-panel-search-input", async(() => {
@@ -304,13 +315,12 @@ describe("CmsSourcesPanelComponent", () => {
         });
     }));
 
-    
     it("should call CmsApiService.putContentsOnDisplay when source is selected", () => {
         fixture.detectChanges();
         component.navigateNext();
         let args = spyPutContentsOnDisplay.calls.mostRecent().args;
-        expect(args[0]).toEqual(debugInstance.displayId);
-        expect(args[1]).toEqual(debugInstance.tilePresets[0].id);
+        expect(args[0]).toEqual(debugInstance.mDisplayId);
+        expect(args[1]).toEqual(debugInstance.tileId);
         expect(args[2].resources).toEqual(debugInstance.cmsSettingService.selectedSources);
     });
 })

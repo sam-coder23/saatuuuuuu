@@ -33,7 +33,9 @@
 </div>
 <div class="page-toolbar bottom">
     <md-toolbar id="sources-panel-bottom-toolbar" class="toolbar-theme">
-        <button id="back-button" md-button md-raised-button (click)="navigateBack()">{{ 'common.back' | translate}}</button>
+        <button id="sources-panel-back-button" md-button md-raised-button (click)="navigateBack()" class="back-button">
+            <md-icon>navigate_before</md-icon>
+        </button>
         <span class="fill-remaining-space"></span>
         <span>
             {{cmsSettingService?.selectedSources?.length}} / {{maxSelection}}
@@ -43,6 +45,8 @@
             {{errorMessage}}
         </span>
         <span class="fill-remaining-space"></span>
-        <button md-button md-raised-button *ngIf="cmsSettingService?.selectedSources?.length > 0" (click)="navigateNext()">{{ 'common.next' | translate}}</button>
+        <button md-button md-raised-button id="sources-panel-next-button" [hidden]="!cmsSettingService?.selectedSources?.length > 0" (click)="navigateNext()" class="next-button">
+             <md-icon>navigate_next</md-icon>
+        </button>
     </md-toolbar>
 </div>

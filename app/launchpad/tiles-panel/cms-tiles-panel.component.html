@@ -23,8 +23,8 @@
 
 <div class="page-toolbar bottom">
     <md-toolbar id="tiles-panel-bottom-toolbar" class="toolbar-theme">
-        <button id="back-button" md-button md-raised-button (click)="navigateBack()">{{ 'common.back' | translate}}</button>
+        <button id="tiles-panel-back-button" md-button md-raised-button (click)="navigateBack()" class="back-button"><md-icon>navigate_before</md-icon></button>
         <span class="fill-remaining-space"></span>
-        <button id="tiles-panel-next-button" md-button md-raised-button (click)="navigateNext()">{{ 'common.next' | translate}}</button>
+        <button id="tiles-panel-next-button" md-button md-raised-button (click)="navigateNext()" class="next-button"><md-icon>navigate_next</md-icon></button>
     </md-toolbar>
 </div>

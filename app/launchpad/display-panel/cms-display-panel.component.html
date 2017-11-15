@@ -28,11 +28,11 @@
     [fitHeight]="fitHeightCount"></cms-mini-display>
 
 <md-toolbar id="bottom-toolbar" class="page-toolbar toolbar-theme bottom">
-    <button md-button md-raised-button (click)="navigateBack()">{{ 'common.back' | translate}}</button>
+    <button md-button md-raised-button id="display-panel-back-button" (click)="navigateBack()" class="back-button"><md-icon>navigate_before</md-icon></button>
 
     <span class="fill-remaining-space"></span>
 
-    <button md-button md-raised-button (click)="logoff()">{{ 'common.next' | translate}}</button>
+    <button md-button md-raised-button id="display-panel-next-button" (click)="logoff()" class="next-button"><md-icon>navigate_next</md-icon></button>
 </md-toolbar>
 
 <nd-popup id="display-panel-clear-wall-popup" *ngIf="showClearWallPopup" class="confirm-popup" title="{{'displayPanel.clearWallConfirmationPopupTitle' | translate }}"

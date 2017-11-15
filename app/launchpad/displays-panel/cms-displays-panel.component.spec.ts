@@ -116,7 +116,7 @@ describe("Component: CmsDisplaysPanelComponent", () => {
 
     it("should call isDisplaySelected: ", async(() => {
         let isDispSelected = cmsDisplaysPanelComponentInstance.isDisplaySelected();
-        expect(isDispSelected).toBe(false);
+        expect(isDispSelected).toBe(true);
     }));
 
     it("should initialize search", async(() => {
@@ -140,7 +140,6 @@ describe("Component: CmsDisplaysPanelComponent", () => {
             delay(500).then(() => {
                 expect(component.searchFilter).toBe(searchString);
                 expect(storageManager.get(CMS_SESSION_STORAGE_ITEM.DisplaysSearchFilter)).toBe(searchString);
-
             });
         });
     });

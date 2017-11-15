@@ -79,4 +79,16 @@ cms-launchpad{
             justify-content: space-evenly !important;
         }
     }
+
+    .next-button,
+    .back-button{
+        color: rgba(0,0,0,.62) !important;
+        background-color: #eeeeee !important; 
+        min-width: 0;
+    }
+
+    .next-button[hidden]{
+        opacity: 0;
+        pointer-events: none;
+    }
 }

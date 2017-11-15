@@ -84,8 +84,6 @@ import { CmsApiService } from "../../cms/api/cms-api.service";
 import { CMS_SESSION_STORAGE_ITEM } from "../../cms/models/cms-session-storage-item";
 import { Subscriber } from "rxjs";
 
-
-
 /**
  * Fake CmsApiService Service with the below stub
  */
@@ -94,8 +92,6 @@ class MockCmsApiServiceStub {
         return Observable.of(null);
     }
 }
-
-
 
 describe("CmsDisplayPanelComponent - Test Suite", () => {
 
@@ -245,7 +241,9 @@ describe("CmsDisplayPanelComponent - Test Suite", () => {
     });
 
 
-    it("should return back to display panel", () => {
+    it("should return back to display panel on long Press", () => {
+        fixture.detectChanges();
+
         let settingsService: CmsSettingsService = injector.get(CmsSettingsService);
         let spy = spyOn(settingsService, "updateIsLongPress");
 
@@ -253,6 +251,33 @@ describe("CmsDisplayPanelComponent - Test Suite", () => {
 
         expect(spy.calls.count()).toEqual(1);
         expect(spy.calls.argsFor(0)[0]).toEqual(false);
+    });
+
+
+    it("should have back button and onclick should navigate back", () => {
+        fixture.detectChanges();
+
+        let buttonBack: DebugElement = fixture.debugElement.query(By.css("#display-panel-back-button"));
+        expect(buttonBack).toBeTruthy();
+
+        let router = fixture.debugElement.injector.get(Router);
+        let spyWindowHistoryBack = spyOn(window.history, "back").and.returnValue(null);
+
+        buttonBack.triggerEventHandler("click", null);
+
+        expect(spyWindowHistoryBack).toHaveBeenCalled();
+        expect(spyWindowHistoryBack.calls.count()).toEqual(1);
+    });
+
+    it("should have next button and onclick should display a popup for logoff", () => {
+        fixture.detectChanges();
+
+        let buttonNext: DebugElement = fixture.debugElement.query(By.css("#display-panel-next-button"));
+        expect(buttonNext).toBeTruthy();
+
+        buttonNext.triggerEventHandler("click", null);
+
+        expect(component["showClearWallPopup"]).toBeTruthy();
     });
 
 
@@ -271,14 +296,9 @@ describe("CmsDisplayPanelComponent - Test Suite", () => {
         expect(spy.calls.argsFor(0)[2]).toEqual({});
     }));
 
-    it("should display a popup on logoff", () => {
-        // display a popup on logoff
-        component.logoff();
-        expect(component["showClearWallPopup"]).toBeTruthy();
-    });
 
     it("should clear selected sources when clear wall is resolved", fakeAsync(() => {
-          let settingsService: CmsSettingsService = injector.get(CmsSettingsService);
+        let settingsService: CmsSettingsService = injector.get(CmsSettingsService);
         settingsService.selectedSources = [, , ,];
 
         fixture.detectChanges();
