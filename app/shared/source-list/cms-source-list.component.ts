@@ -57,8 +57,6 @@ export class CmsSourceListComponent implements OnInit, OnChanges, OnDestroy {
     // id of selected display
     @Input() displayId: number;
 
-    @Input() tilePresets: ITilePreset[];
-
     // list of sources to be created as card list
     public mSources: Source[];
 
@@ -120,7 +118,6 @@ export class CmsSourceListComponent implements OnInit, OnChanges, OnDestroy {
         this.mScroller.dataCount = 0;
         this.mScroller.max = null;
         this.mScroller.count = this.cmsSettingsService.mUserSettings.pageSize || 20;
-        this.mScrollTarget = this.domManager.FirstChild();
         this.mScrollTarget = this.domManager.getElementById("source-list-card-container");
         this.getSources();
 
@@ -197,23 +194,14 @@ export class CmsSourceListComponent implements OnInit, OnChanges, OnDestroy {
      */
 
     public updateSelection(selected: boolean, source: Source) {
-        let tileId: number;
         if (source.selected) {
             let index = this.cmsSettingsService.selectedSources.findIndex(resource => resource.id === source.id);
             this.cmsSettingsService.selectedSources.splice(index, 1);
-            tileId = this.tileIdForSourceCount(this.cmsSettingsService.selectedSources.length);
             source.selected = false;
             this.errorEmitter.emit("");
         } else if (this.cmsSettingsService.selectedSources.length < CMSConstants.MAXSELECTION) {
             this.cmsSettingsService.selectedSources.push(source);
             source.selected = true;
-            tileId = this.tileIdForSourceCount(this.cmsSettingsService.selectedSources.length);
-            if (tileId === 0) {
-                this.translateService.get("sourceList.tileLayoutNotAvailable").subscribe((value) => {
-                    this.errorEmitter.emit(value);
-                });
-                return;
-            }
         } else {
             this.translateService.get("sourceList.maxSelection", { value: CMSConstants.MAXSELECTION }).subscribe((value) => {
                 this.errorEmitter.emit(value);
@@ -254,13 +242,6 @@ export class CmsSourceListComponent implements OnInit, OnChanges, OnDestroy {
 
         // send change event to sources panel to show refresh button
         this.changeEmitter.emit();
-    }
-
-    /**
-     * @param sourceCount 
-     */
-    private tileIdForSourceCount(sourceCount: number): number {
-        return TilePresetManager.GetTileId(this.tilePresets, sourceCount, this.displayId);
     }
 
     /**

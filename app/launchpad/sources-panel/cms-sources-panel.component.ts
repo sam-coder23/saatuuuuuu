@@ -18,6 +18,7 @@ import { ITilePreset } from "../../cms/models/cms-tile-preset";
 import { CmsApiService } from "../../cms/api/cms-api.service";
 import { CmsSettingsService } from "../settings/cms-settings.service";
 import { CMSConstants } from "../../cms/models/cms-constants";
+import { Source } from "../../cms/models/cms-source";
 
 /**
  * This is a panel component that defines the layout of a page which includes toolbar and source list.
@@ -29,7 +30,6 @@ import { CMSConstants } from "../../cms/models/cms-constants";
     styles: [require("to-string!./cms-sources-panel.component.scss")]
 })
 export class CmsSourcesPanelComponent implements OnInit {
-    private tilePresets: ITilePreset[];
     private mCmsServerApi: CmsApiService;
     /**
       * Filter property which will filter the source list
@@ -52,26 +52,21 @@ export class CmsSourcesPanelComponent implements OnInit {
     // the selected display id
     private mDisplayId: number;
 
-    //Define domManager variable of DomaManager type to handle dom related stuff
-    private domManager: DomManager;
-
     private panelTitle: string;
 
-    private tileId: number;
     private maxSelection = CMSConstants.MAXSELECTION;
+    private errorMessage: string;
 
     /**
      * The constructor initializes various dependencies.
      */
-    constructor(aRoute: ActivatedRoute, el: ElementRef, private appConfig: AppConfig, private storageManager: StorageManager,
+    constructor(aRoute: ActivatedRoute, private appConfig: AppConfig, private storageManager: StorageManager,
         private router: Router, private cmsSettingService: CmsSettingsService, private translate: TranslateService, private aCmsServerApi: CmsApiService) {
         this.isFavoriteFilter = (this.storageManager.get(CMS_SESSION_STORAGE_ITEM.SourcesFavoriteFilter) === "true") || false;
         this.searchFilter = this.storageManager.get(CMS_SESSION_STORAGE_ITEM.SourcesSearchFilter) || "";
         this.searchKey = this.searchFilter;
         this.mRoute = aRoute;
-        this.domManager = new DomManager(el);
         this.mCmsServerApi = aCmsServerApi;
-        this.loadTilers();
     }
 
     /**
@@ -159,22 +154,37 @@ export class CmsSourcesPanelComponent implements OnInit {
      * navigateNext
      */
     public navigateNext(): void {
-        let url = `/displays/${this.mDisplayId}/tiles-panel?sourceCount=${this.cmsSettingService.selectedSources.length}`;
         this.updateDisplayWall();
-        this.router.navigateByUrl(url);
     }
 
     private updateDisplayWall() {
+        let selectedSourcesLength = this.cmsSettingService.selectedSources.length;
+        let resources = new Array(selectedSourcesLength);
+        // Clone sources and delete selected property; API service rejects extra properties;
+        for (let resourceIndex = 0; resourceIndex < resources.length; resourceIndex++) {
+            resources[resourceIndex] = new Source(this.cmsSettingService.selectedSources[resourceIndex]);
+            delete resources[resourceIndex].selected;
+        }
         let requestPayload = {
-            "resources": [...this.cmsSettingService.selectedSources]
+            "resources": resources
         };
-        requestPayload.resources.forEach(resource => {
-            resource.selected = undefined;
-        });
-        this.tileId = TilePresetManager.GetTileId(this.tilePresets, this.cmsSettingService.selectedSources.length, this.mDisplayId);
-        this.mCmsServerApi.putContentsOnDisplay(this.mDisplayId, this.tileId, requestPayload).subscribe(response => {
-        }, error => {
-            console.error(error);
+
+        this.mCmsServerApi.getTilers().subscribe((tilers) => {
+            let tileId = TilePresetManager.GetTileId(tilers, selectedSourcesLength, this.mDisplayId);
+
+            if (tileId === 0) {
+                this.setErrorMessage("sourceList.tileLayoutNotAvailable");
+            } else {
+                this.mCmsServerApi.putContentsOnDisplay(this.mDisplayId, tileId, requestPayload).subscribe(response => {
+                    let url = `/displays/${this.mDisplayId}/tiles-panel?sourceCount=${selectedSourcesLength}`;
+                    this.router.navigateByUrl(url);
+                }, error => {
+                    this.appConfig.error(error);
+                });
+            }
+        }, (error) => {
+            this.appConfig.error(error);
+            this.setErrorMessage("sourceList.tileLayoutNotAvailable");
         });
     }
 
@@ -185,13 +195,13 @@ export class CmsSourcesPanelComponent implements OnInit {
         this.router.navigateByUrl(`/displays-panel`);
     }
 
-    public loadTilers() {
-        this.mCmsServerApi.getTilers().subscribe((tilers) => {
-            this.tilePresets = tilers.sort((a, b) => {
-                return a.noOfTiles - b.noOfTiles;
-            });
-        }, (error) => {
-            console.log(error);
+    /**
+     * Sets translated error message
+     * @param messageKey : key for translation
+     */
+    private setErrorMessage(messageKey: string): void {
+        this.translate.get(messageKey).subscribe((value) => {
+            this.errorMessage = value;
         });
     }
 }

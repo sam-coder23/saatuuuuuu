@@ -128,13 +128,13 @@ class MockCmsApiService {
         return Observable.of(sources);
     }
 
-    loadContentOnTile(){
+    loadContentOnTile() {
 
     }
 }
 
 class MockCmsSettingsService {
-    mUserSettings: IUserProfileSettings = {
+    public mUserSettings: IUserProfileSettings = {
         "language": "en",
         "wallConnection": {
             "startUpAction": "show-available-walls-list",
@@ -151,7 +151,9 @@ class MockCmsSettingsService {
         },
         "logOffTime": 0,
         "pageSize": 50
-    }
+    };
+
+    public selectedSources: Source[] = [];
 }
 
 
@@ -166,7 +168,7 @@ describe("CmsSourceListComponent", () => {
     let debugInstance, nativeElement;
     let sourceAvail: String;
 
-    let spyPutContentsOnDisplay: jasmine.Spy, spyMarkObjectAsFavorite, spyMarkObjectAsUnfavorite;
+    let spyMarkObjectAsFavorite, spyMarkObjectAsUnfavorite;
     beforeEach(async(() => {
         TestBed.configureTestingModule({
             declarations: [CmsSourceListComponent],
@@ -214,7 +216,6 @@ describe("CmsSourceListComponent", () => {
             nativeElement = fixture.nativeElement;
             debugInstance = fixture.debugElement.componentInstance;
             component.displayId = mDisplay.id;
-            component.tilePresets = TilePresets;
 
             cmsSettingsService = fixture.debugElement.injector.get(CmsSettingsService);
 
@@ -224,17 +225,11 @@ describe("CmsSourceListComponent", () => {
 
             spyMarkObjectAsFavorite = spyOn(cmsFavoriteService, "markObjectAsFavorite").and.returnValue(Observable.of(null));
             spyMarkObjectAsUnfavorite = spyOn(cmsFavoriteService, "markObjectAsUnfavorite").and.returnValue(Observable.of(null));
-           
+
             // translateService.setDefaultLang("en");
         });
     }));
 
-    // beforeEach(inject([TranslateService], (trans: TranslateService) => {
-    //     trans.setDefaultLang("en");
-    //     trans.get("sourceList").subscribe((res: any) => {
-    //         i18n = res;
-    //     });
-    // }))
 
     it("component should be defined and new data should be populated on Changes and listen 'Source Updated' event", async(() => {
         expect(component).toBeDefined();
@@ -274,7 +269,6 @@ describe("CmsSourceListComponent", () => {
         let container = document.getElementById("source-list-card-container");
         let sourceCollection = fixture.nativeElement.querySelectorAll("cms-card");
         expect(sourceCollection.length).toEqual(3);
-        expect(container.classList).toContain("bottom-up");
     }));
 
     it("should not render list and apply class when there are no sources on Init", async(() => {
@@ -298,16 +292,16 @@ describe("CmsSourceListComponent", () => {
         expect(render).not.toBeDefined();
     });
 
-    it("should return the undefined when there is no display to render", ()=>{
+    it("should return the undefined when there is no display to render", () => {
         debugInstance.cmsSettingsService.selectedSources = [];
         debugInstance.cmsSettingsService.selectedSources.push(sources[0]);
-        
+
         let render = debugInstance.renderer(sources[0]);
         expect(render.selected).toBeTruthy();
         expect(render).toEqual(sources[0]);
     });
 
-    it("should return the updated display list for selected source", ()=>{
+    it("should return the updated display list for selected source", () => {
         debugInstance.cmsSettingsService.selectedSources = [];
         debugInstance.cmsSettingsService.selectedSources.push(sources[0]);
         let render = debugInstance.renderer(sources[0]);
@@ -315,7 +309,7 @@ describe("CmsSourceListComponent", () => {
         expect(render).toEqual(sources[0])
     })
 
-    it("should only add the selected sources to select source list", ()=>{
+    it("should only add the selected sources to select source list", () => {
         component.displayId = mDisplay.id;
         debugInstance.mSources = [];
         debugInstance.selectedOnly = true;
@@ -323,12 +317,6 @@ describe("CmsSourceListComponent", () => {
         debugInstance.cmsSettingsService.selectedSources.push(sources[0]);
         debugInstance.getSources();
         expect(debugInstance.mSources.length).toEqual(1);
-    });
-
-    it("should return 0 if there are no sources or tile Id for a valid source", () => {
-        expect(debugInstance.tileIdForSourceCount(0)).toEqual(0);
-        debugInstance.tilePresets = [];
-        expect(debugInstance.tileIdForSourceCount(1)).toEqual(0);
     });
 
     it("should not return anything if the max scroll is not reached", () => {
@@ -366,16 +354,6 @@ describe("CmsSourceListComponent", () => {
         expect(args[0]).toEqual(sources[1].id);
         expect(args[1]).toEqual(sources[1].type);
         expect(args[2]).toBeUndefined();
-    });
-
-
-    it("should call CmsApiService.putContentsOnDisplay when source is selected", () => {
-        fixture.detectChanges();
-        component.updateSelection(true, sources[0]);
-        let args = spyPutContentsOnDisplay.calls.mostRecent().args;
-        expect(args[0]).toEqual(mDisplay.id);
-        expect(args[1]).toEqual(component.tilePresets[0].id);
-        expect(args[2].resources).toEqual(cmsSettingsService.selectedSources);
     });
 
 })
