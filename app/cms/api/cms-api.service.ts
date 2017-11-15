@@ -472,6 +472,11 @@ export class CmsApiService {
                 // send event to display panel
                 CmsEventEmitterService.get(CMS_EVENTS.Display).emit(eventObject);
             }
+            else if (verb === "deleted") {
+                this.appConfig.log("CmsApiService: handleDisplaysEvent:: delete a display from the list");
+                // send event to display list
+                CmsEventEmitterService.get(CMS_EVENTS.DisplayList).emit(eventObject);
+            }
         }
 
         // match the uri as "/displays/{id}"

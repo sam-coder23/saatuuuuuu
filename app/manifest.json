@@ -1,10 +1,10 @@
 {
- "name": "Launch Pad",
+ "name": "TFN Collaboration Wall Manager",
  "display": "fullscreen",
  "start_url": "index.html",
  "prefer_related_applications": false,
  "related_applications": [],
- "short_name": "Launch Pad",
+ "short_name": "TFN Collaboration Wall Manager",
  "icons": [
   {
    "src": "icon-192x192.png",

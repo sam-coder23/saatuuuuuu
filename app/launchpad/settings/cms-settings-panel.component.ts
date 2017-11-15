@@ -267,7 +267,8 @@ export class CmsSettingsPanelComponent implements OnInit {
      * This method navigate to displays list while click on "auto connect on specific display wall" button
      */
     private goToSelectDisplayForAutoConnect(event) {
-        this.router.navigate(["/displays-panel", { action: CMSConstants.SELECT_DISPLAY }]);
+        // skipping below URI for browser history 
+        this.router.navigate(["/displays-panel", { action: CMSConstants.SELECT_DISPLAY }], { skipLocationChange: true });
     }
 
     /**
