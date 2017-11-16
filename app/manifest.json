@@ -1,13 +1,13 @@
 {
- "name": "TFN Collaboration Wall Manager",
+ "name": "Collaboration Wall Manager",
  "display": "fullscreen",
  "start_url": "index.html",
  "prefer_related_applications": false,
  "related_applications": [],
- "short_name": "TFN Collaboration Wall Manager",
+ "short_name": "Collaboration Wall Manager",
  "icons": [
   {
-   "src": "icon-192x192.png",
+   "src": "icon_barco.png",
    "sizes": "192x192",
    "type": "image/png"
   }

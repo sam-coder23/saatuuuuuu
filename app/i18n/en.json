@@ -1,6 +1,6 @@
 {
     "login": {
-        "welcome": "TFN Collaboration Wall Manager",
+        "welcome": "Collaboration Wall Manager",
         "username": "User name",
         "password": "Password",
         "button": "Login",
@@ -83,7 +83,7 @@
     },
     "about": {
         "daysRemaining": "{{value}} days left for evaluation.",
-        "about": "About CMS Launch Pad - CR",
+        "about": "About",
         "version": "Version:",
         "licensed": "Licensed to:",
         "project": "Project name:",

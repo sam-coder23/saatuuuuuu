@@ -119,3 +119,15 @@
     position: relative;
     padding: 1% 0;
 }
+.app-logo{
+    width: 60px;
+    height: 40px;
+    position: absolute;
+    z-index: 1;
+    right: 30px;
+    bottom: 5px;
+
+    img{
+        width: 100%;
+    }
+}

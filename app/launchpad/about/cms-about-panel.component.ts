@@ -37,7 +37,9 @@ export class CmsAboutPanelComponent implements OnInit {
     };
     private copyRightText: string;
 
-    constructor(private cmsServerApi: CmsApiService, private location:Location, private translate: TranslateService,  private appConfig: AppConfig) {
+    constructor(private cmsServerApi: CmsApiService, 
+        private translate: TranslateService,  
+        private appConfig: AppConfig) {
     }
 
      public ngOnInit() { 
@@ -90,7 +92,7 @@ export class CmsAboutPanelComponent implements OnInit {
       * @method goBack
       */    
       public goBack(){
-         this.location.back();
+         window.history.back();
       }
 
       /**

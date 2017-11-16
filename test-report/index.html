@@ -93,20 +93,17 @@ body { background-color: #eeeeee; padding: 0; margin: 5px; overflow-y: scroll; }
 </style>
 </head>
 
-<body id="HTMLReporter" class="html-reporter showDetails">
-<h1>Tested in Chrome 61.0.3163 (Windows 10 0.0.0) on Fri Oct 27 2017</h1>
+<body id="HTMLReporter" class="html-reporter">
+<h1>Tested in Chrome 62.0.3202 (Windows 7 0.0.0) on Wed Nov 15 2017</h1>
 
 <div class="alert">
 
 
-<!-- <span class="failingAlert bar">Failed 6 specs</span> -->
-<span class="failingAlert bar"><span class="fold-buttons"><a href="#" onclick="fold();">Fold</a> | 
-  <a href="#" onclick="unfold();">Unfold</a></span>130 specs, 6 failed, 0 pending</span>
-<span class="resultsMenu bar">
-<a class="summaryMenuItem" onclick="showSummary();" href="#">Spec List<a>|<a 
-   class="detailsMenuItem" onclick="showFailures();" href="#">Failures</a>
-</span>
 
+  
+  <span class="passingAlert bar"><span class="fold-buttons"><a href="#" onclick="fold();">Fold</a> | 
+  <a href="#" onclick="unfold();">Unfold</a></span>171 specs, 0 failed, 0 pending</span>
+  
 
 
 </div>
@@ -116,6 +113,39 @@ body { background-color: #eeeeee; padding: 0; margin: 5px; overflow-y: scroll; }
   
   
   
+  
+    <div class="suite passed">
+      <span class="description">Service: APIRequest</span>
+    
+      <div class="specSummary passed">
+      <span class="description">Service should be defined</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">Should return specific url as per request - GetURL()</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">Should be able to make POST request</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">Should be able to make GET request</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">Should be able to make PUT request</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">Should be able to make DELETE request</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">Should be able to handle 401 error</span>
+      </div>
+    
+    </div>
   
     <div class="suite passed">
       <span class="description">Service: StorageManager</span>
@@ -138,6 +168,41 @@ body { background-color: #eeeeee; padding: 0; margin: 5px; overflow-y: scroll; }
     
       <div class="specSummary passed">
       <span class="description">Service should be able to clear storage data</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">CMSConstants</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should expect the static values not to be changed</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">display Model - </span>
+    
+      <div class="specSummary passed">
+      <span class="description">should set and get display Model attributes </span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should set and get null display Model attributes </span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should check for undefined display model </span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">CMS_SESSION_STORAGE_ITEM</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should expect the Storage Items Constants values not to be changed</span>
       </div>
     
     </div>
@@ -197,6 +262,99 @@ body { background-color: #eeeeee; padding: 0; margin: 5px; overflow-y: scroll; }
     </div>
   
     <div class="suite passed">
+      <span class="description">Cms Languages: </span>
+    
+      <div class="specSummary passed">
+      <span class="description">languages should be defined</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">language keys should be defined</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">language regExp pattern should be defined</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">Cms About Panel Component</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should be defined</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should assign value to system info on ngOnInit() call</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should show copyright year in copyright text </span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should show about information</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should have navigate back button and should call goBack() on click of arrow</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should have remaining days in License status</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">CmsLaunchpadComponent</span>
+    
+      <div class="specSummary passed">
+      <span class="description">Launchpad component should be a defined</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should add icons to the registry</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">Check prevent browser defaults</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should add all supported languages to the app</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should route to login page if user session is empty</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should reconnect session with server and have settings data into session and
+        apply user selected language and test auto logout functionality
+        and application events</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should set user last action time</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should add log off time observable on click</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should add log off time observable on scroll</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should add log off time observable on input</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
       <span class="description">CmsDisplayPanelComponent - Test Suite</span>
     
       <div class="specSummary passed">
@@ -212,10 +370,6 @@ body { background-color: #eeeeee; padding: 0; margin: 5px; overflow-y: scroll; }
       </div>
     
       <div class="specSummary passed">
-      <span class="description">should hide mini display if no display info is available</span>
-      </div>
-    
-      <div class="specSummary passed">
       <span class="description">should unsubscribe subscriptions on OnDestroy</span>
       </div>
     
@@ -228,15 +382,15 @@ body { background-color: #eeeeee; padding: 0; margin: 5px; overflow-y: scroll; }
       </div>
     
       <div class="specSummary passed">
-      <span class="description">should update display name on event</span>
-      </div>
-    
-      <div class="specSummary passed">
       <span class="description">should clear display wall</span>
       </div>
     
       <div class="specSummary passed">
-      <span class="description">should clear clipboard selected sources when clear wall is resolved</span>
+      <span class="description">should display a popup on logoff</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should clear selected sources when clear wall is resolved</span>
       </div>
     
     </div>
@@ -286,11 +440,53 @@ body { background-color: #eeeeee; padding: 0; margin: 5px; overflow-y: scroll; }
       </div>
     
       <div class="specSummary passed">
-      <span class="description">Logout</span>
+      <span class="description">User Login: Failure</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">API-Response Model: </span>
+    
+      <div class="specSummary passed">
+      <span class="description">should be defined</span>
       </div>
     
       <div class="specSummary passed">
-      <span class="description">User Login: Failure</span>
+      <span class="description">should get Status, ErrorMessage and Response</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should return empty object from asSerializable method</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should return empty object from toJSON method</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">User Model: </span>
+    
+      <div class="specSummary passed">
+      <span class="description">should be defined</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should set and get LoggedIn method</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should get UserName and Password</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should return expected object from asSerializable method</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should return expected object from toJSON method</span>
       </div>
     
     </div>
@@ -339,6 +535,10 @@ body { background-color: #eeeeee; padding: 0; margin: 5px; overflow-y: scroll; }
       </div>
     
       <div class="specSummary passed">
+      <span class="description">should update updateUserSettingsByAction on radio auto-connect-to-specific-wall-select-button change event </span>
+      </div>
+    
+      <div class="specSummary passed">
       <span class="description">should decrease font size on font-decrease-button click and update value to font-size-input</span>
       </div>
     
@@ -354,375 +554,54 @@ body { background-color: #eeeeee; padding: 0; margin: 5px; overflow-y: scroll; }
       <span class="description">should increase Transparency on transparency-increase-button click and update value to transparency-input </span>
       </div>
     
-    </div>
-  
-    <div class="suite failed">
-      <span class="description">CmsSourcesPanelComponent</span>
-    
       <div class="specSummary passed">
-      <span class="description">component should be a defined and initialized with default values and elements</span>
+      <span class="description">should display defalut page and update selected page </span>
       </div>
     
       <div class="specSummary passed">
-      <span class="description">should have max count === 10, also panel title is same as defined pattern and display ID Initialized</span>
+      <span class="description">should updateStteingByAction on toggle of display-sourcename-labels-slider-button </span>
       </div>
     
       <div class="specSummary passed">
-      <span class="description">should show bottom toolbar in case selected source is &gt; 0</span>
+      <span class="description">should updateStteingByAction on toggle of use-multiplelines-sourcename-labels-slider-button </span>
       </div>
     
       <div class="specSummary passed">
-      <span class="description">should show selected source count/maxsource in bottom toolbar</span>
+      <span class="description">should update selected font color </span>
       </div>
     
       <div class="specSummary passed">
-      <span class="description">should have next button and onclick it navigates to displays/{:id}/tiles-panel?sourceCount={:selectedsourceCount} route</span>
-      </div>
-    
-      <div class="specSummary passed">
-      <span class="description">should navigate to displays-panel onclick of navigates back</span>
-      </div>
-    
-      <div class="specSummary passed">
-      <span class="description">should set reload to TRUE on list change</span>
-      </div>
-    
-      <div class="specSummary passed">
-      <span class="description">should set reload and list to FALSE on reload list</span>
-      </div>
-    
-      <div class="specSummary passed">
-      <span class="description">should set searchkey as set to session storage</span>
-      </div>
-    
-      <div class="specSummary failed">
-      <span class="description">should have filter button available with ID === sources-panel-favorite-button </span>
-      </div>
-    
-      <div class="specSummary failed">
-      <span class="description">should show error message if error comes from Source List</span>
-      </div>
-    
-      <div class="specSummary passed">
-      <span class="description">should initialize search and search element should have ID === sources-panel-search-input</span>
+      <span class="description">should update selected background color </span>
       </div>
     
     </div>
   
     <div class="suite passed">
-      <span class="description">CmsTilesPanelComponent - Test Suite</span>
+      <span class="description">Service: CmsSettingsService</span>
     
       <div class="specSummary passed">
-      <span class="description">Component should be instantiated</span>
+      <span class="description">should be defined</span>
       </div>
     
       <div class="specSummary passed">
-      <span class="description">should have next button and onclick it navigates to display-panel/{:id} route</span>
-      </div>
-    
-      <div class="specSummary passed">
-      <span class="description">should set reload to TRUE on list change</span>
-      </div>
-    
-      <div class="specSummary passed">
-      <span class="description">should set reload and list to FALSE on reload list</span>
+      <span class="description">should navigate to source panel for only one display wall</span>
       </div>
     
     </div>
   
     <div class="suite passed">
-      <span class="description">CmsCardComponent</span>
+      <span class="description">Component CmsSettingsLanguagePanelComponent</span>
     
       <div class="specSummary passed">
-      <span class="description">Cms card should be defined</span>
-      </div>
-    
-      <div class="specSummary passed">
-      <span class="description">Should emit event on cms card selection</span>
+      <span class="description">should be a defined component: </span>
       </div>
     
       <div class="specSummary passed">
-      <span class="description">Should emit event on cms card favorite mark</span>
+      <span class="description">should check route params and mCmsLanguages : </span>
       </div>
     
       <div class="specSummary passed">
-      <span class="description">Should append date in snpashot path if 'refreshSnapshot' is true</span>
-      </div>
-    
-      <div class="specSummary passed">
-      <span class="description">Should not append date in snpashot path if 'refreshSnapshot' is false</span>
-      </div>
-    
-    </div>
-  
-    <div class="suite passed">
-      <span class="description">CmsClipboardComponent</span>
-    
-      <div class="specSummary passed">
-      <span class="description">clipboard component should be a defined</span>
-      </div>
-    
-      <div class="specSummary passed">
-      <span class="description">grid component should be a defined</span>
-      </div>
-    
-      <div class="specSummary passed">
-      <span class="description">Check clipboard is enabled and clipboard display status</span>
-      </div>
-    
-      <div class="specSummary passed">
-      <span class="description">Init clipboard and grid component and load clipboard with large status</span>
-      </div>
-    
-      <div class="specSummary passed">
-      <span class="description">Check mouse event functionality</span>
-      </div>
-    
-      <div class="specSummary passed">
-      <span class="description">Check reposition clipboard functionality</span>
-      </div>
-    
-      <div class="specSummary passed">
-      <span class="description">Load clipboard with icon status</span>
-      </div>
-    
-      <div class="specSummary passed">
-      <span class="description">Init clipboard and grid component without mini tiles</span>
-      </div>
-    
-      <div class="specSummary passed">
-      <span class="description">Init clipboard and grid component without mini display contents</span>
-      </div>
-    
-    </div>
-  
-    <div class="suite passed">
-      <span class="description">Service: CmsFavoriteService</span>
-    
-      <div class="specSummary passed">
-      <span class="description">Service should be defined</span>
-      </div>
-    
-      <div class="specSummary passed">
-      <span class="description">display: Service should mark favorite</span>
-      </div>
-    
-      <div class="specSummary passed">
-      <span class="description">display: Service should unmark favorite display</span>
-      </div>
-    
-      <div class="specSummary passed">
-      <span class="description">source: Service should mark favorite</span>
-      </div>
-    
-      <div class="specSummary passed">
-      <span class="description">Source: Service should unmark favorite display</span>
-      </div>
-    
-    </div>
-  
-    <div class="suite failed">
-      <span class="description">Service: CmsVirtualScrollService</span>
-    
-      <div class="specSummary passed">
-      <span class="description">service should be able to attach scroll event listener and able to call scroll function</span>
-      </div>
-    
-      <div class="specSummary failed">
-      <span class="description">service should be able to attach scroll event listener and able to call scroll function</span>
-      </div>
-    
-      <div class="specSummary passed">
-      <span class="description">service should be able to remove attached scroll event listener</span>
-      </div>
-    
-    </div>
-  
-    <div class="suite passed">
-      <span class="description">CmsDisplayListComponent</span>
-    
-      <div class="specSummary passed">
-      <span class="description">component should be defined</span>
-      </div>
-    
-      <div class="specSummary passed">
-      <span class="description">should remove scroll event on Destroy LifeCycle Hook</span>
-      </div>
-    
-      <div class="specSummary passed">
-      <span class="description">should not let user mark favorite or unfavorite on a disabled source</span>
-      </div>
-    
-      <div class="specSummary passed">
-      <span class="description">should call CmsFavoriteService.markObjectAsFavorite when the selected source is unfavorite</span>
-      </div>
-    
-      <div class="specSummary passed">
-      <span class="description">should call CmsFavoriteService.markObjectAsUnFavorite when the selected source is favorite</span>
-      </div>
-    
-      <div class="specSummary passed">
-      <span class="description">should check that displays are getting loaded on the OnChange, adds and remove the scroll service</span>
-      </div>
-    
-      <div class="specSummary passed">
-      <span class="description">should render the list on UI based on displays from API</span>
-      </div>
-    
-      <div class="specSummary passed">
-      <span class="description">should not render the list on UI, if there are  no displays returned by the API</span>
-      </div>
-    
-      <div class="specSummary passed">
-      <span class="description">should route onConfimation of pop up</span>
-      </div>
-    
-      <div class="specSummary passed">
-      <span class="description">should connect the display to the wall, and redirect to the sources list</span>
-      </div>
-    
-      <div class="specSummary passed">
-      <span class="description">should not return any more displays if there are still displays to scroll to</span>
-      </div>
-    
-      <div class="specSummary passed">
-      <span class="description">should add displays on scroll to the displays list</span>
-      </div>
-    
-      <div class="specSummary passed">
-      <span class="description">should show a dialog popup whenever there are no displays turning up from API</span>
-      </div>
-    
-    </div>
-  
-    <div class="suite passed">
-      <span class="description">CmsGridComponent</span>
-    
-      <div class="specSummary passed">
-      <span class="description">should be a defined component</span>
-      </div>
-    
-      <div class="specSummary passed">
-      <span class="description">should execute ngOnInit as required</span>
-      </div>
-    
-      <div class="specSummary passed">
-      <span class="description">should not call unLoadContent when content is null</span>
-      </div>
-    
-      <div class="specSummary passed">
-      <span class="description">should call unLoadContent when content and display object is not null</span>
-      </div>
-    
-      <div class="specSummary passed">
-      <span class="description">should not call contentClickHandler on click of contentClickWrapper</span>
-      </div>
-    
-      <div class="specSummary passed">
-      <span class="description">should call contentClickHandler on click of contentClickWrapper</span>
-      </div>
-    
-      <div class="specSummary passed">
-      <span class="description">should not call contentClickHandler</span>
-      </div>
-    
-      <div class="specSummary passed">
-      <span class="description">should call contentClickHandler</span>
-      </div>
-    
-    </div>
-  
-    <div class="suite failed">
-      <span class="description">CmsSourceListComponent</span>
-    
-      <div class="specSummary passed">
-      <span class="description">component should be defined and new data should be populated on Changes and listen 'Source Updated' event</span>
-      </div>
-    
-      <div class="specSummary passed">
-      <span class="description">should not render list and apply class when there are no sources on Init</span>
-      </div>
-    
-      <div class="specSummary passed">
-      <span class="description">should return the source as selected when a undisabled source is clicked</span>
-      </div>
-    
-      <div class="specSummary passed">
-      <span class="description">should return the undefined when there is no display to render</span>
-      </div>
-    
-      <div class="specSummary passed">
-      <span class="description">should return the updated display list for selected source</span>
-      </div>
-    
-      <div class="specSummary passed">
-      <span class="description">should only add the clipboard selected sources to select source list</span>
-      </div>
-    
-      <div class="specSummary failed">
-      <span class="description">should return 0 if there are no sources or tile Id for a valid source</span>
-      </div>
-    
-      <div class="specSummary passed">
-      <span class="description">should not return anything if the max scroll is not reached</span>
-      </div>
-    
-      <div class="specSummary passed">
-      <span class="description">should not let user mark favorite or unfavorite on a disabled source</span>
-      </div>
-    
-      <div class="specSummary passed">
-      <span class="description">should call CmsFavoriteService.markObjectAsFavorite when the selected source is unfavorite</span>
-      </div>
-    
-      <div class="specSummary passed">
-      <span class="description">should call CmsFavoriteService.markObjectAsUnFavorite when the selected source is favorite</span>
-      </div>
-    
-      <div class="specSummary failed">
-      <span class="description">should call CmsApiService.putContentsOnDisplay when source is selected</span>
-      </div>
-    
-    </div>
-  
-    <div class="suite failed">
-      <span class="description">TileGridComponent</span>
-    
-      <div class="specSummary passed">
-      <span class="description">component should be a defined</span>
-      </div>
-    
-      <div class="specSummary passed">
-      <span class="description">display base styles should be correct</span>
-      </div>
-    
-      <div class="specSummary failed">
-      <span class="description">expect tileStyles to return correct values in px</span>
-      </div>
-    
-      <div class="specSummary passed">
-      <span class="description">should render tiles correctly</span>
-      </div>
-    
-    </div>
-  
-    <div class="suite passed">
-      <span class="description">CmsTileListComponent</span>
-    
-      <div class="specSummary passed">
-      <span class="description">component should be a defined and data should be loaded OnInit</span>
-      </div>
-    
-      <div class="specSummary passed">
-      <span class="description">should call CmsApiService.putContentsOnDisplay when tile layout is loaded</span>
-      </div>
-    
-      <div class="specSummary passed">
-      <span class="description">component should listen 'Display Updated' event</span>
-      </div>
-    
-      <div class="specSummary passed">
-      <span class="description">should show defaultTiler with respective default icon</span>
+      <span class="description">should check settingLanguagePanelBackButton and settingLanguagePanelTitleText </span>
       </div>
     
     </div>
@@ -731,98 +610,6 @@ body { background-color: #eeeeee; padding: 0; margin: 5px; overflow-y: scroll; }
 </div>
 
 <div id="details">
-  
-  
-  <div class="specDetail failed">
-    <span class="description">CmsSourcesPanelComponent should have filter button available with ID === sources-panel-favorite-button </span>
-    <div class="stackTrace">
-      <div class="resultMessage">Expected '' to be 'testSearchString'.
-    at http://127.0.0.1:9876/base/test/test.js?c50a78f102c3eaa3adad4f63359d5b741632dd78:122727:45 [ProxyZone]
-    at ProxyZoneSpec.onInvokeTask (http://127.0.0.1:9876/base/test/test.js?c50a78f102c3eaa3adad4f63359d5b741632dd78:118390:40) [ProxyZone]
-    at ZoneDelegate.invokeTask (http://127.0.0.1:9876/base/test/test.js?c50a78f102c3eaa3adad4f63359d5b741632dd78:116402:37) [ProxyZone]
-    at Zone.runTask (http://127.0.0.1:9876/base/test/test.js?c50a78f102c3eaa3adad4f63359d5b741632dd78:116206:48) [&lt;root&gt; =&gt; ProxyZone]
-    at ZoneTask.invoke (http://127.0.0.1:9876/base/test/test.js?c50a78f102c3eaa3adad4f63359d5b741632dd78:116456:39) [&lt;root&gt;]
-    at data.args.(anonymous function) (http://127.0.0.1:9876/base/test/test.js?c50a78f102c3eaa3adad4f63359d5b741632dd78:117567:26) [&lt;root&gt;]</div>
-    </div>
-  </div>
-  
-  <div class="specDetail failed">
-    <span class="description">CmsSourcesPanelComponent should show error message if error comes from Source List</span>
-    <div class="stackTrace">
-      <div class="resultMessage">Expected false to be true.
-    at http://127.0.0.1:9876/base/test/test.js?c50a78f102c3eaa3adad4f63359d5b741632dd78:122739:53 [ProxyZone]
-    at ProxyZoneSpec.onInvokeTask (http://127.0.0.1:9876/base/test/test.js?c50a78f102c3eaa3adad4f63359d5b741632dd78:118390:40) [ProxyZone]
-    at ZoneDelegate.invokeTask (http://127.0.0.1:9876/base/test/test.js?c50a78f102c3eaa3adad4f63359d5b741632dd78:116402:37) [ProxyZone]
-    at Zone.runTask (http://127.0.0.1:9876/base/test/test.js?c50a78f102c3eaa3adad4f63359d5b741632dd78:116206:48) [&lt;root&gt; =&gt; ProxyZone]
-    at ZoneTask.invoke (http://127.0.0.1:9876/base/test/test.js?c50a78f102c3eaa3adad4f63359d5b741632dd78:116456:39) [&lt;root&gt;]
-    at data.args.(anonymous function) (http://127.0.0.1:9876/base/test/test.js?c50a78f102c3eaa3adad4f63359d5b741632dd78:117567:26) [&lt;root&gt;]</div>
-    </div>
-  </div>
-  
-  
-  
-  <div class="specDetail failed">
-    <span class="description">Service: CmsVirtualScrollService service should be able to attach scroll event listener and able to call scroll function</span>
-    <div class="stackTrace">
-      <div class="resultMessage">Expected '' to be 'recordsFetched'.
-    at http://127.0.0.1:9876/base/test/test.js?c50a78f102c3eaa3adad4f63359d5b741632dd78:123781:33 [ProxyZone]
-    at ProxyZoneSpec.onInvokeTask (http://127.0.0.1:9876/base/test/test.js?c50a78f102c3eaa3adad4f63359d5b741632dd78:118390:40) [ProxyZone]
-    at ZoneDelegate.invokeTask (http://127.0.0.1:9876/base/test/test.js?c50a78f102c3eaa3adad4f63359d5b741632dd78:116402:37) [ProxyZone]
-    at Zone.runTask (http://127.0.0.1:9876/base/test/test.js?c50a78f102c3eaa3adad4f63359d5b741632dd78:116206:48) [&lt;root&gt; =&gt; ProxyZone]
-    at ZoneTask.invoke (http://127.0.0.1:9876/base/test/test.js?c50a78f102c3eaa3adad4f63359d5b741632dd78:116456:39) [&lt;root&gt;]
-    at data.args.(anonymous function) (http://127.0.0.1:9876/base/test/test.js?c50a78f102c3eaa3adad4f63359d5b741632dd78:117567:26) [&lt;root&gt;],Expected '' to be 'recordsFetched'.
-    at http://127.0.0.1:9876/base/test/test.js?c50a78f102c3eaa3adad4f63359d5b741632dd78:123807:33 [ProxyZone]
-    at ProxyZoneSpec.onInvokeTask (http://127.0.0.1:9876/base/test/test.js?c50a78f102c3eaa3adad4f63359d5b741632dd78:118390:40) [ProxyZone]
-    at ZoneDelegate.invokeTask (http://127.0.0.1:9876/base/test/test.js?c50a78f102c3eaa3adad4f63359d5b741632dd78:116402:37) [ProxyZone]
-    at Zone.runTask (http://127.0.0.1:9876/base/test/test.js?c50a78f102c3eaa3adad4f63359d5b741632dd78:116206:48) [&lt;root&gt; =&gt; ProxyZone]
-    at ZoneTask.invoke (http://127.0.0.1:9876/base/test/test.js?c50a78f102c3eaa3adad4f63359d5b741632dd78:116456:39) [&lt;root&gt;]
-    at data.args.(anonymous function) (http://127.0.0.1:9876/base/test/test.js?c50a78f102c3eaa3adad4f63359d5b741632dd78:117567:26) [&lt;root&gt;]</div>
-    </div>
-  </div>
-  
-  
-  
-  <div class="specDetail failed">
-    <span class="description">CmsSourceListComponent should return 0 if there are no sources or tile Id for a valid source</span>
-    <div class="stackTrace">
-      <div class="resultMessage">Expected 0 to equal 4.
-    at UserContext.&lt;anonymous&gt; (http://127.0.0.1:9876/base/test/test.js?c50a78f102c3eaa3adad4f63359d5b741632dd78:124947:56) [ProxyZone]
-    at ProxyZoneSpec.onInvoke (http://127.0.0.1:9876/base/test/test.js?c50a78f102c3eaa3adad4f63359d5b741632dd78:118366:40) [ProxyZone]
-    at Zone.run (http://127.0.0.1:9876/base/test/test.js?c50a78f102c3eaa3adad4f63359d5b741632dd78:116166:44) [ProxyZone =&gt; ProxyZone]
-    at UserContext.&lt;anonymous&gt; (http://127.0.0.1:9876/base/test/test.js?c50a78f102c3eaa3adad4f63359d5b741632dd78:118572:35) [ProxyZone],Expected 0 to equal 2.
-    at UserContext.&lt;anonymous&gt; (http://127.0.0.1:9876/base/test/test.js?c50a78f102c3eaa3adad4f63359d5b741632dd78:124949:56) [ProxyZone]
-    at ProxyZoneSpec.onInvoke (http://127.0.0.1:9876/base/test/test.js?c50a78f102c3eaa3adad4f63359d5b741632dd78:118366:40) [ProxyZone]
-    at Zone.run (http://127.0.0.1:9876/base/test/test.js?c50a78f102c3eaa3adad4f63359d5b741632dd78:116166:44) [ProxyZone =&gt; ProxyZone]
-    at UserContext.&lt;anonymous&gt; (http://127.0.0.1:9876/base/test/test.js?c50a78f102c3eaa3adad4f63359d5b741632dd78:118572:35) [ProxyZone]</div>
-    </div>
-  </div>
-  
-  <div class="specDetail failed">
-    <span class="description">CmsSourceListComponent should call CmsApiService.putContentsOnDisplay when source is selected</span>
-    <div class="stackTrace">
-      <div class="resultMessage">Expected 4 to equal 1.
-    at UserContext.&lt;anonymous&gt; (http://127.0.0.1:9876/base/test/test.js?c50a78f102c3eaa3adad4f63359d5b741632dd78:124989:26) [ProxyZone]
-    at ProxyZoneSpec.onInvoke (http://127.0.0.1:9876/base/test/test.js?c50a78f102c3eaa3adad4f63359d5b741632dd78:118366:40) [ProxyZone]
-    at Zone.run (http://127.0.0.1:9876/base/test/test.js?c50a78f102c3eaa3adad4f63359d5b741632dd78:116166:44) [ProxyZone =&gt; ProxyZone]
-    at UserContext.&lt;anonymous&gt; (http://127.0.0.1:9876/base/test/test.js?c50a78f102c3eaa3adad4f63359d5b741632dd78:118572:35) [ProxyZone]</div>
-    </div>
-  </div>
-  
-  
-  
-  <div class="specDetail failed">
-    <span class="description">TileGridComponent expect tileStyles to return correct values in px</span>
-    <div class="stackTrace">
-      <div class="resultMessage">Expected '198px' to equal '98px'.
-    at http://127.0.0.1:9876/base/test/test.js?c50a78f102c3eaa3adad4f63359d5b741632dd78:125195:37 [ProxyZone]
-    at Array.forEach (&lt;anonymous&gt;) [ProxyZone]
-    at UserContext.&lt;anonymous&gt; (http://127.0.0.1:9876/base/test/test.js?c50a78f102c3eaa3adad4f63359d5b741632dd78:125194:33) [ProxyZone]
-    at ProxyZoneSpec.onInvoke (http://127.0.0.1:9876/base/test/test.js?c50a78f102c3eaa3adad4f63359d5b741632dd78:118366:40) [ProxyZone]
-    at Zone.run (http://127.0.0.1:9876/base/test/test.js?c50a78f102c3eaa3adad4f63359d5b741632dd78:116166:44) [ProxyZone =&gt; ProxyZone]
-    at UserContext.&lt;anonymous&gt; (http://127.0.0.1:9876/base/test/test.js?c50a78f102c3eaa3adad4f63359d5b741632dd78:118572:35) [ProxyZone]</div>
-    </div>
-  </div>
-  
   
 </div>
 
@@ -835,7 +622,7 @@ document.body.onkeypress = function (e) {
   switch (e.keyCode) {
     case 102: toggleFold(); break;
     case 49: showSummary(); break;
-    case 50: showFailures(); break;case 50: showFailures(); break;case 50: showFailures(); break;case 50: showFailures(); break;
+    
   }
 };
 
