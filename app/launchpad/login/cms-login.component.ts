@@ -62,9 +62,6 @@ export class CmsLoginComponent implements OnInit, OnDestroy {
      * @event ngOnInit
      */
     ngOnInit() {
-        // set application language as browser language
-        this.cmsSettingsService.setBrowserLanguage();
-
         // Remove session variables
         this.storageManager.removeStorage();
         this.cmsMiniDisplayService.init();
@@ -139,6 +136,7 @@ export class CmsLoginComponent implements OnInit, OnDestroy {
 
                     // store user setting in storage
                     this.storageManager.set(CMS_SESSION_STORAGE_ITEM.Settings, JSON.stringify(this.cmsSettingsService.mUserSettings));
+                    this.cmsSettingsService.applyUserSelectedLanguage();
                     this.cmsSettingsService.connectToWallAtStartup();
                 }, () => {
                     // fetch user settings fail 

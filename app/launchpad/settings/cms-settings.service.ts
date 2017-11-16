@@ -96,13 +96,13 @@ export class CmsSettingsService {
             this.translate.use(defaultLanguage);
             this.setTextDirectionByLanguageKey(defaultLanguage);
         } else {
-            if (!(this.mUserSettings.language && this.mUserSettings.language.length > 0)) {
+            if (!this.mUserSettings.language) {
                 this.mUserSettings.language = defaultLanguage;
-
-                // set user selected language
-                this.translate.use(this.mUserSettings.language);
-                this.setTextDirectionByLanguageKey(this.mUserSettings.language);
             }
+
+            // set user selected language
+            this.translate.use(this.mUserSettings.language);
+            this.setTextDirectionByLanguageKey(this.mUserSettings.language);
         }
 
         // fetch localization licence info and set default language if licence is not available
@@ -387,12 +387,23 @@ export class CmsSettingsService {
      * This method set application language as per browser language 
      */
     public setBrowserLanguage() {
-        let browserLang = this.translate.getBrowserLang();
-        let languagesRegEx = CmsLanguages.languagesRegExPattern;
+        let currentLang;
+        let settingsStorageData = this.storageManager.get(CMS_SESSION_STORAGE_ITEM.Settings);
+        if (settingsStorageData) {
+            let userSettings = JSON.parse(settingsStorageData);
+            if (userSettings && userSettings.language) {
+                currentLang = userSettings.language;
+            }
+        }
+        if (!currentLang) {
+            let browserLang = this.translate.getBrowserLang();
+            let languagesRegEx = CmsLanguages.languagesRegExPattern;
+            currentLang = browserLang.match(languagesRegEx) ? browserLang : this.appConfig.DefaultLanguage;
+        }
 
-        this.translate.use(browserLang.match(languagesRegEx) ? browserLang : this.appConfig.DefaultLanguage);
+        this.translate.use(currentLang);
 
         //update text direction
-        this.setTextDirectionByLanguageKey(browserLang);
+        this.setTextDirectionByLanguageKey(currentLang);
     }
 }

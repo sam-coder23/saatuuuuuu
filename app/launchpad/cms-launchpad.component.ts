@@ -108,6 +108,9 @@ export class CmsLaunchpadComponent implements OnInit, OnDestroy {
 
     //add all supported languages
     this.addAppSupportedLanguages();
+    
+    // set application language as browser language
+    this.cmsSettingsService.setBrowserLanguage();
 
     // on browser refresh create session with the server again
     let user: IUserToken = this.getUserStorageData();
