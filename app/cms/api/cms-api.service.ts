@@ -122,7 +122,7 @@ export class CmsApiService {
      */
     getSelectedDisplayContent(aDisplayId: number): Observable<Display> {
         return this.apiRequest.get(`displays/${aDisplayId}`).map(response => {
-            var display = new Display(response);
+            let display = new Display(response);
             return display;
         });
     }
@@ -504,6 +504,15 @@ export class CmsApiService {
                 }
                 // send event to source list
                 CmsEventEmitterService.get(CMS_EVENTS.SourceList).emit(appResponse);
+            } else if (verb === "deleted") {
+                this.appConfig.log("CmsApiService: updateDisplaySingleApplication:: delete a single application");
+                let appResponse = {
+                    eventType: "ResourceDeleted",
+                    body: eventObject.body
+                };
+
+                // send event to source list
+                CmsEventEmitterService.get(CMS_EVENTS.SourceList).emit(appResponse);
             }
         }
 
@@ -525,42 +534,17 @@ export class CmsApiService {
         let id = parseInt(uri.match(/(\d+)/g)[0]);
 
         switch (verb) {
-            // case "posted":
-            //     this.appConfig.log("CmsApiService:updateDisplayContent :: add a content element");
-            //     var response = {
-            //         eventType: "NewContentAdded",
-            //         body: eventObject.body,
-            //         displayId: id
-            //     }
-
-            //     // send event to mini-display
-            //     CmsEventEmitterService.get(CMS_EVENTS.MiniDisplay).emit(response);
-            //     break;
-
             case "put":
                 this.appConfig.log("CmsApiService: updateDisplayContent :: Update the list of tiler and/or content.");
-                var response = {
+                let response = {
                     eventType: "TilerAndContentUpdated",
                     body: eventObject.body,
                     displayId: id
-                }
+                };
 
                 // send event to mini-display
                 CmsEventEmitterService.get(CMS_EVENTS.MiniDisplay).emit(response);
                 break;
-
-            // case "deleted":
-            //     this.appConfig.log("CmsApiService:updateDisplayContent :: delete a content");
-            //     var response = {
-            //         eventType: "ContentDeleted",
-            //         body: eventObject.body,
-            //         displayId: id
-            //     }
-
-            //     // send event to mini-display
-            //     CmsEventEmitterService.get(CMS_EVENTS.MiniDisplay).emit(response);
-            //     break;
-
             default:
         }
     }
@@ -576,15 +560,16 @@ export class CmsApiService {
      */
     private updateSingleDisplay(verb: string, uri: string, eventObject: ICmsEvent) {
         let id = parseInt(uri.match(/(\d+)/g)[0]);
+        let response;
 
         switch (verb) {
             case "put":
                 this.appConfig.log("CmsApiService: updateSingleDisplay:: update a single display.");
-                var response = {
+                response = {
                     eventType: "DisplayUpdated",
                     body: eventObject.body,
                     displayId: id
-                }
+                };
 
                 // send event to mini-display for refreshing display
                 CmsEventEmitterService.get(CMS_EVENTS.MiniDisplay).emit(response);
@@ -595,11 +580,11 @@ export class CmsApiService {
 
             case "deleted":
                 this.appConfig.log("CmsApiService: updateSingleDisplay:: delete a single display");
-                var response = {
+                response = {
                     eventType: "DisplayDeleted",
                     body: eventObject.body,
                     displayId: id
-                }
+                };
 
                 // send event to mini-display
                 CmsEventEmitterService.get(CMS_EVENTS.MiniDisplay).emit(response);
@@ -627,28 +612,15 @@ export class CmsApiService {
         switch (verb) {
             case "put":
                 this.appConfig.log("CmsApiService: updateDisplayContentElement:: update the content element");
-                var response = {
+                let response = {
                     eventType: "ContentUpdated",
                     body: eventObject.body,
                     displayId: id
-                }
+                };
 
                 // send event to mini-display
                 CmsEventEmitterService.get(CMS_EVENTS.MiniDisplay).emit(response);
                 break;
-
-            // case "deleted":
-            //     this.appConfig.log("EVENT: DISPLAYS :: delete the content element");
-            //     var response = {
-            //         eventType: "ContentDeleted",
-            //         body: eventObject.body,
-            //         displayId: id
-            //     }
-
-            //     // send event to mini-display
-            //     CmsEventEmitterService.get(CMS_EVENTS.MiniDisplay).emit(response);
-            //     break;
-
             default:
         }
     }
@@ -672,27 +644,16 @@ export class CmsApiService {
                 //adding "type" property
                 eventObject.body.type = "Application";
 
-                var appResponse = {
+                let appResponse = {
                     eventType: "ResourceUpdated",
                     body: eventObject.body
-                }
+                };
 
                 // send event to source list
                 CmsEventEmitterService.get(CMS_EVENTS.SourceList).emit(appResponse);
 
                 // send event to mini-display
                 CmsEventEmitterService.get(CMS_EVENTS.MiniDisplay).emit(appResponse);
-                break;
-
-            case "deleted":
-                this.appConfig.log("CmsApiService: updateDisplaySingleApplication:: delete a single application");
-                var appResponse = {
-                    eventType: "ResourceDeleted",
-                    body: eventObject.body
-                }
-
-                // send event to source list
-                CmsEventEmitterService.get(CMS_EVENTS.SourceList).emit(appResponse);
                 break;
 
             default:
@@ -717,10 +678,19 @@ export class CmsApiService {
         if (uri.match(/(\/sources)$/g)) {
             if (verb === "posted") {
                 this.appConfig.log("CmsApiService: handleSourcesEvent:: add a source to the list");
-                var response = {
+                let response = {
                     eventType: "ResourceAdded",
                     body: eventObject.body
-                }
+                };
+
+                // send event to source list
+                CmsEventEmitterService.get(CMS_EVENTS.SourceList).emit(response);
+            } else if (verb === "deleted") {
+                this.appConfig.log("CmsApiService: updateSingleSource:: delete a single source");
+                let response = {
+                    eventType: "ResourceDeleted",
+                    body: eventObject.body
+                };
 
                 // send event to source list
                 CmsEventEmitterService.get(CMS_EVENTS.SourceList).emit(response);
@@ -792,26 +762,14 @@ export class CmsApiService {
         switch (verb) {
             case "put":
                 this.appConfig.log("CmsApiService: updateSingleSource:: update a single source");
-                var response = {
+                let response = {
                     eventType: "ResourceUpdated",
                     body: eventObject.body
-                }
+                };
 
                 // send event to source list
                 CmsEventEmitterService.get(CMS_EVENTS.SourceList).emit(response);
                 break;
-
-            case "deleted":
-                this.appConfig.log("CmsApiService: updateSingleSource:: delete a single source");
-                var response = {
-                    eventType: "ResourceDeleted",
-                    body: eventObject.body
-                }
-
-                // send event to source list
-                CmsEventEmitterService.get(CMS_EVENTS.SourceList).emit(response);
-                break;
-
             default:
         }
     }
@@ -834,13 +792,25 @@ export class CmsApiService {
         if (uri.match(/(\/perspectives)$/g)) {
             if (verb === "posted") {
                 this.appConfig.log("CmsApiService: handlePerspectivesEvent:: add a perspective to the list");
-                var response = {
+                let response = {
                     eventType: "ResourceAdded",
                     body: eventObject.body
-                }
+                };
 
                 // send event to source list
                 CmsEventEmitterService.get(CMS_EVENTS.SourceList).emit(response);
+            } else if (verb === "deleted") {
+                this.appConfig.log("CmsApiService: updateSinglePerspective:: delete a single perspective");
+                let response = {
+                    eventType: "ResourceDeleted",
+                    body: eventObject.body
+                };
+
+                // send event to source list
+                CmsEventEmitterService.get(CMS_EVENTS.SourceList).emit(response);
+
+                // send event to mini display
+                CmsEventEmitterService.get(CMS_EVENTS.MiniDisplay).emit(response);
             }
         }
 
@@ -867,10 +837,10 @@ export class CmsApiService {
                 //adding "type" property
                 eventObject.body.type = "Perspective"
 
-                var response = {
+                let response = {
                     eventType: "ResourceUpdated",
                     body: eventObject.body
-                }
+                };
 
                 // send event to source list
                 CmsEventEmitterService.get(CMS_EVENTS.SourceList).emit(response);
@@ -879,21 +849,6 @@ export class CmsApiService {
                 CmsEventEmitterService.get(CMS_EVENTS.MiniDisplay).emit(response);
 
                 break;
-
-            case "deleted":
-                this.appConfig.log("CmsApiService: updateSinglePerspective:: delete a single perspective");
-                var response = {
-                    eventType: "ResourceDeleted",
-                    body: eventObject.body
-                }
-
-                // send event to source list
-                CmsEventEmitterService.get(CMS_EVENTS.SourceList).emit(response);
-
-                // send event to mini display
-                CmsEventEmitterService.get(CMS_EVENTS.MiniDisplay).emit(response);
-                break;
-
             default:
         }
     }
