@@ -27,6 +27,7 @@ import { AppConfig } from "../../config";
 import { CMS_SESSION_STORAGE_ITEM } from "../models/cms-session-storage-item";
 import { ITilePreset } from "../models/cms-tile-preset";
 import { Validation } from "../../core/util/Validation";
+import { DISPLAY_TYPE } from "./display-type.enum";
 
 /**
  * This service is used to place CMS Server REST API calls for various functions. 
@@ -90,7 +91,12 @@ export class CmsApiService {
      */
     getDisplayList(start: number = 1, count: number = 2147483647, search: string = "", favorite: boolean = false): Observable<Display[]> {
         let params = "displays?start=" + start + "&count=" + count + "&filter=" + encodeURIComponent(search) + "&onlyfavorite=" + favorite;
-        return this.apiRequest.get(params);
+        return this.apiRequest
+            .get(params)
+            .map(displays => {
+                displays = displays.filter(display => display.type !== DISPLAY_TYPE[DISPLAY_TYPE.OperatorWorkStation]);
+                return displays;
+            });
     }
 
     /**

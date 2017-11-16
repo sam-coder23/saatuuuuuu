@@ -97,9 +97,7 @@ export class CmsDisplayListComponent implements OnChanges, OnDestroy {
         return this.mCmsServerApi.getDisplayList(1, 0, this.searchFilter, this.favoriteFilter)
             .subscribe(
             (displays: Display[]) => {
-                let filteredDisplays = displays.filter(display => display.type !== DISPLAY_TYPE[DISPLAY_TYPE.OperatorWorkStation]);
-
-                this.mDisplays.push(...filteredDisplays);
+                this.mDisplays.push(...displays);
 
                 // subscribe for display list change events
                 if (!this.eventSubscription) {

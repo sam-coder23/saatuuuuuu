@@ -290,7 +290,8 @@ export class CmsSettingsService {
                         this.storageManager.set(CMS_SESSION_STORAGE_ITEM.Display, JSON.stringify(display));
                         this.router.navigate([`/displays/${display.id}/sources-panel`]);
                     }
-
+                } else {
+                    this.router.navigate(["/displays-panel"]);
                 }
             }, (error) => {
                 this.router.navigate(["/displays-panel"]);
@@ -313,7 +314,6 @@ export class CmsSettingsService {
         this.cmsServerApi.getDisplayList(start, count, search, isFavorite)
             .subscribe((displays: Display[]) => {
                 if (displays.length) {
-
                     // filter display by name
                     for (let displayIndex = 0; displayIndex < displays.length; displayIndex++) {
                         if (displays[displayIndex].name === selectedDisplayName) {
@@ -329,6 +329,8 @@ export class CmsSettingsService {
                         this.storageManager.set(CMS_SESSION_STORAGE_ITEM.Display, JSON.stringify(display));
                         this.router.navigate([`/displays/${display.id}/sources-panel`]);
                     }
+                } else {
+                    this.router.navigate(["/displays-panel"]);
                 }
             }, (error) => {
                 this.router.navigate(["/displays-panel"]);
