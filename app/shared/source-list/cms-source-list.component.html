@@ -3,6 +3,6 @@
         <span>{{ 'sourceList.unavailable' | translate }}</span>
     </div>
     <div *ngIf="mSources && mSources.length">
-        <cms-card *ngFor="let source of mSources" multi="true" [card]="renderer(source)" (select)="updateSelection($event, source)" (toggleFavorite)="toggleSourceFavorite(source)" [ngClass]="{disabled: source.disabled}"></cms-card>
+        <cms-card *ngFor="let source of mSources" multi="true" [card]="source" (select)="updateSelection($event, source)" (toggleFavorite)="toggleSourceFavorite(source)" [ngClass]="{disabled: source.disabled}"></cms-card>
     </div>
 </div>

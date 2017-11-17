@@ -170,6 +170,10 @@ export class CmsSourceListComponent implements OnInit, OnChanges, OnDestroy {
             (sources: Source[]) => {
                 this.appConfig.log("CmsSourceListComponent: getSources:: Sources list from server = ");
                 this.mScroller.dataCount = sources.length;
+
+                // mark selected source which are currently shared on display
+                this.markSelectedSourcesSharedOnDisplay(this.selectedDisplay, sources);
+
                 this.mSources.push(...sources);
 
                 // if max source has been loaded then set maxSources else again addScrollListener                    
@@ -245,43 +249,13 @@ export class CmsSourceListComponent implements OnInit, OnChanges, OnDestroy {
     }
 
     /**
-     * Returns updated source to be displayed as a card
-     * @param source 
-     */
-    private renderer(source: Source): Source {
-        if (!source) return source;
-
-        /**
-         * Compares selected sources in the cmsSettingsService and each source in the source list by matching 
-         *      either with their id and type,
-         *      or by their name and when the selected source type is source and the source type in the source list is perspective. 
-         * Why matching is done based on name?
-         * Because when user selects a source and refresh the source list, perspective is returned in the source list
-         * and the source is hidden.
-         */
-        let selectedSourceIndex = this.cmsSettingsService.selectedSources.findIndex((selectedSource) => {
-            return (selectedSource.id === source.id && selectedSource.type === source.type)
-                || (source.name === selectedSource.name && source.type === CMSConstants.SOURCE_TYPE.PERSPECTIVE && selectedSource.type === CMSConstants.SOURCE_TYPE.SOURCE);
-        });
-
-        if (selectedSourceIndex > -1) {
-            source.selected = true;
-            if (source.type !== this.cmsSettingsService.selectedSources[selectedSourceIndex].type) {
-                // Replace selected source with perspective
-                this.cmsSettingsService.selectedSources[selectedSourceIndex] = source;
-            }
-        }
-
-        return source;
-    }
-
-    /**
      * Returns void, sets all display detail of level 3
      */
     private getDisplayDetails() {
         let displayObservable = this.mCmsServerApi.getSelectedDisplayContent(this.displayId);
         displayObservable.subscribe((displayDetail) => {
             this.selectedDisplay = displayDetail;
+            this.cmsSettingsService.selectedSources = this.convertSourcesFromDisplayContent(displayDetail.content);
         });
         return displayObservable;
     }
@@ -310,4 +284,60 @@ export class CmsSourceListComponent implements OnInit, OnChanges, OnDestroy {
             this.appConfig.error("No tile found to share content.");
         }
     }
+
+    /**
+     * @method markSelectedSourcesSharedOnDisplay
+     * @param display: Display current active Display
+     * @param sources: Source[] current list of resources
+     */
+    private markSelectedSourcesSharedOnDisplay(display, sources) {
+        if (!display || (sources && !sources.length)) { return; }
+        let sharedContent = display.content;
+
+        // if current display has any shared content
+        if (sharedContent && sharedContent.length) {
+
+            // looping through all shared content on display
+            for (let contentIndex = 0; contentIndex < sharedContent.length; contentIndex++) {
+                let resourceId = sharedContent[contentIndex].resourceId;
+                let resourceType = sharedContent[contentIndex].type;
+
+                // looping through all available sources
+                for (let sourceIndex = 0; sourceIndex < sources.length; sourceIndex++) {
+                    if ((sources[sourceIndex].id === resourceId) && (sources[sourceIndex].type.toLowerCase() === resourceType.toLowerCase())) {
+                        //update selection of source
+                        sources[sourceIndex].selected = true;
+                        break;
+                    }
+                }
+            }
+        }
+    }
+
+    /**
+     * @method convertSourcesFromDisplayContent
+     * @param displayContent: content array of display
+     */
+    private convertSourcesFromDisplayContent(displayContent) {
+        let selectedSources = [];
+
+        if (displayContent && !displayContent.length) { return selectedSources; }
+
+        for (let sourceIndex = 0; sourceIndex < displayContent.length; sourceIndex++) {
+            // fetch display content and map to resource properties  
+            selectedSources.push({
+                id: displayContent[sourceIndex].resourceId,
+                name: displayContent[sourceIndex].name,
+                description: "",
+                type: displayContent[sourceIndex].type,
+                width: displayContent[sourceIndex].width,
+                height: displayContent[sourceIndex].height,
+                snapshotPath: displayContent[sourceIndex].snapshotPath,
+                favorite: false,
+                selected: true
+            });
+        }
+        return selectedSources;
+    }
+
 }

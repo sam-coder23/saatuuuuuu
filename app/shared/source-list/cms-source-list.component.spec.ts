@@ -27,6 +27,7 @@ class MockDisplay extends CmsResource {
         width: number;
         height: number;
     }
+    content?: any[]
 }
 
 const mDisplay: MockDisplay = {
@@ -41,15 +42,41 @@ const mDisplay: MockDisplay = {
     },
     online: false,
     favorite: false,
-    disabled: false
+    disabled: false,
+    content: [
+        {
+            id: 1,
+            name: "Auto_edited_src1",
+            type: "Perspective",
+            resourceId: 548,
+            x: 0,
+            y: 100,
+            width: 100,
+            height: 200,
+            snapshotPath: "",
+            zOrder: 1
+        },
+        {
+            id: 2,
+            name: "Manual_edited_src11",
+            type: "Perspective",
+            resourceId: 549,
+            x: 0,
+            y: 200,
+            width: 200,
+            height: 200,
+            snapshotPath: "",
+            zOrder: 2
+        }
+    ]
 }
 
 const sources: Source[] = [
     {
         id: 548,
-        name: "Auto_edited_src11",
+        name: "Auto_edited_src1",
         type: "Web",
-        description: "Auto_edited_desc",
+        description: "Auto_edited_desc1",
         snapshotPath: "",
         x: 0,
         y: 0,
@@ -58,13 +85,13 @@ const sources: Source[] = [
         height: 200,
         disabled: false,
         favorite: false,
-        selected: true
+        selected: false
     },
     {
         id: 549,
         name: "Manual_edited_src11",
         type: "Web",
-        description: "Auto_edited_desc1",
+        description: "Manual_edited_desc11",
         snapshotPath: "x/y/z",
         x: 10,
         y: 20,
@@ -73,13 +100,13 @@ const sources: Source[] = [
         height: 200,
         disabled: false,
         favorite: true,
-        selected: true
+        selected: false
     },
     {
         id: 549,
-        name: "Manual_edited_src11",
+        name: "Manual_edited_src111",
         type: "Web",
-        description: "Auto_edited_desc1",
+        description: "Manual_edited_desc111",
         snapshotPath: "x/y/z",
         x: 10,
         y: 20,
@@ -88,7 +115,7 @@ const sources: Source[] = [
         height: 200,
         disabled: true,
         favorite: true,
-        selected: true
+        selected: false
     }
 ];
 
@@ -155,8 +182,6 @@ class MockCmsSettingsService {
 
     public selectedSources: Source[] = [];
 }
-
-
 
 describe("CmsSourceListComponent", () => {
     let component: CmsSourceListComponent;
@@ -287,28 +312,6 @@ describe("CmsSourceListComponent", () => {
         expect(debugInstance.mSources.length).toEqual(0);
     }));
 
-    it("should return the source as selected when a undisabled source is clicked", () => {
-        let render = debugInstance.renderer();
-        expect(render).not.toBeDefined();
-    });
-
-    it("should return the undefined when there is no display to render", () => {
-        debugInstance.cmsSettingsService.selectedSources = [];
-        debugInstance.cmsSettingsService.selectedSources.push(sources[0]);
-
-        let render = debugInstance.renderer(sources[0]);
-        expect(render.selected).toBeTruthy();
-        expect(render).toEqual(sources[0]);
-    });
-
-    it("should return the updated display list for selected source", () => {
-        debugInstance.cmsSettingsService.selectedSources = [];
-        debugInstance.cmsSettingsService.selectedSources.push(sources[0]);
-        let render = debugInstance.renderer(sources[0]);
-        expect(render.selected).toBeTruthy();
-        expect(render).toEqual(sources[0])
-    })
-
     it("should only add the selected sources to select source list", () => {
         component.displayId = mDisplay.id;
         debugInstance.mSources = [];
@@ -356,4 +359,33 @@ describe("CmsSourceListComponent", () => {
         expect(args[2]).toBeUndefined();
     });
 
+    it("should able to get selected Source as per current display", () => {
+        fixture.detectChanges();
+        fixture.whenStable().then(() => {
+            let selectedSources = debugInstance.cmsSettingsService.selectedSources;
+            expect(selectedSources.length).toBe(2);
+            expect(selectedSources[0].name).toBe(mDisplay.content[0].name);
+            expect(selectedSources[1].name).toBe(mDisplay.content[1].name);
+        });
+    });
+
+    it("should able to display shared sources as selected", () => {
+        fixture.detectChanges();
+        component.ngOnChanges(null);
+        fixture.whenStable().then(() => {
+            // updated state of sources
+            expect(debugInstance.mSources[0].selected).toBeTruthy();
+            expect(debugInstance.mSources[1].selected).toBeTruthy();
+            expect(debugInstance.mSources[2].selected).toBeFalsy();
+        });
+    });
+
+    it("should not be a any selected Source if current display is not have any shared content", () => {
+        mDisplay.content = [];
+        fixture.detectChanges();
+        fixture.whenStable().then(() => {
+            let selectedSources = debugInstance.cmsSettingsService.selectedSources;
+            expect(selectedSources.length).toBe(0);
+        });
+    });
 })
