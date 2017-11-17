@@ -80,11 +80,7 @@ export class CmsAboutPanelComponent implements OnInit {
                 }
             );
 
-
-
-        this.cmsServerApi.getAppVersion().then(version => {
-            this.systemInfo.version = version;
-        });
+        this.systemInfo.version = "1.0.0";
      }
 
      /**
