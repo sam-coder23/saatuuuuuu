@@ -290,6 +290,9 @@ export class CmsSettingsService {
                         this.storageManager.set(CMS_SESSION_STORAGE_ITEM.Display, JSON.stringify(display));
                         this.router.navigate([`/displays/${display.id}/sources-panel`]);
                     }
+                    else {
+                        this.router.navigate(["/displays-panel"]);
+                    }
                 } else {
                     this.router.navigate(["/displays-panel"]);
                 }
@@ -328,6 +331,9 @@ export class CmsSettingsService {
 
                         this.storageManager.set(CMS_SESSION_STORAGE_ITEM.Display, JSON.stringify(display));
                         this.router.navigate([`/displays/${display.id}/sources-panel`]);
+                    }
+                    else {
+                        this.router.navigate(["/displays-panel"]);
                     }
                 } else {
                     this.router.navigate(["/displays-panel"]);
