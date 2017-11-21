@@ -4,7 +4,7 @@
  * the terms of the license agreement you entered into with Barco.
  */
 
-import { Component, OnInit, Input, Output, HostListener } from "@angular/core";
+import { Component, OnInit, Input, Output, HostListener, ElementRef, AfterViewInit } from "@angular/core";
 
 import { Tile } from "../../../cms/models/cms-tile";
 import { Source } from "./../../../cms/models/cms-source";
@@ -18,6 +18,7 @@ import { TileContent } from "./../../../cms/models/cms-tile-content";
 import { RegExManager } from "../../../core/util/RegEx";
 import { Url } from "../../../core/util/Url";
 import { Validation } from "../../../core/util/Validation";
+import { Observable } from "rxjs/Observable";
 
 /**
  * This is a grid component that creates a tiler on mini-display along with the content.
@@ -31,7 +32,7 @@ import { Validation } from "../../../core/util/Validation";
         "(document:click)": "onFocusLostFromContent($event)"
     }
 })
-export class CmsGridComponent implements OnInit {
+export class CmsGridComponent implements OnInit, AfterViewInit {
 
     // the input property will contain the array of tiles applied on the display
     @Input() miniTiles: Tile[] = null;
@@ -50,6 +51,7 @@ export class CmsGridComponent implements OnInit {
      * The constructor
      */
     constructor(
+        private elementRef: ElementRef,
         private cmsSettingsService: CmsSettingsService,
         private cmsApiService: CmsApiService,
         private appConfig: AppConfig,
@@ -61,6 +63,17 @@ export class CmsGridComponent implements OnInit {
     ngOnInit() {
         // apply source label styles as per user settings
         this.applySourceLabelSettings();
+    }
+
+    ngAfterViewInit(){
+        Observable.fromEvent(this.elementRef.nativeElement, "click")
+        .debounceTime(500)
+        .subscribe((event: any) => {
+            let contentId = event.target.getAttribute("data-content-id");
+            if(contentId) {
+                this.contentClick(this.contents.find((content) => {return content.id === parseInt(contentId) }));
+            }
+        });
     }
 
     /**
@@ -233,7 +246,7 @@ export class CmsGridComponent implements OnInit {
      * @param event 
      */
     private onFocusLostFromContent(event: any) {
-        if (event.srcElement.className.indexOf("content box-shadow") === -1) {
+        if (event.srcElement.className.indexOf("content box-shadow") === -1 && !event.srcElement.getAttribute("data-content-id")) {
             this.deselctedSource();
         }
     }
