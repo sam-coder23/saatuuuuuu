@@ -18,7 +18,7 @@ class RegExManager {
             value = url;            
         
         // we just need the very 1st entry as our regex is not global
-        if(matchedArray.length > 0) {
+        if(matchedArray && matchedArray.length > 0) {
             value = url.replace(matchedArray[0], hostName);
         }
         
