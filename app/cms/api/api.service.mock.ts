@@ -128,3 +128,53 @@ export const MocksUerProfileSettingsData: any = {
     "logOffTime": 0,
     "pageSize": 50
 };
+
+export const MockServerInfoData = {
+    "ServerInfo": {
+        "ip": "10.98.0.231",
+        "version": "0.70.37 Build 0130"
+    },
+    "LicenseInfo": {
+        "customerName": "CMS Evaluation",
+        "projectName": "CMS Evaluation",
+        "licenseStatus": "EvaluationLicense",
+        "daysRemaining": 6,
+        "localization": 1
+    }
+};
+
+export const MockTilerData = {
+    "id": 23,
+    "name": "TCR-01S",
+    "description": "",
+    "tags": "",
+    "base": {
+      "rowBound": 1,
+      "colBound": 1
+    },
+    "tiles": [
+      {
+        "left": 0,
+        "top": 0,
+        "width": 1,
+        "height": 1
+      }
+    ],
+    "isDefaultForAllDisplays": true,
+    "noOfTiles": 1,
+    "isGrid": false,
+    "defaultForDisplays": []
+  };
+
+  export const MockGeometryContentForDisplay = {
+    "id": 35,
+    "name": "2 Ragu Perspective",
+    "type": "Perspective",
+    "resourceId": 75,
+    "snapshotPath": "https://10.98.0.231//mediaconfiguration?action=get&path=images%2Fsnapshots%2Fperspectives%2F469.jpeg",
+    "zOrder": 1,
+    "x": 0,
+    "y": 0,
+    "width": 1024,
+    "height": 1080
+  };

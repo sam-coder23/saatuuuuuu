@@ -24,8 +24,9 @@ import { Validation } from "../../core/util/Validation";
 import { CmsLanguages } from "../../i18n/cms-languages";
 import { CMSConstants } from "../../cms/models/cms-constants";
 import { Observable } from "rxjs/Observable";
-import {MockDisplayData, MockSourceListData, MockPutContentsOnDisplayData, MockSelectedDisplayData, MocksUerProfileSettingsData} from "./api.service.mock";
-
+import { MockDisplayData, MockSourceListData, MockPutContentsOnDisplayData,MockSelectedDisplayData, 
+         MocksUerProfileSettingsData, MockServerInfoData, MockTilerData, MockGeometryContentForDisplay } from "./api.service.mock";
+import { Injector } from "@angular/core";
 let spyRouter = {
     navigate: jasmine.createSpy("APIService")
 };
@@ -49,6 +50,7 @@ describe("Service: CmsApiService", () => {
                 BaseRequestOptions, 
                 APIRequest,
                 AppConfig,
+                CmsApiService,
                 {
                     deps: [
                         MockBackend,
@@ -241,6 +243,93 @@ describe("Service: CmsApiService", () => {
             ));
         });
         cmsApiService.getUserProfileSettings().then(data => {
+            expect(data).toEqual(responseBody);
+        });
+    });
+
+    //UPDATE USER PROFILE SETTING DATA
+    it("Should update user profile setting data from server and return success message ", () => {
+        let responseBody: any = { "Message": "UserSettings updated sucessfully" };
+        mockbackend.connections.subscribe((connection: MockConnection) => {
+            connection.mockRespond(new Response(
+                new ResponseOptions({
+                    body: responseBody
+                })
+            ));
+        });
+        cmsApiService.updateUserProfileSettings(MocksUerProfileSettingsData).then(data => {
+            expect(data.json()).toEqual(responseBody);
+        });
+    });
+
+    //RECONNECT WITH SERVER SHOULD MAKE SESSION EXPIRE AND KEEP SESSION ALIVE
+    it("Should call makeSessionExpire and keepSessionAlive from reconnectSessionWithServer ", () => {
+        spyOn(cmsApiService, "makeSessionExpire").and.returnValue(()=>{});
+        spyOn(cmsApiService, "keepSessionAlive").and.returnValue(()=>{});
+        cmsApiService.reconnectSessionWithServer();
+        expect(cmsApiService.makeSessionExpire).toHaveBeenCalled();
+        expect(cmsApiService.keepSessionAlive).toHaveBeenCalled();
+    });
+
+    //APP BUID VERSION
+    it("Should return app build version ", () => {
+        let responseBody: string = "launchpad.buildnumber=0101";
+        let buildInfo = "1.1 Build 0101";
+        mockbackend.connections.subscribe((connection: MockConnection) => {
+            connection.mockRespond(new Response(
+                new ResponseOptions({
+                    body: responseBody
+                })
+            ));
+        });
+        cmsApiService.getAppVersion().then(data => {
+            expect(data).toEqual(buildInfo);
+        });
+    });
+
+    //SERVER INFO DATA
+    it("Should return server info data ", () => {
+        let responseBody: any = MockServerInfoData;
+        mockbackend.connections.subscribe((connection: MockConnection) => {
+            connection.mockRespond(new Response(
+                new ResponseOptions({
+                    body: responseBody
+                })
+            ));
+        });
+        cmsApiService.getSystemInfo().subscribe(data => {
+            expect(data).toEqual(responseBody);
+        });
+    });
+
+    //GET TILER INFO DATA
+    it("Should return tiler info data ", () => {
+        let responseBody: any = MockTilerData;
+        mockbackend.connections.subscribe((connection: MockConnection) => {
+            connection.mockRespond(new Response(
+                new ResponseOptions({
+                    body: responseBody
+                })
+            ));
+        });
+        cmsApiService.getTilers().subscribe(data => {
+            expect(data).toEqual(responseBody);
+        });
+    });
+    
+    //UPDATE CONTENT GEOMETRY ON DISPLAY
+    it("Should update content geormetry on display ", () => {
+        let body = MockGeometryContentForDisplay;
+        let responseBody: any = {"Message": "Operation Successful."};
+        let displayId: number = 10, contentId: number = 35;
+        mockbackend.connections.subscribe((connection: MockConnection) => {
+            connection.mockRespond(new Response(
+                new ResponseOptions({
+                    body: responseBody
+                })
+            ));
+        });
+        cmsApiService.updateContentGeormetryOnDisplay(displayId, contentId, body).subscribe(data => {
             expect(data).toEqual(responseBody);
         });
     });
