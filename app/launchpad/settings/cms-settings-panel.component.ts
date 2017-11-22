@@ -210,7 +210,12 @@ export class CmsSettingsPanelComponent implements OnInit {
                         // update as selected display wall for future selection
                         this.mUserSettings.wallConnection.specificDisplay = display.name;
                         this.cmsSettingsService.updateUserProfileData(this.mUserSettings);
+                    } else {
+                        this.displayWallName = "nodisplayfound";
                     }
+                }
+                else {
+                    this.displayWallName = "nodisplayfound";
                 }
             }, (error) => {
                 this.displayWallName = "nodisplayfound";
