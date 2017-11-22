@@ -93,20 +93,15 @@ export class CmsDisplaysPanelComponent implements OnInit, AfterViewInit {
                 this.searchFilter = searchString;
                 this.storageManager.set(CMS_SESSION_STORAGE_ITEM.DisplaysSearchFilter, searchString);
             });
-
-        /**
-         * Making an Observable to prevent favorite filter on frequent clicks 
-         * on favorite filter icon.
-         * Updating display list by subscribing this Observable.
-         */
-        let favoriteIcon = document.getElementById("display-list-favorite-button");
-        Observable.fromEvent(favoriteIcon, "click")
-            .debounceTime(350)
-            .subscribe(res => {
-                this.isFavoriteFilter = !this.isFavoriteFilter;
-                this.storageManager.set(CMS_SESSION_STORAGE_ITEM.DisplaysFavoriteFilter, this.isFavoriteFilter);
-            });
     };
+
+    /**
+     * Use this method to mark and unmark favorite displays
+     */
+    setFavourite(): void {
+        this.isFavoriteFilter = !this.isFavoriteFilter;
+        this.storageManager.set(CMS_SESSION_STORAGE_ITEM.DisplaysFavoriteFilter, this.isFavoriteFilter);
+    }
 
     /**
      * On list modified event

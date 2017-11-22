@@ -1,12 +1,12 @@
 <md-toolbar id="dashboard-toolbar" class="toolbar-theme">
 
     <div class="dashboard-toolbar-row" *ngIf="!isLongPressed">
-        <button id="dashboard-options-button" md-icon-button (click)="viewOptions = true;">
+        <button id="dashboard-options-button" md-icon-button nd-click-debounce (ndClick)="viewOptions = true;">
             <i class="material-icons" aria-label="Options">menu</i>
         </button>
     </div>
 
-    <button id="display-panel-back-button" md-icon-button *ngIf="isLongPressed" (click)="backToDisplayPanel()">
+    <button id="display-panel-back-button" md-icon-button nd-click-debounce *ngIf="isLongPressed" (ndClick)="backToDisplayPanel()">
         <i class="material-icons">arrow_back</i>
     </button>
 
@@ -16,7 +16,7 @@
 
     <span class="fill-remaining-space"></span>
 
-    <button id="log-off" md-button md-raised-button (click)="logoff()">
+    <button id="log-off" md-button md-raised-button nd-click-debounce (ndClick)="logoff()">
             {{'common.logout' | translate}}
     </button>
 </md-toolbar>
@@ -28,11 +28,11 @@
     [fitHeight]="fitHeightCount"></cms-mini-display>
 
 <md-toolbar id="bottom-toolbar" class="page-toolbar toolbar-theme bottom">
-    <button md-button md-raised-button id="display-panel-back-button" (click)="navigateBack()" class="back-button"><md-icon>navigate_before</md-icon></button>
+    <button md-button md-raised-button nd-click-debounce id="display-panel-back-button" (ndClick)="navigateBack()" class="back-button"><md-icon>navigate_before</md-icon></button>
 
     <span class="fill-remaining-space"></span>
 
-    <button md-button md-raised-button id="display-panel-next-button" (click)="logoff()" class="next-button"><md-icon>navigate_next</md-icon></button>
+    <button md-button md-raised-button nd-click-debounce id="display-panel-next-button" (ndClick)="logoff()" class="next-button"><md-icon>navigate_next</md-icon></button>
 </md-toolbar>
 
 <nd-popup id="display-panel-clear-wall-popup" *ngIf="showClearWallPopup" class="confirm-popup" title="{{'displayPanel.clearWallConfirmationPopupTitle' | translate }}"

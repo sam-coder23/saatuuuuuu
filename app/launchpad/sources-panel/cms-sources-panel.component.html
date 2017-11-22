@@ -11,7 +11,7 @@
         <button id="sources-panel-reload-button" md-icon-button *ngIf="mStates.reload" (click)="reloadList()">
             <i class="material-icons">refresh</i>
         </button>
-        <button id="sources-panel-favorite-button" md-icon-button>
+        <button id="sources-panel-favorite-button" md-icon-button nd-click-debounce (ndClick)="setFavourite()">
             <i class="material-icons">{{ isFavoriteFilter ? "star" : "star_border" }}</i>
         </button>
         <button md-icon-button (click)="initializeSearch($event)">
@@ -33,7 +33,7 @@
 </div>
 <div class="page-toolbar bottom">
     <md-toolbar id="sources-panel-bottom-toolbar" class="toolbar-theme">
-        <button id="sources-panel-back-button" md-button md-raised-button (click)="navigateBack()" class="back-button">
+        <button id="sources-panel-back-button" md-button md-raised-button nd-click-debounce (ndClick)="navigateBack()" class="back-button">
             <md-icon>navigate_before</md-icon>
         </button>
         <span class="fill-remaining-space"></span>
@@ -45,7 +45,7 @@
             {{errorMessage}}
         </span>
         <span class="fill-remaining-space"></span>
-        <button md-button md-raised-button id="sources-panel-next-button" [hidden]="!cmsSettingService?.selectedSources?.length > 0" (click)="navigateNext()" class="next-button">
+        <button md-button md-raised-button nd-click-debounce id="sources-panel-next-button" [hidden]="!cmsSettingService?.selectedSources?.length > 0" (ndClick)="navigateNext()" class="next-button">
              <md-icon>navigate_next</md-icon>
         </button>
     </md-toolbar>

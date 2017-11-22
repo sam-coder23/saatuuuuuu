@@ -102,19 +102,15 @@ export class CmsSourcesPanelComponent implements OnInit {
                 this.searchFilter = searchString;
                 this.storageManager.set(CMS_SESSION_STORAGE_ITEM.SourcesSearchFilter, searchString);
             });
-        /**
-         * Making an Observable to prevent favorite filter on frequent clicks 
-         * on favorite filter icon.
-         * Updating source list by subscribing this Observable.
-         */
-        let favoriteIcon = document.getElementById("sources-panel-favorite-button");
-        Observable.fromEvent(favoriteIcon, "click")
-            .debounceTime(350)
-            .subscribe(res => {
-                this.isFavoriteFilter = !this.isFavoriteFilter;
-                this.storageManager.set(CMS_SESSION_STORAGE_ITEM.SourcesFavoriteFilter, this.isFavoriteFilter);
-            });
     };
+
+    /**
+     * Use this method to mark and unmark favorite sources
+     */
+    setFavourite(): void {
+        this.isFavoriteFilter = !this.isFavoriteFilter;
+        this.storageManager.set(CMS_SESSION_STORAGE_ITEM.SourcesFavoriteFilter, this.isFavoriteFilter);
+    }
 
     /**
      * On list modified event

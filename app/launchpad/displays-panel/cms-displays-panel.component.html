@@ -10,9 +10,8 @@
         <button id="display-panel-reload-button" md-icon-button *ngIf="viewState.reload" (click)="reloadList()">
             <i class="material-icons">refresh</i>
         </button>
-        <button id="display-list-favorite-button" md-icon-button>
-            <i class="material-icons" *ngIf="!isFavoriteFilter">star_border</i>
-            <i class="material-icons" *ngIf="isFavoriteFilter">star</i>
+        <button id="display-list-favorite-button" md-icon-button nd-click-debounce (ndClick)="setFavourite()">
+            <i class="material-icons">{{ isFavoriteFilter ? "star" : "star_border" }}</i>
         </button>
         <button id="display-list-search-button" md-icon-button (click)="initializeSearch($event)">
             <i class="material-icons">search</i>

@@ -30,7 +30,7 @@
             </div>
             <div class="login-submit-container layout-row">
                 <div class="login-button-container layout-row-reverse">
-                    <button id="login-submit-button" md-raised-button type="submit" class="md-raised" (click)="onLoginSubmit()" [disabled]="!username.valid || !password.valid">{{ 'login.button' | translate}}</button>
+                    <button id="login-submit-button" md-raised-button nd-click-debounce type="submit" class="md-raised" (ndClick)="onLoginSubmit()" [disabled]="!username.valid || !password.valid">{{ 'login.button' | translate}}</button>
                 </div>
                 <div id="login-progress" class="login-progress-container" *ngIf="isLoginInProgress">
                     <md-progress-circle color="primary" mode="indeterminate" [style.width]="'40%'" [style.height]="'150%'"></md-progress-circle>
