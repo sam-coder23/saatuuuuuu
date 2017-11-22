@@ -1,3 +1,7 @@
+/**
+ * ERROR HANDLING TEST CASES PENDING
+ * GET DISPLAY LIST IS BRAKING BECAUSE OF LATEST CHANGES
+ */
 import { TestBed, inject, async, fakeAsync, tick } from "@angular/core/testing";
 import { TranslateModule, TranslateLoader, TranslateService } from "@ngx-translate/core";
 import { TranslateHttpLoader } from "@ngx-translate/http-loader";
@@ -334,4 +338,18 @@ describe("Service: CmsApiService", () => {
         });
     });
 
+    //FETCH EVENTS FROM CMS SERVER
+    it("Should fetch events from CMS Server ", () => {
+        let responseBody = [];
+        mockbackend.connections.subscribe((connection: MockConnection) => {
+            connection.mockRespond(new Response(
+                new ResponseOptions({
+                    body: responseBody
+                })
+            ));
+        });
+        cmsApiService.getEvents().subscribe(data => {
+            expect(data.json()).toEqual(responseBody);
+        });
+    });
 });
