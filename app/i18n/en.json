@@ -123,6 +123,6 @@
     },
     "tilePresetList": {
         "unavailable": "No Tile Layouts",
-        "layouts": "Layouts"
+        "layouts": "Select a Layout"
     }
 }
