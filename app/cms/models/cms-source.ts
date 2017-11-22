@@ -16,16 +16,20 @@ export class Source extends CmsResource {
     zOrder: number;
     width: number;
     height: number;
-    selected?: boolean
+    selected?: boolean;
 
-    constructor(model) {
-        super(model);
-        this.type = model.type;
-        this.x = model.x;
-        this.y = model.y;
-        this.zOrder = model.zOrder;
-        this.width = model.width;
-        this.height = model.height;
-        this.selected = model.selected;
+    constructor(sourceModel) {
+        if (!sourceModel) {
+            return null;
+        };
+        super(sourceModel);
+
+        this.type = sourceModel.type;
+        this.x = sourceModel.x;
+        this.y = sourceModel.y;
+        this.zOrder = sourceModel.zOrder;
+        this.width = sourceModel.width;
+        this.height = sourceModel.height;
+        this.selected = sourceModel.selected;
     }
 }

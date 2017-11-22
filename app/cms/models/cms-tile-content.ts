@@ -19,5 +19,23 @@ export class TileContent extends Source {
 	lastModified: string;
 
     // keeps absolute tile info as per display wall
-    absoluteSize: Tile
+    absoluteSize: Tile;
+
+
+    constructor(contentModel) {
+        if (!contentModel) {
+            return null;
+        };
+        super(contentModel);
+
+        this.resourceId = contentModel.resourceId;
+        this.lastModified = contentModel.lastModified;
+        if (contentModel.absoluteSize) {
+            if (contentModel.absoluteSize instanceof Tile) {
+                this.absoluteSize = contentModel.absoluteSize;
+            } else {
+                this.absoluteSize = new Tile(contentModel.absoluteSize);
+            }
+        } 
+    }
 }

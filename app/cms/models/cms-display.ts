@@ -33,13 +33,21 @@ export class Display extends CmsResource {
     content: TileContent[];
 
     constructor(display) {
+        if (!display) {
+            // TBD: should error be thrown?
+            return null;
+        }
         super(display);
 
         this.type = display.type;
         this.online = display.online;
         this.resolution = display.resolution;
-        this.tiles = display.tiles;
-        this.content = display.content;
+        if (display.tiles instanceof Array) {
+            this.tiles = display.tiles.map(tile => new Tile(tile));
+        }
+        if (display.content instanceof Array) {
+            this.content = display.content.map(content => new TileContent(content));
+        }
         this.tilerId = display.tilerId
     }
 }
