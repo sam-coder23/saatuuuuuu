@@ -20,7 +20,7 @@
                 </div>
                 <div class="card-selection-section layout-column layout-align-space-between">
                     <button id="card-default" md-icon-button>
-                        <i class="material-icons">{{defaultTilerID === tilePreset.id ? 'bookmark' : 'bookmark_border'}}</i>
+                        <i class="material-icons" *ngIf="false">{{defaultTilerID === tilePreset.id ? 'bookmark' : 'bookmark_border'}}</i>
                     </button>
                     <button class="card-select" md-icon-button>
                         <i class="material-icons">{{tilePreset?.isSelected ? 'check_box' : 'check_box_outline_blank'}}</i>

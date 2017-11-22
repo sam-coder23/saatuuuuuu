@@ -102,14 +102,6 @@ export class CmsOptionsComponent implements OnInit {
     }
 
     /**
-     * This method logout the user and close the application.
-     */
-    public exit() {
-       window.self.close();
-    }
-
-
-    /**
      * This emits fit height event to its host component and closes the sidenav
      * @method {void} onFitHeightClick
      */
@@ -128,12 +120,5 @@ export class CmsOptionsComponent implements OnInit {
             this.sidenav.close()
         }
     };
-
-    /**
-     * This method adds keyup event listener to event loop on document. 
-     */
-    // private addCloseEventListener() {
-    //     window.document.addEventListener("keyup", this.closeHandler.bind(this));
-    // }
     
 }

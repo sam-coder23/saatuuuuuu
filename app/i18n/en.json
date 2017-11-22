@@ -119,6 +119,7 @@
         "yes": "Yes",
         "no": "No",
         "ok": "OK",
+        "exit": "Exit",
         "logout" : "Log Off"
     },
     "tilePresetList": {

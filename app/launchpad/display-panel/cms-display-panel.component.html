@@ -32,7 +32,7 @@
 
     <span class="fill-remaining-space"></span>
 
-    <button md-button md-raised-button nd-click-debounce id="display-panel-next-button" (ndClick)="logoff()" class="next-button"><md-icon>navigate_next</md-icon></button>
+    <button md-button md-raised-button nd-click-debounce id="display-panel-next-button" (ndClick)="logoff()" class="next-button">{{'common.exit' | translate}}</button>
 </md-toolbar>
 
 <nd-popup id="display-panel-clear-wall-popup" *ngIf="showClearWallPopup" class="confirm-popup" title="{{'displayPanel.clearWallConfirmationPopupTitle' | translate }}"

@@ -12,12 +12,6 @@
                 <span>{{'options.refresh' | translate}}</span>
             </button>
         </div>
-        <div class="options" [hidden]="true">
-            <button md-button id="options-exit-button" (click)="exit()">
-                <i class="material-icons">clear</i>
-                <span>{{'options.exit' | translate}}</span>
-            </button>
-        </div>
         <hr *ngIf="!disableOptionOnDisplayUnavailable">
         <div class="options">
             <button md-button disabled="true" id="options-zoom-button">
