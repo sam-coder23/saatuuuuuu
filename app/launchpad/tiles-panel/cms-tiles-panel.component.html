@@ -11,8 +11,8 @@
         <button id="tiles-panel-reload-button" md-icon-button *ngIf="mStates.reload" (click)="reloadList()">
             <i class="material-icons">refresh</i>
         </button>
-        <button id="log-off" md-icon-button routerLink="/login">
-            <i class="material-icons">power_settings_new</i>
+        <button id="log-off" md-button md-raised-button routerLink="/login">
+            {{'common.logout' | translate}}
         </button>
     </md-toolbar>
 </div>

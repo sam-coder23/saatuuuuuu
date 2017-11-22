@@ -80,6 +80,18 @@ cms-launchpad{
         }
     }
 
+    #log-off{
+        background-color: transparent;
+        display: flex;
+        align-content: center;
+        align-items: center;
+        font-size: 20px;    
+
+        .md-button-wrapper{
+            display: flex;
+        }
+    }
+    
     .next-button,
     .back-button{
         color: rgba(0,0,0,.62) !important;

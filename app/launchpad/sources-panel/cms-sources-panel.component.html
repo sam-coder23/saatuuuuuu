@@ -21,8 +21,8 @@
             <input md-input type="text" placeholder="{{ 'panelToolbar.search' | translate }}" [(ngModel)]="searchKey">
         </md-input-container>
 
-        <button id="log-off" md-icon-button routerLink="/login">
-            <i class="material-icons">power_settings_new</i>
+        <button id="log-off" md-button md-raised-button routerLink="/login">
+            {{'common.logout' | translate}}
         </button>
     </md-toolbar>
 </div>

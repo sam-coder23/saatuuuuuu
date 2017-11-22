@@ -20,8 +20,7 @@ import { StorageManager } from "../../cms/api/cms-storagemanager.service";
 import { DomManager } from "../../utils/dom-manager.util";
 import { EventManager } from "../../utils/event-manager.util";
 import { AppConfig } from "../../config";
-import { Subscription, Observable } from "rxjs/Rx";
-
+import { Subscription, Observable } from "rxjs/Rx"; 
 
 
 /**
@@ -176,10 +175,9 @@ export class CmsMiniDisplayComponent implements OnInit, OnChanges, OnDestroy {
         let display = this.storageManager.get(CMS_SESSION_STORAGE_ITEM.Display);
         this.display = JSON.parse(display);
 
-        this.appConfig.log(`CmsMiniDisplayComponent: initDisplayTileInfoWithContent:: Display loaded on mini-display with Id = ${this.display.id}, Name = ${this.display.name}`);
-
         if (this.display !== null && this.display !== undefined) {
-            let container: HTMLElement = this.domManager.NthChild(0);
+            this.appConfig.log(`CmsMiniDisplayComponent: initDisplayTileInfoWithContent:: Display loaded on mini-display with Id = ${this.display.id}, Name = ${this.display.name}`);
+            let container: HTMLElement = document.getElementById("mini-display-container");
             this.miniDisplayHelper.getMiniDisplayTilerInfoWithContent(this.display.id, container)
                 .subscribe((response: {
                     displaySize: ISize,
@@ -189,7 +187,6 @@ export class CmsMiniDisplayComponent implements OnInit, OnChanges, OnDestroy {
                     miniDisplaySize: ISize
                 }) => {
                     this.appConfig.log("CmsMiniDisplayComponent: initDisplayTileInfoWithContent");
-
                     // initialize details to be sent to grid
                     this.miniDisplayTilerList = response.miniDisplayTilerList;
                     this.miniDisplayContentList = response.miniDisplayContentList;
@@ -349,7 +346,6 @@ export class CmsMiniDisplayComponent implements OnInit, OnChanges, OnDestroy {
 
             // This event is received when current display property is updated
             case "DisplayUpdated":
-
                 let display = JSON.parse(this.storageManager.get(CMS_SESSION_STORAGE_ITEM.Display));
 
                 // update display name in the toolbar
@@ -372,7 +368,6 @@ export class CmsMiniDisplayComponent implements OnInit, OnChanges, OnDestroy {
 
                 if (this.display.id === aResponseBody.id) {
                     this.appConfig.log(`CmsMiniDisplayComponent: handleMiniDisplayChangeEvent:: Current display [id: ${aResponseBody.id}] deleted. Routing to display list.`);
-
                     // remove display from session storage and route to display list
                     this.storageManager.remove(CMS_SESSION_STORAGE_ITEM.Display);
                     this.router.navigate(["/displays-panel"]);
@@ -413,7 +408,6 @@ export class CmsMiniDisplayComponent implements OnInit, OnChanges, OnDestroy {
                     this.checkDisplayContentVisibility();
                 }
                 break;
-
             default:
         }
     }
@@ -503,7 +497,6 @@ export class CmsMiniDisplayComponent implements OnInit, OnChanges, OnDestroy {
         */
 
         this.touchstartSubscription = Observable.fromEvent(document, "touchstart").subscribe(enablePinch);
-
         this.touchendSubscription = Observable.fromEvent(document, "touchend").subscribe(disablePinch);
 
         manager.on("pinchin", (e) => {
@@ -528,7 +521,6 @@ export class CmsMiniDisplayComponent implements OnInit, OnChanges, OnDestroy {
         if (!event.ctrlKey) {
             return;
         }
-
         // perform zoom out on CTRL++
         if (event.which === 61 || event.which === 107 || event.which === 187) {
             this.zoom(-100);
@@ -551,7 +543,7 @@ export class CmsMiniDisplayComponent implements OnInit, OnChanges, OnDestroy {
         let currentHeight = parseInt(this.mMiniDisplayStyle.height);
 
         // container is the first div of component template
-        let container: HTMLElement = this.domManager.NthChild(0),
+        let container: HTMLElement = document.getElementById("mini-display-container"),
             containerWidth = container.getBoundingClientRect().width,
             containerHeight = container.getBoundingClientRect().height,
             deltaZoom = 10, scrollWidth = 23;
@@ -619,7 +611,7 @@ export class CmsMiniDisplayComponent implements OnInit, OnChanges, OnDestroy {
         this.mMiniDisplayCmsEvent = CmsEventEmitterService.get(CMS_EVENTS.MiniDisplay).subscribe((res: { eventType: string, body: any, displayId: number }) => {
             // return if event received is for other display
             if (res.displayId !== this.display.id && res.eventType !== "ResourceUpdated" && res.eventType !== "ResourceDeleted") {
-                return;
+                return; 
             }
 
             this.appConfig.log("CmsMiniDisplayComponent: Display change event received.");

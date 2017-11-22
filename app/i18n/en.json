@@ -118,7 +118,8 @@
         "next": "Next",
         "yes": "Yes",
         "no": "No",
-        "ok": "OK"
+        "ok": "OK",
+        "logout" : "Log Off"
     },
     "tilePresetList": {
         "unavailable": "No Tile Layouts",
