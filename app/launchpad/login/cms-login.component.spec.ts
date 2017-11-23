@@ -158,7 +158,7 @@ describe("CmsLoginComponent", () => {
         component.onLoginSubmit();
         fixture.detectChanges();
         fixture.whenStable().then(() => {
-            let userModel = JSON.parse(storageManager.get(CMS_SESSION_STORAGE_ITEM.User));
+            let userModel = JSON.parse(storageManager.get(CMS_SESSION_STORAGE_ITEM.USER));
             if(userModel) {
                 expect(userModel.username).toEqual(MockUser.username);
                 expect(userModel.loggedIn).toEqual(true);

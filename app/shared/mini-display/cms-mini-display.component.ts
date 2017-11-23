@@ -172,7 +172,7 @@ export class CmsMiniDisplayComponent implements OnInit, OnChanges, OnDestroy {
         this.mShowDisplayContent = false;
 
         // get selected display from session storage
-        let display = this.storageManager.get(CMS_SESSION_STORAGE_ITEM.Display);
+        let display = this.storageManager.get(CMS_SESSION_STORAGE_ITEM.DISPLAY);
         this.display = JSON.parse(display);
 
         if (this.display !== null && this.display !== undefined) {
@@ -346,7 +346,7 @@ export class CmsMiniDisplayComponent implements OnInit, OnChanges, OnDestroy {
 
             // This event is received when current display property is updated
             case "DisplayUpdated":
-                let display = JSON.parse(this.storageManager.get(CMS_SESSION_STORAGE_ITEM.Display));
+                let display = JSON.parse(this.storageManager.get(CMS_SESSION_STORAGE_ITEM.DISPLAY));
 
                 // update display name in the toolbar
                 if (display.name !== aResponseBody.name) {
@@ -359,7 +359,7 @@ export class CmsMiniDisplayComponent implements OnInit, OnChanges, OnDestroy {
                 }
 
                 // update display stored in session storage
-                this.storageManager.set(CMS_SESSION_STORAGE_ITEM.Display, JSON.stringify(aResponseBody));
+                this.storageManager.set(CMS_SESSION_STORAGE_ITEM.DISPLAY, JSON.stringify(aResponseBody));
 
                 break;
 
@@ -369,7 +369,7 @@ export class CmsMiniDisplayComponent implements OnInit, OnChanges, OnDestroy {
                 if (this.display.id === aResponseBody.id) {
                     this.appConfig.log(`CmsMiniDisplayComponent: handleMiniDisplayChangeEvent:: Current display [id: ${aResponseBody.id}] deleted. Routing to display list.`);
                     // remove display from session storage and route to display list
-                    this.storageManager.remove(CMS_SESSION_STORAGE_ITEM.Display);
+                    this.storageManager.remove(CMS_SESSION_STORAGE_ITEM.DISPLAY);
                     this.router.navigate(["/displays-panel"]);
                 }
                 break;

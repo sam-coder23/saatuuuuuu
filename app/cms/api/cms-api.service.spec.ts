@@ -316,7 +316,7 @@ describe("Service: CmsApiService", () => {
                 })
             ));
         });
-        cmsApiService.getTilers().subscribe(data => {
+        cmsApiService.getTilePresets().subscribe(data => {
             expect(data).toEqual(responseBody);
         });
     });

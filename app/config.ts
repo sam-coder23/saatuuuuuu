@@ -29,8 +29,8 @@ class AppConfig {
 
         this.host = location.host;
         this.serverURL = `${location.protocol}//${this.host}/cms-rest/v1`;
-        this.defaultLanguage = CMSConstants.DefaultLanguage;
-        this.copyrightYear = CMSConstants.CopyrightYear;
+        this.defaultLanguage = CMSConstants.DEFAULTLANGUAGE;
+        this.copyrightYear = CMSConstants.COPYRIGHTYEAR;
     }
 
     /**

@@ -36,7 +36,7 @@ export class CmsDisplayNameComponent implements OnInit, OnDestroy {
      * @method setDisplayName
      */
     public setDisplayName() {
-        let display = this.storageManager.get(CMS_SESSION_STORAGE_ITEM.Display);
+        let display = this.storageManager.get(CMS_SESSION_STORAGE_ITEM.DISPLAY);
 
         if (!Validation.IsNull(display)) {
             display = JSON.parse(display);
@@ -52,7 +52,7 @@ export class CmsDisplayNameComponent implements OnInit, OnDestroy {
     public subscribeDisplayEvents() {
         this.displayEventsSubscription = CmsEventEmitterService.get(CMS_EVENTS.DisplayList)
             .subscribe((response: { uri: string, body: any, verb: string }) => {
-                let display = this.storageManager.get(CMS_SESSION_STORAGE_ITEM.Display);
+                let display = this.storageManager.get(CMS_SESSION_STORAGE_ITEM.DISPLAY);
 
                 /**
                  *  return 

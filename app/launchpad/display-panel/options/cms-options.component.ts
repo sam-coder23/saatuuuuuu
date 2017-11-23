@@ -1,9 +1,3 @@
-/**
- * Copyright (c) 2016 Barco n.v. All Rights Reserved. This software is confidential and proprietary information of Barco n.v.
- * ("Confidential Information"). You shall not disclose such Confidential Information and shall use it only in accordance with
- * the terms of the license agreement you entered into with Barco.
- */
-
 import { Component, OnInit, Input, Output, EventEmitter, ViewChild } from "@angular/core";
 import { Router, ActivatedRoute, Params } from "@angular/router";
 
@@ -12,12 +6,8 @@ import { KeyManager } from "../../../utils/key-manager.util";
 import { CmsApiService } from "../../../cms/api/cms-api.service";
 import { StorageManager } from "../../../cms/api/cms-storagemanager.service";
 import { CMS_SESSION_STORAGE_ITEM } from "../../../cms/models/cms-session-storage-item";
-import { CMSConstants } from "../../../cms/models/cms-constants";
 import { AppConfig } from "../../../config";
 
-/**
- * This component act as a sidenav for mini-display view. It provides various menu options to the user for launchpad.
- */
 @Component({
     //moduleId: module.id,
     selector: "cms-options",
@@ -25,40 +15,40 @@ import { AppConfig } from "../../../config";
     styles: [require("to-string!./cms-options.component.scss")]
 })
 
+/**
+ * This class handle sidenav for mini-display view. It provides various menu options to the user for application.
+ * @class CmsOptionsComponent
+ * @property {number} displayId
+ * @property {object} keyManager
+ * @property {number} zoomLevel
+ * @property {EventEmitter} closeEmitter
+`* @property {EventEmitter} fitHeightEmitter 
+ * @property {boolean} disableOptionOnDisplayUnavailable
+ */
 export class CmsOptionsComponent implements OnInit {
 
     private displayId: number;
-
     private keyManager = new KeyManager();
 
+    //This flag will disable certain options if display is not available
+    private disableOptionOnDisplayUnavailable: boolean;
+
     // zoom level of mini-Display
-    @Input("zoom") mZoomLevel: number;
-    
+    @Input("zoom") zoomLevel: number;
+
     // Create a "close" event
     @Output("close") closeEmitter = new EventEmitter();
 
-    @Output("fitHeight") fitHeightEmitter = new EventEmitter();
+    // create "fit-height" event mini-display
+    @Output("fitHeight") fitHeightEmitter = new EventEmitter(); 
 
-    /**
-     * Sidenav: https://github.com/angular/material2/blob/master/src/lib/sidenav/README.md
-     * ViewChild: http://stackoverflow.com/questions/34517969/access-a-local-variable-from-the-template-in-the-controller-in-angular2
-     */
     @ViewChild("sidenav") sidenav;
 
-    // this flag will disable certain options if display is not available
-    private disableOptionOnDisplayUnavailable: boolean;
-
-    /**
-     * The constructor initializes various dependencies.
-     */
     constructor(private route: ActivatedRoute, private router: Router, private cmsApiService: CmsApiService, private storageManager: StorageManager, private appConfig: AppConfig) {
         this.disableOptionOnDisplayUnavailable = false;
     }
 
-    /**
-     * On component initialization, add close event listener.
-     */
-    ngOnInit() {
+    public ngOnInit() {
         EventManager.addEvent("keyup", this.onKeyUP.bind(this));
 
         // Open sidenav with animation
@@ -75,29 +65,30 @@ export class CmsOptionsComponent implements OnInit {
     }
 
     /**
-     * This will return the logged in user name.
-     * Being used by template 
+     * This will return the logged in user name. Being used by template 
      * @property UserName {String}
      * @return {String}
      */
-    public get UserName(): string {
-        let user = JSON.parse(this.storageManager.get(CMS_SESSION_STORAGE_ITEM.User));
+    private get UserName(): string {
+        let user = JSON.parse(this.storageManager.get(CMS_SESSION_STORAGE_ITEM.USER));
         return user.username;
     }
 
     /**
      * This method closes options sidenav and removes keyup event listener from document.
      * Also emit close event to its host component.
+     * @method {void} close
      */
-    public close() {
+    private close(): void{
         EventManager.removeEvent("keyup", this.onKeyUP);
         this.closeEmitter.emit();
     }
 
     /**
      * This method performs browser refresh.
+     * @method {void} refresh
      */
-    public refresh() {
+    private refresh(): void {
         window.location.reload(true);
     }
 
@@ -105,17 +96,17 @@ export class CmsOptionsComponent implements OnInit {
      * This emits fit height event to its host component and closes the sidenav
      * @method {void} onFitHeightClick
      */
-    public onFitHeightClick(): void {
+    private onFitHeightClick(): void {
         this.fitHeightEmitter.emit();
         this.sidenav.close()
     }
 
     /**
      * This event handler will be invoked when user will press escape key.
-     * @method onKeyUP
+     * @method { void } onKeyUP
      * @param e - Native event object provided by the browser when key is pressed   
      */
-    private onKeyUP(e) {
+    private onKeyUP(e): void{
         if (this.keyManager.IsEscapeKey(e)) {
             this.sidenav.close()
         }

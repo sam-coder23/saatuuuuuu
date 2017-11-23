@@ -1,15 +1,11 @@
 /**
- * Copyright (c) 2016 Barco n.v. All Rights Reserved. This software is confidential and proprietary information of Barco n.v.
- * ("Confidential Information"). You shall not disclose such Confidential Information and shall use it only in accordance with
- * the terms of the license agreement you entered into with Barco.
+ * Specifies the model of TileContent.
+ * Inherits source's properties as source is presented as tile content on mini-display. 
  */
-
 import { Tile } from "./cms-tile";
 import { Source } from "./cms-source";
 
-/**
- * The interface defines the model for the tile content object.
- */
+
 export class TileContent extends Source {
     // id of any type of resource shared on display
     resourceId: number;

@@ -161,7 +161,7 @@ class MockCmsApiService {
 }
 
 class MockCmsSettingsService {
-    public mUserSettings: IUserProfileSettings = {
+    public userSettings: IUserProfileSettings = {
         "language": "en",
         "wallConnection": {
             "startUpAction": "show-available-walls-list",
@@ -271,7 +271,7 @@ describe("CmsSourceListComponent", () => {
             expect(debugInstance.mSources.length).toEqual(sources.length);
             expect(debugInstance.mScroller.dataCount).toBe(sources.length);
             expect(debugInstance.mScroller.max).not.toBeNull();
-            expect(debugInstance.mScroller.count).toEqual(cmsSettingsService.mUserSettings.pageSize);
+            expect(debugInstance.mScroller.count).toEqual(cmsSettingsService.userSettings.pageSize);
             expect(debugInstance.mScrollTarget.id).toEqual("source-list-card-container");
 
             debugInstance.cmsSettingsService.selectedSources = [];

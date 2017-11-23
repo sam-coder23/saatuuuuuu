@@ -39,7 +39,7 @@ class MockCmsEventEmitterService{
 }
 
 class MockSettingsService {
-    mUserSettings = settings;
+    userSettings = settings;
     updateWallConnectionSpecificDisplay() {
         return Observable.of(null);
     }
@@ -253,7 +253,7 @@ describe("CmsDisplayListComponent", () => {
         component.connectWall(displays[0]);
         expect(cmsSettingsService.updateWallConnectionRecentDisplay).toHaveBeenCalled();
         let displayStringify = JSON.stringify(displays[0]);
-        expect(window.sessionStorage.getItem(CMS_SESSION_STORAGE_ITEM.Display)).toEqual(displayStringify);
+        expect(window.sessionStorage.getItem(CMS_SESSION_STORAGE_ITEM.DISPLAY)).toEqual(displayStringify);
         let args = spyRouter.calls.mostRecent().args;
         expect(debugInstance.cmsSettingsService.selectedSources.length).toEqual(0);
         expect(args[0]).toEqual([`/displays/${displays[0].id}/sources-panel`]);
@@ -275,7 +275,7 @@ describe("CmsDisplayListComponent", () => {
         fixture.detectChanges();
         fixture.whenStable().then(() => {
             expect(debugInstance.showConfirmationPopup).toBeFalsy();
-            expect(JSON.parse(window.sessionStorage.getItem(CMS_SESSION_STORAGE_ITEM.Display))).not.toBeNull();
+            expect(JSON.parse(window.sessionStorage.getItem(CMS_SESSION_STORAGE_ITEM.DISPLAY))).not.toBeNull();
             expect(storageManager.remove).toHaveBeenCalled();
         });
     });

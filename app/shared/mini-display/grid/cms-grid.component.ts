@@ -81,7 +81,7 @@ export class CmsGridComponent implements OnInit, AfterViewInit {
      */
     private applySourceLabelSettings(): void {
         //get user settings from cms-settings-service
-        let userSettings = this.cmsSettingsService.mUserSettings
+        let userSettings = this.cmsSettingsService.userSettings
 
         let isSourceLableEnabled = userSettings.sourceLabel.displaySourceNameLabels ? "block" : "none";
         let fontSize = userSettings.sourceLabel.fontSize;

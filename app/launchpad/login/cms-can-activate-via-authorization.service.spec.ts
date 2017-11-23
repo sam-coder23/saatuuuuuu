@@ -37,13 +37,13 @@ describe("CmsCanActivateViaAuthorizationService should", () => {
     });
 
     it("not be be able to hit route when user is not logged in", () => {
-        storageManager.set(CMS_SESSION_STORAGE_ITEM.User, "{}");
+        storageManager.set(CMS_SESSION_STORAGE_ITEM.USER, "{}");
         cmsCanActivateViaAuthorizationService.canActivate(next, state);
         expect(router.navigate).toHaveBeenCalledWith(["/login"]);
     });
 
     it("be able to hit route when user is logged in", () => {
-        storageManager.set(CMS_SESSION_STORAGE_ITEM.User, JSON.stringify(user));
+        storageManager.set(CMS_SESSION_STORAGE_ITEM.USER, JSON.stringify(user));
         expect(cmsCanActivateViaAuthorizationService.canActivate(next, state)).toBe(true);
     });
     

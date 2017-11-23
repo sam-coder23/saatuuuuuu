@@ -892,7 +892,7 @@ export class CmsApiService {
 
         if (eventObject.body) {
             let verb: string = eventObject.verb ? eventObject.verb.toLowerCase() : "";
-            let user = JSON.parse(this.storageManager.get(CMS_SESSION_STORAGE_ITEM.User));
+            let user = JSON.parse(this.storageManager.get(CMS_SESSION_STORAGE_ITEM.USER));
 
             if (!user && !user.username) {
                 return;
@@ -950,12 +950,31 @@ export class CmsApiService {
      * APIs for /tilers
      */
 
-
     /**
-     * getTilers
+     * @method - returns list of tilePresets filtered by number of tiles
+     * @param {tilesCount} - filter tilePresets by number of tiles if passed more than zero
+     * @returns {Observable<ITilePreset[]>}
      */
-    public getTilers(): Observable<ITilePreset[]> {
-        return this.apiRequest.get("tilers");
+    public getTilePresets(tilesCount: number = 0): Observable<ITilePreset[]> {
+        let observableTilePresets: Observable<ITilePreset[]> = this.apiRequest.get("tilers");
+
+        if (observableTilePresets) {
+            if (tilesCount > 0) {
+                return observableTilePresets.map(tilePresets => {
+                    if (tilePresets) {
+                        return tilePresets.filter(tilePreset => {
+                            return tilePreset.noOfTiles === tilesCount;
+                        });
+                    } else {
+                        return [];
+                    };
+                });
+            };
+
+            return observableTilePresets;
+        } else {
+            return Observable.of([]);
+        };
     }
 
     /**

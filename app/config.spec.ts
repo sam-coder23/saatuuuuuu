@@ -7,8 +7,8 @@ describe("Service: App Config", () => {
     let appConfig, spyOnConsole;
     let serverURLExpectedValue = "";
     let hostExpectedValue = window.document.location.host;
-    let defaultLanguageExpectedValue = CMSConstants.DefaultLanguage;
-    let copyrightYearExpectedValue = CMSConstants.CopyrightYear;
+    let defaultLanguageExpectedValue = CMSConstants.DEFAULTLANGUAGE;
+    let copyrightYearExpectedValue = CMSConstants.COPYRIGHTYEAR;
 
     serverURLExpectedValue = `${window.document.location.protocol}//${window.document.location.host}/cms-rest/v1`;    
 

@@ -135,7 +135,7 @@ export class CmsDisplayListComponent implements OnChanges, OnDestroy {
                 //update recentDisplayId on user profile data 
                 this.cmsSettingsService.updateWallConnectionRecentDisplay(display);
 
-                this.storageManager.set(CMS_SESSION_STORAGE_ITEM.Display, JSON.stringify(display));
+                this.storageManager.set(CMS_SESSION_STORAGE_ITEM.DISPLAY, JSON.stringify(display));
                 this.cmsSettingsService.selectedSources.length = 0;
                 this.mRouter.navigate([`/displays/${display.id}/sources-panel`]);
             }
@@ -203,9 +203,9 @@ export class CmsDisplayListComponent implements OnChanges, OnDestroy {
                 display.disabled = true;
             }
 
-            display = JSON.parse(this.storageManager.get(CMS_SESSION_STORAGE_ITEM.Display));
+            display = JSON.parse(this.storageManager.get(CMS_SESSION_STORAGE_ITEM.DISPLAY));
             if (display && display.id === id) {
-                this.storageManager.remove(CMS_SESSION_STORAGE_ITEM.Display);
+                this.storageManager.remove(CMS_SESSION_STORAGE_ITEM.DISPLAY);
             }
         }
         this.changeEmitter.emit();

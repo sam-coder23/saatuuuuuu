@@ -39,7 +39,7 @@ export class CmsSourcesPanelComponent implements OnInit {
     private isFavoriteFilter: boolean;
     public searchFilter: string;
     public searchKey: string;
-
+    private domManager: DomManager;
     // all boolean states for the template
     mStates = {
         reload: false,
@@ -61,12 +61,14 @@ export class CmsSourcesPanelComponent implements OnInit {
      * The constructor initializes various dependencies.
      */
     constructor(aRoute: ActivatedRoute, private appConfig: AppConfig, private storageManager: StorageManager,
-        private router: Router, private cmsSettingService: CmsSettingsService, private translate: TranslateService, private aCmsServerApi: CmsApiService) {
-        this.isFavoriteFilter = (this.storageManager.get(CMS_SESSION_STORAGE_ITEM.SourcesFavoriteFilter) === "true") || false;
-        this.searchFilter = this.storageManager.get(CMS_SESSION_STORAGE_ITEM.SourcesSearchFilter) || "";
+        private router: Router, private cmsSettingService: CmsSettingsService, private translate: TranslateService, 
+        private aCmsServerApi: CmsApiService, private element: ElementRef) {
+        this.isFavoriteFilter = (this.storageManager.get(CMS_SESSION_STORAGE_ITEM.SOURCES_FAVORITE_FILTER) === "true") || false;
+        this.searchFilter = this.storageManager.get(CMS_SESSION_STORAGE_ITEM.SOURCES_SEARCH_FILTER) || "";
         this.searchKey = this.searchFilter;
         this.mRoute = aRoute;
         this.mCmsServerApi = aCmsServerApi;
+        this.domManager = new DomManager(this.element);
     }
 
     /**
@@ -94,13 +96,13 @@ export class CmsSourcesPanelComponent implements OnInit {
          * HTML search input control and update the searchFilter by
          * subscribing this Observable
          */
-        let searchInput = document.getElementById("sources-panel-search-input");
+        let searchInput = this.domManager.getElementById("sources-panel-search-input");
         Observable.fromEvent(searchInput, "keyup")
             .map((e: any) => e.target.value.trim())
             .debounceTime(500)
             .subscribe(searchString => {
                 this.searchFilter = searchString;
-                this.storageManager.set(CMS_SESSION_STORAGE_ITEM.SourcesSearchFilter, searchString);
+                this.storageManager.set(CMS_SESSION_STORAGE_ITEM.SOURCES_SEARCH_FILTER, searchString);
             });
     };
 
@@ -109,7 +111,7 @@ export class CmsSourcesPanelComponent implements OnInit {
      */
     setFavourite(): void {
         this.isFavoriteFilter = !this.isFavoriteFilter;
-        this.storageManager.set(CMS_SESSION_STORAGE_ITEM.SourcesFavoriteFilter, this.isFavoriteFilter);
+        this.storageManager.set(CMS_SESSION_STORAGE_ITEM.SOURCES_FAVORITE_FILTER, this.isFavoriteFilter);
     }
 
     /**
@@ -135,7 +137,7 @@ export class CmsSourcesPanelComponent implements OnInit {
      * Focus on search input box
      */
     private initializeSearch(e): void {
-        let mdsearch = document.getElementById("sources-panel-search-input");
+        let mdsearch = this.domManager.getElementById("sources-panel-search-input");
         let searchInput: NodeListOf<HTMLInputElement>;
         if (mdsearch) {
             searchInput = mdsearch.getElementsByTagName("input");
@@ -165,7 +167,7 @@ export class CmsSourcesPanelComponent implements OnInit {
             "resources": resources
         };
 
-        this.mCmsServerApi.getTilers().subscribe((tilers) => {
+        this.mCmsServerApi.getTilePresets().subscribe((tilers) => {
             let tileId = TilePresetManager.GetTileId(tilers, selectedSourcesLength, this.mDisplayId);
 
             if (tileId === 0) {

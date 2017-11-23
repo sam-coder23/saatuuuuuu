@@ -65,11 +65,11 @@ describe("CmsTilesPanelComponent - Test Suite", () => {
 
         fixture.detectChanges();
 
-        expect(component["mDisplayId"]).toEqual(1);
+        expect(component["displayId"]).toEqual(1);
         expect(component["sourceCount"]).toEqual(1);
 
-        expect(component.mStates.list).toBeTruthy();
-        expect(component.mStates.reload).toBeFalsy();
+        expect(component.viewState.list).toBeTruthy();
+        expect(component.viewState.reload).toBeFalsy();
 
         let reloadButton: DebugElement = fixture.debugElement.query(By.css("#tiles-panel-reload-button"));
         expect(reloadButton).toBeFalsy();
@@ -88,7 +88,7 @@ describe("CmsTilesPanelComponent - Test Suite", () => {
         buttonNext.triggerEventHandler("click", null);
 
         expect(spyNavigateByUrl.calls.count()).toEqual(1);
-        expect(spyNavigateByUrl.calls.argsFor(0)[0]).toEqual(`display-panel/${component["mDisplayId"]}`);
+        expect(spyNavigateByUrl.calls.argsFor(0)[0]).toEqual(`display-panel/${component["displayId"]}`);
     });
 
     it("should have back button and onclick it navigates to back history", () => {
@@ -96,9 +96,9 @@ describe("CmsTilesPanelComponent - Test Suite", () => {
 
         let buttonBack: DebugElement = fixture.debugElement.query(By.css("#tiles-panel-back-button"));
         expect(buttonBack).toBeDefined();
-        
+
         let spyWindowHistoryBack = spyOn(window.history, "back").and.returnValue(null);
-        
+
         buttonBack.triggerEventHandler("click", null);
 
         expect(spyWindowHistoryBack).toHaveBeenCalled();
@@ -107,12 +107,12 @@ describe("CmsTilesPanelComponent - Test Suite", () => {
 
     it("should set reload to TRUE on list change", () => {
         component.onListChanged();
-        expect(component.mStates.reload).toBeTruthy();
+        expect(component.viewState.reload).toBeTruthy();
     });
 
     it("should set reload and list to FALSE on reload list", () => {
         component.reloadList();
-        expect(component.mStates.reload).toBeFalsy();
-        expect(component.mStates.list).toBeFalsy();
+        expect(component.viewState.reload).toBeFalsy();
+        expect(component.viewState.list).toBeFalsy();
     });
 });

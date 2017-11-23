@@ -147,8 +147,8 @@ describe("CmsLaunchpadComponent", () => {
             cmsSettingsService = fixture.debugElement.injector.get(CmsSettingsService);
             appConfig = fixture.debugElement.injector.get(AppConfig);
             spyOn(cmsApiService, "logout").and.returnValue(Observable.of(null));
-            storageManager.set(CMS_SESSION_STORAGE_ITEM.User, null);
-            storageManager.set(CMS_SESSION_STORAGE_ITEM.Settings, null);
+            storageManager.set(CMS_SESSION_STORAGE_ITEM.USER, null);
+            storageManager.set(CMS_SESSION_STORAGE_ITEM.SETTINGS, null);
             // iconRegistry = fixture.debugElement.injector.get(MdIconRegistry);
             // spyOnAddSvgIcon = spyOn(iconRegistry, "addSvgIcon");
         });
@@ -210,7 +210,7 @@ describe("CmsLaunchpadComponent", () => {
     it("should route to login page if user session is empty", (done) => {
         fixture.detectChanges();
         fixture.whenStable().then(() => {
-            if (!storageManager.get(CMS_SESSION_STORAGE_ITEM.User)) {
+            if (!storageManager.get(CMS_SESSION_STORAGE_ITEM.USER)) {
                 expect(router.navigate).toHaveBeenCalledWith(["/login"]);
             }
             done();
@@ -220,23 +220,23 @@ describe("CmsLaunchpadComponent", () => {
     it(`should reconnect session with server and have settings data into session and
         apply user selected language and test auto logout functionality
         and application events`, (done) => {
-            storageManager.set(CMS_SESSION_STORAGE_ITEM.User, JSON.stringify(userData));
-            storageManager.set(CMS_SESSION_STORAGE_ITEM.Settings, JSON.stringify(settingsData));
+            storageManager.set(CMS_SESSION_STORAGE_ITEM.USER, JSON.stringify(userData));
+            storageManager.set(CMS_SESSION_STORAGE_ITEM.SETTINGS, JSON.stringify(settingsData));
             spyOn(cmsApiService, "reconnectSessionWithServer");
             fixture.detectChanges();
             fixture.whenStable().then(() => {
                 expect(cmsApiService.reconnectSessionWithServer).toHaveBeenCalled();
-                expect(cmsSettingsService.mUserSettings).toEqual(JSON.parse(storageManager.get(CMS_SESSION_STORAGE_ITEM.Settings)));
-                expect(cmsSettingsService.mUserSettings.language).toEqual(appConfig.DefaultLanguage);
+                expect(cmsSettingsService.userSettings).toEqual(JSON.parse(storageManager.get(CMS_SESSION_STORAGE_ITEM.SETTINGS)));
+                expect(cmsSettingsService.userSettings.language).toEqual(appConfig.DefaultLanguage);
                 nativeElement.click();
                 setTimeout(() => {
                     expect(cmsApiService.logout).toHaveBeenCalled();
 
-                    cmsSettingsService.mUserSettings.logOffTime = 10;
-                    let userLastActionTime = storageManager.get(CMS_SESSION_STORAGE_ITEM.UserLastActionTime);
+                    cmsSettingsService.userSettings.logOffTime = 10;
+                    let userLastActionTime = storageManager.get(CMS_SESSION_STORAGE_ITEM.USER_LASTACTION_TIME);
                     nativeElement.click();
                     setTimeout(() => {
-                        expect(parseInt(userLastActionTime)).toBeLessThan(parseInt(storageManager.get(CMS_SESSION_STORAGE_ITEM.UserLastActionTime)));
+                        expect(parseInt(userLastActionTime)).toBeLessThan(parseInt(storageManager.get(CMS_SESSION_STORAGE_ITEM.USER_LASTACTION_TIME)));
                         done();
                     }, 1500);
                 }, 2000);
@@ -294,11 +294,11 @@ describe("CmsLaunchpadComponent", () => {
         });
 
     it("should set user last action time", async(() => {
-        storageManager.set(CMS_SESSION_STORAGE_ITEM.User, JSON.stringify(userData));
-        storageManager.set(CMS_SESSION_STORAGE_ITEM.Settings, JSON.stringify(settingsData));
+        storageManager.set(CMS_SESSION_STORAGE_ITEM.USER, JSON.stringify(userData));
+        storageManager.set(CMS_SESSION_STORAGE_ITEM.SETTINGS, JSON.stringify(settingsData));
         fixture.detectChanges();
         fixture.whenStable().then(() => {
-            expect(storageManager.get(CMS_SESSION_STORAGE_ITEM.UserLastActionTime)).toBeDefined();
+            expect(storageManager.get(CMS_SESSION_STORAGE_ITEM.USER_LASTACTION_TIME)).toBeDefined();
         });
     }));
 

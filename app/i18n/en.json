@@ -90,7 +90,8 @@
         "licenseStatus": "License status:",
         "server": "Server:",
         "contentText": "This product is licensed under the terms of Barco N.V. and shall be used in accordance with the terms of the license agreement. For complete license information, please refer to the Readme file.",
-        "copyrightText": "Copyright \u24b8 {{value}}, Barco N.V. All Rights Reserved."
+        "copyrightText": "Copyright \u24b8 {{value}}, Barco N.V. All Rights Reserved.",
+        "licenceValid": "License valid"
     },
     "dialog": {
         "cancel": "CANCEL",

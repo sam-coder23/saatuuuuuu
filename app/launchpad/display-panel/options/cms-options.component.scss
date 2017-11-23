@@ -42,15 +42,15 @@
     font-size: 22px;
 }
 
-#options [md-button] md-icon,
-#options [md-button] .material-icons,
-#options [md-button] .material-icons img{
+.side-nav-options [md-button] md-icon,
+.side-nav-options [md-button] .material-icons,
+.side-nav-options [md-button] .material-icons img{
     font-size: 30px !important;
     width: 30px !important;
     height: 30px !important;
 }
 
-#options [md-button] {
+.side-nav-options [md-button] {
     padding: 3px 12px;
     width: 100%;
     min-width: 100%;
@@ -60,7 +60,7 @@
     white-space: normal;
 }
 
-#options [md-button] span {
+.side-nav-options [md-button] span {
     font-size: 18px;
     line-height: 24px;
     padding: 0 16px;

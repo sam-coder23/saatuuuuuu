@@ -34,8 +34,8 @@ describe("CmsMiniDisplayComponent", () => {
     let change: any = {
         "fitHeight": {
             "isFirstChange": function(){return null;}
-          }
         }
+    };
     let logSpy: jasmine.Spy, navigateSpy, addEventSpy, deleteEventSpy, hammerOnSpy;
 
     beforeEach(async(() => {
@@ -72,12 +72,12 @@ describe("CmsMiniDisplayComponent", () => {
             logSpy = spyOn(appConfig, "log").and.returnValue(Observable.of(null));
             addEventSpy = spyOn(EventManager, "addEventOnElement").and.returnValue(Observable.of(null));
             navigateSpy = spyOn(router, "navigate").and.returnValue(Observable.of(null));
-            sessionStorage.setItem(CMS_SESSION_STORAGE_ITEM.Display, JSON.stringify(mDisplay));
+            sessionStorage.setItem(CMS_SESSION_STORAGE_ITEM.DISPLAY, JSON.stringify(mDisplay));
         });
     }));
 
     beforeEach(() => {
-        sessionStorage.setItem(CMS_SESSION_STORAGE_ITEM.Display, JSON.stringify(mDisplay));
+        sessionStorage.setItem(CMS_SESSION_STORAGE_ITEM.DISPLAY, JSON.stringify(mDisplay));
         debugInstance.zoomlevel = 0;
         hammerOnSpy =  spyOn(Hammer, "on").and.returnValue(Observable.of(null));
         component.fitHeight = 100;
@@ -155,7 +155,7 @@ describe("CmsMiniDisplayComponent", () => {
                 "displayId": component.display.id,
             }
         );
-        expect(sessionStorage.getItem(CMS_SESSION_STORAGE_ITEM.Display)).toEqual(JSON.stringify(EventCases.DisplayUpdated));
+        expect(sessionStorage.getItem(CMS_SESSION_STORAGE_ITEM.DISPLAY)).toEqual(JSON.stringify(EventCases.DisplayUpdated));
         debugInstance.mMiniDisplayCmsEvent.next(
             {
                 "eventType": "DisplayDeleted",
@@ -166,7 +166,7 @@ describe("CmsMiniDisplayComponent", () => {
         let args = navigateSpy.calls.mostRecent().args;
         expect(args[0]).toEqual(["/displays-panel"]);
         expect(appConfig.log).toHaveBeenCalled();
-        expect(sessionStorage.getItem(CMS_SESSION_STORAGE_ITEM.Display)).toBeNull();
+        expect(sessionStorage.getItem(CMS_SESSION_STORAGE_ITEM.DISPLAY)).toBeNull();
         debugInstance.mMiniDisplayCmsEvent.next(
             {
                 "eventType": "TilerAndContentUpdated",
@@ -244,7 +244,7 @@ describe("CmsMiniDisplayComponent", () => {
         debugInstance.subscribeWindowResize();
         expect(debugInstance.windowResizeSubscription).toBeDefined();
         debugInstance.windowResizeSubscription.next();
-        expect(JSON.stringify(component.display)).toEqual(sessionStorage.getItem(CMS_SESSION_STORAGE_ITEM.Display));
+        expect(JSON.stringify(component.display)).toEqual(sessionStorage.getItem(CMS_SESSION_STORAGE_ITEM.DISPLAY));
         expect(appConfig.log).toHaveBeenCalled();
         expect(component.mMiniDisplayStyle.height).toEqual(miniDisplay.miniDisplaySize.height + "px");
         expect(component.mMiniDisplayStyle.width).toEqual(miniDisplay.miniDisplaySize.width + "px");

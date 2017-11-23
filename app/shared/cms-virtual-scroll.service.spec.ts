@@ -9,7 +9,7 @@ describe("Service: CmsVirtualScrollService", () => {
     let dataStatus = "";
 
     class MockedCmsSettingsService {
-        mUserSettings = {
+        userSettings = {
             defaultPageSize: 20
         }
     };

@@ -1,3 +1,6 @@
+/**
+ * Interface defines the model configuration of TilePreset
+ */
 export interface ITilePreset {
     "id"?: number,
     "name": string,

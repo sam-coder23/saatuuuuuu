@@ -1,5 +1,5 @@
 <md-sidenav-container style="z-index: 5;" fullscreen>
-    <md-sidenav id="options" #sidenav align="start" mode="over" class="side-nav" (close)="close()" (swipeleft)="sidenav.close()">
+    <md-sidenav id="options" #sidenav align="start" mode="over" class="side-nav side-nav-options" (close)="close()" (swipeleft)="sidenav.close()">
         <div class="options-username-icon">
             <i class="material-icons">account_circle</i>
         </div>
@@ -16,7 +16,7 @@
         <div class="options">
             <button md-button disabled="true" id="options-zoom-button">
                 <i class="material-icons">pageview</i>
-                <span>{{'options.zoom' | translate}}{{mZoomLevel}}%</span>
+                <span>{{'options.zoom' | translate}}{{zoomLevel}}%</span>
             </button>
         </div>
         <div class="options">

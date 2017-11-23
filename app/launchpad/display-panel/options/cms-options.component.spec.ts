@@ -157,7 +157,7 @@ describe("CmsOptionsComponent", () => {
     });
 
     it("Should able to get Username as 'bcd-se-test'", () => {
-        expect(component.UserName).toBe("bcd-se-test");
+        expect(debugInstance.UserName).toBe("bcd-se-test");
     });
 
     it("Should have refresh link", () => {
@@ -205,7 +205,7 @@ describe("CmsOptionsComponent", () => {
         spyOn(component.closeEmitter, "emit");
         spyOn(EventManager, "removeEvent");
 
-        component.close();
+        debugInstance.close();
 
         expect(component.closeEmitter.emit).toHaveBeenCalled();
         expect(EventManager.removeEvent).toHaveBeenCalledWith("keyup", debugInstance.onKeyUP);

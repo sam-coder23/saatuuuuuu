@@ -16,9 +16,9 @@
 			<md-card class="setting-card setting-card-language-page">
 				<md-card-content>
 					<md-nav-list dense>
-						<a md-list-item *ngFor="let langauage of mCmsLanguages" (click)="setLanguage(langauage.key)" id="set-langauge-{{langauage.key}}-link"> 
+						<a md-list-item *ngFor="let langauage of cmsLanguages" (click)="setLanguage(langauage.key)" id="set-langauge-{{langauage.key}}-link"> 
 							{{ langauage.value }} 
-							<i class="link-select-icon material-icons" *ngIf="mUserSelectedLanguageKey === langauage.key" id="langauge-{{langauage.key}}-check-icon">done</i>
+							<i class="link-select-icon material-icons" *ngIf="userSelectedLanguageKey === langauage.key" id="langauge-{{langauage.key}}-check-icon">done</i>
 							</a>
 					</md-nav-list>
 				</md-card-content>

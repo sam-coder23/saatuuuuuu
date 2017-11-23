@@ -29,7 +29,7 @@ let spyRouter = {
 };
 
 let mockCmsSettingsData = {
-    "mUserSettings": {
+    "userSettings": {
         "language": "en",
         "wallConnection": {
             "startUpAction": "show-available-walls-list",
@@ -169,12 +169,12 @@ let mockDisplaysData = {
 };
 /**
  * Fake CmsApiService Service
- */ 
+ */
 
 class MockCmsApiService {
 
     getUserProfileSettings(): Promise<any> {
-        return Promise.resolve(mockCmsSettingsData.mUserSettings);
+        return Promise.resolve(mockCmsSettingsData.userSettings);
     }
 
     getSystemInfo(): Observable<any> {
@@ -186,7 +186,7 @@ class MockCmsApiService {
     }
 
     updateUserProfileSettings(data): Promise<IUserProfileSettings> {
-        return Promise.resolve(mockCmsSettingsData.mUserSettings);
+        return Promise.resolve(mockCmsSettingsData.userSettings);
     }
 
     getDisplayList(start: number = 1, count: number = 2147483647, search: string = "", favorite: boolean = false) {
@@ -269,28 +269,28 @@ describe("Component CmsSettingsPanelComponent", () => {
 
     /** CHECK PRIVATE VARIABLES */
     it("should check private variables: ", async(() => {
-        expect(debugInstance.mLoading).toBe(true);
-        expect(debugInstance.fontSizeDefault).toEqual(16);
+        expect(debugInstance.loading).toBe(true);
+        expect(debugInstance.fontSizeDefault).toEqual(CMSConstants.DEFAULT_FONT_SIZE);
         expect(debugInstance.fontSizeSteps.length).toEqual(22);
-        expect(debugInstance.fontSizeSteps).toEqual([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 12, 14, 16, 18, 20, 22, 24, 26, 28, 36, 48, 72]);
-        expect(debugInstance.pageSizeDefault).toEqual(20);
+        expect(debugInstance.fontSizeSteps).toEqual(CMSConstants.FONT_SIZES);
+        expect(debugInstance.pageSizeDefault).toEqual(CMSConstants.DEFAULT_PAGE_SIZE);
         expect(debugInstance.pageSizes.length).toEqual(4);
-        expect(debugInstance.pageSizes).toEqual([20, 30, 40, 50]);
-        expect(debugInstance.transparencyDefault).toEqual(50);
+        expect(debugInstance.pageSizes).toEqual(CMSConstants.PAGE_SIZES);
+        expect(debugInstance.transparencyDefault).toEqual(CMSConstants.DEFAULT_TRANSPARENCY);
         expect(debugInstance.transparencySteps.length).toEqual(11);
-        expect(debugInstance.transparencySteps).toEqual([0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100]);
-        expect(debugInstance.logOffTimeDefault).toEqual(0);
+        expect(debugInstance.transparencySteps).toEqual(CMSConstants.TRANSPARENCY_STEPS);
+        expect(debugInstance.logOffTimeDefault).toEqual(CMSConstants.DEFAULT_LOGOFF_TIME);
         expect(debugInstance.logOffTimeSteps.length).toEqual(7);
-        expect(debugInstance.logOffTimeSteps).toEqual([0, 10, 20, 30, 40, 50, 60]);
-        expect(debugInstance.fontColorDefault).toEqual("#000");
-        expect(debugInstance.backgroundDefault).toEqual("#bdbdbd");
+        expect(debugInstance.logOffTimeSteps).toEqual(CMSConstants.LOGOFF_TIME_STEPS);
+        expect(debugInstance.fontColorDefault).toEqual(CMSConstants.DEFAULT_FONT_COLOR);
+        expect(debugInstance.backgroundDefault).toEqual(CMSConstants.DEFAULT_BACKGROUND_COLOR);
         expect(debugInstance.noDisplayAvailable).toBe(false);
 
     }));
 
     /** LOADING PROGRESS TRUE */
-    it("should check loading-progress-indicator visible when mLoading is true ", (done) => {
-        expect(debugInstance.mLoading).toBe(true);
+    it("should check loading-progress-indicator visible when loading is true ", (done) => {
+        expect(debugInstance.loading).toBe(true);
         fixture.detectChanges();
         fixture.whenStable().then(() => {
             let loadingContent = fixture.nativeElement.querySelector("#loading-progress-indicator");
@@ -303,7 +303,7 @@ describe("Component CmsSettingsPanelComponent", () => {
     it("should check setUserProfileSettings and loadUserProfileSettings and set default values ", () => {
         fixture.detectChanges();
         fixture.whenStable().then(() => {
-            expect(cmsSettingsService.mUserSettings).toBeTruthy();
+            expect(cmsSettingsService.userSettings).toBeTruthy();
             cmsSettingsService.setUserProfileSettings((done) => {
                 debugInstance.loadUserProfileSettings();
                 done();
@@ -312,10 +312,10 @@ describe("Component CmsSettingsPanelComponent", () => {
     });
 
     /** CHECK LOADING PROGRESS DONE */
-    it("should check loading-progress-indicator null when mloading is false ", (done) => {
+    it("should check loading-progress-indicator null when loading is false ", (done) => {
         fixture.detectChanges();
         fixture.whenStable().then(() => {
-            expect(debugInstance.mLoading).toBe(false);
+            expect(debugInstance.loading).toBe(false);
             fixture.detectChanges();
             fixture.whenStable().then(() => {
                 let loadingContent = fixture.nativeElement.querySelector("#loading-progress-indicator");
@@ -326,10 +326,10 @@ describe("Component CmsSettingsPanelComponent", () => {
     });
 
     /** CHECK SETTING CONTENT WRAPPER VISIBLE AFTER LOADING DONE */
-    it("should check settings-content-wrapper visible and mLoading false : ", () => {
+    it("should check settings-content-wrapper visible and loading false : ", () => {
         fixture.detectChanges();
         fixture.whenStable().then(() => {
-            expect(debugInstance.mLoading).toBe(false);
+            expect(debugInstance.loading).toBe(false);
             fixture.detectChanges();
             fixture.whenStable().then(() => {
                 let settingsContentWrapper = fixture.nativeElement.querySelector(".settings-content-wrapper");
@@ -357,7 +357,7 @@ describe("Component CmsSettingsPanelComponent", () => {
     it("should increase time on logoffTime-increase-button click and update value to setting-square-input input ", (done) => {
         fixture.detectChanges();
         fixture.whenStable().then(() => {
-            expect(debugInstance.mLoading).toBe(false);
+            expect(debugInstance.loading).toBe(false);
             fixture.detectChanges();
             fixture.whenStable().then(() => {
                 let logoffTimeIncreaseButton = fixture.nativeElement.querySelector("#logoffTime-increase-button");
@@ -377,7 +377,7 @@ describe("Component CmsSettingsPanelComponent", () => {
     it("should decrease time on logoffTime-decrease-button click and update value to setting-square-input input ", (done) => {
         fixture.detectChanges();
         fixture.whenStable().then(() => {
-            expect(debugInstance.mLoading).toBe(false);
+            expect(debugInstance.loading).toBe(false);
             fixture.detectChanges();
             fixture.whenStable().then(() => {
                 let logoffTimeDecreaseButton = fixture.nativeElement.querySelector("#logoffTime-decrease-button");
@@ -398,7 +398,7 @@ describe("Component CmsSettingsPanelComponent", () => {
     it("should update updateUserSettingsByAction on radio auto-connect-to-most-recent-wall-radio-button change event ", (done) => {
         fixture.detectChanges();
         fixture.whenStable().then(() => {
-            expect(debugInstance.mLoading).toBe(false);
+            expect(debugInstance.loading).toBe(false);
             fixture.detectChanges();
             fixture.whenStable().then(() => {
                 let wallconnectionRadiogroup = fixture.nativeElement.querySelector("#wallconnection-radiogroup");
@@ -407,11 +407,11 @@ describe("Component CmsSettingsPanelComponent", () => {
                 expect(autoConnectToMostRecentWallRadioButton).not.toBeNull();
                 autoConnectToMostRecentWallRadioButton.dispatchEvent(new Event("change"));
                 let $event = { source: "MdRadioButton", value: "auto-connect-to-most-recent-wall" };
-                mockCmsSettingsData.mUserSettings.wallConnection.startUpAction = "auto-connect-to-most-recent-wall";
+                mockCmsSettingsData.userSettings.wallConnection.startUpAction = "auto-connect-to-most-recent-wall";
                 debugInstance.updateUserSettingsByAction($event);
                 fixture.detectChanges();
                 fixture.whenStable().then(() => {
-                    let wallConnectionStatus = JSON.parse(storageManager.get(CMS_SESSION_STORAGE_ITEM.Settings)).wallConnection.startUpAction;
+                    let wallConnectionStatus = JSON.parse(storageManager.get(CMS_SESSION_STORAGE_ITEM.SETTINGS)).wallConnection.startUpAction;
                     expect(wallConnectionStatus).toEqual($event.value);
                 });
             });
@@ -423,7 +423,7 @@ describe("Component CmsSettingsPanelComponent", () => {
     it("should update updateUserSettingsByAction on radio auto-connect-to-specific-wall-select-button change event ", (done) => {
         fixture.detectChanges();
         fixture.whenStable().then(() => {
-            expect(debugInstance.mLoading).toBe(false);
+            expect(debugInstance.loading).toBe(false);
             fixture.detectChanges();
             fixture.whenStable().then(() => {
                 let autoConnectToSpecificWallSelectButton = fixture.nativeElement.querySelector("#auto-connect-to-specific-wall-select-button");
@@ -433,15 +433,15 @@ describe("Component CmsSettingsPanelComponent", () => {
                 expect(autoConnectToSpecificWallRadioButton).toBeTruthy();
                 autoConnectToSpecificWallRadioButton.dispatchEvent(new Event("change"));
                 let $event = { source: "MdRadioButton", value: "auto-connect-to-specific-wall" };
-                mockCmsSettingsData.mUserSettings.wallConnection.startUpAction = "auto-connect-to-specific-wall";
+                mockCmsSettingsData.userSettings.wallConnection.startUpAction = "auto-connect-to-specific-wall";
                 debugInstance.updateUserSettingsByAction($event);
                 fixture.detectChanges();
                 fixture.whenStable().then(() => {
-                    let wallConnectionStatus = JSON.parse(storageManager.get(CMS_SESSION_STORAGE_ITEM.Settings)).wallConnection.startUpAction;
+                    let wallConnectionStatus = JSON.parse(storageManager.get(CMS_SESSION_STORAGE_ITEM.SETTINGS)).wallConnection.startUpAction;
                     expect(wallConnectionStatus).toEqual($event.value);
                     expect(autoConnectToSpecificWallSelectButton.hasAttribute("disabled")).toBe(false);
                     debugInstance.goToSelectDisplayForAutoConnect($event);
-                    expect(spyRouter.navigate).toHaveBeenCalledWith(["/displays-panel", { action: CMSConstants.SELECT_DISPLAY }]);
+                    expect(spyRouter.navigate).toHaveBeenCalledWith(["/displays-panel", { action: CMSConstants.SELECT_DISPLAY }], { skipLocationChange: true });
                 });
             });
         });
@@ -453,7 +453,7 @@ describe("Component CmsSettingsPanelComponent", () => {
     it("should decrease font size on font-decrease-button click and update value to font-size-input", (done) => {
         fixture.detectChanges();
         fixture.whenStable().then(() => {
-            expect(debugInstance.mLoading).toBe(false);
+            expect(debugInstance.loading).toBe(false);
             fixture.detectChanges();
             fixture.whenStable().then(() => {
                 let fontDecreaseButton = fixture.nativeElement.querySelector("#font-decrease-button");
@@ -475,7 +475,7 @@ describe("Component CmsSettingsPanelComponent", () => {
     it("should increase font size on font-increase-button click and update value to font-size-input ", (done) => {
         fixture.detectChanges();
         fixture.whenStable().then(() => {
-            expect(debugInstance.mLoading).toBe(false);
+            expect(debugInstance.loading).toBe(false);
             fixture.detectChanges();
             fixture.whenStable().then(() => {
                 let fontIncreaseButton = fixture.nativeElement.querySelector("#font-increase-button");
@@ -498,7 +498,7 @@ describe("Component CmsSettingsPanelComponent", () => {
     it("should decrease Transparency on transparency-decrease-button click and update value to transparency-input", (done) => {
         fixture.detectChanges();
         fixture.whenStable().then(() => {
-            expect(debugInstance.mLoading).toBe(false);
+            expect(debugInstance.loading).toBe(false);
             fixture.detectChanges();
             fixture.whenStable().then(() => {
                 let transparencyDecreaseButton = fixture.nativeElement.querySelector("#transparency-decrease-button");
@@ -520,7 +520,7 @@ describe("Component CmsSettingsPanelComponent", () => {
     it("should increase Transparency on transparency-increase-button click and update value to transparency-input ", (done) => {
         fixture.detectChanges();
         fixture.whenStable().then(() => {
-            expect(debugInstance.mLoading).toBe(false);
+            expect(debugInstance.loading).toBe(false);
             fixture.detectChanges();
             fixture.whenStable().then(() => {
                 let transparencyIncreaseButton = fixture.nativeElement.querySelector("#transparency-increase-button");
@@ -542,7 +542,7 @@ describe("Component CmsSettingsPanelComponent", () => {
     it("should display defalut page and update selected page ", (done) => {
         fixture.detectChanges();
         fixture.whenStable().then(() => {
-            expect(debugInstance.mLoading).toBe(false);
+            expect(debugInstance.loading).toBe(false);
             fixture.detectChanges();
             fixture.whenStable().then(() => {
                 fixture.detectChanges();
@@ -550,13 +550,13 @@ describe("Component CmsSettingsPanelComponent", () => {
                     let defaultPageSize = fixture.nativeElement.querySelector("md-select[name=" + "pageSize" + "]");
                     fixture.detectChanges();
                     fixture.whenStable().then(() => {
-                        expect(Number(defaultPageSize.getAttribute("ng-reflect-ng-model"))).toEqual(mockCmsSettingsData.mUserSettings.pageSize);
+                        expect(Number(defaultPageSize.getAttribute("ng-reflect-ng-model"))).toEqual(mockCmsSettingsData.userSettings.pageSize);
                         let $event = { source: "MdRadioButton", value: "auto-connect-to-most-recent-wall" };
-                        mockCmsSettingsData.mUserSettings.pageSize = debugInstance.pageSizes[1];
+                        mockCmsSettingsData.userSettings.pageSize = debugInstance.pageSizes[1];
                         debugInstance.updateUserSettingsByAction($event);
                         fixture.detectChanges();
                         fixture.whenStable().then(() => {
-                            expect(Number(defaultPageSize.getAttribute("ng-reflect-ng-model"))).toEqual(mockCmsSettingsData.mUserSettings.pageSize);
+                            expect(Number(defaultPageSize.getAttribute("ng-reflect-ng-model"))).toEqual(mockCmsSettingsData.userSettings.pageSize);
                         });
                     });
                 });
@@ -569,7 +569,7 @@ describe("Component CmsSettingsPanelComponent", () => {
     it("should updateStteingByAction on toggle of display-sourcename-labels-slider-button ", (done) => {
         fixture.detectChanges();
         fixture.whenStable().then(() => {
-            expect(debugInstance.mLoading).toBe(false);
+            expect(debugInstance.loading).toBe(false);
             fixture.detectChanges();
             fixture.whenStable().then(() => {
                 fixture.detectChanges();
@@ -577,11 +577,11 @@ describe("Component CmsSettingsPanelComponent", () => {
                     let displaySourcenameLabelsSliderButton = fixture.nativeElement.querySelector("#display-sourcename-labels-slider-button");
                     expect(displaySourcenameLabelsSliderButton).toBeTruthy();
                     let $event = { source: "MdSlideToggle", checked: false };
-                    mockCmsSettingsData.mUserSettings.sourceLabel.displaySourceNameLabels = false;
+                    mockCmsSettingsData.userSettings.sourceLabel.displaySourceNameLabels = false;
                     debugInstance.updateUserSettingsByAction($event);
                     fixture.detectChanges();
                     fixture.whenStable().then(() => {
-                        let displaySourceNameLabels = JSON.parse(storageManager.get(CMS_SESSION_STORAGE_ITEM.Settings)).sourceLabel.displaySourceNameLabels;
+                        let displaySourceNameLabels = JSON.parse(storageManager.get(CMS_SESSION_STORAGE_ITEM.SETTINGS)).sourceLabel.displaySourceNameLabels;
                         expect(displaySourceNameLabels).toEqual($event.checked);
                     });
                 });
@@ -594,7 +594,7 @@ describe("Component CmsSettingsPanelComponent", () => {
     it("should updateStteingByAction on toggle of use-multiplelines-sourcename-labels-slider-button ", (done) => {
         fixture.detectChanges();
         fixture.whenStable().then(() => {
-            expect(debugInstance.mLoading).toBe(false);
+            expect(debugInstance.loading).toBe(false);
             fixture.detectChanges();
             fixture.whenStable().then(() => {
                 fixture.detectChanges();
@@ -602,11 +602,11 @@ describe("Component CmsSettingsPanelComponent", () => {
                     let useMultiplelinesSourcenameLabelsSliderButton = fixture.nativeElement.querySelector("#use-multiplelines-sourcename-labels-slider-button");
                     expect(useMultiplelinesSourcenameLabelsSliderButton).toBeTruthy();
                     let $event = { source: "MdSlideToggle", checked: true };
-                    mockCmsSettingsData.mUserSettings.sourceLabel.useMultipleLines = true;
+                    mockCmsSettingsData.userSettings.sourceLabel.useMultipleLines = true;
                     debugInstance.updateUserSettingsByAction($event);
                     fixture.detectChanges();
                     fixture.whenStable().then(() => {
-                        let useMultipleLines = JSON.parse(storageManager.get(CMS_SESSION_STORAGE_ITEM.Settings)).sourceLabel.useMultipleLines;
+                        let useMultipleLines = JSON.parse(storageManager.get(CMS_SESSION_STORAGE_ITEM.SETTINGS)).sourceLabel.useMultipleLines;
                         expect(useMultipleLines).toEqual($event.checked);
                     });
                 });
@@ -619,7 +619,7 @@ describe("Component CmsSettingsPanelComponent", () => {
     it("should update selected font color ", (done) => {
         fixture.detectChanges();
         fixture.whenStable().then(() => {
-            expect(debugInstance.mLoading).toBe(false);
+            expect(debugInstance.loading).toBe(false);
             fixture.detectChanges();
             fixture.whenStable().then(() => {
                 fixture.detectChanges();
@@ -632,7 +632,7 @@ describe("Component CmsSettingsPanelComponent", () => {
                         debugInstance.updateFontColor($event);
                         fixture.detectChanges();
                         fixture.whenStable().then(() => {
-                            let fontColor = JSON.parse(storageManager.get(CMS_SESSION_STORAGE_ITEM.Settings)).sourceLabel.fontColor;
+                            let fontColor = JSON.parse(storageManager.get(CMS_SESSION_STORAGE_ITEM.SETTINGS)).sourceLabel.fontColor;
                             expect(fontColor).toEqual($event.value);
                         });
                     });
@@ -646,7 +646,7 @@ describe("Component CmsSettingsPanelComponent", () => {
     it("should update selected background color ", (done) => {
         fixture.detectChanges();
         fixture.whenStable().then(() => {
-            expect(debugInstance.mLoading).toBe(false);
+            expect(debugInstance.loading).toBe(false);
             fixture.detectChanges();
             fixture.whenStable().then(() => {
                 fixture.detectChanges();
@@ -659,7 +659,7 @@ describe("Component CmsSettingsPanelComponent", () => {
                         debugInstance.updateBackgroundColor($event);
                         fixture.detectChanges();
                         fixture.whenStable().then(() => {
-                            let BGColor = JSON.parse(storageManager.get(CMS_SESSION_STORAGE_ITEM.Settings)).sourceLabel.backgroundColor;
+                            let BGColor = JSON.parse(storageManager.get(CMS_SESSION_STORAGE_ITEM.SETTINGS)).sourceLabel.backgroundColor;
                             expect(BGColor).toEqual($event.value);
                         });
                     });

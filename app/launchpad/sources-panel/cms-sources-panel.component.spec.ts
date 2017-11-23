@@ -173,8 +173,8 @@ describe("CmsSourcesPanelComponent", () => {
         let storageManager = fixture.debugElement.injector.get(StorageManager);
         fixture.detectChanges();
 
-        let expectedSourcesFavoriteFilter = (storageManager.get(CMS_SESSION_STORAGE_ITEM.SourcesFavoriteFilter) === "true") || false;
-        let expectedSourcesSearchFilter = storageManager.get(CMS_SESSION_STORAGE_ITEM.SourcesSearchFilter) || "";
+        let expectedSourcesFavoriteFilter = (storageManager.get(CMS_SESSION_STORAGE_ITEM.SOURCES_FAVORITE_FILTER) === "true") || false;
+        let expectedSourcesSearchFilter = storageManager.get(CMS_SESSION_STORAGE_ITEM.SOURCES_SEARCH_FILTER) || "";
 
         expect(expectedSourcesFavoriteFilter).toBe(debugInstance.isFavoriteFilter);
         expect(expectedSourcesSearchFilter).toBe(component.searchFilter);
@@ -269,7 +269,7 @@ describe("CmsSourcesPanelComponent", () => {
         fixture.whenStable().then(() => {
             delay(500).then(() => {
                 expect(component.searchFilter).toBe(searchString);
-                expect(storageManager.get(CMS_SESSION_STORAGE_ITEM.SourcesSearchFilter)).toBe(searchString);
+                expect(storageManager.get(CMS_SESSION_STORAGE_ITEM.SOURCES_SEARCH_FILTER)).toBe(searchString);
             });
         });
     });
@@ -287,7 +287,7 @@ describe("CmsSourcesPanelComponent", () => {
         fixture.whenStable().then(() => {
             delay(500).then(() => {
                 expect(debugInstance.isFavoriteFilter).toBe(!favState);
-                expect(storageManager.get(CMS_SESSION_STORAGE_ITEM.SourcesFavoriteFilter)).toBe((!favState).toString());
+                expect(storageManager.get(CMS_SESSION_STORAGE_ITEM.SOURCES_FAVORITE_FILTER)).toBe((!favState).toString());
             });
         });
     });

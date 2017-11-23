@@ -43,8 +43,12 @@ class MockActivatedRoute {
  * Fake CmsApiService Service with the below stub
  */
 class MockCmsApiService {
-    getTilers(): Observable<ITilePreset[]> {
-        return Observable.of(TilePresets);
+    getTilePresets(tilesCount: number = 0): Observable<ITilePreset[]> {
+        if (tilesCount === 0) {
+            return Observable.of(TilePresets);
+        } else {
+            return Observable.of(TilePresets.filter(tilePreset => tilePreset.noOfTiles === tilesCount));
+        }
     }
 
     putContentsOnDisplay(displayId: number, tilerId: number, body: any) {
@@ -122,17 +126,20 @@ describe("CmsTileListComponent", () => {
     it("component should be a defined and data should be loaded OnInit", async(() => {
         expect(component).toBeDefined();
         expect(component.tilePresets.length).toEqual(0);
-        expect(debugInstance.eventSubscription).toBeNull();
+        expect(debugInstance.miniDisplayEventSubscription).toBeNull();
 
         component.sourceCount = cmsSettingService.selectedSources.length;
 
         fixture.detectChanges();
         fixture.whenStable().then(() => {
             // check for event subscription
-            expect(debugInstance.eventSubscription).not.toBeNull();
-
-            // source count is 2, so expect only 1 tile preset is shown after filtering
-            expect(component.tilePresets.length).toEqual(2);
+            expect(debugInstance.miniDisplayEventSubscription).not.toBeNull();
+            if (component.sourceCount === 0) {
+                expect(component.tilePresets.length).toEqual(TilePresets.length);
+            } else {
+                let filteredTilePresets = TilePresets.filter(tilePreset => tilePreset.noOfTiles === component.sourceCount);
+                expect(component.tilePresets.length).toEqual(filteredTilePresets.length);
+            }
 
             // check default property
             let carddefaultElement: DebugElement = fixture.debugElement.query(By.css("#card-default"));
@@ -168,12 +175,12 @@ describe("CmsTileListComponent", () => {
 
     it("component should listen 'Display Updated' event", async(() => {
         component.sourceCount = cmsSettingService.selectedSources.length;
-        expect(debugInstance.eventSubscription).toBeNull();
+        expect(debugInstance.miniDisplayEventSubscription).toBeNull();
 
         fixture.detectChanges();
 
         // check for event subscription
-        expect(debugInstance.eventSubscription).not.toBeNull();
+        expect(debugInstance.miniDisplayEventSubscription).not.toBeNull();
 
         // current tile must be selected
         expect(component.tilePresets[0].isSelected).toBeTruthy();
@@ -183,7 +190,7 @@ describe("CmsTileListComponent", () => {
         displayUpdated.tilerId = 5;
 
         // trigger "DiplayUpdated" event  with not existing tilerId   
-        debugInstance.eventSubscription.next(
+        debugInstance.miniDisplayEventSubscription.next(
             {
                 "eventType": "DisplayUpdated",
                 "body": displayUpdated,
@@ -214,37 +221,4 @@ describe("CmsTileListComponent", () => {
             expect(cardElements[1].nativeNode.innerText).toBe("bookmark");
         });
     });
-
-    //TODO: Test writing in progress
-    // it("component should listen 'Tile' event", async(() => {
-    //     component.sourceCount = cmsSettingService.selectedSources.length;
-    //     expect(debugInstance.tileListEventSubscription).toBeNull();
-
-    //     fixture.detectChanges();
-
-    //     // check for event subscription
-    //     expect(debugInstance.tileListEventSubscription).not.toBeNull();
-
-    //     // 2nd tile must be default
-    //     expect(component.tilePresets[1].isDefaultForAllDisplays).toBeTruthy();
-
-    //     // provide same display with not existing tilerId
-    //     let displayUpdated = Object.assign({}, MockDisplays[0]);
-    //     displayUpdated.tilerId = 5;
-
-    //     // trigger "DiplayUpdated" event  with not existing tilerId   
-    //     debugInstance.eventSubscription.next(
-    //         {
-    //             "eventType": "DisplayUpdated",
-    //             "body": displayUpdated,
-    //             "displayId": 1
-    //         }
-    //     );
-
-    //     fixture.detectChanges();
-    //     fixture.whenStable().then(() => {
-    //         // current tile must be not selected
-    //         expect(component.tilePresets[0].isDefaultForAllDisplays).toBeFalsy();
-    //     });
-    // }));
 });

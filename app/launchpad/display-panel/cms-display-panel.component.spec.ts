@@ -84,9 +84,7 @@ import { CmsApiService } from "../../cms/api/cms-api.service";
 import { CMS_SESSION_STORAGE_ITEM } from "../../cms/models/cms-session-storage-item";
 import { Subscriber } from "rxjs";
 
-/**
- * Fake CmsApiService Service with the below stub
- */
+// Fake CmsApiService Service with the below stub
 class MockCmsApiServiceStub {
     putContentsOnDisplay(displayId: number, tilerId: number, body: any) {
         return Observable.of(null);
@@ -158,7 +156,6 @@ describe("CmsDisplayPanelComponent - Test Suite", () => {
                 id: 1
             });
 
-
             let translate: TranslateService = injector.get(TranslateService);
             translate.use("en");
 
@@ -166,50 +163,43 @@ describe("CmsDisplayPanelComponent - Test Suite", () => {
         });
     }));
 
-
     afterEach(() => {
         removeDisplay();
         component.ngOnDestroy();
     });
 
-
     it("Component should be instantiated", () => {
         expect(component instanceof CmsDisplayPanelComponent).toBeTruthy();
 
-        expect(component.viewOptions).toBeFalsy();
-        expect(component.zoomLevel).toEqual(100);
-        expect(component.isSaveLayoutEnabled).toBeFalsy();
-        expect(component.fitHeightCount).toEqual(0);
+        expect(debugInstance.viewOptions).toBeFalsy();
+        expect(debugInstance.zoomLevel).toEqual(100);
+        expect(debugInstance.isSaveLayoutEnabled).toBeFalsy();
+        expect(debugInstance.fitHeightCount).toEqual(0);
     });
 
 
     it("should load a saved display", () => {
-        /**
-         * Display should be successfully loaded from the storage manager
-         */
+        // Display should be successfully loaded from the storage manager
         removeDisplay();
         setDisplay();
-        component.loadDisplay();
-        expect(component.display.id).toEqual(display.id);
-        expect(JSON.stringify(component.display)).toEqual(JSON.stringify(display));
+        debugInstance.loadDisplay();
+        expect(debugInstance.display.id).toEqual(display.id);
+        expect(JSON.stringify(debugInstance.display)).toEqual(JSON.stringify(display));
     });
 
     it("should load a display if displayId is available", fakeAsync(() => {
-        /**
-         * When display id is available then display is loaded
-         */
-
+        // When display id is available then display is loaded
         removeDisplay();
         setDisplay();
 
         fixture.detectChanges();
         tick();
 
-        expect(component.displayId).toEqual(activatedRoute.params["value"]["id"]);
+        expect(debugInstance.displayId).toEqual(activatedRoute.params["value"]["id"]);
         // make sure the subject is subscribed
-        expect(component.longPressSubcription instanceof Subscriber).toBeTruthy();
+        expect(debugInstance.longPressSubcription instanceof Subscriber).toBeTruthy();
 
-        let spyLoadDisplay = spyOn(component, "loadDisplay").and.returnValue(null);
+        let spyLoadDisplay = spyOn(debugInstance, "loadDisplay").and.returnValue(null);
         component.ngOnInit();
         
         expect(spyLoadDisplay.calls.count()).toEqual(1);
@@ -224,20 +214,20 @@ describe("CmsDisplayPanelComponent - Test Suite", () => {
         fixture.detectChanges();
         tick();
 
-        expect(component.longPressSubcription.closed).toBeFalsy();
+        expect(debugInstance.longPressSubcription.closed).toBeFalsy();
 
         component.ngOnDestroy();
 
-        expect(component.longPressSubcription.closed).toBeTruthy();
+        expect(debugInstance.longPressSubcription.closed).toBeTruthy();
     }));
 
 
     it("should increment the fitHeightCount counter", () => {
-        expect(component.fitHeightCount).toEqual(0);
-        component.fitHeight();
-        expect(component.fitHeightCount).toEqual(1);
-        component.fitHeight();
-        expect(component.fitHeightCount).toEqual(2);
+        expect(debugInstance.fitHeightCount).toEqual(0);
+        debugInstance.fitHeight();
+        expect(debugInstance.fitHeightCount).toEqual(1);
+        debugInstance.fitHeight();
+        expect(debugInstance.fitHeightCount).toEqual(2);
     });
 
 
@@ -247,7 +237,7 @@ describe("CmsDisplayPanelComponent - Test Suite", () => {
         let settingsService: CmsSettingsService = injector.get(CmsSettingsService);
         let spy = spyOn(settingsService, "updateIsLongPress");
 
-        component.backToDisplayPanel();
+        debugInstance.backToDisplayPanel();
 
         expect(spy.calls.count()).toEqual(1);
         expect(spy.calls.argsFor(0)[0]).toEqual(false);
@@ -285,8 +275,8 @@ describe("CmsDisplayPanelComponent - Test Suite", () => {
         let api: CmsApiService = injector.get(CmsApiService);
         let spy = spyOn(api, "putContentsOnDisplay").and.returnValue(Observable.of(null));
 
-        component.displayId = 1;
-        component.clearMiniDisplayWall();
+        debugInstance.displayId = 1;
+        debugInstance.clearMiniDisplayWall();
 
         tick();
 
@@ -304,7 +294,7 @@ describe("CmsDisplayPanelComponent - Test Suite", () => {
         fixture.detectChanges();
         tick();
 
-        component.clearMiniDisplayWall();
+        debugInstance.clearMiniDisplayWall();
 
         tick();
 
@@ -313,10 +303,10 @@ describe("CmsDisplayPanelComponent - Test Suite", () => {
 
 
     function removeDisplay() {
-        window.sessionStorage.removeItem(CMS_SESSION_STORAGE_ITEM.Display);
+        window.sessionStorage.removeItem(CMS_SESSION_STORAGE_ITEM.DISPLAY);
     }
 
     function setDisplay() {
-        window.sessionStorage.setItem(CMS_SESSION_STORAGE_ITEM.Display, JSON.stringify(display));
+        window.sessionStorage.setItem(CMS_SESSION_STORAGE_ITEM.DISPLAY, JSON.stringify(display));
     }
 });

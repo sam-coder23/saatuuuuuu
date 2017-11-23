@@ -34,7 +34,7 @@ export class CmsCanActivateViaAuthorizationService implements CanActivate {
      * This method checks if user is logged in or not. If not logged in, the user is redirected to login page. 
      */
     canActivate(aRoute: ActivatedRouteSnapshot, aState: RouterStateSnapshot) {
-        let user = JSON.parse(this.storageManager.get(CMS_SESSION_STORAGE_ITEM.User));
+        let user = JSON.parse(this.storageManager.get(CMS_SESSION_STORAGE_ITEM.USER));
         if (user && user.loggedIn) {
             return true;
         }

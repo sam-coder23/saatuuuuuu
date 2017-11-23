@@ -1,9 +1,3 @@
-/**
- * Copyright (c) 2016 Barco n.v. All Rights Reserved. This software is confidential and proprietary information of Barco n.v.
- * ("Confidential Information"). You shall not disclose such Confidential Information and shall use it only in accordance with
- * the terms of the license agreement you entered into with Barco.
- */
-
 import { Injectable } from "@angular/core";
 import { Observable } from "rxjs/Observable";
 import { Subject } from "rxjs/Subject";
@@ -21,53 +15,59 @@ import { CMSConstants } from "../../cms/models/cms-constants";
 import { Source } from "./../../cms/models/cms-source";
 
 /**
- * This service is used to provide all methods related to.
+ * This service provides method related to user settings.
+ * @class CmsSettingsService
+ * @property {IUserProfileSettings} userSettings
+ * @property {Subject} longPressedSubject 
+ * @property {boolean} isLongPressed
+ * @property {Source[]} selectedSources
  */
 @Injectable()
 export class CmsSettingsService {
     //store user profile settings
-    mUserSettings: IUserProfileSettings;
+    public userSettings: IUserProfileSettings;
     // Observable for longPress state
-    longPressedSubject: Subject<boolean> = new Subject<boolean>();
-    isLongPressed: boolean;
-
+    public longPressedSubject: Subject<boolean> = new Subject<boolean>();
+    public isLongPressed: boolean;
     public selectedSources: Source[] = [];
 
-    /**
-     * @description
-     * The constructor initializes various services.
-     */
-    constructor(private translate: TranslateService, private cmsServerApi: CmsApiService, private router: Router, private storageManager: StorageManager, private appConfig: AppConfig) {
+    constructor(
+        private translate: TranslateService,
+        private cmsServerApi: CmsApiService,
+        private router: Router,
+        private storageManager: StorageManager,
+        private appConfig: AppConfig) {
     }
 
     /**
-     * @description
      * This method get lanaguage value from key
-     * 
-     * @param
-     * languageKey: string :: key is reference which is bind to specific language 
+     * @method getUserSelectedLanguageByKey
+     * @param {string} languageKey Key is reference which is bind to specific language
+     * @return {string} 
      */
     public getUserSelectedLanguageByKey(languageKey: string): string {
         let cmsLanguages = CmsLanguages.languages;
 
         //looping in all lanaguage and get value as per key
-        for (var i = 0; i < cmsLanguages.length; i++) {
-            if (cmsLanguages[i]["key"] === languageKey) {
-                return cmsLanguages[i]["value"];
+        for (let index = 0; index < cmsLanguages.length; index++) {
+            if (cmsLanguages[index]["key"] === languageKey) {
+                return cmsLanguages[index]["value"];
             }
         }
     }
 
 
     /**
-     * @description
      * This method fetch user profile settings and update local property and execute optional callback function
+     * @method setUserProfileSettings
+     * @param {any} callback
+     * @param {any} failure
      */
     public setUserProfileSettings(callback?, failure?): void {
         this.cmsServerApi.getUserProfileSettings()
             .then((response) => {
                 if (response) {
-                    this.mUserSettings = response;
+                    this.userSettings = response;
 
                     if (callback) {
                         callback();
@@ -82,27 +82,28 @@ export class CmsSettingsService {
     }
 
     /**
-     * @description
-     *  This method sets user selected language on the basis of localization licesnse
+     * This method sets user selected language on the basis of localization licesnse
+     * @method applyUserSelectedLanguage
+     * @return {void}
      */
     public applyUserSelectedLanguage(): void {
         let defaultLanguage = this.appConfig.DefaultLanguage;
 
         // if language is not available
-        if (!this.mUserSettings) {
+        if (!this.userSettings) {
             this.appConfig.log("Error loading user settings.");
 
             // set user selected language
             this.translate.use(defaultLanguage);
             this.setTextDirectionByLanguageKey(defaultLanguage);
         } else {
-            if (!this.mUserSettings.language) {
-                this.mUserSettings.language = defaultLanguage;
+            if (!this.userSettings.language) {
+                this.userSettings.language = defaultLanguage;
             }
 
             // set user selected language
-            this.translate.use(this.mUserSettings.language);
-            this.setTextDirectionByLanguageKey(this.mUserSettings.language);
+            this.translate.use(this.userSettings.language);
+            this.setTextDirectionByLanguageKey(this.userSettings.language);
         }
 
         // fetch localization licence info and set default language if licence is not available
@@ -116,9 +117,9 @@ export class CmsSettingsService {
                         this.translate.use(defaultLanguage);
                         this.setTextDirectionByLanguageKey(defaultLanguage);
 
-                        if (this.mUserSettings) {
-                            this.mUserSettings.language = defaultLanguage;
-                            this.updateUserProfileData(this.mUserSettings);
+                        if (this.userSettings) {
+                            this.userSettings.language = defaultLanguage;
+                            this.updateUserProfileData(this.userSettings);
                         }
                     }
                 }
@@ -129,20 +130,20 @@ export class CmsSettingsService {
     }
 
     /**
-     * @description
-     *  This method update user settings via API and execute optional callback function
-     * 
-     * @Param data: IUserProfileSettings :: contain data-model of user settings
+     * This method update user settings via API and execute optional callback function
+     * @method updateUserProfileData
+     * @param {IUserProfileSettings} data contain data-model of user settings
+     * @return {void}
      */
     public updateUserProfileData(data: IUserProfileSettings, callback?): void {
         if (!data) { return };
 
-        this.mUserSettings = data;
+        this.userSettings = data;
 
         this.cmsServerApi.updateUserProfileSettings(data)
             .then((response) => {
                 // store user setting in storage
-                this.storageManager.set(CMS_SESSION_STORAGE_ITEM.Settings, JSON.stringify(this.mUserSettings));
+                this.storageManager.set(CMS_SESSION_STORAGE_ITEM.SETTINGS, JSON.stringify(this.userSettings));
                 if (callback) {
                     callback();
                 }
@@ -153,63 +154,90 @@ export class CmsSettingsService {
     }
 
     /**
-      * @description
-      *  This method update displayId related to wall connection
-      *
-      * @Param display :: display wall info json
+      * This method update displayId related to wall connection
+      * @method updateWallConnectionRecentDisplay
+      * @param {Display} display wall info json
+      * @return {void}
       */
     public updateWallConnectionRecentDisplay(display): void {
         if (display) {
-            this.mUserSettings.wallConnection.recentDisplay = display.name;
-            this.updateUserProfileData(this.mUserSettings);
+            this.userSettings.wallConnection.recentDisplay = display.name;
+            this.updateUserProfileData(this.userSettings);
         }
     }
 
     /**
-      * @description This method update displayName related to wall connection
-      * @param display : display wall info json
-     */
+      * This method update displayName related to wall connection
+      * @method updateWallConnectionSpecificDisplay
+      * @param {Display} display wall info json
+      * @return {void}
+      */
     public updateWallConnectionSpecificDisplay(display): void {
         if (display) {
-            this.mUserSettings.wallConnection.specificDisplay = display.name;
-            this.updateUserProfileData(this.mUserSettings, () => this.router.navigate(["/settings"]));
+            this.userSettings.wallConnection.specificDisplay = display.name;
+            this.updateUserProfileData(this.userSettings, () => this.router.navigate(["/settings"]));
         }
     }
 
     /**
      * This method validate input [number] as per min, max and default values
+     * @method validateCountData
+     * @param {number} count
+     * @param {any} data
+     * @param {number} defaultCount
+     * @return number
      */
     public validateCountData(count: number, data: any, defaultCount: number): number {
         let maxCount = data[data.length - 1];
         let minCount = data[0];
-        if (isNaN(count)) { return defaultCount }
-        if (count <= minCount) { return minCount }
-        if (count >= maxCount) { return maxCount }
+        
+        if (isNaN(count)) { 
+            return defaultCount;
+        }
+
+        if (count <= minCount) { 
+            return minCount; 
+        }
+
+        if (count >= maxCount) { 
+            return maxCount; 
+        }
+
         return count;
     }
 
     /**
      * This method increase count value as per it's index and nearest high value
+     * @method increaseCount
+     * @param {number} count
+     * @param {any} data
+     * @return number
      */
     public increaseCount(count: number, data: any): number {
         let countIndex = data.indexOf(count);
+
         if (countIndex == -1) {
-            return this.getNearestHighValue(count, data)
+            return this.getNearestHighValue(count, data);
         } else {
             if (data.length - 1 !== countIndex) {
                 return data[countIndex + 1];
             }
         }
+
         return count;
     }
 
     /**
      * This method decrease count value as per it"s index and nearest low value
+     * @method decreaseCount
+     * @param {number} count
+     * @param {any} data
+     * @return number
      */
     public decreaseCount(count: number, data: any): number {
         let countIndex = data.indexOf(count);
         if (countIndex == -1) {
-            return this.getNearestLowValue(count, data)
+            return this.getNearestLowValue(count, data);
         } else {
             if (countIndex !== 0) {
                 return data[countIndex - 1];
@@ -221,11 +249,13 @@ export class CmsSettingsService {
     /**
      * @description 
      * This method connect to wall as per user selection of wall connection at startup
+     * @method connectToWallAtStartup
+     * @return {void}
      */
     public connectToWallAtStartup(): void {
-        let selectedOption = this.mUserSettings.wallConnection.startUpAction;
-        let selectedDisplayName = this.mUserSettings.wallConnection.specificDisplay;
-        let recentDisplayName = this.mUserSettings.wallConnection.recentDisplay;
+        let selectedOption = this.userSettings.wallConnection.startUpAction;
+        let selectedDisplayName = this.userSettings.wallConnection.specificDisplay;
+        let recentDisplayName = this.userSettings.wallConnection.recentDisplay;
 
         this.cmsServerApi.getDisplayList().subscribe((displays: Display[]) => {
             //Check for if only one display is available.
@@ -251,19 +281,23 @@ export class CmsSettingsService {
     }
 
     /**
-     * @description 
      * This method navigates directly to the source panel if there is only one display available.
+     * @method navigateToSourcePanel
+     * @param {Display[]} displays
+     * @return {void}
      */
-    private navigateToSourcePanel(displays: Display[]) {
+    private navigateToSourcePanel(displays: Display[]): void {
         //update recentDisplayId on user profile data         
         this.updateWallConnectionRecentDisplay(displays[0]);
-        this.storageManager.set(CMS_SESSION_STORAGE_ITEM.Display, JSON.stringify(displays[0]));
+        this.storageManager.set(CMS_SESSION_STORAGE_ITEM.DISPLAY, JSON.stringify(displays[0]));
         this.router.navigate([`/displays/${displays[0].id}/sources-panel`]);
     }
 
     /**
-     * @description 
      * This method connect to most recent wall at startup
+     * @method autoConnectToMostRecentWall
+     * @param {string} recentDisplayName
+     * @return {void}
      */
     private autoConnectToMostRecentWall(recentDisplayName: string): void {
         let start = 1, count = 1, search = recentDisplayName, isFavorite = false, display;
@@ -287,7 +321,7 @@ export class CmsSettingsService {
                     };
 
                     if (display) {
-                        this.storageManager.set(CMS_SESSION_STORAGE_ITEM.Display, JSON.stringify(display));
+                        this.storageManager.set(CMS_SESSION_STORAGE_ITEM.DISPLAY, JSON.stringify(display));
                         this.router.navigate([`/displays/${display.id}/sources-panel`]);
                     }
                     else {
@@ -303,8 +337,10 @@ export class CmsSettingsService {
     }
 
     /**
-     * @description 
      * This method connect to specific wall at startup
+     * @method autoConnectToSpecificWall
+     * @param {string} autoConnectToSpecificWall
+     * @return {void}
      */
     private autoConnectToSpecificWall(selectedDisplayName: string): void {
         let start = 1, count = 1, search = selectedDisplayName, isFavorite = false, display;
@@ -329,7 +365,7 @@ export class CmsSettingsService {
                         //update recentDisplay on user profile data 
                         this.updateWallConnectionRecentDisplay(display);
 
-                        this.storageManager.set(CMS_SESSION_STORAGE_ITEM.Display, JSON.stringify(display));
+                        this.storageManager.set(CMS_SESSION_STORAGE_ITEM.DISPLAY, JSON.stringify(display));
                         this.router.navigate([`/displays/${display.id}/sources-panel`]);
                     }
                     else {
@@ -346,61 +382,82 @@ export class CmsSettingsService {
 
     /**
      * This method fetch nearest high value
+     * @method getNearestHighValue
+     * @param {number} count
+     * @param {number[]} data
+     * @return {number}
      */
     private getNearestHighValue(count: number, data: number[]) {
-        for (var i = 0; i < data.length; i++) {
-            if (count < data[i]) {
-                return data[i];
+        for (let index = 0; index < data.length; index++) {
+            if (count < data[index]) {
+                return data[index];
             }
         }
     }
 
     /**
      * This method fetch nearest low value
+     * @method getNearestLowValue
+     * @param {number} count
+     * @param {number[]} data
+     * @return {number}
      */
     private getNearestLowValue(count: number, data: number[]) {
-        for (var i = data.length - 1; i >= 0; i--) {
-            if (count > data[i]) {
-                return data[i];
+        for (let index = data.length - 1; index >= 0; index--) {
+            if (count > data[index]) {
+                return data[index];
             }
         }
     }
 
     /**
-     * This method update "isLongPress" property and update event emit 
+     * This method update "isLongPress" property and update event emit
+     * @method updateIsLongPress
+     * @param {boolean} state
+     * @return {void}
      */
-    public updateIsLongPress(state: boolean) {
+    public updateIsLongPress(state: boolean): void{
         this.isLongPressed = state;
         this.longPressedSubject.next(state);
     }
 
     /**
      * This method update text direction for whole application
+     * @method setTextDirectionByLanguageKey
+     * @param {string} languageKey
+     * @return {void}
      */
-    public setTextDirectionByLanguageKey(languageKey) {
+    public setTextDirectionByLanguageKey(languageKey): void{
         let html = document.getElementsByTagName("html")[0];
         html.setAttribute("dir", this.isRTLLanguage(languageKey) ? "rtl" : "ltr");
     }
 
     /**
      * This method return true if slected language is RTL Type
+     * @method isRTLLanguage
+     * @param {string} languageKey
+     * @return {boolean}
      */
-    public isRTLLanguage(languageKey) {
-        return CMSConstants.RTLLanguages.indexOf(languageKey) !== -1;
+    public isRTLLanguage(languageKey): boolean{
+        return CMSConstants.RTLLANGUAGES.indexOf(languageKey) !== -1;
     }
 
     /**
      * This method set application language as per browser language 
+     * @method setBrowserLanguage
+     * @return {void}
      */
-    public setBrowserLanguage() {
+    public setBrowserLanguage(): void {
         let currentLang;
-        let settingsStorageData = this.storageManager.get(CMS_SESSION_STORAGE_ITEM.Settings);
+        let settingsStorageData = this.storageManager.get(CMS_SESSION_STORAGE_ITEM.SETTINGS);
+        
         if (settingsStorageData) {
             let userSettings = JSON.parse(settingsStorageData);
             if (userSettings && userSettings.language) {
                 currentLang = userSettings.language;
             }
         }
+
         if (!currentLang) {
             let browserLang = this.translate.getBrowserLang();
             let languagesRegEx = CmsLanguages.languagesRegExPattern;

@@ -1,11 +1,4 @@
-/**
- * Copyright (c) 2016 Barco n.v. All Rights Reserved. This software is confidential and proprietary information of Barco n.v.
- * ("Confidential Information"). You shall not disclose such Confidential Information and shall use it only in accordance with
- * the terms of the license agreement you entered into with Barco.
- */
-
 import { Component, OnInit, AfterViewInit } from "@angular/core";
-
 import { CMS_SESSION_STORAGE_ITEM } from "../../cms/models/cms-session-storage-item";
 import { StorageManager } from "../../cms/api/cms-storagemanager.service";
 import { Display } from "../../cms/models/cms-display";
@@ -15,51 +8,50 @@ import { Validation } from "../../core/util/Validation";
 import { Router, ActivatedRoute, Params } from "@angular/router";
 import { CMSConstants } from "../../cms/models/cms-constants";
 
-/**
- * This is a panel component that defines the layout of a page which includes toolbar and display list.
- */
 @Component({
     //moduleId: module.id,
     selector: "cms-displays-panel",
     template: require("to-string!./cms-displays-panel.component.html"),
     styles: [require("to-string!./cms-displays-panel.component.scss")]
 })
-export class CmsDisplaysPanelComponent implements OnInit, AfterViewInit {
-    /**
-      * Filter property which will filter the display list
-      * @property {boolean} isFavoriteFilter
-      * @property {string} searchFilter
-      */
-    private isFavoriteFilter: boolean;
-    public searchFilter: string;
-    public searchKey: string;
-    private isBackButton: boolean = false;
 
+/**
+ * This class will hold the logic of cms displays panel and hold layout of a displays page which includes toolbar and display list
+ * @class CmsDisplaysPanelComponent
+ * @constructor constructor This will inject the following dependency storageManager, appConfig, route etc.
+ * @property {boolean} isFavoriteFilter Filter property which will filter the display list
+ * @property {string} searchFilter Filter property which will filter the display list
+ * @property {string} searchKey
+ * @property {boolean} isBackButton Show and Hide Back button visibility
+ * @property {number} selectedDisplayId
+ * @property {object} viewState
+ */
+export class CmsDisplaysPanelComponent implements OnInit, AfterViewInit {
+    private isFavoriteFilter: boolean;
+    private searchFilter: string;
+    private searchKey: string;
+    private isBackButton: boolean = false;
+    private selectedDisplayId: number;
 
     // all boolean states for the template
-    viewState = {
+    private viewState = {
         back: false,
         reload: false,
         list: true
-    }
-
-    private selectedDisplayId: number;
+    };
 
     constructor(private storageManager: StorageManager, private appConfig: AppConfig, private route: ActivatedRoute) {
-        this.isFavoriteFilter = (this.storageManager.get(CMS_SESSION_STORAGE_ITEM.DisplaysFavoriteFilter) === "true") || false;
-        this.searchFilter = this.storageManager.get(CMS_SESSION_STORAGE_ITEM.DisplaysSearchFilter) || "";
+        this.isFavoriteFilter = this.storageManager.get(CMS_SESSION_STORAGE_ITEM.DISPLAYS_FAVORITE_FILTER) === String(true);
+        this.searchFilter = this.storageManager.get(CMS_SESSION_STORAGE_ITEM.DISPLAYS_SEARCH_FILTER) || "";
         this.searchKey = this.searchFilter;
     }
 
-    /**
-     * On Component initialization, disable back button if no display is selected.
-     */
-    ngOnInit() {
+    public ngOnInit() {
         // disable back button if no display is selected
         this.viewState.back = this.isDisplaySelected();
 
         if (this.isDisplaySelected()) {
-            let display = <Display>JSON.parse(window.sessionStorage.getItem(CMS_SESSION_STORAGE_ITEM.Display));
+            let display = <Display>JSON.parse(window.sessionStorage.getItem(CMS_SESSION_STORAGE_ITEM.DISPLAY));
             this.selectedDisplayId = display.id;
         }
 
@@ -70,16 +62,10 @@ export class CmsDisplaysPanelComponent implements OnInit, AfterViewInit {
             if (actionParam === CMSConstants.SELECT_DISPLAY) {
                 this.isBackButton = true;
             }
-
         });
     }
 
-    /**
-      * This will register the functionality written inside of this block
-      * once component intialize successfully 
-      * @Hook {void} ngAfterViewInit Ng Life cycle hook
-      */
-    ngAfterViewInit() {
+    public ngAfterViewInit() {
         /**
          * Making an Observable to get the string token from 
          * HTML search input control and update the searchFilter by
@@ -91,7 +77,7 @@ export class CmsDisplaysPanelComponent implements OnInit, AfterViewInit {
             .debounceTime(500)
             .subscribe(searchString => {
                 this.searchFilter = searchString;
-                this.storageManager.set(CMS_SESSION_STORAGE_ITEM.DisplaysSearchFilter, searchString);
+                this.storageManager.set(CMS_SESSION_STORAGE_ITEM.DISPLAYS_SEARCH_FILTER, searchString);
             });
     };
 
@@ -100,13 +86,13 @@ export class CmsDisplaysPanelComponent implements OnInit, AfterViewInit {
      */
     setFavourite(): void {
         this.isFavoriteFilter = !this.isFavoriteFilter;
-        this.storageManager.set(CMS_SESSION_STORAGE_ITEM.DisplaysFavoriteFilter, this.isFavoriteFilter);
+        this.storageManager.set(CMS_SESSION_STORAGE_ITEM.DISPLAYS_FAVORITE_FILTER, this.isFavoriteFilter);
     }
 
     /**
      * On list modified event
      */
-    onListChanged(): void {
+    private onListChanged(): void {
         // disable back button if no display is selected
         this.viewState.back = this.isDisplaySelected();
         this.viewState.reload = true;
@@ -114,9 +100,10 @@ export class CmsDisplaysPanelComponent implements OnInit, AfterViewInit {
 
     /**
      * This method reloads the displays list.
-     * @pending
+     * @method reloadList
+     * @return {void} 
      */
-    reloadList(): void {
+    private reloadList(): void {
         this.viewState.reload = false;
         this.viewState.list = false;
         window.setTimeout(() => {
@@ -126,13 +113,18 @@ export class CmsDisplaysPanelComponent implements OnInit, AfterViewInit {
 
     /**
      * This method returns the selected display if any.
+     * @method isDisplaySelected
+     * @return {boolean}  
      */
     private isDisplaySelected(): boolean {
-        return !Validation.IsNull(this.storageManager.get(CMS_SESSION_STORAGE_ITEM.Display));
+        return !Validation.IsNull(this.storageManager.get(CMS_SESSION_STORAGE_ITEM.DISPLAY));
     }
 
     /**
-     * Focus on search input box
+     * This method focus on search input box
+     * @method initializeSearch
+     * @param {event} e
+     * @return {void} 
      */
     private initializeSearch(e): void {
         let mdsearch = document.getElementById("display-list-search-input");
@@ -145,6 +137,11 @@ export class CmsDisplaysPanelComponent implements OnInit, AfterViewInit {
         }
     }
 
+    /**
+     * This method navigate to back page
+     * @method navigateBack
+     * @return {void}
+     */
     private navigateBack() {
         history.back();
     }

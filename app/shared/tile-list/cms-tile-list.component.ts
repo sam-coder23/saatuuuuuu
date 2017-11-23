@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, EventEmitter, ElementRef, Output, OnChanges, SimpleChanges, OnDestroy } from "@angular/core";
+import { Component, OnInit, Input, EventEmitter, Output, SimpleChanges, OnDestroy } from "@angular/core";
 import { CmsApiService } from "../../cms/api/cms-api.service";
 import { ITilePreset } from "../../cms/models/cms-tile-preset";
 import { ActivatedRoute } from "@angular/router";
@@ -30,7 +30,7 @@ export class CmsTileListComponent implements OnInit, OnDestroy {
     public defaultTilerID: number;
     private displayID: number;
     // it saves the CMS events subscription and unsubscribe them on component destruction
-    private eventSubscription: EventEmitter<any> = null;
+    private miniDisplayEventSubscription: EventEmitter<any> = null;
 
     constructor(
         private activatedRoute: ActivatedRoute,
@@ -50,8 +50,8 @@ export class CmsTileListComponent implements OnInit, OnDestroy {
 
     ngOnDestroy() {
         // Unsubscribe cms events for tile list component
-        if (!Validation.IsNullOrUndefined(this.eventSubscription)) {
-            this.eventSubscription.unsubscribe();
+        if (!Validation.IsNullOrUndefined(this.miniDisplayEventSubscription)) {
+            this.miniDisplayEventSubscription.unsubscribe();
         }
 
         if (!Validation.IsNullOrUndefined(this.tileListEventSubscription)) {
@@ -59,25 +59,30 @@ export class CmsTileListComponent implements OnInit, OnDestroy {
         }
     }
 
-    private getTilePresets() {
-
-        if (!this.tileListEventSubscription) {
-            this.tileListEventSubscription = CmsEventEmitterService.get(CMS_EVENTS.TileList)
-                .subscribe((event: ICmsEvent) => this.handleTilePresetListEvents(event));
-        }
-
-        this.cmsServerApi.getTilers().subscribe(tilePresets => {
-            this.tilePresets = tilePresets.filter(tilePreset => tilePreset.noOfTiles === this.sourceCount);
+    /**
+     * @method getTilePresets - It gets list of tilePresets.
+     */
+    private getTilePresets(): void {
+        // get tile presets filtered by number of tiles
+        this.cmsServerApi.getTilePresets(this.sourceCount).subscribe(tilePresets => {
+            this.tilePresets = tilePresets;
             this.defaultTilerID = TilePresetManager.GetTileId(this.tilePresets, this.sourceCount, this.displayID);
 
+            // mark tilePreset which is currently applied on the display wall
             this.markTileSelected();
             // subscribe for display change events
-            if (Validation.IsNullOrUndefined(this.eventSubscription)) {
-                this.eventSubscription = CmsEventEmitterService.get(CMS_EVENTS.MiniDisplay)
+            if (Validation.IsNullOrUndefined(this.miniDisplayEventSubscription)) {
+                this.miniDisplayEventSubscription = CmsEventEmitterService.get(CMS_EVENTS.MiniDisplay)
                     .subscribe((event: { eventType: string, body: any, displayId: number }) => {
                         this.handleDisplayEvents(event);
                     });
-            }
+            };
+
+            // subscribe for TileList events
+            if (!this.tileListEventSubscription) {
+                this.tileListEventSubscription = CmsEventEmitterService.get(CMS_EVENTS.TileList)
+                    .subscribe((event: ICmsEvent) => this.handleTilePresetListEvents(event));
+            };
         });
     }
 
@@ -142,7 +147,7 @@ export class CmsTileListComponent implements OnInit, OnDestroy {
 
     /* This method mark a tile selected based on current display tilerId.
      * @method markTileSelected
-    * @return void
+     * @return void
      */
     private markTileSelected() {
         let displayId = parseInt(this.activatedRoute.params["value"]["id"]);
@@ -181,7 +186,7 @@ export class CmsTileListComponent implements OnInit, OnDestroy {
      */
     private handleDisplayEvents(event) {
         let displayId = parseInt(this.activatedRoute.params["value"]["id"]);
-        if (event.eventType === CMSConstants.DisplayUpdated) {
+        if (event.eventType === CMSConstants.DISPLAYUPDATED) {
             if (event.displayId === displayId) {
                 this.selectTileInPresets(event.body);
             }

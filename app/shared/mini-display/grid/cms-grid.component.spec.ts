@@ -97,7 +97,7 @@ let swappedGeometeryContent: any[] = [{
 let spyContentClickHandler: jasmine.Spy;
 let updateContentGeormetryOnDisplay: jasmine.Spy;
 
-let mUserSettings: IUserProfileSettings = {
+let userSettings: IUserProfileSettings = {
     "language": "en",
     "wallConnection": {
         "startUpAction": "show-available-walls-list",
@@ -128,7 +128,7 @@ class MockCmsApiService {
     }
 
     getUserProfileSettings(): Promise<IUserProfileSettings> {
-        return Promise.resolve(mUserSettings);
+        return Promise.resolve(userSettings);
     }
 
     updateContentGeormetryOnDisplay(displayId: number, contentId: number, body: any) {

@@ -8,15 +8,15 @@ describe("CMS_SESSION_STORAGE_ITEM", () => {
         })
     });
     it("should expect the Storage Items Constants values not to be changed", async(() => {
-      expect(CMS_SESSION_STORAGE_ITEM.User).toEqual("User");
-      expect(CMS_SESSION_STORAGE_ITEM.Display).toContain("Display");
-      expect(CMS_SESSION_STORAGE_ITEM.Settings).toEqual("Settings");
-      expect(CMS_SESSION_STORAGE_ITEM.UserLastActionTime).toContain("UserLastActionTime");
-      expect(CMS_SESSION_STORAGE_ITEM.LayoutsSearchFilter).toContain("LayoutsSearchFilter");
-      expect(CMS_SESSION_STORAGE_ITEM.DisplaysSearchFilter).toEqual("DisplaysSearchFilter");
-      expect(CMS_SESSION_STORAGE_ITEM.SourcesSearchFilter).toContain("SourcesSearchFilter");
-      expect(CMS_SESSION_STORAGE_ITEM.LayoutsFavoriteFilter).toContain("LayoutsFavoriteFilter");
-      expect(CMS_SESSION_STORAGE_ITEM.DisplaysFavoriteFilter).toEqual("DisplaysFavoriteFilter");
-      expect(CMS_SESSION_STORAGE_ITEM.SourcesFavoriteFilter).toContain("SourcesFavoriteFilter");
+      expect(CMS_SESSION_STORAGE_ITEM.USER).toEqual("User");
+      expect(CMS_SESSION_STORAGE_ITEM.DISPLAY).toContain("Display");
+      expect(CMS_SESSION_STORAGE_ITEM.SETTINGS).toEqual("Settings");
+      expect(CMS_SESSION_STORAGE_ITEM.USER_LASTACTION_TIME).toContain("UserLastActionTime");
+      expect(CMS_SESSION_STORAGE_ITEM.LAYOUTS_FAVORITE_FILTER).toContain("LayoutsSearchFilter");
+      expect(CMS_SESSION_STORAGE_ITEM.DISPLAYS_SEARCH_FILTER).toEqual("DisplaysSearchFilter");
+      expect(CMS_SESSION_STORAGE_ITEM.SOURCES_SEARCH_FILTER).toContain("SourcesSearchFilter");
+      expect(CMS_SESSION_STORAGE_ITEM.LAYOUTS_FAVORITE_FILTER).toContain("LayoutsFavoriteFilter");
+      expect(CMS_SESSION_STORAGE_ITEM.DISPLAYS_FAVORITE_FILTER).toEqual("DisplaysFavoriteFilter");
+      expect(CMS_SESSION_STORAGE_ITEM.SOURCES_FAVORITE_FILTER).toContain("SourcesFavoriteFilter");
     }));
 });

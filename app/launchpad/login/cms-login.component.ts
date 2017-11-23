@@ -128,14 +128,14 @@ export class CmsLoginComponent implements OnInit, OnDestroy {
                     // fetch user settings success 
                     // store logged in user info in storage
                     userModel.LoggedIn = true;
-                    this.storageManager.set(CMS_SESSION_STORAGE_ITEM.User, JSON.stringify(userModel.asSerializable()));
+                    this.storageManager.set(CMS_SESSION_STORAGE_ITEM.USER, JSON.stringify(userModel.asSerializable()));
                     this.isLoginInProgress = false;
 
                     // create session with server
                     this.cmsServerApi.keepSessionAlive();
 
                     // store user setting in storage
-                    this.storageManager.set(CMS_SESSION_STORAGE_ITEM.Settings, JSON.stringify(this.cmsSettingsService.mUserSettings));
+                    this.storageManager.set(CMS_SESSION_STORAGE_ITEM.SETTINGS, JSON.stringify(this.cmsSettingsService.userSettings));
                     this.cmsSettingsService.applyUserSelectedLanguage();
                     this.cmsSettingsService.connectToWallAtStartup();
                 }, () => {

@@ -87,9 +87,16 @@ export class CmsLaunchpadComponent implements OnInit, OnDestroy {
    * The constructor is defining various services and initializing Internationalization for
    * the entire application.
    */
-  constructor(private translate: TranslateService, private cmsServerApi: CmsApiService, private cmsSettingsService: CmsSettingsService,
-    private storageManager: StorageManager, private element: ElementRef, private router: Router, private appConfig: AppConfig,
-    private mdIconRegistry: MdIconRegistry, private sanitizer: DomSanitizer) {
+  constructor
+    (private translate: TranslateService,
+    private cmsServerApi: CmsApiService,
+    private cmsSettingsService: CmsSettingsService,
+    private storageManager: StorageManager,
+    private element: ElementRef,
+    private router: Router,
+    private appConfig: AppConfig,
+    private mdIconRegistry: MdIconRegistry,
+    private sanitizer: DomSanitizer) {
     this.showSystemDialog = false;
     this.showProgressDialog = false;
 
@@ -108,7 +115,7 @@ export class CmsLaunchpadComponent implements OnInit, OnDestroy {
 
     //add all supported languages
     this.addAppSupportedLanguages();
-    
+
     // set application language as browser language
     this.cmsSettingsService.setBrowserLanguage();
 
@@ -119,10 +126,10 @@ export class CmsLaunchpadComponent implements OnInit, OnDestroy {
       this.cmsServerApi.reconnectSessionWithServer();
 
       // Read user settings from storage manager
-      let settingsStorageData = this.storageManager.get(CMS_SESSION_STORAGE_ITEM.Settings);
+      let settingsStorageData = this.storageManager.get(CMS_SESSION_STORAGE_ITEM.SETTINGS);
       if (settingsStorageData) {
-        this.cmsSettingsService.mUserSettings = JSON.parse(settingsStorageData);
-        if (!this.cmsSettingsService.mUserSettings) {
+        this.cmsSettingsService.userSettings = JSON.parse(settingsStorageData);
+        if (!this.cmsSettingsService.userSettings) {
           this.appConfig.error("ERR_NO_USER_SETTINGS: No user settings found after refresh.");
         }
       }
@@ -131,35 +138,37 @@ export class CmsLaunchpadComponent implements OnInit, OnDestroy {
       this.cmsSettingsService.applyUserSelectedLanguage();
 
       // set UserLastActionTime after refresh 
-      this.storageManager.set(CMS_SESSION_STORAGE_ITEM.UserLastActionTime, Date.now());
+      this.storageManager.set(CMS_SESSION_STORAGE_ITEM.USER_LASTACTION_TIME, Date.now());
     }
 
     // add event listener for auto logOff Time
     this.addLogOffTimeObservable();
 
-    this.applicationLevelEvent = CmsEventEmitterService.get(CMS_EVENTS.Application).subscribe((res: { eventName: string, eventType: string }) => {
-      this.appConfig.log("CmsLaunchpadComponent: Application level event received. ", res.eventName);
+    this.applicationLevelEvent = CmsEventEmitterService.get(CMS_EVENTS.Application)
+      .subscribe((res: { eventName: string, eventType: string }) => {
+        this.appConfig.log("CmsLaunchpadComponent: Application level event received. ",
+          res.eventName);
 
-      // handle system events when user is logged in
-      let user: IUserToken = this.getUserStorageData();
-      if (user && user.loggedIn) {
-        this.applicationEventType = res.eventType;
+        // handle system events when user is logged in
+        let user: IUserToken = this.getUserStorageData();
+        if (user && user.loggedIn) {
+          this.applicationEventType = res.eventType;
 
-        if (this.applicationEventType === "permission") {
-          this.handlePermissionEvents(res.eventName);
+          if (this.applicationEventType === "permission") {
+            this.handlePermissionEvents(res.eventName);
+          }
+          else {
+            this.handleSystemEvents(res.eventName);
+          }
         }
         else {
-          this.handleSystemEvents(res.eventName);
+          this.appConfig.log("CmsLaunchpadComponent: System events will not be handled as user is not logged in.");
         }
-      }
-      else {
-        this.appConfig.log("CmsLaunchpadComponent: System events will not be handled as user is not logged in.");
-      }
-    });
+      });
   }
 
   private getUserStorageData(): any {
-    let userStorageData = this.storageManager.get(CMS_SESSION_STORAGE_ITEM.User);
+    let userStorageData = this.storageManager.get(CMS_SESSION_STORAGE_ITEM.USER);
     if (!userStorageData) {
       this.router.navigate(["/login"]);
       return null;
@@ -279,15 +288,17 @@ export class CmsLaunchpadComponent implements OnInit, OnDestroy {
       window.clearTimeout(this.calculateUserWrapperHash);
       this.calculateUserWrapperHash = 0;
     }
-    this.calculateUserWrapperHash = window.setTimeout(() => { this.calculateUserLastActionTimesFn() }, 500);
+    this.calculateUserWrapperHash = window.setTimeout(() => {
+      this.calculateUserLastActionTimesFn()
+    }, 500);
   }
 
   /**
    * This method listen user actions and calculate time for auto log-off.
    */
   private calculateUserLastActionTimesFn() {
-    let userSettings = this.cmsSettingsService.mUserSettings;
-    let isUserLoggedIn = this.storageManager.get(CMS_SESSION_STORAGE_ITEM.User);
+    let userSettings = this.cmsSettingsService.userSettings;
+    let isUserLoggedIn = this.storageManager.get(CMS_SESSION_STORAGE_ITEM.USER);
 
     // if user settings is present and user is logged-in 
     if (userSettings && isUserLoggedIn) {
@@ -296,12 +307,12 @@ export class CmsLaunchpadComponent implements OnInit, OnDestroy {
       // if userAutoLogOffTime in user settings is not "never" and greater than 0
       if (userAutoLogOffTime > 0) {
         //update local property from sessionStorage
-        this.userLastActionTime = this.storageManager.get(CMS_SESSION_STORAGE_ITEM.UserLastActionTime)
+        this.userLastActionTime = this.storageManager.get(CMS_SESSION_STORAGE_ITEM.USER_LASTACTION_TIME)
 
         if (!this.userLastActionTime) {
           // set user last action time if it is not present in sessionStorage
           this.userLastActionTime = Date.now();
-          this.storageManager.set(CMS_SESSION_STORAGE_ITEM.UserLastActionTime, Date.now());
+          this.storageManager.set(CMS_SESSION_STORAGE_ITEM.USER_LASTACTION_TIME, Date.now());
         } else if (this.userLastActionTime) {
           let userCurrentActionTime = Date.now();
           let timeDiff = userCurrentActionTime - this.userLastActionTime;
@@ -313,7 +324,7 @@ export class CmsLaunchpadComponent implements OnInit, OnDestroy {
           } else {
             //update user time in session
             this.userLastActionTime = Date.now();
-            this.storageManager.set(CMS_SESSION_STORAGE_ITEM.UserLastActionTime, Date.now());
+            this.storageManager.set(CMS_SESSION_STORAGE_ITEM.USER_LASTACTION_TIME, Date.now());
           }
         }
       }
@@ -340,8 +351,14 @@ export class CmsLaunchpadComponent implements OnInit, OnDestroy {
    * This method handles various system events.
    */
   private handleSystemEvents(eventName: string) {
-    let isProgressDialog = (eventName === "ServerDisconnected" || eventName === "RestoreStarted" || eventName === "DatabaseResetStarted");
-    let isSystemDialog = (eventName === "ServerConnected" || eventName === "LicenseChanged" || eventName === "RestoreFinished" || eventName === "UserDeleted" || eventName === "UserModified");
+    let isProgressDialog = (eventName === "ServerDisconnected"
+      || eventName === "RestoreStarted"
+      || eventName === "DatabaseResetStarted");
+    let isSystemDialog = (eventName === "ServerConnected"
+      || eventName === "LicenseChanged"
+      || eventName === "RestoreFinished"
+      || eventName === "UserDeleted"
+      || eventName === "UserModified");
     let messageKey = "systemDialog." + this.camelize(eventName);
 
     // This event is received when successful reconnection with server is established again after network connection within 2mins

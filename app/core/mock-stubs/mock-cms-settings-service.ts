@@ -3,7 +3,7 @@ import { IUserProfileSettings } from "../../cms/models/cms-user-profile-settings
 import { Subject } from "rxjs";
 
 export class MockCmsSettingsServiceStub {
-   public mUserSettings: IUserProfileSettings;
+   public userSettings: IUserProfileSettings;
    public longPressedSubject: Subject<boolean> = new Subject<boolean>();
    public selectedSources = [];
 

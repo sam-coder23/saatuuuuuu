@@ -1,12 +1,10 @@
 import { ComponentFixture, TestBed, async, inject} from "@angular/core/testing";
-import { By } from "@angular/platform-browser";
 import { Location } from "@angular/common";
 import { DebugElement, CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA, ElementRef } from "@angular/core";
 import { HttpModule, Http } from "@angular/http";
 import { TranslateModule, TranslateLoader, TranslateService } from "@ngx-translate/core";
 import { TranslateHttpLoader } from "@ngx-translate/http-loader";
 import { Router, ActivatedRoute, Params } from "@angular/router";
-import { Injectable } from "@angular/core";
 import { Observable } from "rxjs/Observable";
 import { Subject } from "rxjs/Subject";
 
@@ -18,14 +16,13 @@ import { CmsSettingsService } from "./../../settings/cms-settings.service";
 import { AppConfig } from "../../../config";
 import { APIRequest } from "../../../cms/api/api-request";
 import { StorageManager } from "../../../cms/api/cms-storagemanager.service";
-import { IUserProfileSettings } from "../../../cms/models/cms-user-profile-settings";
 
 let routerSpy = {
     navigate: jasmine.createSpy("settings")
 };
 
 let mockCmsSettingsData = {
-    "mUserSettings": {
+    "userSettings": {
         "language": "en",
         "wallConnection": {
             "startUpAction": "show-available-walls-list",
@@ -45,16 +42,13 @@ let mockCmsSettingsData = {
     }
 };
 
-/**
- * Fake CmsApiService Service
- */
-
+// Fake CmsApiService Service
 class MockCmsApiService {
     getUserProfileSettings(): Promise<any> {
-        return Promise.resolve(mockCmsSettingsData.mUserSettings);
+        return Promise.resolve(mockCmsSettingsData.userSettings);
     }
     updateUserProfileSettings(): Promise<any> {
-        return Promise.resolve(mockCmsSettingsData.mUserSettings);
+        return Promise.resolve(mockCmsSettingsData.userSettings);
     }
 }
 
@@ -134,22 +128,22 @@ describe("Component CmsSettingsLanguagePanelComponent", () => {
         storageManager = response;
     }));
 
-    /** COMPONENT DEFINED */
+    // Componenet defined
     it("should be a defined component: ", async(() => {
         expect(component).toBeDefined();
     }));
 
-    /** CHECK PRIVATE VARIABLES */
-    it("should check route params and mCmsLanguages : ", (done) => {
+    // Check private variables
+    it("should check route params and cmsLanguages : ", (done) => {
         expect(debugInstance.route.params).not.toBeNull();
         expect(debugInstance.route.params).not.toBeUndefined();
         expect(debugInstance.route.params.value.key).not.toBeNull();
         expect(debugInstance.route.params.value.key).not.toBeUndefined();
-        expect(debugInstance.mCmsLanguages.length).toBeGreaterThan(0);
+        expect(debugInstance.cmsLanguages.length).toBeGreaterThan(0);
         done();
     });
 
-    /** CHECK BACK BUTTON AND TITLE TEXT ELEMENTS */
+    // Check back button and title text elements
     it("should check settingLanguagePanelBackButton and settingLanguagePanelTitleText ", () => {
         fixture.detectChanges();
         fixture.whenStable().then(() => {
@@ -162,13 +156,13 @@ describe("Component CmsSettingsLanguagePanelComponent", () => {
         });
     });
 
-    /** CHECK AFTER CLICK ON PERTICULAR LANGUAGE setLanguage METHOD SHOULD UPDATE   
-     * userprofileSettings WITH SELECTED LANGUAGE, SESSION STORAGE SETTINGS
-     * AND ROUTE TO SETTINGS PAGE 
-    */
+    /** Check after click on perticular language setlanguage method should update   
+     * userprofilesettings with selected language, session storage settings
+     * and route to settings page 
+     */
     it("should check setLanguage method and update userprofileSettings and navigate route to settings ", (done) => {
-        cmsSettingsService.mUserSettings = mockCmsSettingsData.mUserSettings;
-        let languageKey = debugInstance.mCmsLanguages[0].key;
+        cmsSettingsService.userSettings = mockCmsSettingsData.userSettings;
+        let languageKey = debugInstance.cmsLanguages[0].key;
         expect(languageKey).not.toBeUndefined();
         expect(languageKey).not.toBeNull();
         fixture.detectChanges();
@@ -183,5 +177,4 @@ describe("Component CmsSettingsLanguagePanelComponent", () => {
             done();
         });
     });
-
 });

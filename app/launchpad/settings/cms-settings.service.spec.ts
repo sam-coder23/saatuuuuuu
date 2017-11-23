@@ -23,9 +23,7 @@ describe("Service: CmsSettingsService", () => {
     let translate: TranslateService;
     let storageManager: StorageManager;
 
-    /**
-     * Mock Data for one Display
-     */
+    //Mock Data for one Display
     let mockDisplaysData = {
         displays: [{
             "id": 11,
@@ -72,9 +70,7 @@ describe("Service: CmsSettingsService", () => {
         }]
     };
 
-    /**
-     * Mock Data for CmsSettings
-     */
+    // Mock Data for CmsSettings
     let mockCmsSettingsServiceData = {
         "userSettings": {
             "language": "en",
@@ -96,18 +92,14 @@ describe("Service: CmsSettingsService", () => {
         }
     };
 
-    /**
-     * Mocked Value for Router
-     */
+    // Mocked Value for Router
     let mockRouter = {
         navigate: (url: string) => {
             return url;
         }
     };
 
-    /**
-     * Mocked service for api service
-     */
+    // Mocked service for api service
     class MockCmsApiService {
         getDisplayList(): Observable<any> {
             return Observable.of(mockDisplaysData.displays);
@@ -172,8 +164,8 @@ describe("Service: CmsSettingsService", () => {
         cmsSettingsService.connectToWallAtStartup();
         tick();
         mockCmsSettingsServiceData.userSettings.wallConnection.recentDisplay = mockDisplaysData.displays[0].name;
-        expect(storageManager.get(CMS_SESSION_STORAGE_ITEM.Settings)).toEqual(JSON.stringify(mockCmsSettingsServiceData.userSettings));
-        expect(storageManager.get(CMS_SESSION_STORAGE_ITEM.Display)).toEqual(JSON.stringify(mockDisplaysData.displays[0]));
+        expect(storageManager.get(CMS_SESSION_STORAGE_ITEM.SETTINGS)).toEqual(JSON.stringify(mockCmsSettingsServiceData.userSettings));
+        expect(storageManager.get(CMS_SESSION_STORAGE_ITEM.DISPLAY)).toEqual(JSON.stringify(mockDisplaysData.displays[0]));
         expect(spy.calls.count()).toEqual(1);
         expect(spy.calls.argsFor(0)[0]).toEqual([`/displays/${mockDisplaysData.displays[0].id}/sources-panel`]);
     }));

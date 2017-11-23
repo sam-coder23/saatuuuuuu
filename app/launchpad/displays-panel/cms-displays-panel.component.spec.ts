@@ -88,7 +88,7 @@ describe("Component: CmsDisplaysPanelComponent", () => {
     }));
 
     it("should call onListChanged: ", async(() => {
-        component.onListChanged();
+        debugInstance.onListChanged();
         cmsDisplaysPanelComponentInstance = new CmsDisplaysPanelComponent(storageManager, appConfig, activatedRoute);
         let isDispSelected = cmsDisplaysPanelComponentInstance.isDisplaySelected();
         expect(debugInstance.viewState.reload).toBe(true);
@@ -100,7 +100,7 @@ describe("Component: CmsDisplaysPanelComponent", () => {
     }));
 
     it("should call reloadList: ", async(() => {
-        component.reloadList();
+        debugInstance.reloadList();
         expect(debugInstance.viewState.reload).toBe(false);
 
         let reloadButton = document.getElementById("display-panel-reload-button");
@@ -138,8 +138,8 @@ describe("Component: CmsDisplaysPanelComponent", () => {
         searchBox.dispatchEvent(new Event("keyup"));
         fixture.whenStable().then(() => {
             delay(500).then(() => {
-                expect(component.searchFilter).toBe(searchString);
-                expect(storageManager.get(CMS_SESSION_STORAGE_ITEM.DisplaysSearchFilter)).toBe(searchString);
+                expect(debugInstance.searchFilter).toBe(searchString);
+                expect(storageManager.get(CMS_SESSION_STORAGE_ITEM.DISPLAYS_SEARCH_FILTER)).toBe(searchString);
             });
         });
     });
@@ -155,7 +155,7 @@ describe("Component: CmsDisplaysPanelComponent", () => {
         fixture.whenStable().then(() => {
             delay(500).then(() => {
                 expect(debugInstance.isFavoriteFilter).toBe(!favState);
-                expect(storageManager.get(CMS_SESSION_STORAGE_ITEM.DisplaysFavoriteFilter)).toBe((!favState).toString());
+                expect(storageManager.get(CMS_SESSION_STORAGE_ITEM.DISPLAYS_FAVORITE_FILTER)).toBe((!favState).toString());
             });
         });
     });

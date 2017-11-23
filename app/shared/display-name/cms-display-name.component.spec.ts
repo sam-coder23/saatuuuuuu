@@ -78,11 +78,11 @@ describe("CmsDisplayNameComponent", () => {
 
     function removeDisplay() {
         let storage: StorageManager = injector.get(StorageManager);
-        storage.remove(CMS_SESSION_STORAGE_ITEM.Display);
+        storage.remove(CMS_SESSION_STORAGE_ITEM.DISPLAY);
     }
 
     function setDisplay() {
         let storage: StorageManager = injector.get(StorageManager);
-        storage.set(CMS_SESSION_STORAGE_ITEM.Display, JSON.stringify(display));
+        storage.set(CMS_SESSION_STORAGE_ITEM.DISPLAY, JSON.stringify(display));
     }
 })
