@@ -1,9 +1,3 @@
-/**
- * Copyright (c) 2016 Barco n.v. All Rights Reserved. This software is confidential and proprietary information of Barco n.v.
- * ("Confidential Information"). You shall not disclose such Confidential Information and shall use it only in accordance with
- * the terms of the license agreement you entered into with Barco.
- */
-
 import { Component, OnInit, Input, Output, HostListener, ElementRef, AfterViewInit } from "@angular/core";
 
 import { Tile } from "../../../cms/models/cms-tile";
@@ -47,6 +41,9 @@ export class CmsGridComponent implements OnInit, AfterViewInit {
     private selectedContent: TileContent = null;
     private swappingContent: TileContent = null;
 
+    // checking api call state
+    private loading: boolean = false;
+
     /**
      * The constructor
      */
@@ -65,15 +62,20 @@ export class CmsGridComponent implements OnInit, AfterViewInit {
         this.applySourceLabelSettings();
     }
 
-    ngAfterViewInit(){
+    ngAfterViewInit() {
         Observable.fromEvent(this.elementRef.nativeElement, "click")
-        .debounceTime(500)
-        .subscribe((event: any) => {
-            let contentId = event.target.getAttribute("data-content-id");
-            if(contentId) {
-                this.contentClick(this.contents.find((content) => {return content.id === parseInt(contentId) }));
-            }
-        });
+            .debounceTime(500)
+            .subscribe((event: any) => {
+                let contentId = event.target.getAttribute("data-content-id");
+
+                if (contentId) {
+                    let content = this.contents.find((content) => {
+                        return content.id === parseInt(contentId);
+                    });
+
+                    this.contentClick(content);
+                }
+            });
     }
 
     /**
@@ -81,7 +83,7 @@ export class CmsGridComponent implements OnInit, AfterViewInit {
      */
     private applySourceLabelSettings(): void {
         //get user settings from cms-settings-service
-        let userSettings = this.cmsSettingsService.userSettings
+        let userSettings = this.cmsSettingsService.userSettings;
 
         let isSourceLableEnabled = userSettings.sourceLabel.displaySourceNameLabels ? "block" : "none";
         let fontSize = userSettings.sourceLabel.fontSize;
@@ -107,22 +109,20 @@ export class CmsGridComponent implements OnInit, AfterViewInit {
      */
     private createSourceLableStyleRule(sourceStyle: string, backgroundStyles: string): void {
         // remove old style sheet
-        var previousStyle = document.getElementById("sourceLabelStylesheet");
+        let previousStyle = document.getElementById("sourceLabelStylesheet");
         if (previousStyle) {
-            var sheetParent = previousStyle.parentNode;
-            sheetParent.removeChild(previousStyle);
+            previousStyle.parentNode.removeChild(previousStyle);
         }
 
         // create a new style sheet 
-        var styleTag = document.createElement("style");
-        var head = document.getElementsByTagName("head")[0];
+        let styleTag = document.createElement("style");
+        let head = document.getElementsByTagName("head")[0];
         styleTag.setAttribute("id", "sourceLabelStylesheet");
         head.appendChild(styleTag);
         if (styleTag) {
             styleTag.innerHTML = `.source-label-container{ ${sourceStyle} } .source-label-container::before{ ${backgroundStyles} }`;
         }
     }
-
 
     public formattedStyle(rawStyle) {
         if (!rawStyle) return {};
@@ -150,18 +150,20 @@ export class CmsGridComponent implements OnInit, AfterViewInit {
         };
     }
 
-
-
-
     /**
      * This method handle click of the content : handles all possible content swapping cases
      */
     public contentClick(content: TileContent) {
+        // return if swap source api call is in progress
+        if (this.loading) {
+            return;
+        }
+
         if (Validation.IsNullOrUndefined(this.selectedContent)) {
             // When no source selected at this moment and on first source content clicked\ selected for swapping
             this.selectedContent = content;
         }
-        else if (!Validation.IsNullOrUndefined(this.selectedContent) && content) {
+        else if (content) {
             // Same source clicked again so no more swapping, deselect selected source
             if (this.selectedContent.id === content.id) {
                 this.deselctedSource();
@@ -177,70 +179,62 @@ export class CmsGridComponent implements OnInit, AfterViewInit {
     /**
     * Swapping source geometery and calling server API to update geometery of the content for selected display
     */
-    private swapSource() {
+    private swapSource(): void {
+        this.loading = true;
         let swappedSource: any[] = this.swapContentGeometeryandCreateContent();
+        let observableRequests: Observable<Response>[] = [];
+
         //first source geometery change call placed
-        this.cmsApiService.updateContentGeormetryOnDisplay(this.cmsMiniDisplayService.display.id, swappedSource[0].id, swappedSource[0]).subscribe(response => {
-            console.log(response);
-
-        }, error => {
-            console.error("There is issue in source swapping : ", error);
-
-            this.deselctedSource();
-            swappedSource = [];
-        });
+        observableRequests.push(this.cmsApiService.updateContentGeormetryOnDisplay(this.cmsMiniDisplayService.display.id, swappedSource[0].id, swappedSource[0]));
 
         //for second source geometery change call placed
-        this.cmsApiService.updateContentGeormetryOnDisplay(this.cmsMiniDisplayService.display.id, swappedSource[1].id, swappedSource[1]).subscribe(response => {
-            console.log(response);
+        observableRequests.push(this.cmsApiService.updateContentGeormetryOnDisplay(this.cmsMiniDisplayService.display.id, swappedSource[1].id, swappedSource[1]));
 
+        Observable.forkJoin(observableRequests).finally(() => {
+            this.loading = false;
             this.deselctedSource();
             swappedSource = [];
-
-            console.log("[SuccessFull] : swapping sources ");
-        }, error => {
-            console.error("There is issue in source swapping : ", error);
-
-            this.deselctedSource();
-            swappedSource = [];
-        });
+        }).subscribe(
+            () => {
+                // do nothing while success
+            },
+            (error) => {
+                this.appConfig.error("There is issue in source swapping : ", error);
+            }
+            );
     }
 
     /**
-    * Preparing content and swapping source geometery
+    * Preparing content to swap
     */
     private swapContentGeometeryandCreateContent(): any[] {
-        let swapContentForGeometery: any[2] = [];
-
-        let copyContent: TileContent;
-        let swapGeometery: TileContent;
-
-        for (let sourceIndex = 0; sourceIndex < 2; sourceIndex++) {
-            if (sourceIndex === 0) {
-                copyContent = this.selectedContent;
-                swapGeometery = this.swappingContent;
-            }
-            else if (sourceIndex === 1) {
-                copyContent = this.swappingContent;
-                swapGeometery = this.selectedContent;
-            }
-
-            swapContentForGeometery[sourceIndex] = {
-                "id": copyContent.id,
-                "name": copyContent.name,
-                "type": copyContent.type,
-                "resourceId": copyContent.resourceId,
-                "snapshotPath": copyContent.snapshotPath,
-                "zOrder": copyContent.zOrder,
-                // swapping dimension of selected sources
-                "x": swapGeometery.absoluteSize.left,
-                "y": swapGeometery.absoluteSize.top,
-                "width": swapGeometery.absoluteSize.width,
-                "height": swapGeometery.absoluteSize.height
-            };
-        }
-        return swapContentForGeometery;
+        return [
+            this.updateContentGeometery(this.selectedContent, this.swappingContent),
+            this.updateContentGeometery(this.swappingContent, this.selectedContent)
+        ];
     }
+
+    /**
+     * Swapping content geometery of selected 2 contents
+     * @param content
+     * @param swapContent
+     */
+    private updateContentGeometery(content: TileContent, swapContent: TileContent): any {
+        return {
+            "id": content.id,
+            "name": content.name,
+            "type": content.type,
+            "resourceId": content.resourceId,
+            "snapshotPath": content.snapshotPath,
+            "zOrder": content.zOrder,
+            // swapping dimension of selected sources
+            "x": swapContent.absoluteSize.left,
+            "y": swapContent.absoluteSize.top,
+            "width": swapContent.absoluteSize.width,
+            "height": swapContent.absoluteSize.height
+        };
+    }
+
     /**
      *  On click : outside source content, if there is selected source content for swap then deselect source content and remove selected source selected for swaping
      * @param event 
@@ -251,7 +245,10 @@ export class CmsGridComponent implements OnInit, AfterViewInit {
         }
     }
 
-    // remove selection as same content selected again and empty selected source list as no source selected for swapping
+    /**
+     * remove selection as same content selected again and
+     * empty selected source list as no source selected for swapping
+     */
     private deselctedSource() {
         this.selectedContent = null;
         this.swappingContent = null;
