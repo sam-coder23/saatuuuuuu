@@ -24,7 +24,7 @@ module.exports = function (config) {
                 pattern: 'app/**/*.ts'
             },
             {
-                pattern: 'test/*.spec.ts'
+                pattern: 'test/**/*.spec.ts'
             },
             {
                 pattern: "./app/i18n/*.json",
