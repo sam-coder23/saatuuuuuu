@@ -39,6 +39,6 @@ TestBed.initTestEnvironment(
 );
 
 // Then we find all the tests.
-const context = (require as any).context("../app/", true, /\.spec\.ts$/);
+const context = (require as any).context("./app/", true, /\.spec\.ts$/);
 context.keys().map(context);
 
