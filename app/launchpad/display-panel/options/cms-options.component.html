@@ -6,26 +6,26 @@
         <div class="options-username">
             <span>{{ UserName }}</span>
         </div>
-        <div class="options">
+        <div class="options" [hidden]="isHideOption">
             <button md-button id="options-refresh-button" (click)="refresh()">
                 <i class="material-icons">refresh</i>
                 <span>{{'options.refresh' | translate}}</span>
             </button>
         </div>
-        <hr *ngIf="!disableOptionOnDisplayUnavailable">
-        <div class="options">
+        <hr *ngIf="!disableOptionOnDisplayUnavailable" [hidden]="isHideOption">
+        <div class="options" [hidden]="isHideOption">
             <button md-button disabled="true" id="options-zoom-button">
                 <i class="material-icons">pageview</i>
                 <span>{{'options.zoom' | translate}}{{zoomLevel}}%</span>
             </button>
         </div>
-        <div class="options">
+        <div class="options" [hidden]="isHideOption">
             <button md-button id="options-fitheight-button" [disabled]="disableOptionOnDisplayUnavailable" (click)="onFitHeightClick()">
                  <i class="material-icons"><img src="resources/icons/fit_height.svg"></i>
                 <span>{{'options.fitHeight' | translate}}</span>
             </button>
         </div>
-        <hr>
+        <hr [hidden]="isHideOption">
         <div class="options">
             <button md-button id="options-settings-button" routerLink="/settings">
                 <i class="material-icons">settings</i>

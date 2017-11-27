@@ -1,4 +1,7 @@
 /** 
+ * AS PER THE NEW REQUIREMENTS, REFRESH, FIT HEIGHT, ZOOM LINKS ARE HIDDEN, BUT NO CHANGE IN TEST CASES.
+ * 
+ * 
  * Test cases:
  * 
  * ## Constructor ##

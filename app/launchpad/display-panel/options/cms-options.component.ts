@@ -24,6 +24,7 @@ import { AppConfig } from "../../../config";
  * @property {EventEmitter} closeEmitter
 `* @property {EventEmitter} fitHeightEmitter 
  * @property {boolean} disableOptionOnDisplayUnavailable
+ * @property {boolean} isHideOption
  */
 export class CmsOptionsComponent implements OnInit {
 
@@ -32,6 +33,9 @@ export class CmsOptionsComponent implements OnInit {
 
     //This flag will disable certain options if display is not available
     private disableOptionOnDisplayUnavailable: boolean;
+
+    //This flag will hide certain options
+    private isHideOption: boolean;
 
     // zoom level of mini-Display
     @Input("zoom") zoomLevel: number;
@@ -46,6 +50,7 @@ export class CmsOptionsComponent implements OnInit {
 
     constructor(private route: ActivatedRoute, private router: Router, private cmsApiService: CmsApiService, private storageManager: StorageManager, private appConfig: AppConfig) {
         this.disableOptionOnDisplayUnavailable = false;
+        this.isHideOption = true;
     }
 
     public ngOnInit() {
