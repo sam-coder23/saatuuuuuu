@@ -182,15 +182,24 @@ export class CmsDisplayPanelComponent implements OnInit, OnDestroy {
      */
     private closingClearWallPopup() {
         this.showClearWallPopup = false;
-        this.navigateToLoginRoute();
     }
 
+    /**
+     * This method cancel clear-wall-popup and logout
+     * @method cancelClearWallPopup
+     * @return {void}
+     */
+    private cancelClearWallPopup() {
+        this.showClearWallPopup = false;
+        this.navigateToLoginRoute();
+    }
+    
     /**
      * This method navigate to back page
      * @method navigateBack
      * @return {void}
      */
     private navigateBack() {
-        history.back();
+        window.history.back();
     }
 }

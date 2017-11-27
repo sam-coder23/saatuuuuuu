@@ -6,10 +6,6 @@
         </button>
     </div>
 
-    <button id="display-panel-back-button" md-icon-button nd-click-debounce *ngIf="isLongPressed" (ndClick)="backToDisplayPanel()">
-        <i class="material-icons">arrow_back</i>
-    </button>
-
     <span class="fill-remaining-space"></span>
 
     <cms-display-name></cms-display-name>
@@ -36,7 +32,7 @@
 </md-toolbar>
 
 <nd-popup id="display-panel-clear-wall-popup" *ngIf="showClearWallPopup" class="confirm-popup" title="{{'displayPanel.clearWallConfirmationPopupTitle' | translate }}"
-    (done)="clearMiniDisplayWall()" (closing)="closingClearWallPopup();" okText="{{'common.yes' | translate}}" cancelText="{{'common.no' | translate}}">
+    (done)="clearMiniDisplayWall()" (cancelled)="cancelClearWallPopup();" (closing)="closingClearWallPopup();" okText="{{'common.yes' | translate}}" cancelText="{{'common.no' | translate}}">
     <popup-body>
         {{'displayPanel.clearWallConfirmationPopupMessage' | translate}}
     </popup-body>

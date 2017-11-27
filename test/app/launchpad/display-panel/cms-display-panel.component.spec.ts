@@ -37,6 +37,7 @@
  * 
  * ## logoff ##
  * expect a popup on logoff
+ * click on close icon, popoup should be closed and mini-display should be remain present
  * 
  * ## clearMiniDisplayWall ## 
  * expect the API to clear display wall is called and it is resolved;
@@ -201,7 +202,7 @@ describe("CmsDisplayPanelComponent - Test Suite", () => {
 
         let spyLoadDisplay = spyOn(debugInstance, "loadDisplay").and.returnValue(null);
         component.ngOnInit();
-        
+
         expect(spyLoadDisplay.calls.count()).toEqual(1);
     }));
 
@@ -210,14 +211,11 @@ describe("CmsDisplayPanelComponent - Test Suite", () => {
     it("should unsubscribe subscriptions on OnDestroy", fakeAsync(() => {
         let settingsService: CmsSettingsService = injector.get(CmsSettingsService);
         settingsService.longPressedSubject.next(true);
-
         fixture.detectChanges();
         tick();
 
         expect(debugInstance.longPressSubcription.closed).toBeFalsy();
-
         component.ngOnDestroy();
-
         expect(debugInstance.longPressSubcription.closed).toBeTruthy();
     }));
 
@@ -236,7 +234,6 @@ describe("CmsDisplayPanelComponent - Test Suite", () => {
 
         let settingsService: CmsSettingsService = injector.get(CmsSettingsService);
         let spy = spyOn(settingsService, "updateIsLongPress");
-
         debugInstance.backToDisplayPanel();
 
         expect(spy.calls.count()).toEqual(1);
@@ -247,13 +244,12 @@ describe("CmsDisplayPanelComponent - Test Suite", () => {
     it("should have back button and onclick should navigate back", () => {
         fixture.detectChanges();
 
-        let buttonBack: DebugElement = fixture.debugElement.query(By.css("#display-panel-back-button"));
-        expect(buttonBack).toBeTruthy();
+        let buttonBack = nativeElement.querySelector("#display-panel-back-button");
+        expect(buttonBack).toBeDefined();
 
         let router = fixture.debugElement.injector.get(Router);
         let spyWindowHistoryBack = spyOn(window.history, "back").and.returnValue(null);
-
-        buttonBack.triggerEventHandler("click", null);
+        buttonBack.dispatchEvent(new Event("ndClick"));
 
         expect(spyWindowHistoryBack).toHaveBeenCalled();
         expect(spyWindowHistoryBack.calls.count()).toEqual(1);
@@ -262,12 +258,30 @@ describe("CmsDisplayPanelComponent - Test Suite", () => {
     it("should have next button and onclick should display a popup for logoff", () => {
         fixture.detectChanges();
 
-        let buttonNext: DebugElement = fixture.debugElement.query(By.css("#display-panel-next-button"));
-        expect(buttonNext).toBeTruthy();
+        let buttonNext = nativeElement.querySelector("#display-panel-next-button");
+        expect(buttonNext).toBeDefined();
 
-        buttonNext.triggerEventHandler("click", null);
-
+        buttonNext.dispatchEvent(new Event("ndClick"));
         expect(component["showClearWallPopup"]).toBeTruthy();
+    });
+
+    it("click on close icon, popoup should be closed and mini-display should be remain present", () => {
+        fixture.detectChanges();
+
+        let buttonNext = nativeElement.querySelector("#display-panel-next-button");
+        expect(buttonNext).toBeDefined();
+
+        buttonNext.dispatchEvent(new Event("ndClick"));
+        expect(component["showClearWallPopup"]).toBeTruthy();
+
+        //simulate click on close icon of nd-popup
+        debugInstance.closingClearWallPopup();
+        fixture.detectChanges();
+
+        expect(component["showClearWallPopup"]).toBeFalsy();
+        
+        let miniDisplayContainer = nativeElement.querySelector("cms-mini-display");
+        expect(miniDisplayContainer).toBeDefined();
     });
 
 
@@ -277,7 +291,6 @@ describe("CmsDisplayPanelComponent - Test Suite", () => {
 
         debugInstance.displayId = 1;
         debugInstance.clearMiniDisplayWall();
-
         tick();
 
         expect(spy.calls.count()).toEqual(1);
@@ -293,14 +306,11 @@ describe("CmsDisplayPanelComponent - Test Suite", () => {
 
         fixture.detectChanges();
         tick();
-
         debugInstance.clearMiniDisplayWall();
-
         tick();
 
         expect(settingsService.selectedSources.length).toEqual(0);
     }));
-
 
     function removeDisplay() {
         window.sessionStorage.removeItem(CMS_SESSION_STORAGE_ITEM.DISPLAY);
