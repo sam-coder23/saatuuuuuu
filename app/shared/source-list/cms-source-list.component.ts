@@ -34,8 +34,8 @@ import { CMSConstants } from "../../cms/models/cms-constants";
 @Component({
     //moduleId: module.id,
     selector: "cms-source-list",
-    template: require("to-string!./cms-source-list.component.html"),
-    styles: [require("to-string!./cms-source-list.component.scss")]
+    template: require("./cms-source-list.component.html"),
+    styles: [require("./cms-source-list.component.scss")]
 })
 
 export class CmsSourceListComponent implements OnInit, OnChanges, OnDestroy {

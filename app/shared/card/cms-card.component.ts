@@ -8,7 +8,7 @@ import { Component, OnInit, OnDestroy, Input, Output, EventEmitter, OnChanges, S
 import { CmsResource } from "./../../cms/models/cms-resource";
 import { AppConfig } from "../../config";
 import { RegExManager } from "../../core/util/RegEx";
-import { Url } from "../../core/util/Url";
+import { Url } from "../../core/util/URL";
 import { Validation } from "../../core/util/Validation";
 import { CmsFavoriteService } from "../cms-favorite.service";
 import { Source } from "../../cms/models/cms-source";
@@ -21,8 +21,8 @@ import { Source } from "../../cms/models/cms-source";
 @Component({
     //moduleId: module.id,
     selector: "cms-card",
-    template: require("to-string!./cms-card.component.html"),
-    styles: [require("to-string!./cms-card.scss")]
+    template: require("./cms-card.component.html"),
+    styles: [require("./cms-card.scss")]
 })
 
 export class CmsCardComponent implements OnInit, OnChanges {

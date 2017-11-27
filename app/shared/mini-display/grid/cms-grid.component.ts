@@ -16,7 +16,7 @@ import { AppConfig } from "../../../config";
 import { CmsMiniDisplayService } from "./../cms-mini-display.service";
 import { TileContent } from "./../../../cms/models/cms-tile-content";
 import { RegExManager } from "../../../core/util/RegEx";
-import { Url } from "../../../core/util/Url";
+import { Url } from "../../../core/util/URL";
 import { Validation } from "../../../core/util/Validation";
 import { Observable } from "rxjs/Observable";
 
@@ -26,8 +26,8 @@ import { Observable } from "rxjs/Observable";
 @Component({
     //moduleId: module.id, 
     selector: "cms-grid",
-    template: require("to-string!./cms-grid.component.html"),
-    styles: [require("to-string!./cms-grid.component.scss")],
+    template: require("./cms-grid.component.html"),
+    styles: [require("./cms-grid.component.scss")],
     host: {
         "(document:click)": "onFocusLostFromContent($event)"
     }

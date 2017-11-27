@@ -24,8 +24,8 @@ import { AppConfig } from "../../config";
 @Component({
     //moduleId: module.id,
     selector: "cms-login",
-    template: require("to-string!./cms-login.component.html"),
-    styles: [require("to-string!./cms-login.component.scss")]
+    template: require("./cms-login.component.html"),
+    styles: [require("./cms-login.component.scss")]
 })
 export class CmsLoginComponent implements OnInit, OnDestroy {
 

@@ -15,8 +15,8 @@ import { Validation } from "../../core/util/Validation";
 @Component({
     //moduleId: module.id,
     selector: "cms-display-panel",
-    template: require("to-string!./cms-display-panel.component.html"),
-    styles: [require("to-string!./cms-display-panel.component.scss")]
+    template: require("./cms-display-panel.component.html"),
+    styles: [require("./cms-display-panel.component.scss")]
 })
 
 /**

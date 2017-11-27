@@ -8,8 +8,8 @@ import { CmsSettingsService } from "./../../settings/cms-settings.service";
 @Component({
     //moduleId: module.id,
     selector: "cms-settings-language-panel",
-    template: require("to-string!./cms-settings-language-panel.component.html"),
-    styles: [require("to-string!./cms-settings-language-panel.component.scss")]
+    template: require("./cms-settings-language-panel.component.html"),
+    styles: [require("./cms-settings-language-panel.component.scss")]
 
 })
 

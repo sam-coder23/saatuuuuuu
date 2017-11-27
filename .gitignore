@@ -3,3 +3,5 @@ tslint/
 test-report/
 dist/
 npm-debug.log
+coverage/
+karma_html/

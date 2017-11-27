@@ -58,7 +58,7 @@ import "../resources/fonts/material-fonts.css";
       </div>
     <div class="cms-dialog-overlay"></div>
   </div>`,
-  styles: [require("to-string!./cms-launchpad.component.scss")]
+  styles: [require("./cms-launchpad.component.scss")]
 })
 export class CmsLaunchpadComponent implements OnInit, OnDestroy {
 

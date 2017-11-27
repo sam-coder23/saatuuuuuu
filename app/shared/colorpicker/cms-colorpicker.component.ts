@@ -16,8 +16,8 @@ import { Component, Input, Output, EventEmitter, OnInit, ElementRef, Renderer } 
 @Component({
     //moduleId: module.id,
     selector: "cms-colorpicker",
-    template: require("to-string!./cms-colorpicker.component.html"),
-    styles: [require("to-string!./cms-colorpicker.component.scss")]
+    template: require("./cms-colorpicker.component.html"),
+    styles: [require("./cms-colorpicker.component.scss")]
 })
 export class CmsColorPickerComponent implements OnInit{
     /**

@@ -29,8 +29,8 @@ import { DISPLAY_TYPE } from "../../cms/api/display-type.enum";
 @Component({
     //moduleId: module.id,
     selector: "cms-display-list",
-    template: require("to-string!./cms-display-list.component.html"),
-    styles: [require("to-string!./cms-display-list.component.scss")]
+    template: require("./cms-display-list.component.html"),
+    styles: [require("./cms-display-list.component.scss")]
 })
 
 /**

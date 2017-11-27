@@ -6,8 +6,8 @@ import { AppConfig } from "../../config";
 @Component({
     //moduleId: module.id,
     selector: "cms-about-panel",
-    template: require("to-string!./cms-about-panel.component.html"),
-    styles: [require("to-string!./cms-about-panel.component.scss")]
+    template: require("./cms-about-panel.component.html"),
+    styles: [require("./cms-about-panel.component.scss")]
 })
 
 /**

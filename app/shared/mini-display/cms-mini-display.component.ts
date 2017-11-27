@@ -29,8 +29,8 @@ import { Subscription, Observable } from "rxjs/Rx";
 @Component({
     //moduleId: module.id,
     selector: "cms-mini-display",
-    template: require("to-string!./cms-mini-display.component.html"),
-    styles: [require("to-string!./cms-mini-display.component.scss")]
+    template: require("./cms-mini-display.component.html"),
+    styles: [require("./cms-mini-display.component.scss")]
 })
 export class CmsMiniDisplayComponent implements OnInit, OnChanges, OnDestroy {
     /**

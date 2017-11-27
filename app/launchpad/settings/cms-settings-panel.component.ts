@@ -12,8 +12,8 @@ import { AppConfig } from "../../config";
 @Component({
     //moduleId: module.id,
     selector: "cms-settings-panel",
-    template: require("to-string!./cms-settings-panel.component.html"),
-    styles: [require("to-string!./cms-settings-panel.component.scss")]
+    template: require("./cms-settings-panel.component.html"),
+    styles: [require("./cms-settings-panel.component.scss")]
 })
 
 /**

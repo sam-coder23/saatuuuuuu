@@ -6,8 +6,8 @@ import { ActivatedRoute, Router } from "@angular/router";
  */
 @Component({
     selector: "cms-tiles-panel",
-    template: require("to-string!./cms-tiles-panel.component.html"),
-    styles: [require("to-string!./cms-tiles-panel.component.scss")]
+    template: require("./cms-tiles-panel.component.html"),
+    styles: [require("./cms-tiles-panel.component.scss")]
 })
 export class CmsTilesPanelComponent implements OnInit {
     // the selected display id

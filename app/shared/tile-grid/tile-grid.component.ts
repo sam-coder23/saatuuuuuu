@@ -4,8 +4,8 @@ import { Tile } from "../../cms/models/cms-tile";
 
 @Component({
     selector: "cms-tile-grid",
-    template: require("to-string!./tile-grid.component.html"),
-    styles: [require("to-string!./tile-grid.component.scss")]
+    template: require("./tile-grid.component.html"),
+    styles: [require("./tile-grid.component.scss")]
 })
 
 export class TileGridComponent {

@@ -11,8 +11,8 @@ import { AppConfig } from "../../../config";
 @Component({
     //moduleId: module.id,
     selector: "cms-options",
-    template: require("to-string!./cms-options.component.html"),
-    styles: [require("to-string!./cms-options.component.scss")]
+    template: require("./cms-options.component.html"),
+    styles: [require("./cms-options.component.scss")]
 })
 
 /**

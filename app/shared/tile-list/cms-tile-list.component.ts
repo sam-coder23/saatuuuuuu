@@ -13,8 +13,8 @@ import { CmsSettingsService } from "../../launchpad/settings/cms-settings.servic
 
 @Component({
     selector: "cms-tile-list",
-    template: require("to-string!./cms-tile-list.component.html"),
-    styles: [require("to-string!./cms-tile-list.component.scss")]
+    template: require("./cms-tile-list.component.html"),
+    styles: [require("./cms-tile-list.component.scss")]
 })
 
 export class CmsTileListComponent implements OnInit, OnDestroy {

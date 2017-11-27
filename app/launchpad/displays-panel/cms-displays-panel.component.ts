@@ -11,8 +11,8 @@ import { CMSConstants } from "../../cms/models/cms-constants";
 @Component({
     //moduleId: module.id,
     selector: "cms-displays-panel",
-    template: require("to-string!./cms-displays-panel.component.html"),
-    styles: [require("to-string!./cms-displays-panel.component.scss")]
+    template: require("./cms-displays-panel.component.html"),
+    styles: [require("./cms-displays-panel.component.scss")]
 })
 
 /**

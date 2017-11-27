@@ -26,8 +26,8 @@ import { Source } from "../../cms/models/cms-source";
 @Component({
     //moduleId: module.id,
     selector: "cms-sources-panel",
-    template: require("to-string!./cms-sources-panel.component.html"),
-    styles: [require("to-string!./cms-sources-panel.component.scss")]
+    template: require("./cms-sources-panel.component.html"),
+    styles: [require("./cms-sources-panel.component.scss")]
 })
 export class CmsSourcesPanelComponent implements OnInit {
     private mCmsServerApi: CmsApiService;

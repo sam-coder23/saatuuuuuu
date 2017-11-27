@@ -1,4 +1,4 @@
-import { Url } from "../../../../app/core/util/Url";
+import { Url } from "../../../../app/core/util/URL";
 
 describe("Url method", () => {
 

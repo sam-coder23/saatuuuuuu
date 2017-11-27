@@ -32,13 +32,13 @@ import {
   platformBrowserDynamicTesting
 } from "@angular/platform-browser-dynamic/testing";
 
-// First, initialize the Angular testing environment.
+// initialize the Angular testing environment.
 TestBed.initTestEnvironment(
   BrowserDynamicTestingModule,
   platformBrowserDynamicTesting()
 );
 
-// Then we find all the tests.
-const context = (require as any).context("./app/", true, /\.spec\.ts$/);
-context.keys().map(context);
-
+/**
+ * Karma already targetting test folder so all the specs will be executed
+ * There is no explicit need to add test cases
+ */
