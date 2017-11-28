@@ -25,7 +25,7 @@
         "clearWallConfirmationPopupMessage": "Do you want to clear the display wall before logging off?"
     },
     "displayList": {
-        "connectTo": "Select a display wall",
+        "connectTo": "Connect to a display wall",
         "unavailable": "No Displays",
         "unavailableConfirmation": "No display is available for your account. Please contact the administrator.",
         "confirmationTitlePopup": "Information Alert"
@@ -48,7 +48,7 @@
     "sourceList": {
         "tileLayoutNotAvailable": "No tile layout found for loading source on display wall.",
         "maxSelection": "Maximum {{value}} source(s) can be selected.",
-        "connectTo": "Select sources (maximum {{value}})",
+        "connectTo": "Select sources",
         "unavailable": "No Sources"
     },
     "panelToolbar": {
@@ -121,10 +121,16 @@
         "no": "No",
         "ok": "OK",
         "exit": "Exit",
-        "logout" : "Log Off"
+        "logout" : "Log off",
+        "layouts": "Layouts",
+        "sources": "Sources",
+        "displays": "Displays",
+        "display": "Display",
+        "of": "of", 
+        "source": "sources"
     },
     "tilePresetList": {
         "unavailable": "No Tile Layouts",
-        "layouts": "Select a Layout"
+        "layouts": "Load a layout"
     }
 }

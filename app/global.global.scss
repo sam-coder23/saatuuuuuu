@@ -91,6 +91,7 @@ cms-launchpad{
 
         .md-button-wrapper{
             display: flex;
+            align-content: center;
         }
     }
     
@@ -99,6 +100,7 @@ cms-launchpad{
         color: rgba(0,0,0,.62) !important;
         background-color: #eeeeee !important; 
         min-width: 0;
+        width: 140px;
     }
 
     .next-button[hidden]{
