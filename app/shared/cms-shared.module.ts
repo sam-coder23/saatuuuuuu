@@ -36,8 +36,6 @@ import { CmsSourceListComponent } from "./source-list/cms-source-list.component"
 import { CmsVirtualScrollService } from "./cms-virtual-scroll.service";
 import { CmsFavoriteService } from "./cms-favorite.service";
 
-/* colorpicker component */
-import { CmsColorPickerComponent } from "./colorpicker/cms-colorpicker.component";
 import { TileGridComponent } from "./tile-grid/tile-grid.component";
 import { CmsTileListComponent } from "./tile-list/cms-tile-list.component";
 
@@ -69,7 +67,6 @@ import { CmsDisplayNameComponent } from "./display-name/cms-display-name.compone
     CmsGridComponent,
     CmsDisplayListComponent,
     CmsSourceListComponent,
-    CmsColorPickerComponent,
     TileGridComponent,
     CmsTileListComponent,
     CmsDisplayNameComponent
@@ -80,7 +77,6 @@ import { CmsDisplayNameComponent } from "./display-name/cms-display-name.compone
     CmsGridComponent,
     CmsDisplayListComponent,
     CmsSourceListComponent,
-    CmsColorPickerComponent,
     TileGridComponent,
     CmsTileListComponent,
     CmsDisplayNameComponent

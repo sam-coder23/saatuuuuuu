@@ -238,7 +238,7 @@ export class CmsSourceListComponent implements OnInit, OnChanges, OnDestroy {
     private handleSourceListEvents(anEventType: string, aResponseBody: any) {
         if (anEventType === "ResourceDeleted") {
             // find the source in the source list and disable it
-            var source = this.mSources.find(source => source.id === aResponseBody.id);
+            let source = this.mSources.find(source => source.id === aResponseBody.id);
             if (source) {
                 source.disabled = true;
             }
@@ -268,7 +268,7 @@ export class CmsSourceListComponent implements OnInit, OnChanges, OnDestroy {
     private shareSourceOnTile(source: Source, tileIndex: number): void {
         if (this.selectedDisplay.tiles && this.selectedDisplay.tiles[tileIndex]) {
 
-            var tile = new Tile({
+            let tile = new Tile({
                 "x": this.selectedDisplay.tiles[tileIndex].left,
                 "y": this.selectedDisplay.tiles[tileIndex].top,
                 "width": this.selectedDisplay.tiles[tileIndex].width,

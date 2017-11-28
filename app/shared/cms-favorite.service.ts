@@ -40,16 +40,16 @@ export class CmsFavoriteService {
                 this.appConfig.log(`CmsFavoriteService:: Object [id:${objectTypePrefix + "_" + objectId}] marked as favorite.`);
 
                 // iterating object array to find object for which API was triggered
-                for (var i = 0; i < objectArray.length; i++) {
+                for (let index = 0; index < objectArray.length; index++) {
                     // match object id
-                    if (objectArray[i].id === objectId) {
+                    if (objectArray[index].id === objectId) {
                         // match object type
-                        if (objectArray[i].type !== undefined && objectArray[i].type !== objectType) {
+                        if (objectArray[index].type !== undefined && objectArray[index].type !== objectType) {
                             continue;
                         }
 
                         // create a clone of existing object (this is copy by value not by reference)
-                        var newObject = Object.assign({}, objectArray[i]);
+                        let newObject = Object.assign({}, objectArray[index]);
 
                         // update the favorite value in this new object
                         newObject.favorite = true;
@@ -58,7 +58,7 @@ export class CmsFavoriteService {
 
                         // replacing the existing object with new object will trigger ngOnChange event
                         // to component which binds to this object as input (for example: cms-card in our case)
-                        objectArray[i] = newObject;
+                        objectArray[index] = newObject;
                         break;
                     }
                 }
@@ -84,25 +84,25 @@ export class CmsFavoriteService {
                 this.appConfig.log(`CmsFavoriteService:: Object [id:${objectTypePrefix + "_" + objectId}] marked as unfavorite.`);
 
                 // iterating object array to find object for which API was triggered
-                for (var i = 0; i < objectArray.length; i++) {
+                for (let index = 0; index < objectArray.length; index++) {
                     // match object id
-                    if (objectArray[i].id === objectId) {
+                    if (objectArray[index].id === objectId) {
                         /**
                          * If favorite filter is active then application will remove
                          * that source card from the list
                          */
                         if (favoriteFilter) {
-                            let objIndex = objectArray.indexOf(objectArray[i]);
+                            let objIndex = objectArray.indexOf(objectArray[index]);
                             objectArray.splice(objIndex, 1);
                         }
                         else {
                             // match object type
-                            if (objectArray[i].type !== undefined && objectArray[i].type !== objectType) {
+                            if (objectArray[index].type !== undefined && objectArray[index].type !== objectType) {
                                 continue;
                             }
 
                             // create a clone of existing object (this is copy by value not by reference)
-                            var newObject = Object.assign({}, objectArray[i]);
+                            let newObject = Object.assign({}, objectArray[index]);
 							
 							this.refreshSnapshot = false;
 
@@ -110,7 +110,7 @@ export class CmsFavoriteService {
                             newObject.favorite = false;
                             // replacing the existing object with new object will trigger ngOnChange event
                             // to component which binds to this object as input (for example: cms-card in our case)
-                            objectArray[i] = newObject;
+                            objectArray[index] = newObject;
                         }
                         break;
                     }

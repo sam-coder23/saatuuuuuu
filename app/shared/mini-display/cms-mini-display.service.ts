@@ -162,7 +162,7 @@ export class CmsMiniDisplayService {
         let existingContent: TileContent;
 
         if (aDisplayContent !== null || aDisplayContent !== undefined) {
-            var adjustedRect = this.getModelToViewBounds(aDisplayContent);
+            let adjustedRect = this.getModelToViewBounds(aDisplayContent);
 
             aDisplayContent.absoluteSize = new Tile(aDisplayContent);
 

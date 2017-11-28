@@ -326,14 +326,14 @@ export class CmsMiniDisplayComponent implements OnInit, OnChanges, OnDestroy {
 
                 if (this.miniDisplayContentList !== undefined) {
                     if (this.miniDisplayContentList.length > 0) {
-                        var newContentList = new Array(this.miniDisplayContentList.length);
-                        for (var i = 0; i < this.miniDisplayContentList.length; i++) {
-                            newContentList[i] = this.miniDisplayContentList[i];
+                        let newContentList = new Array(this.miniDisplayContentList.length);
+                        for (let index = 0; index < this.miniDisplayContentList.length; index++) {
+                            newContentList[index] = this.miniDisplayContentList[index];
                         }
 
-                        for (var i = 0; i < newContentList.length; i++) {
-                            if (newContentList[i].id === aResponseBody.content.id) {
-                                newContentList[i] = this.miniDisplayHelper.calculateAdjustedViewSourceRectangle(aResponseBody.content, [], true);
+                        for (let index = 0; index < newContentList.length; index++) {
+                            if (newContentList[index].id === aResponseBody.content.id) {
+                                newContentList[index] = this.miniDisplayHelper.calculateAdjustedViewSourceRectangle(aResponseBody.content, [], true);
                                 break;
                             }
                         }
@@ -439,8 +439,8 @@ export class CmsMiniDisplayComponent implements OnInit, OnChanges, OnDestroy {
      */
     private configureTouchGestures() {
         // get reference to an element
-        var miniDisplayContainer: HTMLElement = this.element.nativeElement.children[0];
-        var manager = new Hammer.Manager(miniDisplayContainer, {
+        let miniDisplayContainer: HTMLElement = this.element.nativeElement.children[0];
+        let manager = new Hammer.Manager(miniDisplayContainer, {
             recognizers: [
                 // RecognizerClass, [options], [recognizeWith, ...], [requireFailure, ...]
                 [Hammer.Pinch, { enable: false }]

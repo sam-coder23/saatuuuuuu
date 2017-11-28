@@ -14,7 +14,6 @@ import { CmsSettingsPanelComponent } from "../../../../app/launchpad/settings/cm
 import { CmsSettingsService } from "../../../../app/launchpad/settings/cms-settings.service";
 import { CmsApiService } from "../../../../app/cms/api/cms-api.service";
 import { AppConfig } from "../../../../app/config";
-import { CmsColorPickerComponent } from "../../../../app/shared/colorpicker/cms-colorpicker.component";
 import { StorageManager } from "../../../../app/cms/api/cms-storagemanager.service";
 import { APIRequest } from "../../../../app/cms/api/api-request";
 import { CMS_SESSION_STORAGE_ITEM } from "../../../../app/cms/models/cms-session-storage-item";
@@ -207,7 +206,7 @@ describe("Component CmsSettingsPanelComponent", () => {
 
     beforeEach(async(() => {
         TestBed.configureTestingModule({
-            declarations: [CmsSettingsPanelComponent, CmsColorPickerComponent],
+            declarations: [CmsSettingsPanelComponent],
             providers: [
                 CmsSettingsService,
                 {

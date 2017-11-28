@@ -232,7 +232,7 @@ describe("CmsGridComponent", () => {
 
         let swappedContentGeometeryOutput: any[] = debugInstance.swapContentGeometeryandCreateContent();
 
-        for (var index = 0; index < swappedContentGeometeryOutput.length; index++) {
+        for (let index = 0; index < swappedContentGeometeryOutput.length; index++) {
             expect(swappedContentGeometeryOutput[index].x).toBe(swappedGeometeryContent[index].x);
             expect(swappedContentGeometeryOutput[index].y).toBe(swappedGeometeryContent[index].y);
             expect(swappedContentGeometeryOutput[index].width).toBe(swappedGeometeryContent[index].width);
