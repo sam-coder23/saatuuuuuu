@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed, async } from "@angular/core/testing";
 import { By } from "@angular/platform-browser";
-import { DebugElement, NO_ERRORS_SCHEMA, EventEmitter } from "@angular/core";
+import { DebugElement, NO_ERRORS_SCHEMA } from "@angular/core";
 import { ActivatedRoute } from "@angular/router";
 import { Observable } from "rxjs/Observable";
 import { TilePresets } from "../tile-grid/tile-grid.mock";
@@ -14,13 +14,7 @@ import { CmsTileListComponent } from "../../../../app/shared/tile-list/cms-tile-
 import { CmsApiService } from "../../../../app/cms/api/cms-api.service";
 import { CmsSettingsService } from "../../../../app/launchpad/settings/cms-settings.service";
 
-/**
- * Created mock services to fake real services injected into the CmsTileListComponent
- */
-
-/**
- * Fake ActivatedRoute Service
- */
+// Fake ActivatedRoute Service
 class MockActivatedRoute {
     params: {
         value: {
@@ -37,9 +31,7 @@ class MockActivatedRoute {
     }
 }
 
-/**
- * Fake CmsApiService Service with the below stub
- */
+// Fake CmsApiService Service with the below stub
 class MockCmsApiService {
     getTilePresets(tilesCount: number = 0): Observable<ITilePreset[]> {
         if (tilesCount === 0) {
@@ -54,17 +46,11 @@ class MockCmsApiService {
     }
 
     getSelectedDisplayContent(displayId: number): Observable<Display> {
-        return Observable.of(
-            new Display(MockDisplays[0])
-        );
+        return Observable.of(new Display(MockDisplays[0]));
     }
 }
 
-
-
-/**
- * Fake MockCmsSettingService with the below stub
- */
+//Fake MockCmsSettingService with the below stub
 class MockCmsSettingService {
     selectedSources = [
         { id: 1 },
@@ -72,13 +58,11 @@ class MockCmsSettingService {
     ]
 }
 
-
 describe("CmsTileListComponent", () => {
     let component: CmsTileListComponent;
     let fixture: ComponentFixture<CmsTileListComponent>;
     let debugInstance;
     let cmsSettingService: MockCmsSettingService, activatedRoute: MockActivatedRoute;
-
     let spyPutContentsOnDisplay: jasmine.Spy;
 
     beforeEach(async(() => {
@@ -125,13 +109,13 @@ describe("CmsTileListComponent", () => {
         expect(component).toBeDefined();
         expect(component.tilePresets.length).toEqual(0);
         expect(debugInstance.miniDisplayEventSubscription).toBeNull();
-
         component.sourceCount = cmsSettingService.selectedSources.length;
 
         fixture.detectChanges();
         fixture.whenStable().then(() => {
             // check for event subscription
             expect(debugInstance.miniDisplayEventSubscription).not.toBeNull();
+
             if (component.sourceCount === 0) {
                 expect(component.tilePresets.length).toEqual(TilePresets.length);
             } else {
@@ -139,6 +123,7 @@ describe("CmsTileListComponent", () => {
                 expect(component.tilePresets.length).toEqual(filteredTilePresets.length);
             }
 
+            // default icon is temporary hidden but it will available in DOM
             // check default property
             let carddefaultElement: DebugElement = fixture.debugElement.query(By.css("#card-default"));
             expect(carddefaultElement).toBeDefined();
@@ -171,7 +156,7 @@ describe("CmsTileListComponent", () => {
         expect(args[2].resources).toEqual(cmsSettingService.selectedSources);
     });
 
-    it("component should listen 'Display Updated' event", async(() => {
+    it("component should listen 'Display Updated' event and should trigger change event emitter", async(() => {
         component.sourceCount = cmsSettingService.selectedSources.length;
         expect(debugInstance.miniDisplayEventSubscription).toBeNull();
 
@@ -187,19 +172,42 @@ describe("CmsTileListComponent", () => {
         let displayUpdated = Object.assign({}, MockDisplays[0]);
         displayUpdated.tilerId = 5;
 
+        let spyOnChangeEmitter = spyOn(component.changeEmitter, "emit").and.returnValue(Observable.of(null));
+
         // trigger "DiplayUpdated" event  with not existing tilerId   
-        debugInstance.miniDisplayEventSubscription.next(
-            {
-                "eventType": "DisplayUpdated",
-                "body": displayUpdated,
-                "displayId": 1
-            }
-        );
+        debugInstance.miniDisplayEventSubscription.next({
+            "eventType": "DisplayUpdated",
+            "body": displayUpdated,
+            "displayId": 1
+        });
 
         fixture.detectChanges();
         fixture.whenStable().then(() => {
-            // current tile must be not selected
-            expect(component.tilePresets[0].isSelected).toBeFalsy();
+            expect(spyOnChangeEmitter).toHaveBeenCalled();
+        });
+    }));
+
+    it("component should listen 'Display Updated' event and should not trigger change event emitter", async(() => {
+        component.sourceCount = cmsSettingService.selectedSources.length;
+
+        // provide same display with already existing tilerId and which is also selected
+        let displayUpdated = Object.assign({}, MockDisplays[0]);
+        displayUpdated.tilerId = 1;
+
+        let spyOnChangeEmitter = spyOn(component.changeEmitter, "emit").and.returnValue(Observable.of(null));
+
+        fixture.detectChanges();
+
+        // trigger "DiplayUpdated" event  with not existing tilerId   
+        debugInstance.miniDisplayEventSubscription.next({
+            "eventType": "DisplayUpdated",
+            "body": displayUpdated,
+            "displayId": 1
+        });
+
+        fixture.detectChanges();
+        fixture.whenStable().then(() => {
+            expect(spyOnChangeEmitter).not.toHaveBeenCalled();
         });
     }));
 
@@ -215,8 +223,10 @@ describe("CmsTileListComponent", () => {
             expect(component.tilePresets[1].isDefaultForAllDisplays).toBeTruthy();
 
             let cardElements: DebugElement[] = fixture.debugElement.queryAll(By.css("#card-default"));
-            expect(cardElements[0].nativeNode.innerText).toBe("bookmark_border");
-            expect(cardElements[1].nativeNode.innerText).toBe("bookmark");
+
+            // default icon temporary hidden so innerText should be blank string
+            expect(cardElements[0].nativeNode.innerText).toBe("");
+            expect(cardElements[1].nativeNode.innerText).toBe("");
         });
     });
 });

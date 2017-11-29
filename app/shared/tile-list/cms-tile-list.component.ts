@@ -70,10 +70,11 @@ export class CmsTileListComponent implements OnInit, OnDestroy {
 
             // mark tilePreset which is currently applied on the display wall
             this.markTileSelected();
+            
             // subscribe for display change events
             if (Validation.IsNullOrUndefined(this.miniDisplayEventSubscription)) {
                 this.miniDisplayEventSubscription = CmsEventEmitterService.get(CMS_EVENTS.MiniDisplay)
-                    .subscribe((event: { eventType: string, body: any, displayId: number }) => {
+                    .subscribe((event: ICmsEvent) => {
                         this.handleDisplayEvents(event);
                     });
             };
@@ -179,16 +180,31 @@ export class CmsTileListComponent implements OnInit, OnDestroy {
     }
 
     /**
-     * This method handle dipslay events.
+     * This method handle display update event and trigger change event if display tile is changed.
      * @method handleDisplayEvents
      * @param event
      * @return void
      */
     private handleDisplayEvents(event) {
+        if (!event && !event.body) { return; }
+
         let displayId = parseInt(this.activatedRoute.params["value"]["id"]);
         if (event.eventType === CMSConstants.DISPLAYUPDATED) {
             if (event.displayId === displayId) {
-                this.selectTileInPresets(event.body);
+                let tileAlreadySelected = false;
+                let displayTilerId = event.body.tilerId;
+
+                // looping through all tile-presets and find same selected tiler
+                for (let tilePresetIndex = 0; tilePresetIndex < this.tilePresets.length; tilePresetIndex++) {
+                    if ((this.tilePresets[tilePresetIndex].id === displayTilerId) && this.tilePresets[tilePresetIndex].isSelected) {
+                        tileAlreadySelected = true;
+                        break;
+                    }
+                }
+
+                if (!tileAlreadySelected) {
+                    this.changeEmitter.emit();
+                }
             }
         }
     }
