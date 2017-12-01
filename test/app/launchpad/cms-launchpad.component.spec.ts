@@ -44,6 +44,10 @@ class MockCmsApiService {
 
     }
 
+    logoutUser() {
+        
+    }
+
     makeSessionExpire() {
 
     }

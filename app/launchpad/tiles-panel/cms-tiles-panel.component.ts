@@ -1,5 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
+import { CmsApiService } from "../../cms/api/cms-api.service";
+import { AppConfig } from "../../config";
 
 /**
  * This is a tiles-panel component that defines the layout of a page which includes toolbar and tile list.
@@ -22,7 +24,9 @@ export class CmsTilesPanelComponent implements OnInit {
     };
 
     constructor(private activatedRoute: ActivatedRoute,
-        private router: Router) {
+        private router: Router,
+        private cmsServerApi: CmsApiService, 
+        private appConfig: AppConfig) {
 
         this.displayResolution = {
             height: 130,
@@ -61,5 +65,14 @@ export class CmsTilesPanelComponent implements OnInit {
      */
     public onListChanged(): void {
         this.viewState.reload = true;
+    }
+
+    /**
+     * This method logs out the user and performs clean up
+     * @method logout
+     * @return {void}
+     */
+    private logout() {
+        this.cmsServerApi.logoutUser();
     }
 }

@@ -80,6 +80,24 @@ export class CmsApiService {
     }
 
     /**
+     * This method call the logout api and also performs clean up.
+     * @method logoutUser
+     * @return {void}
+     */
+    public logoutUser() {
+        this.logout()
+            .finally(
+                () => this.performOnlogout()
+            )
+            .subscribe(
+                response => {},
+                error => {
+                    this.appConfig.log("DisplaysPanelComponent: Logout failed");
+                }
+            );
+    }
+
+    /**
      * Fetch display list from CMS Server 
      * @method getDisplayList
      * @param {number} start
@@ -935,10 +953,9 @@ export class CmsApiService {
     private promiseApiHandleError(error): Promise<any> {
         this.appConfig.log("CmsApiService: promiseApiHandleError::", error);
 
+        // unauthorized
         if (error.status === 401) {
-            // unauthorized
-            this.logout();
-            this.router.navigate(["/login"]);
+            this.logoutUser();
         }
 
         return Promise.reject(error);

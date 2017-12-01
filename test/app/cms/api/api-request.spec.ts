@@ -5,6 +5,7 @@ import { MockBackend, MockConnection } from "@angular/http/testing";
 import { HttpModule, Http, BaseRequestOptions, XHRBackend, ResponseOptions, Response } from "@angular/http";
 import { AppConfig } from "../../../../app/config";
 import { APIRequest } from "../../../../app/cms/api/api-request";
+import { StorageManager } from "../../../../app/cms/api/cms-storagemanager.service";
 
 class MockRouterStub {
     navigate(commands: any[]): any[] {
@@ -18,7 +19,8 @@ class MockAppConfigStub {
 }
 
 describe("Service: APIRequest", () => {
-    let mockbackend, router, appConfig, APIRequestService;
+    let mockbackend, router, appConfig, APIRequestService, 
+    storageManager: StorageManager;
 
     beforeEach(async(() =>
         TestBed.configureTestingModule({
@@ -43,15 +45,17 @@ describe("Service: APIRequest", () => {
                 {
                     provide: AppConfig,
                     useClass: MockAppConfigStub
-                }
+                },
+                StorageManager
             ]
         })));
 
-    beforeEach(inject([MockBackend, Router, AppConfig, Http], (mb, router, appConfig, http) => {
+    beforeEach(inject([MockBackend, Router, AppConfig, Http, StorageManager], (mb, router, appConfig, http, storageManager) => {
         router = router;
         appConfig = appConfig;
         mockbackend = mb;
-        APIRequestService = new APIRequest(http, router, appConfig);
+        storageManager = storageManager;
+        APIRequestService = new APIRequest(http, router, appConfig, storageManager);
     }));
 
     it("Service should be defined", () => {
@@ -172,7 +176,7 @@ describe("Service: APIRequest", () => {
         mockbackend.connections.subscribe((connection: MockConnection) => {
             connection.mockRespond(new Response(
                 new ResponseOptions({
-                    body: { "Message": "Logout Sucessfull" }
+                    body: { "Message": "Logout Successful" }
                 })
             ));
         });

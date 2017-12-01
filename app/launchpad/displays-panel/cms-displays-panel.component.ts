@@ -7,6 +7,7 @@ import { AppConfig } from "../../config";
 import { Validation } from "../../core/util/Validation";
 import { Router, ActivatedRoute, Params } from "@angular/router";
 import { CMSConstants } from "../../cms/models/cms-constants";
+import { CmsApiService } from "../../cms/api/cms-api.service";
 
 @Component({
     //moduleId: module.id,
@@ -40,7 +41,10 @@ export class CmsDisplaysPanelComponent implements OnInit, AfterViewInit {
         list: true
     };
 
-    constructor(private storageManager: StorageManager, private appConfig: AppConfig, private route: ActivatedRoute) {
+    constructor(private storageManager: StorageManager, 
+        private appConfig: AppConfig, 
+        private route: ActivatedRoute, 
+        private cmsServerApi: CmsApiService) {
         this.isFavoriteFilter = this.storageManager.get(CMS_SESSION_STORAGE_ITEM.DISPLAYS_FAVORITE_FILTER) === String(true);
         this.searchFilter = this.storageManager.get(CMS_SESSION_STORAGE_ITEM.DISPLAYS_SEARCH_FILTER) || "";
         this.searchKey = this.searchFilter;
@@ -144,5 +148,14 @@ export class CmsDisplaysPanelComponent implements OnInit, AfterViewInit {
      */
     private navigateBack() {
         history.back();
+    }
+
+    /**
+     * This method logs out the user and performs clean up
+     * @method logout
+     * @return {void}
+     */
+    private logout() {
+        this.cmsServerApi.logoutUser();
     }
 }

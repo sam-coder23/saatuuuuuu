@@ -67,7 +67,7 @@ export class CmsDisplayPanelComponent implements OnInit, OnDestroy {
         private cmsSettingsService: CmsSettingsService,
         private translate: TranslateService,
         private appConfig: AppConfig,
-        private mCmsServerApi: CmsApiService) {
+        private cmsServerApi: CmsApiService) {
 
         this.viewOptions = false;
         this.zoomLevel = 100;
@@ -147,7 +147,7 @@ export class CmsDisplayPanelComponent implements OnInit, OnDestroy {
      * @return {void}
      */
     private clearMiniDisplayWall() {
-        this.mCmsServerApi.putContentsOnDisplay(this.displayId, 0, {}).subscribe(response => {
+        this.cmsServerApi.putContentsOnDisplay(this.displayId, 0, {}).subscribe(response => {
             this.cmsSettingsService.selectedSources.length = 0;
             this.navigateToLoginRoute();
         }, error => {
@@ -167,12 +167,12 @@ export class CmsDisplayPanelComponent implements OnInit, OnDestroy {
     }
 
     /**
-     * This method redirect to login route
+     * This method logs out the user and performs clean up
      * @method navigateToLoginRoute
      * @return {void}
      */
     private navigateToLoginRoute() {
-        this.router.navigateByUrl("/login");
+        this.cmsServerApi.logoutUser();
     }
 
     /**

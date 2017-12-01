@@ -14,6 +14,9 @@ import { CmsApiService } from "../../../../app/cms/api/cms-api.service";
 import { CMS_SESSION_STORAGE_ITEM } from "../../../../app/cms/models/cms-session-storage-item";
 import { CMSConstants } from "../../../../app/cms/models/cms-constants";
 
+class MockCmsApiServiceStub {
+}
+
 describe("Component: CmsDisplaysPanelComponent", () => {
     let component: CmsDisplaysPanelComponent;
     let fixture: ComponentFixture<CmsDisplaysPanelComponent>;
@@ -23,6 +26,7 @@ describe("Component: CmsDisplaysPanelComponent", () => {
 
     let storageManager: StorageManager;
     let appConfig: AppConfig;
+    let cmsServerApi: CmsApiService;
     let activatedRoute = new ActivatedRoute();
     activatedRoute.params = Observable.of({});
 
@@ -38,6 +42,10 @@ describe("Component: CmsDisplaysPanelComponent", () => {
                 {
                     provide: ActivatedRoute,
                     useValue: activatedRoute
+                },
+                {
+                    provide: CmsApiService,
+                    useClass: MockCmsApiServiceStub
                 }
             ],
             imports: [
@@ -63,8 +71,9 @@ describe("Component: CmsDisplaysPanelComponent", () => {
         });
     }));
 
-    beforeEach(inject([StorageManager], (response) => {
+    beforeEach(inject([StorageManager, CmsApiService], (response, cmsServerApi) => {
         storageManager = response;
+        cmsServerApi = cmsServerApi;
     }));
 
     it("should be a defined component: ", async(() => {
@@ -88,7 +97,7 @@ describe("Component: CmsDisplaysPanelComponent", () => {
 
     it("should call onListChanged: ", async(() => {
         debugInstance.onListChanged();
-        cmsDisplaysPanelComponentInstance = new CmsDisplaysPanelComponent(storageManager, appConfig, activatedRoute);
+        cmsDisplaysPanelComponentInstance = new CmsDisplaysPanelComponent(storageManager, appConfig, activatedRoute, cmsServerApi);
         let isDispSelected = cmsDisplaysPanelComponentInstance.isDisplaySelected();
         expect(debugInstance.viewState.reload).toBe(true);
         expect(debugInstance.viewState.back).toBe(isDispSelected);

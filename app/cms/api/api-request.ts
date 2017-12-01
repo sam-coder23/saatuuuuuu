@@ -3,6 +3,7 @@
  * ("Confidential Information"). You shall not disclose such Confidential Information and shall use it only in accordance with
  * the terms of the license agreement you entered into with Barco.
  */
+import { StorageManager } from "./cms-storagemanager.service";
 import { Injectable } from "@angular/core";
 import { Http, Headers, RequestOptionsArgs , Response, URLSearchParams } from "@angular/http";
 import { AppConfig } from "../../config";
@@ -27,10 +28,9 @@ export /**
 class APIRequest {
     private serverURL: string;
     public headers: Headers;
-    public requestOption: RequestOptionsArgs ;
-    
+    public requestOption: RequestOptionsArgs ;    
 
-    constructor(private http: Http, private router: Router, private appConfig: AppConfig) {
+    constructor(private http: Http, private router: Router, private appConfig: AppConfig, private storageManager: StorageManager) {
         this.serverURL = this.appConfig.ServerURL;        
         this.headers = new Headers({"Content-Type": "application/json" });
         this.requestOption = {
@@ -127,6 +127,7 @@ class APIRequest {
     public handleError(error): Observable<any> {
         if (error.status === 401) {
             this.get("logout")
+                .finally(() => this.storageManager.removeStorage() )    
                 .subscribe(()=> {
                     this.appConfig.log("Something wrong with server, Logout users successfully");
                 });

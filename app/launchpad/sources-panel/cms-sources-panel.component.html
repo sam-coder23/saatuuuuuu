@@ -21,7 +21,7 @@
             <input md-input type="text" placeholder="{{ 'panelToolbar.search' | translate }}" [(ngModel)]="searchKey">
         </md-input-container>
 
-        <button id="log-off" md-button md-raised-button routerLink="/login">
+        <button id="log-off" md-button md-raised-button (click)="logout()">
             {{'common.logout' | translate}}
         </button>
     </md-toolbar>

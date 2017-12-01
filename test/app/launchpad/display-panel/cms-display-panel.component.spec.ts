@@ -90,6 +90,10 @@ class MockCmsApiServiceStub {
     putContentsOnDisplay(displayId: number, tilerId: number, body: any) {
         return Observable.of(null);
     }
+
+    logout() {
+        return Observable.of(null);
+    }
 }
 
 describe("CmsDisplayPanelComponent - Test Suite", () => {

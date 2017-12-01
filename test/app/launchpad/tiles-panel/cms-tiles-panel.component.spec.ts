@@ -8,10 +8,14 @@ import { TranslateModule, TranslateLoader } from "@ngx-translate/core";
 import { TranslateHttpLoader } from "@ngx-translate/http-loader";
 import { MockRouterStub } from "../../core/mock-stubs/mock-router-stub";
 import { CmsTilesPanelComponent } from "../../../../app/launchpad/tiles-panel/cms-tiles-panel.component";
+import { AppConfig } from "../../../../app/config";
+import { CmsApiService } from "../../../../app/cms/api/cms-api.service";
+
+class MockCmsApiServiceStub {
+}
 
 
 describe("CmsTilesPanelComponent - Test Suite", () => {
-
     let component: CmsTilesPanelComponent;
     let fixture: ComponentFixture<CmsTilesPanelComponent>;
     let debugInstance, nativeElement;
@@ -29,6 +33,8 @@ describe("CmsTilesPanelComponent - Test Suite", () => {
         TestBed.configureTestingModule({
             declarations: [CmsTilesPanelComponent],
             providers: [
+                AppConfig,
+                CmsApiService,
                 {
                     provide: ActivatedRoute,
                     useValue: activatedRoute
@@ -36,6 +42,10 @@ describe("CmsTilesPanelComponent - Test Suite", () => {
                 {
                     provide: Router,
                     useClass: MockRouterStub
+                },
+                {
+                    provide: CmsApiService,
+                    useClass: MockCmsApiServiceStub
                 }
             ],
             imports: [

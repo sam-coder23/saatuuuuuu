@@ -68,7 +68,7 @@ describe("Service: CmsApiService", () => {
         router = router;
         apiRequest = APIRequest;
         mockbackend = mb;
-        apiRequest = new APIRequest(http, router, appConfig);
+        apiRequest = new APIRequest(http, router, appConfig, storageManager);
         cmsApiService = new CmsApiService(http, router, apiRequest, storageManager, appConfig);
     }));
 

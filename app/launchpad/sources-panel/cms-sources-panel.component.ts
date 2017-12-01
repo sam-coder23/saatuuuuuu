@@ -30,7 +30,7 @@ import { Source } from "../../cms/models/cms-source";
     styles: [require("./cms-sources-panel.component.scss")]
 })
 export class CmsSourcesPanelComponent implements OnInit {
-    private mCmsServerApi: CmsApiService;
+    private cmsServerApi: CmsApiService;
     /**
       * Filter property which will filter the source list
       * @property {boolean} isFavoriteFilter
@@ -67,7 +67,7 @@ export class CmsSourcesPanelComponent implements OnInit {
         this.searchFilter = this.storageManager.get(CMS_SESSION_STORAGE_ITEM.SOURCES_SEARCH_FILTER) || "";
         this.searchKey = this.searchFilter;
         this.mRoute = aRoute;
-        this.mCmsServerApi = aCmsServerApi;
+        this.cmsServerApi = aCmsServerApi;
         this.domManager = new DomManager(this.element);
     }
 
@@ -167,13 +167,13 @@ export class CmsSourcesPanelComponent implements OnInit {
             "resources": resources
         };
 
-        this.mCmsServerApi.getTilePresets().subscribe((tilers) => {
+        this.cmsServerApi.getTilePresets().subscribe((tilers) => {
             let tileId = TilePresetManager.GetTileId(tilers, selectedSourcesLength, this.mDisplayId);
 
             if (tileId === 0) {
                 this.setErrorMessage("sourceList.tileLayoutNotAvailable");
             } else {
-                this.mCmsServerApi.putContentsOnDisplay(this.mDisplayId, tileId, requestPayload).subscribe(response => {
+                this.cmsServerApi.putContentsOnDisplay(this.mDisplayId, tileId, requestPayload).subscribe(response => {
                     let url = `/displays/${this.mDisplayId}/tiles-panel?sourceCount=${selectedSourcesLength}`;
                     this.router.navigateByUrl(url);
                 }, error => {
@@ -201,5 +201,14 @@ export class CmsSourcesPanelComponent implements OnInit {
         this.translate.get(messageKey).subscribe((value) => {
             this.errorMessage = value;
         });
+    }
+
+    /**
+     * This method logs out the user and performs clean up
+     * @method logout
+     * @return {void}
+     */
+    private logout() {
+        this.cmsServerApi.logoutUser();
     }
 }

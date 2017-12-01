@@ -336,15 +336,7 @@ export class CmsLaunchpadComponent implements OnInit, OnDestroy {
    * This method log-off the user.
    */
   private logoutUser(): void {
-    this.cmsServerApi.logout()
-      .subscribe(
-      response => {
-        this.cmsServerApi.performOnlogout();
-      },
-      error => {
-        this.cmsServerApi.performOnlogout();
-      }
-      );
+    this.cmsServerApi.logoutUser();
   }
 
   /**
