@@ -13,6 +13,7 @@ import { AppConfig } from "../../../../app/config";
 import { CmsApiService } from "../../../../app/cms/api/cms-api.service";
 import { CMS_SESSION_STORAGE_ITEM } from "../../../../app/cms/models/cms-session-storage-item";
 import { CMSConstants } from "../../../../app/cms/models/cms-constants";
+import { Validation } from "../../../../app/core/util/Validation";
 
 class MockCmsApiServiceStub {
 }
@@ -91,7 +92,7 @@ describe("Component: CmsDisplaysPanelComponent", () => {
         expect(backButton).toBeTruthy();
 
         let spyNavigateByUrl = spyOn(window.history, "back").and.returnValue(null);
-        backButton.triggerEventHandler("click", null);
+        backButton.nativeElement.dispatchEvent(new Event("ndClick"));
         expect(spyNavigateByUrl.calls.count()).toEqual(1);
     }));
 
@@ -124,7 +125,7 @@ describe("Component: CmsDisplaysPanelComponent", () => {
 
     it("should call isDisplaySelected: ", async(() => {
         let isDispSelected = cmsDisplaysPanelComponentInstance.isDisplaySelected();
-        expect(isDispSelected).toBe(true);
+        expect(isDispSelected).toBe(!Validation.IsNull(storageManager.get(CMS_SESSION_STORAGE_ITEM.DISPLAY)));
     }));
 
     it("should initialize search", async(() => {

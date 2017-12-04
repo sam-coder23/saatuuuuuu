@@ -57,7 +57,7 @@ export class CmsSettingsLanguagePanelComponent implements OnInit {
         this.cmsSettingsService.setTextDirectionByLanguageKey(languageKey);
 
         //update user setiings in DB
-        this.cmsSettingsService.updateUserProfileData(userprofileSettings, () => this.router.navigate(["/settings"]));
+        this.cmsSettingsService.updateUserProfileData(userprofileSettings, () => history.back());
     }
 
     /**

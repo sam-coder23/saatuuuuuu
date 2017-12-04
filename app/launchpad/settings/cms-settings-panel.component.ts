@@ -290,8 +290,7 @@ export class CmsSettingsPanelComponent implements OnInit {
      * @return {void}
      */
     private goToSelectDisplayForAutoConnect(event): void {
-        // skipping below URI for browser history 
-        this.router.navigate(["/displays-panel", { action: CMSConstants.SELECT_DISPLAY }], { skipLocationChange: true });
+        this.router.navigate(["/displays-panel", { action: CMSConstants.SELECT_DISPLAY }]);
     }
 
     /**

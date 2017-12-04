@@ -23,7 +23,7 @@ import { CmsApiService } from "../../cms/api/cms-api.service";
  * @property {boolean} isFavoriteFilter Filter property which will filter the display list
  * @property {string} searchFilter Filter property which will filter the display list
  * @property {string} searchKey
- * @property {boolean} isBackButton Show and Hide Back button visibility
+ * @property {boolean} isSelectDisplayView if Select display view, set true else false.
  * @property {number} selectedDisplayId
  * @property {object} viewState
  */
@@ -31,7 +31,7 @@ export class CmsDisplaysPanelComponent implements OnInit, AfterViewInit {
     private isFavoriteFilter: boolean;
     private searchFilter: string;
     private searchKey: string;
-    private isBackButton: boolean = false;
+    private isSelectDisplayView: boolean = false;
     private selectedDisplayId: number;
 
     // all boolean states for the template
@@ -64,7 +64,7 @@ export class CmsDisplaysPanelComponent implements OnInit, AfterViewInit {
 
             // Check for change in settings for specific selected wall.
             if (actionParam === CMSConstants.SELECT_DISPLAY) {
-                this.isBackButton = true;
+                this.isSelectDisplayView = true;
             }
         });
     }
@@ -142,7 +142,7 @@ export class CmsDisplaysPanelComponent implements OnInit, AfterViewInit {
     }
 
     /**
-     * This method navigate to back page
+     * This method navigate back.
      * @method navigateBack
      * @return {void}
      */

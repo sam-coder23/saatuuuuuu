@@ -175,7 +175,7 @@ export class CmsSettingsService {
     public updateWallConnectionSpecificDisplay(display): void {
         if (display) {
             this.userSettings.wallConnection.specificDisplay = display.name;
-            this.updateUserProfileData(this.userSettings, () => this.router.navigate(["/settings"]));
+            this.updateUserProfileData(this.userSettings, () => history.back());
         }
     }
 
