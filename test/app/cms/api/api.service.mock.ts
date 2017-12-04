@@ -1,4 +1,4 @@
-export const MockDisplayData: any = {
+export const MockDisplayData: any = [{
     "id": 9,
     "name": "Auditorium",
     "type": "DisplayWall",
@@ -15,7 +15,7 @@ export const MockDisplayData: any = {
     "startUpAction": "RestoreLastKnownConfiguration",
     "favorite": false,
     "loggedInUserName": ""
-};
+}];
 
 export const MockSourceListData: any = {
     "id": 113,

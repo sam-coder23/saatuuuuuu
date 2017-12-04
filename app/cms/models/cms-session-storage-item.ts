@@ -6,7 +6,6 @@ export class CMS_SESSION_STORAGE_ITEM {
     static DISPLAY = "Display";
     static SETTINGS = "Settings";
     static USER_LASTACTION_TIME = "UserLastActionTime";
-    static LAYOUTS_SEARCH_FILTER = "LayoutsSearchFilter";
     static DISPLAYS_SEARCH_FILTER = "DisplaysSearchFilter";
     static SOURCES_SEARCH_FILTER = "SourcesSearchFilter";
     static LAYOUTS_FAVORITE_FILTER = "LayoutsFavoriteFilter";

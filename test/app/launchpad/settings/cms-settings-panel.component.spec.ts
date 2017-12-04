@@ -263,7 +263,7 @@ describe("Component CmsSettingsPanelComponent", () => {
     });
 
     /** CHECK PRIVATE VARIABLES */
-    it("should check private variables: ", async(() => {
+    it("should check private variables: ", () => {
         expect(debugInstance.loading).toBe(true);
         expect(debugInstance.fontSizeDefault).toEqual(CMSConstants.DEFAULT_FONT_SIZE);
         expect(debugInstance.fontSizeSteps.length).toEqual(22);
@@ -281,7 +281,7 @@ describe("Component CmsSettingsPanelComponent", () => {
         expect(debugInstance.backgroundDefault).toEqual(CMSConstants.DEFAULT_BACKGROUND_COLOR);
         expect(debugInstance.noDisplayAvailable).toBe(false);
 
-    }));
+    });
 
     /** LOADING PROGRESS TRUE */
     it("should check loading-progress-indicator visible when loading is true ", (done) => {

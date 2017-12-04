@@ -201,7 +201,10 @@ describe("CmsGridComponent", () => {
 
     it("should be a defined component", async(() => {
         expect(component).toBeDefined();
-        expect(debugInstance.selectedContentList.length).toBe(0);
+        
+        expect(debugInstance.selectedContent).toBeNull();
+        expect(debugInstance.swappingContent).toBeNull();
+        expect(debugInstance.loading).toBeFalsy();
     }));
 
     it("should call contentClickHandler on click of contentClickWrapper", async(() => {

@@ -20,6 +20,143 @@ import { AppConfig } from "../../../../app/config";
 import { CMSConstants } from "../../../../app/cms/models/cms-constants";
 import { CMS_SESSION_STORAGE_ITEM } from "../../../../app/cms/models/cms-session-storage-item";
 import { Source } from "../../../../app/cms/models/cms-source";
+import { TilePresetManager } from "../../../../app/utils/tilepreset-manager.util";
+
+/**
+* Created mock services to fake real services injected into the CmsSourcesPanelComponent
+*/
+
+let activatedRoute = new ActivatedRoute();
+activatedRoute.params = Observable.of({
+    id: 1
+});
+
+let mockTilersData = [{
+    "id": 66,
+    "name": "TCR-01S",
+    "description": "",
+    "tags": "",
+    "base": {
+        "rowBound": 1,
+        "colBound": 1
+    },
+    "tiles": [
+        {
+            "left": 0,
+            "top": 0,
+            "width": 1,
+            "height": 1
+        }
+    ],
+    "isDefaultForAllDisplays": true,
+    "noOfTiles": 1,
+    "isGrid": false,
+    "defaultForDisplays": []
+},
+{
+    "id": 69,
+    "name": "TCR-04S",
+    "description": "",
+    "tags": "",
+    "base": {
+        "rowBound": 2,
+        "colBound": 2
+    },
+    "tiles": [
+        {
+            "left": 0,
+            "top": 0,
+            "width": 1,
+            "height": 1
+        },
+        {
+            "left": 1,
+            "top": 0,
+            "width": 1,
+            "height": 1
+        },
+        {
+            "left": 0,
+            "top": 1,
+            "width": 1,
+            "height": 1
+        },
+        {
+            "left": 1,
+            "top": 1,
+            "width": 1,
+            "height": 1
+        }
+    ],
+    "isDefaultForAllDisplays": true,
+    "noOfTiles": 2,
+    "isGrid": false,
+    "defaultForDisplays": []
+}
+];
+
+/**
+ * Fake MockCmsSettingService with the below stub
+ */
+class MockCmsSettingService {
+    selectedSources = [
+        {
+            "id": 83,
+            "name": "Airport Entrance View",
+            "description": "",
+            "type": "Perspective",
+            "width": 1920,
+            "height": 1200,
+            "snapshotPath": "https://10.98.0.231//mediaconfiguration?action=get&path=images%2Fsnapshots%2Fperspectives%2F47.jpeg",
+            "favorite": false,
+            "selected": true
+        },
+        {
+            "id": 88,
+            "name": "Airport Entrance",
+            "description": "",
+            "type": "Perspective",
+            "width": 1920,
+            "height": 1200,
+            "snapshotPath": "https://10.98.0.231//mediaconfiguration?action=get&path=images%2Fsnapshots%2Fperspectives%2F63.jpeg",
+            "favorite": false,
+            "selected": true
+        }
+    ]
+};
+
+let sources: Source[] = [
+    {
+        id: 548,
+        name: "Auto_edited_src11",
+        type: "Web",
+        description: "Auto_edited_desc",
+        snapshotPath: "",
+        x: 0,
+        y: 0,
+        zOrder: -1,
+        width: 100,
+        height: 200,
+        disabled: false,
+        favorite: true,
+        selected: true
+    },
+    {
+        id: 549,
+        name: "Manual_edited_src11",
+        type: "Web",
+        description: "Auto_edited_desc1",
+        snapshotPath: "x/y/z",
+        x: 10,
+        y: 20,
+        zOrder: -1,
+        width: 200,
+        height: 200,
+        disabled: false,
+        favorite: true,
+        selected: false
+    }
+];
 
 class MockCmsApiService {
     getTilers(): Observable<ITilePreset[]> {
@@ -29,64 +166,13 @@ class MockCmsApiService {
     putContentsOnDisplay(displayId: number, tilerId: number, body: any) {
         return Observable.of(null);
     }
-
-}
-
-describe("CmsSourcesPanelComponent", () => {
-    /**
-     * Created mock services to fake real services injected into the CmsSourcesPanelComponent
-     */
-
-    let activatedRoute = new ActivatedRoute();
-    activatedRoute.params = Observable.of({
-        id: 1
-    });
-
-    /**
-     * Fake MockCmsSettingService with the below stub
-     */
-    class MockCmsSettingService {
-        selectedSources = [
-            { id: 1 },
-            { id: 2 },
-            { id: 3 }
-        ]
+    getTilePresets(): Observable<ITilePreset[]> {
+        return Observable.of(mockTilersData);
     }
 
-    let sources: Source[] = [
-        {
-            id: 548,
-            name: "Auto_edited_src11",
-            type: "Web",
-            description: "Auto_edited_desc",
-            snapshotPath: "",
-            x: 0,
-            y: 0,
-            zOrder: -1,
-            width: 100,
-            height: 200,
-            disabled: false,
-            favorite: true,
-            selected: true
-        },
-        {
-            id: 549,
-            name: "Manual_edited_src11",
-            type: "Web",
-            description: "Auto_edited_desc1",
-            snapshotPath: "x/y/z",
-            x: 10,
-            y: 20,
-            zOrder: -1,
-            width: 200,
-            height: 200,
-            disabled: false,
-            favorite: true,
-            selected: false
-        }
-    ]
+};
 
-
+describe("CmsSourcesPanelComponent", () => {
     let component: CmsSourcesPanelComponent;
     let fixture: ComponentFixture<CmsSourcesPanelComponent>;
     let router: Router;
@@ -98,7 +184,9 @@ describe("CmsSourcesPanelComponent", () => {
     let route: ActivatedRoute;
     let panelTitle: string;
     let cmsApiService: CmsApiService;
+    let tilePresetManager: TilePresetManager;
     let spyPutContentsOnDisplay: jasmine.Spy;
+    let spyGetTileId;
 
     beforeEach(async(() => {
         TestBed.configureTestingModule({
@@ -123,7 +211,9 @@ describe("CmsSourcesPanelComponent", () => {
                 {
                     provide: CmsSettingsService,
                     useClass: MockCmsSettingService
-                }
+                },
+                TilePresetManager,
+
             ],
             imports: [
                 HttpModule,
@@ -208,32 +298,26 @@ describe("CmsSourcesPanelComponent", () => {
         expect(bottomToolbar.nativeElement.innerText).toBeTruthy(selectedSource);
     });
 
-    it("should have next button and onclick it navigates to next route", () => {
+    it("should have next button and onclick it navigates to next route", async(() => {
         fixture.detectChanges();
 
         let buttonNext: DebugElement = fixture.debugElement.query(By.css("#sources-panel-next-button"));
         expect(buttonNext).toBeTruthy();
-
         let router = fixture.debugElement.injector.get(Router);
         let spyNavigateByUrl = spyOn(router, "navigateByUrl").and.returnValue(null);
-
-        buttonNext.triggerEventHandler("click", null);
-
+        buttonNext.triggerEventHandler("ndClick", null);
         expect(spyNavigateByUrl.calls.count()).toEqual(1);
         expect(spyNavigateByUrl.calls.argsFor(0)[0]).toEqual(`/displays/${debugInstance.mDisplayId}/tiles-panel?sourceCount=${cmsSettingService.selectedSources.length}`);
-    });
+
+    }));
 
     it("should have back button and onclick should navigate back", () => {
         fixture.detectChanges();
-
         let buttonBack: DebugElement = fixture.debugElement.query(By.css("#sources-panel-back-button"));
         expect(buttonBack).toBeTruthy();
-
         let router = fixture.debugElement.injector.get(Router);
         let spyNavigateByUrl = spyOn(router, "navigateByUrl").and.returnValue(null);
-
-        buttonBack.triggerEventHandler("click", null);
-
+        buttonBack.triggerEventHandler("ndClick", null);
         expect(spyNavigateByUrl.calls.count()).toEqual(1);
         expect(spyNavigateByUrl.calls.argsFor(0)[0]).toEqual(`/displays-panel`);
     });
@@ -279,7 +363,7 @@ describe("CmsSourcesPanelComponent", () => {
 
         let favState = debugInstance.isFavoriteFilter;
         fixture.detectChanges();
-        favoriteIcon.dispatchEvent(new Event("click"));
+        favoriteIcon.dispatchEvent(new Event("ndClick"));
 
         fixture.detectChanges();
         fixture.whenStable().then(() => {
@@ -300,7 +384,7 @@ describe("CmsSourcesPanelComponent", () => {
         });
     });
 
-    it("should initialize search and search element should have ID === sources-panel-search-input", async(() => {
+    it("should initialize search and search element should have ID === sources-panel-search-input", () => {
         let searchBox = fixture.nativeElement.querySelector("#sources-panel-search-input input");
         expect(searchBox).toBeTruthy();
 
@@ -311,14 +395,16 @@ describe("CmsSourcesPanelComponent", () => {
         fixture.whenStable().then(() => {
             expect(searchBox.focus).toHaveBeenCalled();
         });
-    }));
+    });
 
-    it("should call CmsApiService.putContentsOnDisplay when source is selected", () => {
+    it("should call CmsApiService.putContentsOnDisplay when source is selected", (done) => {
         fixture.detectChanges();
         component.navigateNext();
         let args = spyPutContentsOnDisplay.calls.mostRecent().args;
         expect(args[0]).toEqual(debugInstance.mDisplayId);
-        expect(args[1]).toEqual(debugInstance.tileId);
-        expect(args[2].resources).toEqual(debugInstance.cmsSettingService.selectedSources);
+        expect(args[1]).toEqual(mockTilersData[1].id);
+        expect(args[2].resources[0].id).toEqual(debugInstance.cmsSettingService.selectedSources[0].id);
+        expect(args[2].resources[1].id).toEqual(debugInstance.cmsSettingService.selectedSources[1].id);
+        done();
     });
 })

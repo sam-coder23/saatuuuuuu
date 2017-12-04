@@ -12,7 +12,6 @@ describe("CMS_SESSION_STORAGE_ITEM", () => {
       expect(CMS_SESSION_STORAGE_ITEM.DISPLAY).toContain("Display");
       expect(CMS_SESSION_STORAGE_ITEM.SETTINGS).toEqual("Settings");
       expect(CMS_SESSION_STORAGE_ITEM.USER_LASTACTION_TIME).toContain("UserLastActionTime");
-      expect(CMS_SESSION_STORAGE_ITEM.LAYOUTS_FAVORITE_FILTER).toContain("LayoutsSearchFilter");
       expect(CMS_SESSION_STORAGE_ITEM.DISPLAYS_SEARCH_FILTER).toEqual("DisplaysSearchFilter");
       expect(CMS_SESSION_STORAGE_ITEM.SOURCES_SEARCH_FILTER).toContain("SourcesSearchFilter");
       expect(CMS_SESSION_STORAGE_ITEM.LAYOUTS_FAVORITE_FILTER).toContain("LayoutsFavoriteFilter");

@@ -95,7 +95,7 @@ describe("CmsTilesPanelComponent - Test Suite", () => {
         let router = fixture.debugElement.injector.get(Router);
         let spyNavigateByUrl = spyOn(router, "navigateByUrl").and.returnValue(null);
 
-        buttonNext.triggerEventHandler("click", null);
+        buttonNext.triggerEventHandler("ndClick", null);
 
         expect(spyNavigateByUrl.calls.count()).toEqual(1);
         expect(spyNavigateByUrl.calls.argsFor(0)[0]).toEqual(`display-panel/${component["displayId"]}`);
@@ -109,7 +109,7 @@ describe("CmsTilesPanelComponent - Test Suite", () => {
 
         let spyWindowHistoryBack = spyOn(window.history, "back").and.returnValue(null);
 
-        buttonBack.triggerEventHandler("click", null);
+        buttonBack.triggerEventHandler("ndClick", null);
 
         expect(spyWindowHistoryBack).toHaveBeenCalled();
         expect(spyWindowHistoryBack.calls.count()).toEqual(1);

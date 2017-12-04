@@ -223,8 +223,6 @@ describe("CmsTileListComponent", () => {
             expect(component.tilePresets[1].isDefaultForAllDisplays).toBeTruthy();
 
             let cardElements: DebugElement[] = fixture.debugElement.queryAll(By.css("#card-default"));
-
-            // default icon temporary hidden so innerText should be blank string
             expect(cardElements[0].nativeNode.innerText).toBe("");
             expect(cardElements[1].nativeNode.innerText).toBe("");
         });

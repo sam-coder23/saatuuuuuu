@@ -160,12 +160,11 @@ describe("Component: CmsDisplaysPanelComponent", () => {
 
         let favState = debugInstance.isFavoriteFilter;
         fixture.detectChanges();
-        favoriteIcon.dispatchEvent(new Event("click"));
+        favoriteIcon.dispatchEvent(new Event("ndClick"));
+        fixture.detectChanges();
         fixture.whenStable().then(() => {
-            delay(500).then(() => {
-                expect(debugInstance.isFavoriteFilter).toBe(!favState);
-                expect(storageManager.get(CMS_SESSION_STORAGE_ITEM.DISPLAYS_FAVORITE_FILTER)).toBe((!favState).toString());
-            });
+            expect(debugInstance.isFavoriteFilter).toBe(!favState);
+            expect(storageManager.get(CMS_SESSION_STORAGE_ITEM.DISPLAYS_FAVORITE_FILTER)).toBe((!favState).toString());
         });
     });
 

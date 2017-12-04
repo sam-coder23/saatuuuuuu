@@ -82,10 +82,10 @@ describe("CmsOptionsComponent", () => {
                     useClass: MockRouterStub
                 },
                 {
-                    provide: cmsApiService,
+                    provide: CmsApiService,
                     useClass: MockCmsApiServiceStub
                 },
-                storageManager,
+                StorageManager,
                 {
                     provide: AppConfig,
                     useClass: MockAppConfigStub

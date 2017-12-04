@@ -36,7 +36,7 @@ let mockSystemInfo = {
     }
 };
 
-let appVersion = "1.1 Build 0101";
+let appVersion = "1.0.0";
 
 let systemInfo = {
     licensedTo: "",

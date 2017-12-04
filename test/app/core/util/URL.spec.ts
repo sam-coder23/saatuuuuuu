@@ -11,7 +11,7 @@ describe("Url method", () => {
     });
 
     it("HasHostName should return true if url has hostname, not ip address in it", () => {
-        expect(Url.HasHostName()).toBe(false);
+        expect(Url.HasHostName()).toBe(true);
     });
 
 });

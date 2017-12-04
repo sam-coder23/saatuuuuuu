@@ -91,10 +91,10 @@ class MockCmsApiServiceStub {
         return Observable.of(null);
     }
 
-    logout() {
+    logoutUser() {
         return Observable.of(null);
     }
-}
+};
 
 describe("CmsDisplayPanelComponent - Test Suite", () => {
 
