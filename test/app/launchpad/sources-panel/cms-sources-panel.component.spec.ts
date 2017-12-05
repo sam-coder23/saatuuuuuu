@@ -272,12 +272,9 @@ describe("CmsSourcesPanelComponent", () => {
     it("should have max count === 10, also panel title is same as defined pattern and display ID Initialized", () => {
         component.ngOnInit();
         expect(debugInstance.mDisplayId).not.toBeNaN();
-
         fixture.detectChanges();
         fixture.whenStable().then(() => {
-            let panelTitlewithMaxSelection = debugInstance.panelTitle.split("maximum ");
-            expect(panelTitlewithMaxSelection[1]).toContain(CMSConstants.MAXSELECTION);
-            expect(debugInstance.panelTitle).toEqual("Select sources (maximum " + CMSConstants.MAXSELECTION + ")");
+            expect(debugInstance.panelTitle).toEqual("Select sources");
         });
     });
 
@@ -294,7 +291,6 @@ describe("CmsSourcesPanelComponent", () => {
         fixture.detectChanges();
         let bottomToolbar: DebugElement = fixture.debugElement.query(By.css("#sources-panel-bottom-toolbar span:nth-child(1)"));
         let selectedSource = cmsSettingService.selectedSources.length + "/" + CMSConstants.MAXSELECTION
-
         expect(bottomToolbar.nativeElement.innerText).toBeTruthy(selectedSource);
     });
 

@@ -45,22 +45,18 @@ describe("CmsDisplayNameComponent", () => {
 
     it("should load display name", () => {
         fixture.detectChanges();
-
         expect(component.displayName).toEqual(display.name);
     });
 
     it("should subscribe display change event", () => {
         fixture.detectChanges();
         expect(component.displayEventsSubscription instanceof Subscriber).toBeTruthy();
-
         component.ngOnDestroy();
-
         expect(component.displayEventsSubscription.closed).toBeTruthy();
     });
 
     it("should update display name", () => {
         component.subscribeDisplayEvents();
-
         const newDisplay = {
             uri: "displays/1",
             body: {
@@ -69,9 +65,7 @@ describe("CmsDisplayNameComponent", () => {
             },
             verb: "PUT"
         };
-
         CmsEventEmitterService.get(CMS_EVENTS.DisplayList).next(newDisplay);
-
         expect(component.displayName).toEqual(newDisplay.body.name);
     });
 

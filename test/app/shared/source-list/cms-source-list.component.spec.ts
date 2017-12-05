@@ -1,3 +1,6 @@
+/**
+ * Test Specification for Source List component.
+ */
 import { ComponentFixture, TestBed, async, inject } from "@angular/core/testing";
 import { By } from "@angular/platform-browser";
 import { DebugElement, CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA, ElementRef } from "@angular/core";
@@ -5,7 +8,6 @@ import { HttpModule, Http } from "@angular/http";
 import { TranslateModule, TranslateLoader, TranslateService } from "@ngx-translate/core";
 import { TranslateHttpLoader } from "@ngx-translate/http-loader";
 import { TilePresets } from "../tile-grid/tile-grid.mock";
-import { Router } from "@angular/router";
 import { Observable } from "rxjs/Observable";
 import { CmsResource } from "../../../../app/cms/models/cms-resource";
 import { Source } from "../../../../app/cms/models/cms-source";
@@ -28,7 +30,7 @@ class MockDisplay extends CmsResource {
     content?: any[]
 }
 
-const mDisplay: MockDisplay = {
+const mockDisplay: MockDisplay = {
     type: "NGPWall",
     id: 56,
     name: "ngp_display",
@@ -129,7 +131,6 @@ class MockCmsVirtualScrollService {
     addScrollListener(scrollTarget: HTMLElement, scrollCallback: Function) {
         return null;
     }
-
     removeScrollListener() {
         return null;
     }
@@ -146,15 +147,11 @@ class MockCmsFavoriteService {
 
 class MockCmsApiService {
     getSelectedDisplayContent(displayId): Observable<MockDisplay> {
-        return Observable.of(mDisplay);
+        return Observable.of(mockDisplay);
     }
 
     getSourceList(start: number = 1, count: number = 2147483647, aDisplayId: number, search: string = "", favorite: boolean = false): Observable<Source[]> {
         return Observable.of(sources);
-    }
-
-    loadContentOnTile() {
-
     }
 }
 
@@ -190,7 +187,6 @@ describe("CmsSourceListComponent", () => {
     let i18n: any;
     let debugInstance, nativeElement;
     let sourceAvail: String;
-
     let spyMarkObjectAsFavorite, spyMarkObjectAsUnfavorite;
     beforeEach(async(() => {
         TestBed.configureTestingModule({
@@ -238,47 +234,41 @@ describe("CmsSourceListComponent", () => {
             component = fixture.componentInstance;
             nativeElement = fixture.nativeElement;
             debugInstance = fixture.debugElement.componentInstance;
-            component.displayId = mDisplay.id;
-
+            component.displayId = mockDisplay.id;
             cmsSettingsService = fixture.debugElement.injector.get(CmsSettingsService);
-
             cmsApiService = fixture.debugElement.injector.get(CmsApiService);
             cmsFavoriteService = fixture.debugElement.injector.get(CmsFavoriteService);
-            // translateService = fixture.debugElement.injector.get(TranslateService);
-
-            spyMarkObjectAsFavorite = spyOn(cmsFavoriteService, "markObjectAsFavorite").and.returnValue(Observable.of(null));
-            spyMarkObjectAsUnfavorite = spyOn(cmsFavoriteService, "markObjectAsUnfavorite").and.returnValue(Observable.of(null));
-
-            // translateService.setDefaultLang("en");
+            spyMarkObjectAsFavorite = spyOn(cmsFavoriteService, "markObjectAsFavorite")
+            .and.returnValue(Observable.of(null));
+            spyMarkObjectAsUnfavorite = spyOn(cmsFavoriteService, "markObjectAsUnfavorite")
+            .and.returnValue(Observable.of(null));
         });
     }));
 
 
-    it("component should be defined and new data should be populated on Changes and listen 'Source Updated' event", async(() => {
+    it(`component should be defined and new data should be populated on Changes and listen 'Source Updated'
+     event`, async(() => {
         expect(component).toBeDefined();
         expect(component.changeEmitter).toBeDefined();
         expect(component.errorEmitter).toBeDefined();
         fixture.detectChanges();
-
-        expect(debugInstance["mScroller"].dataCount).toBe(0);
-        debugInstance.mScroller.count = sources.length + 1;
-        expect(debugInstance.mSourceListCmsEvent).toBeNull();
+        expect(debugInstance["scroller"].dataCount).toBe(0);
+        debugInstance.scroller.count = sources.length + 1;
+        expect(debugInstance.sourceListCmsEvent).toBeNull();
         component.ngOnChanges(null);
         fixture.whenStable().then(() => {
-            expect(debugInstance.mScroller.max).toEqual(debugInstance.mSources.length);
-            expect(debugInstance.mSources.length).toEqual(sources.length);
-            expect(debugInstance.mScroller.dataCount).toBe(sources.length);
-            expect(debugInstance.mScroller.max).not.toBeNull();
-            expect(debugInstance.mScroller.count).toEqual(cmsSettingsService.userSettings.pageSize);
-            expect(debugInstance.mScrollTarget.id).toEqual("source-list-card-container");
-
+            expect(debugInstance.scroller.max).toEqual(debugInstance.sources.length);
+            expect(debugInstance.sources.length).toEqual(sources.length);
+            expect(debugInstance.scroller.dataCount).toBe(sources.length);
+            expect(debugInstance.scroller.max).not.toBeNull();
+            expect(debugInstance.scroller.count).toEqual(cmsSettingsService.userSettings.pageSize);
+            expect(debugInstance.scrollTarget.id).toEqual("source-list-card-container");
             debugInstance.cmsSettingsService.selectedSources = [];
             debugInstance.cmsSettingsService.selectedSources.push(sources[0]);
-            expect(debugInstance.mSourceListCmsEvent).not.toBeNull();
+            expect(debugInstance.sourceListCmsEvent).not.toBeNull();
             expect(debugInstance.cmsSettingsService.selectedSources[0].disabled).toBeFalsy()
-
             let sourceUpdated = Object.assign({}, sources[0]);
-            debugInstance.mSourceListCmsEvent.next(
+            debugInstance.sourceListCmsEvent.next(
                 {
                     "eventType": "ResourceDeleted",
                     "body": sourceUpdated
@@ -295,45 +285,46 @@ describe("CmsSourceListComponent", () => {
     }));
 
     it("should not render list and apply class when there are no sources on Init", async(() => {
-        debugInstance.mSources = [];
+        debugInstance.sources = [];
         component.displayId = NaN;
         debugInstance.selectedOnly = false;
         expect(component).toBeDefined();
         expect(fixture.nativeElement.querySelectorAll("cms-card").length).toEqual(0);
-        expect(document.getElementById("source-list-card-container").classList).not.toContain("bottom-up");
+        expect(document.getElementById("source-list-card-container").classList).not
+        .toContain("bottom-up");
         fixture.detectChanges();
         fixture.whenStable().then(() => {
             let defaultText = document.getElementsByClassName("source-list-unavailable");
             expect((defaultText[0].children[0].innerHTML)).toBe("sourceList.unavailable");
         });
         debugInstance.getSources();
-        expect(debugInstance.mSources.length).toEqual(0);
+        expect(debugInstance.sources.length).toEqual(0);
     }));
 
     it("should only add the selected sources to select source list", () => {
-        component.displayId = mDisplay.id;
-        debugInstance.mSources = [];
+        component.displayId = mockDisplay.id;
+        debugInstance.sources = [];
         debugInstance.selectedOnly = true;
         debugInstance.cmsSettingsService.selectedSources = [];
         debugInstance.cmsSettingsService.selectedSources.push(sources[0]);
         debugInstance.getSources();
-        expect(debugInstance.mSources.length).toEqual(1);
+        expect(debugInstance.sources.length).toEqual(1);
     });
 
     it("should not return anything if the max scroll is not reached", () => {
-        component.displayId = mDisplay.id;
-        debugInstance.mSources = [];
+        component.displayId = mockDisplay.id;
+        debugInstance.sources = [];
         debugInstance.selectedOnly = false;
-        debugInstance.mScroller.max = 2;
+        debugInstance.scroller.max = 2;
         debugInstance.getSources();
-        expect(debugInstance.mSources.length).toEqual(0);
+        expect(debugInstance.sources.length).toEqual(0);
     });
 
     it("should not let user mark favorite or unfavorite on a disabled source", () => {
         fixture.detectChanges();
         fixture.whenStable().then(() => {
         });
-        component.toggleSourceFavorite(sources[2]);
+        debugInstance.toggleSourceFavorite(sources[2]);
         expect(cmsFavoriteService.markObjectAsFavorite).not.toHaveBeenCalled();
         expect(cmsFavoriteService.markObjectAsFavorite).not.toHaveBeenCalled();
     });
@@ -341,7 +332,7 @@ describe("CmsSourceListComponent", () => {
     it("should call CmsFavoriteService.markObjectAsFavorite when the selected source is unfavorite", () => {
         sources[0].disabled = false;
         fixture.detectChanges();
-        component.toggleSourceFavorite(sources[0]);
+        debugInstance.toggleSourceFavorite(sources[0]);
         let args = spyMarkObjectAsFavorite.calls.mostRecent().args;
         expect(args[0]).toEqual(sources[0].id);
         expect(args[1]).toEqual(sources[0].type);
@@ -350,7 +341,7 @@ describe("CmsSourceListComponent", () => {
 
     it("should call CmsFavoriteService.markObjectAsUnFavorite when the selected source is favorite", () => {
         fixture.detectChanges();
-        component.toggleSourceFavorite(sources[1]);
+        debugInstance.toggleSourceFavorite(sources[1]);
         let args = spyMarkObjectAsUnfavorite.calls.mostRecent().args;
         expect(args[0]).toEqual(sources[1].id);
         expect(args[1]).toEqual(sources[1].type);
@@ -362,8 +353,8 @@ describe("CmsSourceListComponent", () => {
         fixture.whenStable().then(() => {
             let selectedSources = debugInstance.cmsSettingsService.selectedSources;
             expect(selectedSources.length).toBe(2);
-            expect(selectedSources[0].name).toBe(mDisplay.content[0].name);
-            expect(selectedSources[1].name).toBe(mDisplay.content[1].name);
+            expect(selectedSources[0].name).toBe(mockDisplay.content[0].name);
+            expect(selectedSources[1].name).toBe(mockDisplay.content[1].name);
         });
     });
 
@@ -379,7 +370,7 @@ describe("CmsSourceListComponent", () => {
     });
 
     it("should not be a any selected Source if current display is not have any shared content", () => {
-        mDisplay.content = [];
+        mockDisplay.content = [];
         fixture.detectChanges();
         fixture.whenStable().then(() => {
             let selectedSources = debugInstance.cmsSettingsService.selectedSources;

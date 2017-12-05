@@ -1,4 +1,5 @@
-<md-card id="card-{{card.id}}" (click)="selectCard(card)" class="card" [ngClass]="{disabled: card.disabled}">
+<md-card id="card-{{card.id}}" (click)="selectCard(card)" class="card" 
+[ngClass]="{disabled: card.disabled}">
       <div class="card-inner layout-row">
             <div class="card-image-section">
                   <img src={{cardSnapshot}} class="card-image" alt="source">
@@ -19,11 +20,17 @@
                         <i class="material-icons" *ngIf="isFavorite">star</i>
                   </button>
                   <button id="card-status" *ngIf="card.online != undefined" md-icon-button>
-                         <i class="material-icons" *ngIf="card.online"><img src="resources/icons/display_online_black_36.svg"></i>
-                         <i class="material-icons" *ngIf="!card.online"><img src="resources/icons/display_offline_black_36.svg"></i>
+                        <i class="material-icons" *ngIf="card.online">
+                              <img src="resources/icons/display_online_black_36.svg">
+                        </i>
+                        <i class="material-icons" *ngIf="!card.online">
+                              <img src="resources/icons/display_offline_black_36.svg">
+                        </i>
                   </button>
                   <button id="card-selected" md-icon-button *ngIf="multi">
-                        <i class="material-icons">{{card?.selected ? 'check_box' : 'check_box_outline_blank'}}</i>
+                        <i class="material-icons">
+                              {{card?.selected ? 'check_box' : 'check_box_outline_blank'}}
+                        </i>
                   </button>
             </div>
       </div>

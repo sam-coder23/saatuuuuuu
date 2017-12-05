@@ -1,8 +1,13 @@
-<div id="source-list-card-container" class="source-list-cards" [ngClass]="{'bottom-up' : cmsSettingsService?.selectedSources?.length > 0}">
-    <div class="source-list-unavailable" *ngIf="!mSources || !mSources.length">
+<div id="source-list-card-container" class="source-list-cards" 
+    [ngClass]="{'bottom-up' : cmsSettingsService?.selectedSources?.length > 0}">
+    <div class="source-list-unavailable" *ngIf="!sources || !sources.length">
         <span>{{ 'sourceList.unavailable' | translate }}</span>
     </div>
-    <div *ngIf="mSources && mSources.length">
-        <cms-card *ngFor="let source of mSources" multi="true" [card]="source" (select)="updateSelection($event, source)" (toggleFavorite)="toggleSourceFavorite(source)" [ngClass]="{disabled: source.disabled}"></cms-card>
+    <div *ngIf="sources && sources.length">
+        <cms-card *ngFor="let source of sources" multi="true" 
+            [card]="source" (select)="updateSelection($event, source)" 
+            (toggleFavorite)="toggleSourceFavorite(source)"
+            [ngClass]="{disabled: source.disabled}">
+        </cms-card>
     </div>
 </div>

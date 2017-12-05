@@ -201,7 +201,6 @@ describe("CmsGridComponent", () => {
 
     it("should be a defined component", async(() => {
         expect(component).toBeDefined();
-        
         expect(debugInstance.selectedContent).toBeNull();
         expect(debugInstance.swappingContent).toBeNull();
         expect(debugInstance.loading).toBeFalsy();
@@ -210,13 +209,10 @@ describe("CmsGridComponent", () => {
     it("should call contentClickHandler on click of contentClickWrapper", async(() => {
         component.contentClick(content1);
         expect(debugInstance.selectedContent).toBeTruthy();
-
         component.contentClick(content1);
         expect(debugInstance.selectedContent).toBeNull();
-
         component.contentClick(content1);
         component.contentClick(content2);
-
         expect(debugInstance.selectedContent).toBeNull();
         expect(debugInstance.swappingContent).toBeNull();
     }));
@@ -224,7 +220,6 @@ describe("CmsGridComponent", () => {
     it("should call updateContentGeormetryOnDisplay() 2 times to swap the geometery of the content", async(() => {
         debugInstance.selectedContent = content1;
         debugInstance.swappingContent = content2;
-
         debugInstance.swapSource();
         expect(updateContentGeormetryOnDisplay).toHaveBeenCalledTimes(2);
     }));
@@ -232,15 +227,12 @@ describe("CmsGridComponent", () => {
     it("should swap the geometery and prepare content once swapContentGeometeryandCreateContent() is called", async(() => {
         debugInstance.selectedContent = content1;
         debugInstance.swappingContent = content2;
-
         let swappedContentGeometeryOutput: any[] = debugInstance.swapContentGeometeryandCreateContent();
-
         for (let index = 0; index < swappedContentGeometeryOutput.length; index++) {
             expect(swappedContentGeometeryOutput[index].x).toBe(swappedGeometeryContent[index].x);
             expect(swappedContentGeometeryOutput[index].y).toBe(swappedGeometeryContent[index].y);
             expect(swappedContentGeometeryOutput[index].width).toBe(swappedGeometeryContent[index].width);
             expect(swappedContentGeometeryOutput[index].height).toBe(swappedGeometeryContent[index].height);
         }
-
     }));
 });

@@ -79,9 +79,9 @@ describe("CmsMiniDisplayComponent", () => {
     );
 
     it("should set a base style for mini display at start", () => {
-        expect(component.mMiniDisplayStyle.height).toEqual("98%");
-        expect(component.mMiniDisplayStyle.width).toEqual("98%");
-        expect(component.mMiniDisplayStyle.margin).toEqual("20px");
+        expect(debugInstance.miniDisplayStyle.height).toEqual("98%");
+        expect(debugInstance.miniDisplayStyle.width).toEqual("98%");
+        expect(debugInstance.miniDisplayStyle.margin).toEqual("20px");
     });
 
     it("should unsubscribe all the events on Destroy", ()=>{
@@ -90,7 +90,7 @@ describe("CmsMiniDisplayComponent", () => {
       fixture.whenStable().then(()=>{
       });
       component.ngOnDestroy();
-      expect(debugInstance.mMiniDisplayCmsEvent.closed).toBeTruthy();
+      expect(debugInstance.miniDisplayCmsEvent.closed).toBeTruthy();
       expect(debugInstance.windowResizeSubscription.closed).toBeTruthy();
       expect(debugInstance.scrollSubscription.closed).toBeTruthy();
       expect(debugInstance.touchstartSubscription.closed).toBeTruthy();
@@ -142,7 +142,7 @@ describe("CmsMiniDisplayComponent", () => {
     it("should set the session storage if the changes are being made to the display on subscription", () => {
         cmsMiniDisplayService.init();
         debugInstance.subscribeCMSEvents();
-        debugInstance.mMiniDisplayCmsEvent.next(
+        debugInstance.miniDisplayCmsEvent.next(
             {
                 "eventType": "DisplayUpdated",
                 "body": EventCases.DisplayUpdated,
@@ -150,7 +150,7 @@ describe("CmsMiniDisplayComponent", () => {
             }
         );
         expect(sessionStorage.getItem(CMS_SESSION_STORAGE_ITEM.DISPLAY)).toEqual(JSON.stringify(EventCases.DisplayUpdated));
-        debugInstance.mMiniDisplayCmsEvent.next(
+        debugInstance.miniDisplayCmsEvent.next(
             {
                 "eventType": "DisplayDeleted",
                 "body": EventCases.DisplayDeleted,
@@ -161,7 +161,7 @@ describe("CmsMiniDisplayComponent", () => {
         expect(args[0]).toEqual(["/displays-panel"]);
         expect(appConfig.log).toHaveBeenCalled();
         expect(sessionStorage.getItem(CMS_SESSION_STORAGE_ITEM.DISPLAY)).toBeNull();
-        debugInstance.mMiniDisplayCmsEvent.next(
+        debugInstance.miniDisplayCmsEvent.next(
             {
                 "eventType": "TilerAndContentUpdated",
                 "body": EventCases.TilerAndContentUpdated,
@@ -171,9 +171,9 @@ describe("CmsMiniDisplayComponent", () => {
         expect(debugInstance.miniDisplayTilerList).toEqual(reFactoredTile);
         expect(debugInstance.displayTilerList).toEqual(EventCases.TilerAndContentUpdated.tiles);
         expect(debugInstance.miniDisplayContentList).toEqual(reFactoredSource);
-        expect(debugInstance.mShowDisplayContent).toBeTruthy();
+        expect(debugInstance.showDisplayContent).toBeTruthy();
         expect(appConfig.log).toHaveBeenCalled();
-        debugInstance.mMiniDisplayCmsEvent.next(
+        debugInstance.miniDisplayCmsEvent.next(
             {
                 "eventType": "ContentUpdated",
                 "body": EventCases.TilerAndContentUpdated,
@@ -182,7 +182,7 @@ describe("CmsMiniDisplayComponent", () => {
         );
         expect(debugInstance.miniDisplayContentList).toEqual(reFactoredSource);
         expect(appConfig.log).toHaveBeenCalled();
-        debugInstance.mMiniDisplayCmsEvent.next(
+        debugInstance.miniDisplayCmsEvent.next(
             {
                 "eventType": "ResourceUpdated",
                 "body": EventCases.TilerAndContentUpdated,
@@ -191,14 +191,14 @@ describe("CmsMiniDisplayComponent", () => {
         );
         expect(debugInstance.miniDisplayContentList).toEqual(reFactoredSource);
         expect(appConfig.log).toHaveBeenCalled();
-        debugInstance.mMiniDisplayCmsEvent.next(
+        debugInstance.miniDisplayCmsEvent.next(
             {
                 "eventType": "ResourceDeleted",
                 "body": EventCases.TilerAndContentUpdated,
                 "displayId": component.display.id,
             }
         );
-        expect(debugInstance.mShowDisplayContent).toBeTruthy();
+        expect(debugInstance.showDisplayContent).toBeTruthy();
     });
 
     it("should set keydown events for zooming on container", () => {
@@ -240,15 +240,15 @@ describe("CmsMiniDisplayComponent", () => {
         debugInstance.windowResizeSubscription.next();
         expect(JSON.stringify(component.display)).toEqual(sessionStorage.getItem(CMS_SESSION_STORAGE_ITEM.DISPLAY));
         expect(appConfig.log).toHaveBeenCalled();
-        expect(component.mMiniDisplayStyle.height).toEqual(miniDisplay.miniDisplaySize.height + "px");
-        expect(component.mMiniDisplayStyle.width).toEqual(miniDisplay.miniDisplaySize.width + "px");
+        expect(debugInstance.miniDisplayStyle.height).toEqual(miniDisplay.miniDisplaySize.height + "px");
+        expect(debugInstance.miniDisplayStyle.width).toEqual(miniDisplay.miniDisplaySize.width + "px");
         //zoom to stay same as we are only reinitializing values.
         expect(debugInstance.zoomlevel).toBe(0);
         expect(debugInstance.miniDisplayTilerList).toEqual(miniDisplay.miniDisplayTilerList);
         expect(debugInstance.miniDisplayContentList).toEqual(miniDisplay.miniDisplayContentList);
         expect(debugInstance.displayTilerList).toEqual(miniDisplay.displayTilerList);
-        expect(debugInstance.mDisplaySize).toEqual(miniDisplay.displaySize);
-        expect(debugInstance.mMiniDisplaySize).toEqual(miniDisplay.miniDisplaySize); 
+        expect(debugInstance.displaySize).toEqual(miniDisplay.displaySize);
+        expect(debugInstance.miniDisplaySize).toEqual(miniDisplay.miniDisplaySize); 
     });
 
 });

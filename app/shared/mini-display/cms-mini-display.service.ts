@@ -1,11 +1,7 @@
 /**
- * Copyright (c) 2016 Barco n.v. All Rights Reserved. This software is confidential and proprietary information of Barco n.v.
- * ("Confidential Information"). You shall not disclose such Confidential Information and shall use it only in accordance with
- * the terms of the license agreement you entered into with Barco.
+ * This service performs various computations for mini display and its child components.
  */
-
 import { Injectable } from "@angular/core";
-
 import { CmsApiService } from "../../cms/api/cms-api.service";
 import { TileContent } from "./../../cms/models/cms-tile-content";
 import { Source } from "./../../cms/models/cms-source";
@@ -14,248 +10,254 @@ import { Display } from "../../cms/models/cms-display";
 import { ISize } from "../../cms/models/cms-size";
 import { Observable } from "rxjs/Rx";
 import { AppConfig } from "../../config";
+import { Validation } from "../../core/util/Validation";
 
-
-/**
- * This service performs various computations for mini display and its child components.
- */
 @Injectable()
+/**
+ * This class contains the service behavior for mini-display and injected into mini-display 
+ * component contains methods for making API request to get mini-display content and also
+ * does restructuring calculations on to the mini-display content then used in component.
+ * @class CmsMiniDisplayService
+ * @property {Display} display currently selected mini display
+ * @property {number} zoomLevel required for zooming, sets and gets zoom level in integer 
+ * @property {{ Left: number, Top: number }} scrollPosition holds mini display scroll position
+ * @property {Observable} windowResizeEndEvent
+ * @property {number} fitHeightZoomLevel
+ * @property {boolean} panend
+ * @property {ISize} displaySize contain actual display size
+ * @property {ISize} miniDisplaySize contain mini display size
+ * @constructor initializes the services used inside the class.
+ */
 export class CmsMiniDisplayService {
-
-    // currently selected mini display
-    display: Display;
-
-    // required for zooming, sets and gets zoom level in integer
-    zoomLevel: number;
-
-    // holds mini display scroll position
+    public display: Display;
+    public zoomLevel: number;
     public scrollPosition: { Left: number, Top: number };
-
     public windowResizeEndEvent: Observable<{}>;
-
-    // keep zoomLevel to be set on fit height of mini-display
     public fitHeightZoomLevel: number;
-
     public panend: boolean;
+    private displaySize: ISize;
+    private miniDisplaySize: ISize;
+  
 
-    // it will contain actual display size
-    private mDisplaySize: ISize;
-
-    // it will contain mini display size
-    private mMiniDisplaySize: ISize;
-
-
-
-    /**
-     * The constructor initializes various services.
-     */
-    constructor(private cmsServerApi: CmsApiService, private appConfig: AppConfig) {
+    constructor(
+        private cmsServerApi: CmsApiService,
+        private appConfig: AppConfig
+    ) {
         this.init();
     }
 
     /**
      * initialize mini-display service properties
+     * @method init
+     * @return {void}.
      */
     public init() {
         this.display = null;
         this.zoomLevel = 0;
-        this.mDisplaySize = null;
-        this.mMiniDisplaySize = null;
+        this.displaySize = null;
+        this.miniDisplaySize = null;
         this.scrollPosition = { Left: 0, Top: 0 };
-        this.windowResizeEndEvent = Observable.fromEvent(window, "resize").debounce(() => Observable.timer(500));
+        this.windowResizeEndEvent = Observable.fromEvent(window, "resize").debounce(() =>
+            Observable.timer(500)
+        );
         this.panend = false;
     }
 
     /**
      * This method calls displays API to fetch tiler and content info for selected display.
-     * @pending: Boom
+     * @method getMiniDisplayTilerInfoWithContent
+     * @param {number} aDisplayId display id for display wall
+     * @param {HTMLELement} aContainer Container to render the mini-display tile grid.
+     * @return {Observable} observable of mini-display object.
      */
-    getMiniDisplayTilerInfoWithContent(aDisplayId: number, aContainer: HTMLElement): Observable<{
-        displaySize: ISize,
-        miniDisplayTilerList: Tile[],
-        miniDisplayContentList: TileContent[],
-        displayTilerList: Tile[],
-        miniDisplaySize: ISize
-    }> {
+    public getMiniDisplayTilerInfoWithContent(aDisplayId: number, aContainer: HTMLElement)
+        : Observable<{
+            displaySize: ISize,
+            miniDisplayTilerList: Tile[],
+            miniDisplayContentList: TileContent[],
+            displayTilerList: Tile[],
+            miniDisplaySize: ISize
+        }> {
         return Observable.create(observer => {
             this.cmsServerApi.getSelectedDisplayContent(aDisplayId)
                 .subscribe((display: Display) => {
-                    //this.appConfig.log("MiniDisplayComponent: Display detail info (with tiler and content) API successful.");
                     // initialize display size
-                    this.mDisplaySize = {
+                    this.displaySize = {
                         width: display.width,
                         height: display.height
                     }
-
                     // initialize mini-display size
-                    this.mMiniDisplaySize = this.miniDisplayInitialSize(aContainer);
-
+                    this.miniDisplaySize = this.miniDisplayInitialSize(aContainer);
                     // initialize mini-display tiler list
                     let miniDisplayTilerList: Tile[] = this.calculateAdjustedViewTilerRectangles(display.tiles);
-
                     // initialize mini-display content list
-                    let miniDisplayContentList: TileContent[] = this.calculateAdjustedViewSourceRectangles(display.content, []);
-
+                    let miniDisplayContentList: TileContent[] = this.calculateAdjustedViewSourceRectangles(
+                        display.content, []);
                     let miniDisplayResponse = {
-                        displaySize: this.mDisplaySize,
+                        displaySize: this.displaySize,
                         miniDisplayTilerList: miniDisplayTilerList,
                         miniDisplayContentList: miniDisplayContentList,
                         displayTilerList: display.tiles,
-                        miniDisplaySize: this.mMiniDisplaySize
+                        miniDisplaySize: this.miniDisplaySize
                     }
-
                     observer.next(miniDisplayResponse);
                     observer.complete();
                 }, (error) => {
-                    Observable.throw("MiniDisplayComponent: Display detail info (with tiler and content) API failed. Message:" + error)
+                    Observable.throw(`MiniDisplayComponent: Display detail 
+                    info (with tiler and content) API failed. Message: ${error}`)
                 });
         });
     }
 
     /**
-     * This method creates a new list of adjusted tiler rectangles for mini-display after conversion from actual display.
+     * This method creates a new list of adjusted tiler rectangles for mini-display after 
+     * conversion from actual display.
+     * @method calculateAdjustedViewTilerRectangles
+     * @param {Tile[]} aDisplayTilerList Tile array to be adjusted according to number of sources.
+     * @return {Tile[]} Array of Tiles.
      */
-    calculateAdjustedViewTilerRectangles(aDisplayTilerList: Tile[]): Tile[] {
+    public calculateAdjustedViewTilerRectangles(aDisplayTilerList: Tile[]): Tile[] {
         let miniDisplayTilerList: Tile[];
         // creating a new list of adjusted tiler rectangles for mini-display after conversion from actual display
-
-        if (aDisplayTilerList !== undefined && aDisplayTilerList.length > 0) {
+        if (!Validation.IsUndefined(aDisplayTilerList) && aDisplayTilerList.length > 0) {
             miniDisplayTilerList = aDisplayTilerList;
             miniDisplayTilerList = miniDisplayTilerList.map((content) => {
                 return this.getModelToViewBounds(content);
             });
         }
-
         return miniDisplayTilerList;
     }
 
     /**
-     * This method creates a new list of adjusted source rectangles for mini-display after conversion from actual display.
+     * This method creates a new list of adjusted source rectangles for 
+     * mini-display after conversion from actual display.
+     * @method calculateAdjustedViewSourceRectangles
+     * @param {TileContent[]} displayContentList Tile content to be shown on adjusted tile
+     * @param {TileContent[]} previousDisplayContentList Original content list with original size
+     * @param {boolean} updateLastModifed 
+     * @return {TileContent[]} Array of sources as tile content to be dislayed on layout.
      */
-    calculateAdjustedViewSourceRectangles(
-        aDisplayContentList: TileContent[],
+    public calculateAdjustedViewSourceRectangles(
+        displayContentList: TileContent[],
         previousDisplayContentList: TileContent[],
         updateLastModifed: boolean = true
     ): TileContent[] {
-
         let miniDisplayContentList: TileContent[];
-
-        if (aDisplayContentList !== undefined) {
-            miniDisplayContentList = aDisplayContentList;
+        if (!Validation.IsUndefined(displayContentList)) {
+            miniDisplayContentList = displayContentList;
             miniDisplayContentList = miniDisplayContentList.map((content) => {
-                return this.calculateAdjustedViewSourceRectangle(content, previousDisplayContentList, updateLastModifed);
+                return this.calculateAdjustedViewSourceRectangle(
+                    content,
+                    previousDisplayContentList,
+                    updateLastModifed
+                );
             });
         }
-
         return miniDisplayContentList;
     }
 
     /**
-     * This method creates adjusted source rectangles for mini-display after conversion from actual display.
+     * This method creates adjusted source rectangles for mini-display after 
+     * conversion from actual display.
+     * @method calculateAdjustedViewSourceRectangle
+     * @param {TileContent} displayContentList Tile content to be shown on adjusted tile
+     * @param {TileContent} previousDisplayContentList Original content list with original size
+     * @param {boolean} updateLastModifed 
+     * @return {TileContent} Array of sources as tile content to be dislayed on layout.
      */
-    calculateAdjustedViewSourceRectangle(
-        aDisplayContent: TileContent,
+    public calculateAdjustedViewSourceRectangle(
+        displayContent: TileContent,
         previousDisplayContentList: TileContent[],
         updateLastModifed: boolean = true
     ): TileContent {
 
         let existingContent: TileContent;
-
-        if (aDisplayContent !== null || aDisplayContent !== undefined) {
-            let adjustedRect = this.getModelToViewBounds(aDisplayContent);
-
-            aDisplayContent.absoluteSize = new Tile(aDisplayContent);
-
-            aDisplayContent.x = adjustedRect.x;
-            aDisplayContent.y = adjustedRect.y;
-            aDisplayContent.width = adjustedRect.width;
-            aDisplayContent.height = adjustedRect.height;
+        if (!Validation.IsNullOrUndefined(displayContent)) {
+            let adjustedRect = this.getModelToViewBounds(displayContent);
+            displayContent.absoluteSize = new Tile(displayContent);
+            displayContent.x = adjustedRect.x;
+            displayContent.y = adjustedRect.y;
+            displayContent.width = adjustedRect.width;
+            displayContent.height = adjustedRect.height;
 
             if (previousDisplayContentList.length > 0) {
-                existingContent = previousDisplayContentList.find(displayContent => displayContent.id === aDisplayContent.id);
-
+                existingContent = previousDisplayContentList.find(displayContent =>
+                    displayContent.id === displayContent.id
+                );
                 if (existingContent) {
                     // update last date as content alerady exist
-                    aDisplayContent.lastModified = existingContent.lastModified;
+                    displayContent.lastModified = existingContent.lastModified;
                 }
                 else {
                     // update new date as content is newly addedd
-                    aDisplayContent.lastModified = Date.now().toString();
+                    displayContent.lastModified = Date.now().toString();
                 }
             }
             else {
-                aDisplayContent.lastModified = Date.now().toString();
+                displayContent.lastModified = Date.now().toString();
             }
-
-            return aDisplayContent;
+            return displayContent;
         }
-
         return null;
     }
 
     /**
      * This method converts display tile size to mini display tile size. Also adds the specified margin around the tile by
      * adjusting tile position and size. 
-     * @pending - arrays are reference type. we must know that.
-     * Finally the conversion is done to calculate everything in %age
+     * @method getModelToViewBounds
+     * @param {Tile} aOriginalTileGeometry, original dimesions of the tile.
+     * @return {Tile} Tile, with new geometry.
      */
     private getModelToViewBounds(aOriginalTileGeometry: Tile): Tile {
         if (!(aOriginalTileGeometry instanceof Tile)) {
             aOriginalTileGeometry = new Tile(aOriginalTileGeometry);
         }
-
-        let leftPosition = aOriginalTileGeometry.left * this.mMiniDisplaySize.width / this.mDisplaySize.width,
-            topPosition = aOriginalTileGeometry.top * this.mMiniDisplaySize.height / this.mDisplaySize.height,
-            width = aOriginalTileGeometry.width * this.mMiniDisplaySize.width / this.mDisplaySize.width,
-            height = aOriginalTileGeometry.height * this.mMiniDisplaySize.height / this.mDisplaySize.height,
+        let leftPosition = aOriginalTileGeometry.left * this.miniDisplaySize.width / this.displaySize.width,
+            topPosition = aOriginalTileGeometry.top * this.miniDisplaySize.height / this.displaySize.height,
+            width = aOriginalTileGeometry.width * this.miniDisplaySize.width / this.displaySize.width,
+            height = aOriginalTileGeometry.height * this.miniDisplaySize.height / this.displaySize.height,
             margin = 4,
             tile: Tile;
-
         // adds the specified margin around the tile by adjusting tile position and size. 
         leftPosition = (leftPosition + margin);
-        leftPosition /= this.mMiniDisplaySize.width / 100;
-
+        leftPosition /= this.miniDisplaySize.width / 100;
         topPosition = topPosition + margin;
-        topPosition /= this.mMiniDisplaySize.height / 100;
-
+        topPosition /= this.miniDisplaySize.height / 100;
         width = width - (margin * 2);
-        width /= this.mMiniDisplaySize.width / 100;
-
+        width /= this.miniDisplaySize.width / 100;
         height = height - (margin * 2);
-        height /= this.mMiniDisplaySize.height / 100;
-
+        height /= this.miniDisplaySize.height / 100;
         tile = new Tile({
             x: leftPosition,
             y: topPosition,
             width: width,
             height: height
         });
-
         return tile;
     }
 
 	/**
      * Calculate mini-display size as per actual display size and available screen size fit
-     * @pending unused var
+     * @method miniDisplayInitialSize
+     * @param {HTMLElement} aContainer: Container inside which the min-display renders.
+     * @returns {ISize} object of ISize viz. dimensions of the Tile { width , hieght }
      */
     private miniDisplayInitialSize(aContainer: HTMLElement): ISize {
-        // Reference: https://developer.mozilla.org/en-US/docs/Web/API/Element/getBoundingClientRect
-
         /**
          * Why scrollWidth = 23? 
-         * 
-         * Because for any browser default width of a scrollbar is 17 pixel. And for some un-detectable reason 6 pixel was a gap.
+         * Because for any browser default width of a scrollbar is 17 pixel. And for 
+         * some un-detectable reason 6 pixel was a gap.
          * That"s why 23px is set as a fix for height calculation.
+         * Reference: https://developer.mozilla.org/en-US/docs/Web/API/Element/getBoundingClientRect
          */
         let miniDisplayContainerSize: ISize = aContainer.getBoundingClientRect(),
             miniDisplayContainerRatio: number = miniDisplayContainerSize.width / miniDisplayContainerSize.height,
-            displayRatio = this.mDisplaySize.width / this.mDisplaySize.height,
+            displayRatio = this.displaySize.width / this.displaySize.height,
             margin = 20,
             scrollWidth = 23,
             deltaZoom = 10,
             diff: number,
             diffPercent: number;
-
         // if width is more than height then fit by width otherwise fit by height
         if (displayRatio > miniDisplayContainerRatio) {
             let width = miniDisplayContainerSize.width - scrollWidth - margin * 2,
@@ -263,7 +265,6 @@ export class CmsMiniDisplayService {
                     width: width,
                     height: width / displayRatio,
                 };
-
             diff = ((miniDisplayContainerSize.height - scrollWidth - margin * 2) - mdSize.height);
             diffPercent = diff * 100 / mdSize.height;
             this.fitHeightZoomLevel = diffPercent - (diffPercent % deltaZoom);
@@ -271,7 +272,6 @@ export class CmsMiniDisplayService {
             return mdSize;
         } else {
             let height = miniDisplayContainerSize.height - scrollWidth - margin * 2;
-
             this.fitHeightZoomLevel = 0;
 
             return {
@@ -280,44 +280,4 @@ export class CmsMiniDisplayService {
             };
         }
     }
-
-
-    /**
-     * This method converts mini-display tile size to display tile size. Also removes the specified margin which was introduced before around the tile by
-     * adjusting tile position and size. 
-     * 
-     * Finally the conversion is done to calculate everything in pixel
-     
-    getViewToModelBounds(miniDisplayTileGeometry: ITile): ITile {
-        let leftPosition = miniDisplayTileGeometry.x * this.mDisplaySize.width / 100,
-            topPosition = miniDisplayTileGeometry.y * this.mDisplaySize.height / 100,
-            width = miniDisplayTileGeometry.width * this.mDisplaySize.width / 100,
-            height = miniDisplayTileGeometry.height * this.mDisplaySize.height / 100,
-            margin = parseInt((window.getComputedStyle(document.body)).fontSize) / 3,
-            newRect: ITile;
-
-        margin += 5;
-
-        // adjusts the specified margin around the tile by adjusting tile position and size. 
-        leftPosition -= margin;
-        topPosition -= margin;
-        width += (margin * 2);
-        height += (margin * 2);
-
-        leftPosition = Math.round(leftPosition);
-        topPosition = Math.round(topPosition);
-        width = Math.round(width);
-        height = Math.round(height);
-
-        newRect = {
-            x: leftPosition,
-            y: topPosition,
-            width: width,
-            height: height
-        };
-
-        return newRect;
-    }
-
-    */
 }

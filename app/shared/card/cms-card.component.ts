@@ -1,9 +1,7 @@
 /**
- * Copyright (c) 2016 Barco n.v. All Rights Reserved. This software is confidential and proprietary information of Barco n.v.
- * ("Confidential Information"). You shall not disclose such Confidential Information and shall use it only in accordance with
- * the terms of the license agreement you entered into with Barco.
+ * This is a card component which uses md-card provided by ng2-material. 
+ * The card layout is customized as per the design provided for launchpad application cards.
  */
-
 import { Component, OnInit, OnDestroy, Input, Output, EventEmitter, OnChanges, SimpleChanges } from "@angular/core";
 import { CmsResource } from "./../../cms/models/cms-resource";
 import { AppConfig } from "../../config";
@@ -13,81 +11,85 @@ import { Validation } from "../../core/util/Validation";
 import { CmsFavoriteService } from "../cms-favorite.service";
 import { Source } from "../../cms/models/cms-source";
 
-/**
- * This is a card component which uses md-card provided by ng2-material. 
- * The card layout is customized as per the design provided for launchpad application cards.
- * @component cms-card
- */
 @Component({
-    //moduleId: module.id,
     selector: "cms-card",
     template: require("./cms-card.component.html"),
     styles: [require("./cms-card.scss")]
 })
-
+/**
+ * This class has the behaviour for card component used as a shared component to display material 
+ * cards on diffrent launchpad panel components.
+ * @class CmsCardComponent
+ * @property {boolean} isFavorite
+ * @property {string} string
+ * @property {boolean} boolean 
+ * @property {CmsResource} card parent type to the card
+ * @property {boolean} multi specifies multi selection 
+ * @property {EventEmitter} selectedEventEmitter emits the card selection event.
+ * @property {EventEmitter} favoriteEventEmitter emits the favorite toggled value.
+ * @constructor injects the nessecary dependencies to the component.
+ */
 export class CmsCardComponent implements OnInit, OnChanges {
     private isFavorite: boolean;
     private cardSnapshot: string;
     private refreshSnapshot: boolean;
-    // Above variable is used to decided whether we need to refresh image. When we just mark image as fav then due to current implementation it will
-    // Update the object somewhere else and that will refresh entire componnent. Due to same we will see image is flickered because its timestamp is updated.
-
+    /**
+     * Above variable is used to decided whether we need to refresh image. When we just mark image as fav 
+     * then due to current implementation it will
+     * Update the object somewhere else and that will refresh entire componnent. Due to same we will see 
+     * image is flickered because its timestamp is updated.
+     */
     @Input() card: CmsResource;
     @Input() multi: boolean;
     @Output("select") selectedEventEmitter = new EventEmitter(); // card selection    
     @Output("toggleFavorite") favoriteEventEmitter = new EventEmitter();
 
-    /**
-     * @constructor
-     */
-    constructor(private appConfig: AppConfig, private favoriteService: CmsFavoriteService) {
+    constructor(
+        private appConfig: AppConfig,
+        private favoriteService: CmsFavoriteService
+    ) {
         this.refreshSnapshot = this.favoriteService.refreshSnapshot;
     }
 
-    /**
-     * NG lifecycle hook
-     * @method ngOnInit 
-     */
     ngOnInit() {
         let snapshotPath = this.card.snapshotPath;
         this.isFavorite = this.card.favorite;
-
         if (snapshotPath && this.refreshSnapshot === true) {
-            if (Url.HasHostName() && !Validation.IsNullOrUndefined(snapshotPath) && Url.HasIP(snapshotPath)) {
+            if (Url.HasHostName() && !Validation.IsNullOrUndefined(snapshotPath) 
+            && Url.HasIP(snapshotPath)) {
                 this.cardSnapshot = RegExManager.IPToHost(snapshotPath, this.appConfig.Host);
             }
             else {
                 this.cardSnapshot = snapshotPath;
             }
-
             this.cardSnapshot = `${this.cardSnapshot}&_=${Date.now()}`;
             this.card.snapshotPath = this.cardSnapshot;
         }
         else {
             this.cardSnapshot = snapshotPath;
         }
-
         this.refreshSnapshot = true;
     }
 
-    /**
-     * @method ngOnChanges
-     */
     ngOnChanges(changes: SimpleChanges) {
         this.favoriteService.refreshSnapshot = true;
         this.isFavorite = this.card.favorite;
     }
 
     /**
-     * This methods emits an event to its host component when a card is selected.
+     * sets the card to selected.
      * @method selectCard
+     * @param {CmsResource} card, specifies the base type of the card object.
+     * @return {void}.
      */
-    public selectCard(card: CmsResource) {
-        if (card.disabled) return;
-
+    private selectCard(card: CmsResource) {
+        if (card.disabled) {
+            return;
+        }
         if (card instanceof Source) {
             this.selectedEventEmitter.emit((<Source>card).selected);
-        } else {
+        }
+        else {
             this.selectedEventEmitter.emit();
         }
     }
@@ -95,8 +97,11 @@ export class CmsCardComponent implements OnInit, OnChanges {
     /**
      * This methods emits an event to its host component with the card favorite information.
      * @method markFavorite
+     * @param {MouseEvent} event Mouse Event
+     * @param {CmsResource} card specifies the base type of the card object.
+     * @return {void}
      */
-    markFavorite(event: MouseEvent, card: CmsResource) {
+    private markFavorite(event: MouseEvent, card: CmsResource) {
         this.appConfig.log(`Toggle Card [Name: ${card.name}] as favorite ${!this.card.favorite}`);
         this.favoriteEventEmitter.emit();
         event.stopPropagation();

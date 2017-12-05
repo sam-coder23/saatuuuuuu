@@ -436,7 +436,7 @@ describe("Component CmsSettingsPanelComponent", () => {
                     expect(wallConnectionStatus).toEqual($event.value);
                     expect(autoConnectToSpecificWallSelectButton.hasAttribute("disabled")).toBe(false);
                     debugInstance.goToSelectDisplayForAutoConnect($event);
-                    expect(spyRouter.navigate).toHaveBeenCalledWith(["/displays-panel", { action: CMSConstants.SELECT_DISPLAY }], { skipLocationChange: true });
+                    expect(spyRouter.navigate).toHaveBeenCalledWith(["/displays-panel", { action: CMSConstants.SELECT_DISPLAY }]);
                 });
             });
         });

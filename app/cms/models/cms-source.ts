@@ -1,24 +1,30 @@
+import { CmsResource } from "./cms-resource";
 /**
  * Specifies the model of Source
  * Source type could be source or perspective.
+ * @class Source
+ * @property {string} type type of source [perspective, source, web]
+ * @property {number} x horizontal cordinates
+ * @property {number} y vertical cordinates 
+ * @property {number} zOrder depth of the source, overlapp
+ * @property {number} width
+ * @property {number} height
+ * @property {boolean} selected optional, flag indicates selected status of the source
  */
-import { CmsResource } from "./cms-resource";
-
 export class Source extends CmsResource {
-    type: string;
-    x: number;
-    y: number;
-    zOrder: number;
-    width: number;
-    height: number;
-    selected?: boolean;
+    public type: string;
+    public x: number;
+    public y: number;
+    public zOrder: number;
+    public width: number;
+    public height: number;
+    public selected?: boolean;
 
     constructor(sourceModel) {
         if (!sourceModel) {
             return null;
         };
         super(sourceModel);
-
         this.type = sourceModel.type;
         this.x = sourceModel.x;
         this.y = sourceModel.y;

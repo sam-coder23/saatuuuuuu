@@ -1,5 +1,6 @@
 /**
  * Interface defines the model configuration of TilePreset
+ * @interface ITilePreset
  */
 export interface ITilePreset {
     "id"?: number,

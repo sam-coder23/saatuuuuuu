@@ -1,5 +1,6 @@
 /**
  * The interface defines the model for User Profile Setiings.
+ * @interface IWallConnection
  */
 export interface IWallConnection {
     "startUpAction": string,

@@ -160,7 +160,7 @@ export class CmsSettingsPanelComponent implements OnInit {
     /**
      * This method update user-interface as per user settings 
      * @method loadUserProfileSettings
-     * return {void}
+     * @return {void}
      */
     private loadUserProfileSettings(): void {
         this.loading = true;

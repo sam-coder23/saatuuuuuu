@@ -88,21 +88,10 @@
         width: 30px;
         height: 30px;
     }
-
-
 }
 
-    // .box-shadow{
-    //        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 1);
-    //        border: dotted 3px black;
-    // }
-
-    //     .box-shadow{
-    //        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 1);
-    // }
-
-        .box-shadow{
-           box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 1);
-           opacity: 0.5;
-           border: solid 3px black;
-    }
+.box-shadow{
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 1);
+    opacity: 0.5;
+    border: solid 3px black;
+}

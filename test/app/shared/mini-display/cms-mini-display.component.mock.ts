@@ -37,16 +37,16 @@ class CmsMiniDisplayServiceStub {
     private panend: boolean;
     private scrollPosition: { Left: number; Top: number; };
     private windowResizeEndEvent: Observable<{}>;
-    private mMiniDisplaySize: any;
-    private mDisplaySize: any;
+    private miniDisplaySize: any;
+    private displaySize: any;
     private zoomLevel: number;
     public display: MockDisplay = mDisplay;
     
     public init() {
         this.display = null;
         this.zoomLevel = 0;
-        this.mDisplaySize = null;
-        this.mMiniDisplaySize = null;
+        this.displaySize = null;
+        this.miniDisplaySize = null;
         this.scrollPosition = { Left: 0, Top: 0 };
         this.windowResizeEndEvent = Observable.fromEvent(window, "resize").debounce(() => Observable.timer(500));
         this.panend = false;

@@ -1,22 +1,29 @@
-/**
- * The class defines the model for the display object.
- */
-
 import { Tile } from "./cms-tile";
 import { TileContent } from "./cms-tile-content";
 import { CmsResource } from "./cms-resource";
 
+/**
+ * The class defines the model for the display object.
+ * @class Display
+ * @property {string} type display type
+ * @property {boolean} online indicates if the display is online.
+ * @property {number} tilerId optional
+ * @property {{width, hieght}} resolution resolution of the display
+ * @property {Tile[]} tiles
+ * @property {TileContent[]} content source content mapped on the tile of tiler.
+ */
 
 export class Display extends CmsResource {
-    type: string;
-    online: boolean;
-    tilerId?: number;
+    public type: string;
+    public online: boolean;
+    public tilerId?: number;
     public  resolution: {
         width: number;
         height: number;
     }
-
-
+    public tiles: Tile[];
+    public content: TileContent[];
+    
     public get width(): number {
         return this.resolution.width;
     }
@@ -24,9 +31,6 @@ export class Display extends CmsResource {
     public get height(): number {
         return this.resolution.height;
     }
-
-    tiles: Tile[];
-    content: TileContent[];
 
     constructor(display) {
         if (!display) {

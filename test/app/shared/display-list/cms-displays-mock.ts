@@ -12,7 +12,6 @@ class MockDisplay extends CmsResource {
     height: number;
     tiles: any;
     content: any;
-
 }
 
 export const displays: MockDisplay[] = [

@@ -1,5 +1,9 @@
 <div id="mini-display-container" class="cms-mini-display-container" tabindex="0" (mouseenter)="setFocusOnMiniDisplayContainer()">
-    <div class="cms-mini-display" [ngStyle]="mMiniDisplayStyle">
-        <cms-grid *ngIf="mShowDisplayContent" [miniTiles]="miniDisplayTilerList" [tiles]="displayTilerList" [contents]="miniDisplayContentList"></cms-grid>
+    <div class="cms-mini-display" [ngStyle]="miniDisplayStyle">
+        <cms-grid *ngIf="showDisplayContent"
+            [miniTiles]="miniDisplayTilerList" 
+            [tiles]="displayTilerList" 
+            [contents]="miniDisplayContentList">
+        </cms-grid>
     </div>
 </div>

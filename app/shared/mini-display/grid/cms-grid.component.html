@@ -1,10 +1,12 @@
 <div id="mini-display-grid" class="grid">
     <div class="tiles" *ngIf="miniTiles && miniTiles.length">
-        <div class="tile" *ngFor="let tile of miniTiles; let tileIndex = index;" [ngStyle]="formattedStyle(tile)">
+        <div class="tile" *ngFor="let tile of miniTiles; let tileIndex = index;" 
+            [ngStyle]="formattedStyle(tile)">
         </div>
     </div>
     <div class="contents" *ngIf="contents && contents.length">
-        <div class="content" *ngFor="let content of contents" [attr.data-content-id]="content.id" [ngStyle]="formattedStyle(content)"
+        <div class="content" *ngFor="let content of contents" [attr.data-content-id]="content.id" 
+            [ngStyle]="formattedStyle(content)"
             [ngClass]="{'box-shadow' : showSelected(content.id)}">
             <div class="source-label-container">
                 {{content.name}}

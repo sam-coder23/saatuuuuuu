@@ -1,14 +1,11 @@
 <div class="page-toolbar">
     <md-toolbar id="tiles-panel-toolbar" class="toolbar-theme">
         <span id="tiles-panel-title">{{ 'tilePresetList.layouts' | translate }}</span>
-
         <span class="fill-remaining-space"></span>
-
         <cms-display-name></cms-display-name>
-
         <span class="fill-remaining-space"></span>
-
-        <button id="tiles-panel-reload-button" md-icon-button *ngIf="viewState.reload" (click)="reloadList()">
+        <button id="tiles-panel-reload-button" md-icon-button *ngIf="viewState.reload"
+            (click)="reloadList()">
             <i class="material-icons">refresh</i>
         </button>
         <button id="log-off" md-button md-raised-button (click)="logout()">
@@ -18,7 +15,9 @@
 </div>
 
 <div class="tiles-panel-main">
-    <cms-tile-list [sourceCount]="sourceCount" [displayResolution]="displayResolution" (change)="onListChanged()" *ngIf="viewState.list"></cms-tile-list>
+    <cms-tile-list [sourceCount]="sourceCount" [displayResolution]="displayResolution"
+        (change)="onListChanged()" *ngIf="viewState.list">
+    </cms-tile-list>
 </div>
 
 <div class="page-toolbar bottom">

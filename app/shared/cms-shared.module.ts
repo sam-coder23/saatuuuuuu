@@ -1,26 +1,17 @@
-/**
- * Copyright (c) 2016 Barco n.v. All Rights Reserved. This software is confidential and proprietary information of Barco n.v.
- * ("Confidential Information"). You shall not disclose such Confidential Information and shall use it only in accordance with
- * the terms of the license agreement you entered into with Barco.
- */
-
-/* Core */
+//This is the shared module contains all the shared components and services.
+/* Core Moudules*/
 import { NgModule, NO_ERRORS_SCHEMA } from "@angular/core";
 import { BrowserModule } from "@angular/platform-browser";
 import { HttpModule, Http } from "@angular/http";
 import { RouterModule } from "@angular/router";
 import { FormsModule } from "@angular/forms";
-
 /* Ngx-Translate */
 import { TranslateModule, TranslateLoader } from "@ngx-translate/core";
 import { TranslateHttpLoader } from "@ngx-translate/http-loader";
-
 /* Angular Material */
 import { MaterialModule, MdIconRegistry } from "@angular/material";
-
 /* Card */
 import { CmsCardComponent } from "./card/cms-card.component";
-
 /* Mini-Display */
 import { CmsMiniDisplayComponent } from "./mini-display/cms-mini-display.component";
 import { CmsMiniDisplayService } from "./mini-display/cms-mini-display.service";
@@ -35,15 +26,14 @@ import { CmsSourceListComponent } from "./source-list/cms-source-list.component"
 /** Common Services for Lists */
 import { CmsVirtualScrollService } from "./cms-virtual-scroll.service";
 import { CmsFavoriteService } from "./cms-favorite.service";
-
 import { TileGridComponent } from "./tile-grid/tile-grid.component";
 import { CmsTileListComponent } from "./tile-list/cms-tile-list.component";
-
 import { RobotModule, BuilderService } from "core-components/app";
 import { CmsDisplayNameComponent } from "./display-name/cms-display-name.component";
 
 /**
- * This module defines various components that are designed keeping in mind their reusability in future.
+ * This module defines various components that are designed keeping in
+ * mind their reusability in future.
  */
 @NgModule({
   imports: [
@@ -91,5 +81,4 @@ import { CmsDisplayNameComponent } from "./display-name/cms-display-name.compone
   schemas: [NO_ERRORS_SCHEMA]
 })
 export class CmsSharedModule {
-
 }

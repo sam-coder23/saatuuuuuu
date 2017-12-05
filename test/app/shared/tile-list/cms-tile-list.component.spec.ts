@@ -64,7 +64,6 @@ describe("CmsTileListComponent", () => {
     let debugInstance;
     let cmsSettingService: MockCmsSettingService, activatedRoute: MockActivatedRoute;
     let spyPutContentsOnDisplay: jasmine.Spy;
-
     beforeEach(async(() => {
         TestBed.configureTestingModule({
             declarations: [CmsTileListComponent],
@@ -100,7 +99,6 @@ describe("CmsTileListComponent", () => {
             activatedRoute = fixture.debugElement.injector.get(ActivatedRoute);
             cmsSettingService = fixture.debugElement.injector.get(CmsSettingsService);
             let cmsApiService = fixture.debugElement.injector.get(CmsApiService);
-
             spyPutContentsOnDisplay = spyOn(cmsApiService, "putContentsOnDisplay").and.returnValue(Observable.of(null));
         });
     }));
@@ -110,7 +108,6 @@ describe("CmsTileListComponent", () => {
         expect(component.tilePresets.length).toEqual(0);
         expect(debugInstance.miniDisplayEventSubscription).toBeNull();
         component.sourceCount = cmsSettingService.selectedSources.length;
-
         fixture.detectChanges();
         fixture.whenStable().then(() => {
             // check for event subscription
@@ -122,13 +119,11 @@ describe("CmsTileListComponent", () => {
                 let filteredTilePresets = TilePresets.filter(tilePreset => tilePreset.noOfTiles === component.sourceCount);
                 expect(component.tilePresets.length).toEqual(filteredTilePresets.length);
             }
-
             // default icon is temporary hidden but it will available in DOM
             // check default property
             let carddefaultElement: DebugElement = fixture.debugElement.query(By.css("#card-default"));
             expect(carddefaultElement).toBeDefined();
             expect(component.tilePresets[0].isDefaultForAllDisplays).toBeFalsy();
-
             // check isSelected property
             let cardSelectElement: DebugElement = fixture.debugElement.query(By.css(".card-select"));
             expect(cardSelectElement).toBeDefined();
@@ -136,21 +131,15 @@ describe("CmsTileListComponent", () => {
         });
     }));
 
-
     it("should call CmsApiService.putContentsOnDisplay when tile layout is loaded", () => {
         component.sourceCount = cmsSettingService.selectedSources.length;
-
         fixture.detectChanges();
-
         component.loadTilePreset(component.tilePresets[0]);
-
         let args = spyPutContentsOnDisplay.calls.mostRecent().args;
-
         // check isSelected property
         let cardElement: DebugElement = fixture.debugElement.query(By.css(".card-select"));
         expect(cardElement).toBeDefined();
         expect(component.tilePresets[0].isSelected).toBeTruthy();
-
         expect(args[0]).toEqual(activatedRoute.params.value.id);
         expect(args[1]).toEqual(component.tilePresets[0].id);
         expect(args[2].resources).toEqual(cmsSettingService.selectedSources);
@@ -159,15 +148,11 @@ describe("CmsTileListComponent", () => {
     it("component should listen 'Display Updated' event and should trigger change event emitter", async(() => {
         component.sourceCount = cmsSettingService.selectedSources.length;
         expect(debugInstance.miniDisplayEventSubscription).toBeNull();
-
         fixture.detectChanges();
-
         // check for event subscription
         expect(debugInstance.miniDisplayEventSubscription).not.toBeNull();
-
         // current tile must be selected
         expect(component.tilePresets[0].isSelected).toBeTruthy();
-
         // provide same display with not existing tilerId
         let displayUpdated = Object.assign({}, MockDisplays[0]);
         displayUpdated.tilerId = 5;
@@ -213,12 +198,10 @@ describe("CmsTileListComponent", () => {
 
     it("should show defaultTiler with respective default icon", () => {
         component.sourceCount = cmsSettingService.selectedSources.length;
-
         fixture.detectChanges();
         fixture.whenStable().then(() => {
             let cardElement: DebugElement = fixture.debugElement.query(By.css("#card-default"));
             expect(cardElement).toBeDefined();
-
             expect(component.tilePresets[0].isDefaultForAllDisplays).toBeFalsy();
             expect(component.tilePresets[1].isDefaultForAllDisplays).toBeTruthy();
 

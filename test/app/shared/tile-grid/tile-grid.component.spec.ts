@@ -6,7 +6,6 @@ import { TileGridComponent } from "../../../../app/shared/tile-grid/tile-grid.co
 import { Tile } from "../../../../app/cms/models/cms-tile";
 
 describe("TileGridComponent", () => {
-
     let component: TileGridComponent;
     let fixture: ComponentFixture<TileGridComponent>;
     let debugInstance, nativeElement;
@@ -23,9 +22,8 @@ describe("TileGridComponent", () => {
 
     it("component should be a defined", () => {
         expect(component).toBeDefined();
-        expect(component.border).toEqual(2);
+        expect(debugInstance.border).toEqual(2);
     });
-
 
     it("display base styles should be correct", () => {
         let displayBaseSelector = ".cms-tile-preset";
@@ -39,13 +37,9 @@ describe("TileGridComponent", () => {
         };
 
         component.tilePreset = TilePresets[0];
-
         fixture.detectChanges();
-
         displayBaseElement = fixture.debugElement.query(By.css(displayBaseSelector));
-
         expect(displayBaseElement).not.toBeNull();
-
         expect(displayBaseElement.styles.height).toEqual(`${component.displayBase.height}px`);
         expect(displayBaseElement.styles.width).toEqual(`${component.displayBase.width}px`);
     });
@@ -61,7 +55,7 @@ describe("TileGridComponent", () => {
 
         let input = new Tile(component.tilePreset.tiles[0]);
         let output = { left: "0px", top: "0px", width: "198px", height: "98px" };
-        let tileStyle = component.tileStyle(input);
+        let tileStyle = debugInstance.tileStyle(input);
 
         Object.keys(tileStyle).forEach(key => {
             expect(tileStyle[key]).toEqual(output[key]);
