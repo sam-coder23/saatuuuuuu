@@ -101,7 +101,7 @@ export class CmsSettingsPanelComponent implements OnInit {
     private localizationLicense: number;
 
     //hold auto logoff value for UI
-    private autoLogOffTime: any
+    private autoLogOffTime: any;
 
     //hold no display information
     private noDisplayAvailable: boolean = false;
@@ -109,26 +109,31 @@ export class CmsSettingsPanelComponent implements OnInit {
     //hold wall connection constant information
     private wallConnection = CMSConstants.WALL_CONNECTION;
 
-    constructor(private cmsServerApi: CmsApiService, private router: Router, private cmsSettingsService: CmsSettingsService, private translate: TranslateService, private appConfig: AppConfig) {
-        this.localizationLicense = 0;
-    }
+    constructor(
+        private cmsServerApi: CmsApiService,
+        private router: Router,
+        private cmsSettingsService: CmsSettingsService,
+        private translate: TranslateService,
+        private appConfig: AppConfig) {
+            this.localizationLicense = 0;
+        }
 
     public ngOnInit() {
         if (!this.cmsSettingsService.userSettings) {
             this.cmsSettingsService.setUserProfileSettings(() => this.loadUserProfileSettings());
-        } else {
+        }
+        else {
             this.loadUserProfileSettings();
         }
 
         // Method to check for license of localization.
         this.checkForLocalizationLicense();
-
     }
 
     /**
      * With the help of this function, app will check whether this user has license for localization feature or not.
      * @method checkForLocalizationLicense
-     * @return {void}
+     * @return void
      */
     private checkForLocalizationLicense(): void {
         this.cmsServerApi.getSystemInfo()
@@ -193,7 +198,7 @@ export class CmsSettingsPanelComponent implements OnInit {
         // update user settings log offtime on UI 
         // set text as never in case of 0
         this.autoLogOffTime = this.userSettings.logOffTime;
-        this.updateAutoLogOffValueBinding(this.autoLogOffTime)
+        this.updateAutoLogOffValueBinding(this.autoLogOffTime);
 
         this.loading = false;
     }
@@ -202,7 +207,7 @@ export class CmsSettingsPanelComponent implements OnInit {
      * This method fetch display wall name and update {{displayWallName}}
      * @method showDisplayWallName
      * @param  {string} displayName Display Name to which specified content belong to.
-     * @return {void}
+     * @return void
      */
     private showDisplayWallName(displayName: string): void {
         let start = 1, count = 1, search = displayName, isFavorite = false, display;
@@ -224,15 +229,16 @@ export class CmsSettingsPanelComponent implements OnInit {
                         // update as selected display wall for future selection
                         this.userSettings.wallConnection.specificDisplay = display.name;
                         this.cmsSettingsService.updateUserProfileData(this.userSettings);
-                    } else {
-                        this.displayWallName = "nodisplayfound";
+                    }
+                    else {
+                        this.displayWallName = CMSConstants.NO_DISPLAY_FOUND;
                     }
                 }
                 else {
-                    this.displayWallName = "nodisplayfound";
+                    this.displayWallName = CMSConstants.NO_DISPLAY_FOUND;
                 }
             }, (error) => {
-                this.displayWallName = "nodisplayfound";
+                this.displayWallName = CMSConstants.NO_DISPLAY_FOUND;
                 this.appConfig.log("CmsSettingsPanelComponent: showDisplayWallNameById");
             });
     }
@@ -241,14 +247,13 @@ export class CmsSettingsPanelComponent implements OnInit {
      * This method fetch display wall name and update {{displayWallName}}
      * @method checkForRecentDisplay
      * @param {string} displayName Display Name to which specified content belong to.
-     * @return {void}
+     * @return void
      */
     private checkForRecentDisplay(displayName: string): void {
         let start = 1, count = 1, search = displayName, isFavorite = false, display;
         this.cmsServerApi.getDisplayList(start, count, search, isFavorite)
             .subscribe((displays: Display[]) => {
                 if (displays.length) {
-
                     // filter display by name
                     for (let displayIndex = 0; displayIndex < displays.length; displayIndex++) {
                         if (displays[displayIndex].name === displayName) {
@@ -273,7 +278,7 @@ export class CmsSettingsPanelComponent implements OnInit {
      * This method update user settings via PUT /users/current/profile/settings
      * @method updateUserSettingsByAction
      * @param event
-     * @return {void}
+     * @return void
      */
     private updateUserSettingsByAction(event): void {
         // prevent function execution when event source is null
@@ -287,7 +292,7 @@ export class CmsSettingsPanelComponent implements OnInit {
      * This method navigate to displays list while click on "auto connect on specific display wall" button
      * @method goToSelectDisplayForAutoConnect
      * @param event
-     * @return {void}
+     * @return void
      */
     private goToSelectDisplayForAutoConnect(event): void {
         this.router.navigate(["/displays-panel", { action: CMSConstants.SELECT_DISPLAY }]);
@@ -296,7 +301,7 @@ export class CmsSettingsPanelComponent implements OnInit {
     /**
      * This method update font-size in user profile settings on server
      * @method updateFontSize
-     * @return {void}
+     * @return void
      */
     private updateFontSize(): void {
         let fontSize = this.userSettings.sourceLabel.fontSize;
@@ -309,7 +314,7 @@ export class CmsSettingsPanelComponent implements OnInit {
     /**
      * This method increase font-size in user profile settings on server and on UI
      * @method increaseFontSize
-     * @return {void}
+     * @return void
      */
     private increaseFontSize(): void {
         let fontSize = this.userSettings.sourceLabel.fontSize;
@@ -320,7 +325,7 @@ export class CmsSettingsPanelComponent implements OnInit {
     /**
       * This method decrease font-size in user profile settings on server and on UI
       * @method decreaseFontSize
-      * @return {void}
+      * @return void
       */
     private decreaseFontSize(): void {
         let fontSize = this.userSettings.sourceLabel.fontSize;
@@ -331,7 +336,7 @@ export class CmsSettingsPanelComponent implements OnInit {
     /**
      * This method update transparency in user profile settings on server
      * @method updateTransparency
-     * @return {void}
+     * @return void
      */
     private updateTransparency(): void {
         let transparency = this.userSettings.sourceLabel.transparency;
@@ -344,7 +349,7 @@ export class CmsSettingsPanelComponent implements OnInit {
     /**
      * This method increase transparency in user profile settings on server and on UI
      * @method increaseTransparency
-     * @return {void}
+     * @return void
      */
     private increaseTransparency(): void {
         let transparency = this.userSettings.sourceLabel.transparency;
@@ -355,7 +360,7 @@ export class CmsSettingsPanelComponent implements OnInit {
     /**
      * This method decrease transparency in user profile settings on server and on UI
      * @method decreaseTransparency
-     * @return {void}
+     * @return void
      */
     private decreaseTransparency(): void {
         let transparency = this.userSettings.sourceLabel.transparency;
@@ -366,7 +371,7 @@ export class CmsSettingsPanelComponent implements OnInit {
     /**
      * This method update font color in user profile settings on server
      * @method updateFontColor
-     * @return {void}
+     * @return void
      */
     private updateFontColor(event): void {
         if (event) {
@@ -382,13 +387,13 @@ export class CmsSettingsPanelComponent implements OnInit {
      * This method update background color in user profile settings on server
      * @method updateBackgroundColor
      * @param event
-     * @return {void}
+     * @return void
      */
     private updateBackgroundColor(event): void {
         if (event) {
             let backgroundColor = event.value;
             if (backgroundColor) {
-                this.userSettings.sourceLabel.​backgroundColor = backgroundColor
+                this.userSettings.sourceLabel.​backgroundColor = backgroundColor;
                 this.cmsSettingsService.updateUserProfileData(this.userSettings);
             }
         }
@@ -398,7 +403,7 @@ export class CmsSettingsPanelComponent implements OnInit {
      * This method will show languages panel if user have licenses.
      * @method showLanguages
      * @property {event} event
-     * @return {void}
+     * @return void
      */
     private showLanguages(event): void {
         event.preventDefault();
@@ -410,7 +415,7 @@ export class CmsSettingsPanelComponent implements OnInit {
     /**
      * This method update logOffTime in user profile settings on server
      * @method updateLogOffTime
-     * @return {void}
+     * @return void
      */
     private updateLogOffTime(): void {
         let autoLogOffTime = Number(this.autoLogOffTime);
@@ -430,7 +435,7 @@ export class CmsSettingsPanelComponent implements OnInit {
     /**
      * This method increase logOffTime in user profile settings on server and on UI
      * @method increaseLogOffTime
-     * @return {void}
+     * @return void
      */
     private increaseLogOffTime(): void {
         let autoLogOffTime = Number(this.autoLogOffTime);
@@ -441,7 +446,7 @@ export class CmsSettingsPanelComponent implements OnInit {
     /**
      * This method decrease logOffTime in user profile settings on server and on UI
      * @method increaseLogOffTime
-     * @return {void}
+     * @return void
      */
     private decreaseLogOffTime(): void {
         let autoLogOffTime = Number(this.autoLogOffTime);
@@ -452,7 +457,7 @@ export class CmsSettingsPanelComponent implements OnInit {
     /**
      * This method update logoff time to 'never' on UI
      * @method updateAutoLogOffValueBinding
-     * @return {void}
+     * @return void
      */
     private updateAutoLogOffValueBinding(autoLogOffTime): void {
         if (autoLogOffTime == 0 || isNaN(autoLogOffTime)) {
@@ -466,7 +471,7 @@ export class CmsSettingsPanelComponent implements OnInit {
     /**
      * This method show display wall name as per selected wall connection
      * @method showDisplayWallNameByWallConnection
-     * @return {void}
+     * @return void
      */
     private showDisplayWallNameByWallConnection() {
         if (this.userSettings.wallConnection.specificDisplay !== "" && this.userSettings.wallConnection.startUpAction === CMSConstants.WALL_CONNECTION.SPECIFIC_WALL) {
@@ -491,8 +496,7 @@ export class CmsSettingsPanelComponent implements OnInit {
         let start = 1, count = 1, search = "", isFavorite = false;
 
         return this.cmsServerApi.getDisplayList(start, count, search, isFavorite)
-            .subscribe(
-            (displays: Display[]) => {
+            .subscribe((displays: Display[]) => {
                 if (displays.length === 0) {
                     // if no displays are available
                     this.noDisplayAvailable = true;
@@ -514,9 +518,9 @@ export class CmsSettingsPanelComponent implements OnInit {
     /**
      * This method navigate to back page
      * @method navigateBack
-     * @return {void}
+     * @return void
      */
-    private navigateBack() {
+    private navigateBack(): void{
         history.back();
     }
 }

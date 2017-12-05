@@ -1,14 +1,8 @@
-/**
- * Copyright (c) 2016 Barco n.v. All Rights Reserved. This software is confidential and proprietary information of Barco n.v.
- * ("Confidential Information"). You shall not disclose such Confidential Information and shall use it only in accordance with
- * the terms of the license agreement you entered into with Barco.
- */
-
 import { Injectable } from "@angular/core";
 import { Router } from "@angular/router";
-import { Headers, Http, Response, RequestOptionsArgs, URLSearchParams } from "@angular/http";
+import { Http, Response } from "@angular/http";
+import { Observable, Subscription, TimeoutError } from "rxjs/Rx";
 
-import { Observable, Subscription, Observer, TimeoutError } from "rxjs/Rx";
 import "rxjs/add/operator/toPromise";
 import "rxjs/add/operator/map";
 import "rxjs/add/operator/catch";
@@ -19,7 +13,7 @@ import { Display } from "../models/cms-display";
 import { Source } from "../models/cms-source";
 import { ICmsEvent } from "../models/cms-event";
 import { Tile } from "./../models/cms-tile";
-import { UserConfig, User } from "../../launchpad/models/cms-user.model";
+import { User } from "../../launchpad/models/cms-user.model";
 import { APIRequest } from "./api-request";
 import { IUserProfileSettings } from "../models/cms-user-profile-settings";
 import { StorageManager } from "./cms-storagemanager.service";
@@ -28,24 +22,34 @@ import { CMS_SESSION_STORAGE_ITEM } from "../models/cms-session-storage-item";
 import { ITilePreset } from "../models/cms-tile-preset";
 import { Validation } from "../../core/util/Validation";
 import { DISPLAY_TYPE } from "./display-type.enum";
+import { CMSConstants } from "./../models/cms-constants";
+
 
 /**
  * This service is used to place CMS Server REST API calls for various functions. 
  * Also it creates a connection with CMS Server when user is logged in and maintains it till user logout.
+ * @class CmsApiService
+ * @property {Subscription} sessionAlive Subscription for CMS events
+ * @property {any} reconnection 
+ * @property {boolean} firstDisconnection Flag for first-disconnection
+ * @property {boolean} databaseResetStarted Flag for database reset start
  */
 @Injectable()
 export class CmsApiService {
-
-    private sessionAlive: Subscription; // it will contain the subscription for CMS events initialized on login and unsubscribe on logout
-
+    // it will contain the subscription for CMS events initialized on login 
+    // and unsubscribe on logout
+    private sessionAlive: Subscription;
     private reconnection;
     private firstDisconnection: boolean;
     private databaseResetStarted: boolean;
 
-    /**
-     * The constructor initializes various dependencies.
-     */
-    constructor(private http: Http, private router: Router, private apiRequest: APIRequest, private storageManager: StorageManager, private appConfig: AppConfig) {
+    constructor(
+        private http: Http,
+        private router: Router,
+        private apiRequest: APIRequest,
+        private storageManager: StorageManager,
+        private appConfig: AppConfig) {
+
         this.firstDisconnection = false;
         this.databaseResetStarted = false;
     }
@@ -56,9 +60,8 @@ export class CmsApiService {
      * @param {User} user It contains user data which is required to login into  server
      * @return Observable<Response>
      */
-    login(user: User): Observable<Response> {
-        let body = user.toJSON();
-        return this.apiRequest.post("login", body);
+    public login(user: User): Observable<Response> {
+        return this.apiRequest.post("login", user.toJSON());
     }
 
     /**
@@ -66,14 +69,16 @@ export class CmsApiService {
      * @method logout
      * @return Observable<Response>
      */
-    logout(): Observable<Response> {
+    public logout(): Observable<Response> {
         return this.apiRequest.get("logout");
     }
 
     /**
      * This method performs clean up on logout call and navigates user to login page.
+     * @method performOnlogout
+     * @return void
      */
-    public performOnlogout() {
+    public performOnlogout(): void {
         this.storageManager.removeStorage();
         this.makeSessionExpire();
         this.router.navigate(["/login"]);
@@ -82,33 +87,30 @@ export class CmsApiService {
     /**
      * This method call the logout api and also performs clean up.
      * @method logoutUser
-     * @return {void}
+     * @return void
      */
-    public logoutUser() {
+    public logoutUser(): void {
         this.logout()
-            .finally(
-                () => this.performOnlogout()
-            )
+            .finally(() => this.performOnlogout())
             .subscribe(
-                response => {},
-                error => {
-                    this.appConfig.log("DisplaysPanelComponent: Logout failed");
-                }
+            response => { },
+            error => {
+                this.appConfig.log("DisplaysPanelComponent: Logout failed");
+            }
             );
     }
 
     /**
-     * Fetch display list from CMS Server 
+     * This method Fetch display list from CMS Server 
      * @method getDisplayList
-     * @param {number} start
-     * @param {number} count
-     * @param {number} detail
-     * @param {string} search
-     * @param {boolean} favorite
+     * @param {number} start Start index of display list
+     * @param {number} count Total number of displays
+     * @param {string} search Search text
+     * @param {boolean} favorite Flag for favorite
      * @return {Display[]} Observable
      */
-    getDisplayList(start: number = 1, count: number = 2147483647, search: string = "", favorite: boolean = false): Observable<Display[]> {
-        let params = "displays?start=" + start + "&count=" + count + "&filter=" + encodeURIComponent(search) + "&onlyfavorite=" + favorite;
+    public getDisplayList(start: number = 1, count: number = 2147483647, search: string = "", favorite: boolean = false): Observable<Display[]> {
+        let params = `displays?start=${start}&count=${count}&filter=${encodeURIComponent(search)}&onlyfavorite=${favorite}`;
         return this.apiRequest
             .get(params)
             .map(displays => {
@@ -118,21 +120,27 @@ export class CmsApiService {
     }
 
     /**
-     * Fetch source list from CMS Server 
+     * This method fetch source list from CMS Server 
      * @method getSourceList
-     * @param {number} start
-     * @param {number} count
-     * @param {number} aDisplayId
-     * @param {string} search
-     * @param {boolean} favorite
+     * @param {number} start Start index of display list
+     * @param {number} count Total number of displays
+     * @param {number} displayId selected display Id
+     * @param {string} search  Search text
+     * @param {boolean} favorite Flag for favorite
      * @return {Source[]} Observable
      */
-    getSourceList(start: number = 1, count: number = 2147483647, aDisplayId: number, search: string = "", favorite: boolean = false): Observable<Source[]> {
-        let params = "displays/" + aDisplayId + "/resources?start=" + start + "&count=" + count + "&filter=" + encodeURIComponent(search) + "&onlyfavorite=" + favorite;
+    public getSourceList(start: number = 1, count: number = 2147483647, displayId: number, search: string = "", favorite: boolean = false): Observable<Source[]> {
+        let params = `displays/${displayId}/resources?start=${start}&count=${count}&filter=${encodeURIComponent(search)}&onlyfavorite=${favorite}`;
         return this.apiRequest.get(params);
     }
 
-    putContentsOnDisplay(displayId: number, tilerId: number, body: any) {
+    /**
+     * This method update display content
+     * @method putContentsOnDisplay
+     * @param {number} displayId Selected Diplay Id
+     * @param {number} body Display content
+     */
+    public putContentsOnDisplay(displayId: number, tilerId: number, body: any) {
         let url = `displays/${displayId}/content?tilerId=${tilerId}`;
         return this.apiRequest.put(url, body);
     }
@@ -141,26 +149,25 @@ export class CmsApiService {
      * Fetch selected display detail info from CMS Server.
      * Display"s tile array will be returned along with display"s detail information and content array.
      * @method getSelectedDisplayContent
-     * @param {number} aDisplayId
+     * @param {number} displayId Selected Display Id
      * @return {Display} Observable
      */
-    getSelectedDisplayContent(aDisplayId: number): Observable<Display> {
-        return this.apiRequest.get(`displays/${aDisplayId}`).map(response => {
-            let display = new Display(response);
-            return display;
+    public getSelectedDisplayContent(displayId: number): Observable<Display> {
+        return this.apiRequest.get(`displays/${displayId}`).map(response => {
+            return new Display(response);
         });
     }
 
     /**
-     * Mark an object such as Display/Source/Perspective/Application/Layout as favorite
+     * this method mark an object such as Display/Source/Perspective/Application/Layout as favorite
      * with `post` http method.
      * @method markAsFavorite
-     * @param: objectId: number :: Id of an object
-     * @param: objectType: string :: DIS/SRC/PER/APP/LAY to be used as prefix for respective abjects
+     * @param {number} objectId Id of an object
+     * @param {string} objectType DIS/SRC/PER/APP/LAY to be used as prefix for respective abjects
      */
-    markAsFavorite(objectId: number, objectType: string): Promise<Response> {
+    public markAsFavorite(objectId: number, objectType: string): Promise<Response> {
         let url = `users/current/profile/favorites`,
-            body = JSON.stringify({ id: objectType + "_" + objectId });
+            body = JSON.stringify({ id: `${objectType}_${objectId}` });
 
         return this.http
             .post(this.apiRequest.GetURL(url), body, this.apiRequest.requestOption)
@@ -173,14 +180,14 @@ export class CmsApiService {
     }
 
     /**
-     * Mark an object such as Display/Source/Perspective/Application/Layout as unfavorites
+     * This method mark an object such as Display/Source/Perspective/Application/Layout as unfavorites
      * with `delete` http method.
      * @method markAsUnfavorite
-     * @param: objectId: number :: Id of an object
-     * @param: objectType: string :: DIS/SRC/PER/APP/LAY to be used as prefix for respective abjects
+     * @param {number} objectId Id of an object
+     * @param {string} objectType DIS/SRC/PER/APP/LAY to be used as prefix for respective abjects
      */
-    markAsUnfavorite(objectId: number, objectType: string): Promise<Response> {
-        let id = objectType + "_" + objectId,
+    public markAsUnfavorite(objectId: number, objectType: string): Promise<Response> {
+        let id = `${objectType}_${objectId}`,
             url = `users/current/profile/favorites/${id}`;
 
         return this.http
@@ -194,9 +201,11 @@ export class CmsApiService {
     }
 
     /**
-     * Get current user profile data with `get` http method.
+     * This method get current user profile data with `get` http method.
+     * @method getUserProfileSettings
+     * @return Promise<any>
      */
-    getUserProfileSettings(): Promise<any> {
+    public getUserProfileSettings(): Promise<any> {
         let url = `users/current/profile/settings`;
 
         return this.http
@@ -205,19 +214,18 @@ export class CmsApiService {
             .then((response) => {
                 if (response) {
                     this.appConfig.log("CmsApiService: getUserProfileSettings");
-                    let resposne = response.json();
-                    return resposne;
+                    return response.json();
                 }
             })
             .catch(this.promiseApiHandleError.bind(this));
     }
 
     /**
-     * Update current user profile data with `post` http method.
+     * This method update current user profile data with `post` http method.
      * @method updateUserProfileSettings
      * @param {IUserProfileSettings} settings
      */
-    updateUserProfileSettings(settings: IUserProfileSettings): Promise<Response> {
+    public updateUserProfileSettings(settings: IUserProfileSettings): Promise<Response> {
         let url = `users/current/profile/settings`,
             body = JSON.stringify(settings);
 
@@ -232,10 +240,11 @@ export class CmsApiService {
     }
 
     /**
-     * Fetches events from CMS Server with `get` http method.
+     * This method fetches events from CMS Server with `get` http method.
      * @method getEvents
+     * @return Observable<Response>
      */
-    getEvents(): Observable<Response> {
+    public getEvents(): Observable<Response> {
         let url = this.apiRequest.GetURL("events");
 
         return this.http.get(url, this.apiRequest.requestOption)
@@ -244,7 +253,10 @@ export class CmsApiService {
                 if (this.firstDisconnection) {
                     this.firstDisconnection = false;
                     // send event on application level to close server disconnection dialog
-                    CmsEventEmitterService.get(CMS_EVENTS.Application).emit({ eventName: "EventReconnectionSuccess", eventType: "system" });
+                    CmsEventEmitterService.get(CMS_EVENTS.Application).emit({
+                        eventName: "EventReconnectionSuccess",
+                        eventType: "system"
+                    });
                 }
 
                 //@pending - Blind read. see json() function docummentation
@@ -299,20 +311,11 @@ export class CmsApiService {
     }
 
     /**
-     * Get current content of a display wall
-     * @method getDisplayContent
-     * @param {number} aDisplayId It hold the display id
-      */
-    getDisplayContent(aDisplayId: number) {
-        return this.apiRequest.get(`displays/${aDisplayId}/content`);
-    }
-
-    /**
-     * Load  content on cms-tile of mini display with `post` http method.
+     * this method load  content on cms-tile of mini display with `post` http method.
      * @method loadContentOnTile
-     * @param: displayId: number :: To load content on tile of this display id
-     * @param: tile: ITile :: Contains info on which content is pushed
-     * @param: content: Source :: It is the source info to be pushed on tile
+     * @param {number} displayId To load content on tile of this display Id
+     * @param {ITile} tile Contains info on which content is pushed
+     * @param {Source} content It is the source info to be pushed on tile
      */
     public loadContentOnTile(displayId: number, tile: Tile, content: Source): Promise<Response> {
         this.appConfig.log("CmsApiService: loadContentOnTile...");
@@ -344,18 +347,17 @@ export class CmsApiService {
     }
 
     /**
-     * Unload content from display
+     * This method unload content from display
      * @method unloadContentFromDisplay
      * @param {number} displayId Display ID to which specified content belong to.
      * @param {number} contentId  Content ID which need to be removed
      * @return {Response} Observable
      */
-    unloadContentFromDisplay(displayId: number, contentId: number): Observable<Response> {
+    public unloadContentFromDisplay(displayId: number, contentId: number): Observable<Response> {
         this.appConfig.log("CmsApiService: unloadContentFromDisplay...");
 
         try {
-            let url = `displays/${displayId}/content/${contentId}`;
-            return this.apiRequest.delete(url);
+            return this.apiRequest.delete(`displays/${displayId}/content/${contentId}`);
         }
         catch (error) {
             this.appConfig.error("CmsApiService: unloadContentFromDisplay", error);
@@ -365,10 +367,11 @@ export class CmsApiService {
 
     /**
      * This method maintains the session with CMS Server on login until user logout.
+     * @method keepSessionAlive
+     * @return void
      */
-    public keepSessionAlive() {
+    public keepSessionAlive(): void {
         if (this.sessionAlive) {
-            // this.appConfig.log("Cleaning up session alive.", this.sessionAlive);
             this.sessionAlive.unsubscribe();
         }
 
@@ -384,9 +387,11 @@ export class CmsApiService {
 
     /**
      * This method expires the session with CMS Server on logout.
+     * @method makeSessionExpire
+     * @return void
      */
-    public makeSessionExpire() {
-        if (typeof this.sessionAlive !== "undefined") {
+    public makeSessionExpire(): void {
+        if (!Validation.IsUndefined(this.sessionAlive)) {
             this.appConfig.log("CmsApiService: makeSessionExpire:: Session with CMS Server now expires!!");
             this.sessionAlive.unsubscribe();
         }
@@ -396,24 +401,32 @@ export class CmsApiService {
 
     /**
      * This method creates a new session with CMS Server on application refresh.
+     * @method reconnectSessionWithServer
+     * @return void
      */
-    public reconnectSessionWithServer() {
+    public reconnectSessionWithServer(): void {
         this.makeSessionExpire();
         this.keepSessionAlive();
     }
 
     /**
      * This method sends an event at application level to show dialog in case of exception due to no permission while calling an API.
+     * @method noPermissionErrorHandler
+     * @param {any} error
+     * @param {string} permissionName
      */
-    public noPermissionErrorHandler(error: any, permissionName: string) {
+    public noPermissionErrorHandler(error: any, permissionName: string): void {
         this.appConfig.log("CmsApiService: noPermissionErrorHandler::", error);
-
-        CmsEventEmitterService.get(CMS_EVENTS.Application).emit({ eventName: permissionName, eventType: "permission" });
+        CmsEventEmitterService.get(CMS_EVENTS.Application).emit({
+            eventName: permissionName,
+            eventType: "permission"
+        });
     }
 
-
     /**
-     * getAppVersion: returns launchpad app build version
+     *This method returns launchpad app build version
+     * @method getAppVersion
+     * @return Promise<string>
      */
     public getAppVersion(): Promise<string> {
         return this.http.get("version.properties")
@@ -422,8 +435,9 @@ export class CmsApiService {
                     let responseBody = res.text().trim(),
                         result = responseBody.split("=");
 
-                    if (result && result.length === 2 && result[0] === "launchpad.buildnumber")
-                        return `1.1 Build ${result[1]}`;
+                    if (result && result.length === 2 && result[0] === "launchpad.buildnumber") {
+                        return `${CMSConstants.BUILD_VERSION} ${result[1]}`;
+                    }
                 } catch (error) {
                     this.appConfig.error(error);
                 }
@@ -436,8 +450,11 @@ export class CmsApiService {
 
     /**
      * This method handles server disconnection.
+     * @method handleServerOnDisconnection
+     * @param {any} error
+     * @param void
      */
-    private handleServerOnDisconnection(error) {
+    private handleServerOnDisconnection(error): void {
         this.appConfig.log("CMSServerApi: Trying to connect to the server...");
 
         this.reconnection = setTimeout(() => {
@@ -446,7 +463,10 @@ export class CmsApiService {
                 this.databaseResetStarted = false;
 
                 // send event on application level to show server disconnection dialog
-                CmsEventEmitterService.get(CMS_EVENTS.Application).emit({ eventName: "ServerDisconnected", eventType: "system" });
+                CmsEventEmitterService.get(CMS_EVENTS.Application).emit({
+                    eventName: "ServerDisconnected",
+                    eventType: "system"
+                });
             }
             this.reconnectSessionWithServer();
         }, 2000);
@@ -454,23 +474,31 @@ export class CmsApiService {
 
     /**
      * This method handles server reconnection.
+     * @method handleServerOnConnection
+     * @param {any} error
+     * @return void
      */
-    private handleServerOnConnection(error) {
-        this.appConfig.log("CMSServerApi: The server is now reachable but not in proper state. ErrorStatus: " + error.status);
+    private handleServerOnConnection(error): void {
+        this.appConfig.log(`CMSServerApi: The server is now reachable but not in proper state. ErrorStatus: ${error.status}`);
 
         if (this.firstDisconnection) {
             this.firstDisconnection = false;
         }
 
         // send event on application level to show server connection dialog
-        CmsEventEmitterService.get(CMS_EVENTS.Application).emit({ eventName: "ServerConnected", eventType: "system" });
+        CmsEventEmitterService.get(CMS_EVENTS.Application).emit({
+            eventName: "ServerConnected",
+            eventType: "system"
+        });
     }
 
     /**
-     * This method clears timeout for reconnection. 
+     * This method clears timeout for reconnection.
+     * @method clearReconnectionTimeout 
+     * @return void
      */
-    private clearReconnectionTimeout() {
-        if (typeof this.reconnection !== "undefined") {
+    private clearReconnectionTimeout(): void {
+        if (!Validation.IsUndefined(this.reconnection)) {
             clearTimeout(this.reconnection);
         }
     }
@@ -482,8 +510,12 @@ export class CmsApiService {
      * Whenever any event is received from CMS, it is emitted using CmsEventEmitterService.
      * @syntax: CmsEventEmitterService.get(CMS_EVENTS.<event-name>).emit(aResponse)
      * Check CMS_EVENTS for details on events.
+     * 
+     * @method handleDisplaysEvent
+     * @param {ICmsEvent} eventObject
+     * @return void
      */
-    private handleDisplaysEvent(eventObject: ICmsEvent) {
+    private handleDisplaysEvent(eventObject: ICmsEvent): void {
         let verb: string = eventObject.verb ? eventObject.verb.toLowerCase() : "",
             uri = eventObject.uri;
 
@@ -525,21 +557,20 @@ export class CmsApiService {
                 let appResponse = {
                     eventType: "ResourceAdded",
                     body: eventObject.body
-                }
+                };
                 // send event to source list
                 CmsEventEmitterService.get(CMS_EVENTS.SourceList).emit(appResponse);
-            } else if (verb === "deleted") {
+            }
+            else if (verb === "deleted") {
                 this.appConfig.log("CmsApiService: updateDisplaySingleApplication:: delete a single application");
                 let appResponse = {
                     eventType: "ResourceDeleted",
                     body: eventObject.body
                 };
-
                 // send event to source list
                 CmsEventEmitterService.get(CMS_EVENTS.SourceList).emit(appResponse);
             }
         }
-
         // match the uri as "/displays/{id}/applications/{id}"
         else if (uri.match(/(\/displays\/)(\d+)(\/applications\/)(\d+)$/g)) {
             this.updateDisplaySingleApplication(verb, uri, eventObject);
@@ -553,8 +584,9 @@ export class CmsApiService {
      * @param {string} verb  
      * @param {string} uri 
      * @param {ICmsEvent} eventObject
+     * @return void
      */
-    private updateDisplayContent(verb: string, uri: string, eventObject: ICmsEvent) {
+    private updateDisplayContent(verb: string, uri: string, eventObject: ICmsEvent): void {
         let id = parseInt(uri.match(/(\d+)/g)[0]);
 
         switch (verb) {
@@ -581,8 +613,9 @@ export class CmsApiService {
      * @param {string} verb  
      * @param {string} uri 
      * @param {ICmsEvent} eventObject
+     * @return void
      */
-    private updateSingleDisplay(verb: string, uri: string, eventObject: ICmsEvent) {
+    private updateSingleDisplay(verb: string, uri: string, eventObject: ICmsEvent): void {
         let id = parseInt(uri.match(/(\d+)/g)[0]);
         let response;
 
@@ -629,8 +662,9 @@ export class CmsApiService {
      * @param {string} verb  
      * @param {string} uri 
      * @param {ICmsEvent} eventObject
+     * @return void
      */
-    private updateDisplayContentElement(verb: string, uri: string, eventObject: ICmsEvent) {
+    private updateDisplayContentElement(verb: string, uri: string, eventObject: ICmsEvent): void {
         let id = parseInt(uri.match(/(\d+)/g)[0]);
 
         switch (verb) {
@@ -657,8 +691,9 @@ export class CmsApiService {
      * @param {string} verb  
      * @param {string} uri 
      * @param {ICmsEvent} eventObject
+     * @return void
      */
-    private updateDisplaySingleApplication(verb: string, uri: string, eventObject: ICmsEvent) {
+    private updateDisplaySingleApplication(verb: string, uri: string, eventObject: ICmsEvent): void {
         let id = parseInt(uri.match(/(\d+)/g)[0]);
 
         switch (verb) {
@@ -691,8 +726,12 @@ export class CmsApiService {
      * Whenever any event is received from CMS, it is emitted using CmsEventEmitterService.
      * @syntax: CmsEventEmitterService.get(CMS_EVENTS.<event-name>).emit(aResponse)
      * Check CMS_EVENTS for details on events.
+     * 
+     * @method handleSourcesEvent
+     * @param {ICmsEvent} eventObject
+     * @return void
      */
-    private handleSourcesEvent(eventObject: ICmsEvent) {
+    private handleSourcesEvent(eventObject: ICmsEvent): void {
         let verb: string = eventObject.verb ? eventObject.verb.toLowerCase() : "",
             uri = eventObject.uri;
 
@@ -709,7 +748,8 @@ export class CmsApiService {
 
                 // send event to source list
                 CmsEventEmitterService.get(CMS_EVENTS.SourceList).emit(response);
-            } else if (verb === "deleted") {
+            }
+            else if (verb === "deleted") {
                 this.appConfig.log("CmsApiService: updateSingleSource:: delete a single source");
                 let response = {
                     eventType: "ResourceDeleted",
@@ -733,8 +773,12 @@ export class CmsApiService {
      * Whenever any event is received from CMS, it is emitted using CmsEventEmitterService.
      * @syntax: CmsEventEmitterService.get(CMS_EVENTS.<event-name>).emit(aResponse)
      * Check CMS_EVENTS for details on events.
+     * 
+     * @method handleTilersEvent
+     * @param {ICmsEvent} eventObject
+     * @return void
      */
-    private handleTilersEvent(eventObject: ICmsEvent) {
+    private handleTilersEvent(eventObject: ICmsEvent): void {
         let verb: string = eventObject.verb ? (eventObject.verb).toLowerCase() : "",
             uri = eventObject.uri;
         let response: any;
@@ -749,13 +793,15 @@ export class CmsApiService {
                     eventType: "TilerResourceAdded",
                     body: eventObject.body
                 };
-            } else if (verb === "deleted") {
+            }
+            else if (verb === "deleted") {
                 this.appConfig.log("CmsApiService: handleTilersEvent:: remove a tile from the list");
                 response = {
                     eventType: "TilerResourceDeleted",
                     body: eventObject.body
                 };
             }
+
             // send event to tilers list
             CmsEventEmitterService.get(CMS_EVENTS.TileList).emit(response);
         }
@@ -768,6 +814,7 @@ export class CmsApiService {
                     body: eventObject.body
                 };
             }
+
             // send event to tilers list
             CmsEventEmitterService.get(CMS_EVENTS.TileList).emit(response);
         }
@@ -781,8 +828,9 @@ export class CmsApiService {
      * @param {string} verb  
      * @param {string} uri 
      * @param {ICmsEvent} eventObject
+     * @return void
      */
-    private updateSingleSource(verb: string, uri: string, eventObject: ICmsEvent) {
+    private updateSingleSource(verb: string, uri: string, eventObject: ICmsEvent): void {
         switch (verb) {
             case "put":
                 this.appConfig.log("CmsApiService: updateSingleSource:: update a single source");
@@ -805,8 +853,12 @@ export class CmsApiService {
      * Whenever any event is received from CMS, it is emitted using CmsEventEmitterService.
      * @syntax: CmsEventEmitterService.get(CMS_EVENTS.<event-name>).emit(aResponse)
      * Check CMS_EVENTS for details on events.
+     * 
+     * @method handlePerspectivesEvent
+     * @param {ICmsEvent} eventObject
+     * @return void
      */
-    private handlePerspectivesEvent(eventObject: ICmsEvent) {
+    private handlePerspectivesEvent(eventObject: ICmsEvent): void {
         let verb: string = eventObject.verb ? eventObject.verb.toLowerCase() : "",
             uri = eventObject.uri;
 
@@ -823,7 +875,8 @@ export class CmsApiService {
 
                 // send event to source list
                 CmsEventEmitterService.get(CMS_EVENTS.SourceList).emit(response);
-            } else if (verb === "deleted") {
+            }
+            else if (verb === "deleted") {
                 this.appConfig.log("CmsApiService: updateSinglePerspective:: delete a single perspective");
                 let response = {
                     eventType: "ResourceDeleted",
@@ -837,7 +890,6 @@ export class CmsApiService {
                 CmsEventEmitterService.get(CMS_EVENTS.MiniDisplay).emit(response);
             }
         }
-
         // match the uri as "/perspectives/{id}"
         else if (uri.match(/(\/perspectives\/)(\d+)$/g)) {
             this.updateSinglePerspective(verb, uri, eventObject);
@@ -852,14 +904,15 @@ export class CmsApiService {
      * @param {string} verb  
      * @param {string} uri 
      * @param {ICmsEvent} eventObject
+     * @return void
      */
-    private updateSinglePerspective(verb: string, uri: string, eventObject: ICmsEvent) {
+    private updateSinglePerspective(verb: string, uri: string, eventObject: ICmsEvent): void {
         switch (verb) {
             case "put":
                 this.appConfig.log("CmsApiService: updateSinglePerspective:: update a single perspective");
 
                 //adding "type" property
-                eventObject.body.type = "Perspective"
+                eventObject.body.type = "Perspective";
 
                 let response = {
                     eventType: "ResourceUpdated",
@@ -884,8 +937,12 @@ export class CmsApiService {
      * Whenever any event is received from CMS, it is emitted using CmsEventEmitterService.
      * @syntax: CmsEventEmitterService.get(CMS_EVENTS.<event-name>).emit(aResponse)
      * Check CMS_EVENTS for details on events.
+     * 
+     * @method handleSystemEvents
+     * @param {ICmsEvent} eventObject
+     * @return void
      */
-    private handleSystemEvents(eventObject: ICmsEvent) {
+    private handleSystemEvents(eventObject: ICmsEvent): void {
         this.appConfig.log("CMSServerAPi: handle system events...");
 
         // send event on application level
@@ -904,8 +961,12 @@ export class CmsApiService {
      * Whenever any event is received from CMS, it is emitted using CmsEventEmitterService.
      * @syntax: CmsEventEmitterService.get(CMS_EVENTS.<event-name>).emit(aResponse)
      * Check CMS_EVENTS for details on events.
+     * 
+     * @method handleUserEvents
+     * @param {ICmsEvent} eventObject
+     * @return void
      */
-    private handleUserEvents(eventObject: ICmsEvent) {
+    private handleUserEvents(eventObject: ICmsEvent): void {
         this.appConfig.log("CMSServerAPi: handleUserEvents:: Handle user events...");
 
         if (eventObject.body) {
@@ -921,7 +982,11 @@ export class CmsApiService {
                     this.appConfig.log("CMSServerAPi: handleUserEvents:: Handle user deleted event for user = ", eventObject.body.name);
 
                     // this is a system event since user has to finally logout
-                    CmsEventEmitterService.get(CMS_EVENTS.Application).emit({ eventName: "UserDeleted", eventType: "system" });
+                    CmsEventEmitterService.get(CMS_EVENTS.Application).emit(
+                        {
+                            eventName: "UserDeleted",
+                            eventType: "system"
+                        });
                 }
             }
             else if (verb === "put" && eventObject.body.length > 0) {
@@ -941,7 +1006,7 @@ export class CmsApiService {
     /**
      * This method Will fetch the system info
      * @method getSystemInfo
-     * return {any} Observable
+     * @return Observable<any>
      */
     public getSystemInfo(): Observable<any> {
         return this.apiRequest.get("system/info");
@@ -949,6 +1014,9 @@ export class CmsApiService {
 
     /**
      * This method handles error on API call failure.
+     * @method promiseApiHandleError
+     * @param {any} error
+     * @return Promise<any>
      */
     private promiseApiHandleError(error): Promise<any> {
         this.appConfig.log("CmsApiService: promiseApiHandleError::", error);
@@ -961,14 +1029,9 @@ export class CmsApiService {
         return Promise.reject(error);
     }
 
-
-
     /**
-     * APIs for /tilers
-     */
-
-    /**
-     * @method - returns list of tilePresets filtered by number of tiles
+     * This method returns list of tilePresets filtered by number of tiles
+     * @method getTilePresets
      * @param {tilesCount} - filter tilePresets by number of tiles if passed more than zero
      * @returns {Observable<ITilePreset[]>}
      */
@@ -982,29 +1045,33 @@ export class CmsApiService {
                         return tilePresets.filter(tilePreset => {
                             return tilePreset.noOfTiles === tilesCount;
                         });
-                    } else {
+                    }
+                    else {
                         return [];
                     };
                 });
             };
 
             return observableTilePresets;
-        } else {
+        }
+        else {
             return Observable.of([]);
         };
     }
 
     /**
      * This method updates geometery of the content on specified Display, API is only usefull for Geometery change
+     * @method updateContentGeormetryOnDisplay
      * @param displayId 
      * @param contentId 
      * @param body 
      */
-    updateContentGeormetryOnDisplay(displayId: number, contentId: number, body: any) {
+    public updateContentGeormetryOnDisplay(displayId: number, contentId: number, body: any) {
         if (displayId > 0 && contentId > 0 && !Validation.IsNullOrUndefined(body)) {
             let url = `displays/${displayId}/content/${contentId}`;
             return this.apiRequest.put(url, body);
-        } else {
+        }
+        else {
             return Observable.throw("Invalid input for the API call");
         }
     }

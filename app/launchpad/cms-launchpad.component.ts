@@ -1,18 +1,10 @@
-/**
- * Copyright (c) 2016 Barco n.v. All Rights Reserved. This software is confidential and proprietary information of Barco n.v.
- * ("Confidential Information"). You shall not disclose such Confidential Information and shall use it only in accordance with
- * the terms of the license agreement you entered into with Barco.
- */
-
 import { Component, OnInit, ElementRef, EventEmitter, OnDestroy } from "@angular/core";
 import { TranslateService } from "@ngx-translate/core";
 import { Observable } from "rxjs/Rx";
 import { Router } from "@angular/router";
 import { DomSanitizer } from "@angular/platform-browser";
 import { MdIconRegistry } from "@angular/material";
-
 import { EventManager } from "../utils/event-manager.util";
-
 import { CmsApiService } from "../cms/api/cms-api.service";
 import { CmsSettingsService } from "./settings/cms-settings.service";
 import { CmsLanguages } from "../i18n/cms-languages";
@@ -22,17 +14,14 @@ import { IUserToken } from "./models/cms-user-token";
 import { CMS_EVENTS } from "../cms/api/cms-events.enum";
 import { CmsEventEmitterService } from "../cms/api/cms-event-emitter.service";
 import { AppConfig } from "../config";
+import { Validation } from "../core/util/Validation";
 
 import "../global.global.scss";
 import "../themes.global.scss";
 import "../override.global.scss";
-
 import "../resources/fonts/cmslaunchpad-fonts.css";
 import "../resources/fonts/material-fonts.css";
 
-/**
- * This is the main component that is bootstrapped and provides a router outlet for all other application pages to be shown.
- */
 @Component({
   //moduleId: module.id,
   selector: "cms-launchpad",
@@ -60,35 +49,31 @@ import "../resources/fonts/material-fonts.css";
   </div>`,
   styles: [require("./cms-launchpad.component.scss")]
 })
+
+/**
+ * This is the main component that is bootstrapped and provides a router outlet for all other application pages to be shown.
+ * @class CmsLaunchpadComponent
+ * @property {number} userLastActionTime
+ * @property {any} calculateUserWrapperHash
+ * @property {EventEmitter<any>} applicationLevelEvent
+ * @property {boolean} showProgressDialog
+ * @property {boolean} showSystemDialog
+ * @property {string} dialogMessage
+ * @property {string} applicationEventType
+ */
 export class CmsLaunchpadComponent implements OnInit, OnDestroy {
-
-  /**
-   * Properties
-   */
-
   // hold last time of user action like click or mousemove
   private userLastActionTime: number;
-
   private calculateUserWrapperHash: any;
-
   // it saves the CMS events subscription and unsubscribe them on component destruction
   private applicationLevelEvent: EventEmitter<any>;
-
   private showProgressDialog: boolean;
   private showSystemDialog: boolean;
   private dialogMessage: string;
   private applicationEventType: string;
 
-  /**
-   * Public Methods
-   */
-
-  /**
-   * The constructor is defining various services and initializing Internationalization for
-   * the entire application.
-   */
-  constructor
-    (private translate: TranslateService,
+  constructor(
+    private translate: TranslateService,
     private cmsServerApi: CmsApiService,
     private cmsSettingsService: CmsSettingsService,
     private storageManager: StorageManager,
@@ -97,6 +82,7 @@ export class CmsLaunchpadComponent implements OnInit, OnDestroy {
     private appConfig: AppConfig,
     private mdIconRegistry: MdIconRegistry,
     private sanitizer: DomSanitizer) {
+      
     this.showSystemDialog = false;
     this.showProgressDialog = false;
 
@@ -107,10 +93,7 @@ export class CmsLaunchpadComponent implements OnInit, OnDestroy {
       .addSvgIcon("display_online", sanitizer.bypassSecurityTrustResourceUrl("resources/icons/display_online_black_36.svg"))
   }
 
-  /**
-   * This method is called on component initialization.
-   */
-  ngOnInit() {
+  public ngOnInit() {
     this.preventBrowserDefaults();
 
     //add all supported languages
@@ -167,6 +150,18 @@ export class CmsLaunchpadComponent implements OnInit, OnDestroy {
       });
   }
 
+  public ngOnDestroy() {
+    // Unsubscribe cms events for launchpad component
+    if (!Validation.IsNullOrUndefined(this.applicationLevelEvent)) {
+      this.applicationLevelEvent.unsubscribe();
+    }
+  }
+
+  /**
+   * This method get user information from storeManager
+   * @method getUserStorageData
+   * @return any
+   */
   private getUserStorageData(): any {
     let userStorageData = this.storageManager.get(CMS_SESSION_STORAGE_ITEM.USER);
     if (!userStorageData) {
@@ -176,21 +171,14 @@ export class CmsLaunchpadComponent implements OnInit, OnDestroy {
     return JSON.parse(userStorageData);
   }
 
-  /**
-   * Cleanup just before Angular destroys the component. 
-   * Unsubscribe observables and detach event handlers to avoid memory leaks.
-   */
-  public ngOnDestroy() {
-    // Unsubscribe cms events for launchpad component
-    if (this.applicationLevelEvent !== undefined) {
-      this.applicationLevelEvent.unsubscribe();
-    }
-  }
+
 
   /**
    * This method takes user to login screen on system dialog confirmation.
+   * @method onDialogConfirmation
+   * @return void
    */
-  public onDialogConfirmation() {
+  private onDialogConfirmation(): void {
     this.showSystemDialog = false;
 
     if (this.applicationEventType === "system") {
@@ -206,6 +194,8 @@ export class CmsLaunchpadComponent implements OnInit, OnDestroy {
 
   /**
    * prevent default behaviours of browser at app level
+   * @method preventBrowserDefaults
+   * @return void
    */
   private preventBrowserDefaults(): void {
     // disable zoom in browser with ctrl + mousewheel
@@ -258,12 +248,14 @@ export class CmsLaunchpadComponent implements OnInit, OnDestroy {
    */
   private onMouseWheel(e) {
     if (e.ctrlKey) {
-      e.preventDefault()
+      e.preventDefault();
     }
   };
 
   /**
    * This method sets application language as per user preferences.
+   * @method addAppSupportedLanguages
+   * @return void
    */
   private addAppSupportedLanguages(): void {
     let languageKeys = CmsLanguages.languagesKeys;
@@ -272,6 +264,8 @@ export class CmsLaunchpadComponent implements OnInit, OnDestroy {
 
   /**
    * This method listen user actions for auto log-off.
+   * @method addLogOffTimeObservable
+   * @return void
    */
   private addLogOffTimeObservable(): void {
     let rootElement: HTMLElement = this.element.nativeElement;
@@ -282,8 +276,10 @@ export class CmsLaunchpadComponent implements OnInit, OnDestroy {
 
   /**
    * This method act as function throttling for calculate user actions
+   * @method calculateUserLastActionTimes
+   * @return void
    */
-  private calculateUserLastActionTimes() {
+  private calculateUserLastActionTimes(): void {
     if (this.calculateUserWrapperHash) {
       window.clearTimeout(this.calculateUserWrapperHash);
       this.calculateUserWrapperHash = 0;
@@ -295,8 +291,10 @@ export class CmsLaunchpadComponent implements OnInit, OnDestroy {
 
   /**
    * This method listen user actions and calculate time for auto log-off.
+   * @method calculateUserLastActionTimesFn
+   * @return void
    */
-  private calculateUserLastActionTimesFn() {
+  private calculateUserLastActionTimesFn(): void {
     let userSettings = this.cmsSettingsService.userSettings;
     let isUserLoggedIn = this.storageManager.get(CMS_SESSION_STORAGE_ITEM.USER);
 
@@ -307,13 +305,14 @@ export class CmsLaunchpadComponent implements OnInit, OnDestroy {
       // if userAutoLogOffTime in user settings is not "never" and greater than 0
       if (userAutoLogOffTime > 0) {
         //update local property from sessionStorage
-        this.userLastActionTime = this.storageManager.get(CMS_SESSION_STORAGE_ITEM.USER_LASTACTION_TIME)
+        this.userLastActionTime = this.storageManager.get(CMS_SESSION_STORAGE_ITEM.USER_LASTACTION_TIME);
 
         if (!this.userLastActionTime) {
           // set user last action time if it is not present in sessionStorage
           this.userLastActionTime = Date.now();
           this.storageManager.set(CMS_SESSION_STORAGE_ITEM.USER_LASTACTION_TIME, Date.now());
-        } else if (this.userLastActionTime) {
+        }
+        else if (this.userLastActionTime) {
           let userCurrentActionTime = Date.now();
           let timeDiff = userCurrentActionTime - this.userLastActionTime;
           let minDiff = timeDiff / 60 / 1000;
@@ -321,7 +320,8 @@ export class CmsLaunchpadComponent implements OnInit, OnDestroy {
             //logoff user
             this.appConfig.log("CmsLaunchpadComponent: Performing auto logoff for the user due to inactivity...");
             this.logoutUser();
-          } else {
+          }
+          else {
             //update user time in session
             this.userLastActionTime = Date.now();
             this.storageManager.set(CMS_SESSION_STORAGE_ITEM.USER_LASTACTION_TIME, Date.now());
@@ -331,9 +331,10 @@ export class CmsLaunchpadComponent implements OnInit, OnDestroy {
     }
   }
 
-
   /**
    * This method log-off the user.
+   * @method logoutUser
+   * @return void
    */
   private logoutUser(): void {
     this.cmsServerApi.logoutUser();
@@ -341,6 +342,9 @@ export class CmsLaunchpadComponent implements OnInit, OnDestroy {
 
   /**
    * This method handles various system events.
+   * @method handleSystemEvents
+   * @param {string} eventName
+   * @return void
    */
   private handleSystemEvents(eventName: string) {
     let isProgressDialog = (eventName === "ServerDisconnected"
@@ -365,16 +369,24 @@ export class CmsLaunchpadComponent implements OnInit, OnDestroy {
 
   /**
    * This method handles various permission events.
+   * @method 
+   * @param {string} eventName
+   * @return void
    */
-  private handlePermissionEvents(eventName: string) {
+  private handlePermissionEvents(eventName: string): void {
     let messageKey = "systemDialog." + this.camelize(eventName);
     this.showSystemEventDialog(false, true, messageKey);
   }
 
   /**
    * This method shows progress or system dialog based on system event.
+   * @method showSystemEventDialog
+   * @param {boolean} progress
+   * @param {boolean} system
+   * @param {string} messageKey
+   * @return void
    */
-  private showSystemEventDialog(progress: boolean, system: boolean, messageKey: string) {
+  private showSystemEventDialog(progress: boolean, system: boolean, messageKey: string): void {
     this.showProgressDialog = progress;
     this.showSystemDialog = system;
 
@@ -386,8 +398,11 @@ export class CmsLaunchpadComponent implements OnInit, OnDestroy {
 
   /**
    * This method converts first letter of a string to lowercase
+   * @method camelize
+   * @param {string} name
+   * @return string
    */
-  private camelize(name) {
+  private camelize(name): string {
     return name.charAt(0).toLowerCase() + name.slice(1);
   }
 

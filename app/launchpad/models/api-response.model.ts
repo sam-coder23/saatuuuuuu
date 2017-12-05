@@ -1,4 +1,3 @@
-export 
 /**
  * Role of this class is handle to user related stuff
  * @class APIResponse
@@ -7,7 +6,7 @@ export
  * @property {string} errorMessage To contain error
  * @property {any} response For API Response
  */
-class APIResponse {
+export class APIResponse {
     private status: boolean;
     private errorMessage: string;
     private response: any;
@@ -19,42 +18,45 @@ class APIResponse {
     }
 
     /**
-     * @method getter method Status: This method will keep the status of 
-     * API status 
+     * This method will keep the status of API status
+     * @method Status 
+     * @return boolean
      */
-    public get Status() {
+    public get Status(): boolean {
         return this.status;
     }
     
     /**
-     * @method ErrorMessage
      * This method is reponsible to get the ErrorMessage 
+     * @method ErrorMessage
+     * @return strin
      */
-    public get ErrorMessage() {
+    public get ErrorMessage(): string {
         return this.errorMessage;
     }
 
     /**
      * @method Response
      * This method is reponsible to get the Response
+     * @return any
      */
-    public get Response() {
+    public get Response(): any{
         return this.response;
     }
 
     /**
      * @method getSerializable
+     * @return object
      */
     public asSerializable() {
-        return {
-        }
+        return {};
     }
 
     /**
      * @method toJSON
-     * */    
+     * @return object
+     */    
      public toJSON() : any {
-        return {
-        }
+        return {};
     }
 }

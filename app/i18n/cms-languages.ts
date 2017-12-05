@@ -1,17 +1,12 @@
 /**
-* Copyright (c) 2016 Barco n.v. All Rights Reserved. This software is confidential and proprietary information of Barco n.v.
-* ("Confidential Information"). You shall not disclose such Confidential Information and shall use it only in accordance with
-* the terms of the license agreement you entered into with Barco.
-*/
-
-/**
  * This class defines available CMS Languages.
- * 
- * @author: CHERA
- * @version: CMS 3.0
+ * @class CmsLanguages
+ * @property {any[]} languages key-value pair of languages
+ * @property {string[]} languagesKeys keys of languages
+ * @property {RegExp} languagesRegExPattern
  */
 export class CmsLanguages {
-    static languages = [
+    public static languages = [
         { key: "ar", value: "العربية" },
         { key: "de", value: "German" },
         { key: "en", value: "English" },
@@ -25,7 +20,7 @@ export class CmsLanguages {
         { key: "ru", value: "русский"}
     ];
 
-    static languagesKeys = ["ar", "de", "en", "es", "fr", "ja", "pl", "pt", "zh", "tr", "ru"];
+    public static languagesKeys = ["ar", "de", "en", "es", "fr", "ja", "pl", "pt", "zh", "tr", "ru"];
 
-    static languagesRegExPattern = /ar|de|en|es|fr|ja|pl|pt|zh|tr|ru/
+    public static languagesRegExPattern = /ar|de|en|es|fr|ja|pl|pt|zh|tr|ru/
 }

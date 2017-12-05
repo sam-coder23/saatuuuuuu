@@ -1,6 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter, ViewChild } from "@angular/core";
 import { Router, ActivatedRoute, Params } from "@angular/router";
-
 import { EventManager } from "../../../utils/event-manager.util";
 import { KeyManager } from "../../../utils/key-manager.util";
 import { CmsApiService } from "../../../cms/api/cms-api.service";
@@ -27,7 +26,6 @@ import { AppConfig } from "../../../config";
  * @property {boolean} isHideOption
  */
 export class CmsOptionsComponent implements OnInit {
-
     private displayId: number;
     private keyManager = new KeyManager();
 
@@ -48,7 +46,13 @@ export class CmsOptionsComponent implements OnInit {
 
     @ViewChild("sidenav") sidenav;
 
-    constructor(private route: ActivatedRoute, private router: Router, private cmsApiService: CmsApiService, private storageManager: StorageManager, private appConfig: AppConfig) {
+    constructor(
+        private route: ActivatedRoute, 
+        private router: Router, 
+        private cmsApiService: CmsApiService, 
+        private storageManager: StorageManager, 
+        private appConfig: AppConfig) {
+        
         this.disableOptionOnDisplayUnavailable = false;
         this.isHideOption = true;
     }
@@ -60,7 +64,7 @@ export class CmsOptionsComponent implements OnInit {
         // @attend - This seems to be tricky. Might need attention.
         // window.setImmediate(() => this.sidenav.open());
         window.setTimeout(() => {
-            this.sidenav.open()
+            this.sidenav.open();
         }, 0);
 
         // fetch selected display id from url parameter
@@ -82,7 +86,8 @@ export class CmsOptionsComponent implements OnInit {
     /**
      * This method closes options sidenav and removes keyup event listener from document.
      * Also emit close event to its host component.
-     * @method {void} close
+     * @method close
+     * @return void
      */
     private close(): void{
         EventManager.removeEvent("keyup", this.onKeyUP);
@@ -91,7 +96,8 @@ export class CmsOptionsComponent implements OnInit {
 
     /**
      * This method performs browser refresh.
-     * @method {void} refresh
+     * @method refresh
+     * @return void
      */
     private refresh(): void {
         window.location.reload(true);
@@ -99,21 +105,23 @@ export class CmsOptionsComponent implements OnInit {
 
     /**
      * This emits fit height event to its host component and closes the sidenav
-     * @method {void} onFitHeightClick
+     * @method onFitHeightClick
+     * @return void
      */
     private onFitHeightClick(): void {
         this.fitHeightEmitter.emit();
-        this.sidenav.close()
+        this.sidenav.close();
     }
 
     /**
      * This event handler will be invoked when user will press escape key.
-     * @method { void } onKeyUP
-     * @param e - Native event object provided by the browser when key is pressed   
+     * @method onKeyUP
+     * @param e - Native event object provided by the browser when key is pressed
+     * @return void   
      */
     private onKeyUP(e): void{
         if (this.keyManager.IsEscapeKey(e)) {
-            this.sidenav.close()
+            this.sidenav.close();
         }
     };
     

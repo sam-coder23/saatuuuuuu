@@ -28,13 +28,11 @@ import { Validation } from "../../core/util/Validation";
  * @property {boolean} viewOptions
  * @property {number} fitHeightCount
  * @property {CmsResource} display
- * @property {boolean} isLongPressed
  * @property {number} displayId
  * @property {boolean} isSaveLayoutEnabled
  * @property {boolean} showClearWallPopup
  */
-
-export class CmsDisplayPanelComponent implements OnInit, OnDestroy {
+export class CmsDisplayPanelComponent implements OnInit {
     //Holds current zoom level of mini-display
     private zoomLevel: number;
 
@@ -47,12 +45,6 @@ export class CmsDisplayPanelComponent implements OnInit, OnDestroy {
     //Holds currently selected display from display list
     private display: CmsResource;
 
-    // hold long press state
-    private isLongPressed: boolean;
-
-    // hold subscription for isLongPressed
-    private longPressSubcription;
-
     // selected display id
     private displayId: number;
 
@@ -61,7 +53,8 @@ export class CmsDisplayPanelComponent implements OnInit, OnDestroy {
 
     private showClearWallPopup: boolean = false;
 
-    constructor(private router: Router,
+    constructor(
+        private router: Router,
         private route: ActivatedRoute,
         private storageManager: StorageManager,
         private cmsSettingsService: CmsSettingsService,
@@ -86,23 +79,6 @@ export class CmsDisplayPanelComponent implements OnInit, OnDestroy {
             this.router.navigateByUrl("/displays-panel");
             return;
         }
-
-        // subscribe to observable and update local "isLongPressed" property
-        if (this.cmsSettingsService.longPressedSubject) {
-            this.longPressSubcription = this.cmsSettingsService.longPressedSubject.subscribe(() => {
-                this.isLongPressed = this.cmsSettingsService.isLongPressed;
-            });
-        } else {
-            let error = "cmsSettingsService.longPressedSubject is not defined";
-            this.appConfig.error(error);
-            throw error;
-        }
-    }
-
-    public ngOnDestroy() {
-        if (!Validation.IsNullOrUndefined(this.longPressSubcription)) {
-            this.longPressSubcription.unsubscribe();
-        }
     }
 
     /**
@@ -117,7 +93,8 @@ export class CmsDisplayPanelComponent implements OnInit, OnDestroy {
         if (Validation.IsNullOrUndefined(display)) {
             this.appConfig.error("Display not found! Routing to display list.");
             return false;
-        } else {
+        }
+        else {
             this.display = <CmsResource>JSON.parse(display);
             return true;
         }
@@ -128,25 +105,16 @@ export class CmsDisplayPanelComponent implements OnInit, OnDestroy {
      * @method fitHeight
      * @return void
      */
-    private fitHeight() {
+    private fitHeight(): void{
         this.fitHeightCount++;
-    }
-
-    /**
-     * This method revert back to display panel state when longpress is released and remose source icon is disappeared
-     * @method backToDisplayPanel
-     * @return {void}
-     */
-    private backToDisplayPanel() {
-        this.cmsSettingsService.updateIsLongPress(false);
     }
 
     /**
      * This will be reponsible to clear the mini display wall
      * @method clearMiniDisplayWall
-     * @return {void}
+     * @return void
      */
-    private clearMiniDisplayWall() {
+    private clearMiniDisplayWall(): void{
         this.cmsServerApi.putContentsOnDisplay(this.displayId, 0, {}).subscribe(response => {
             this.cmsSettingsService.selectedSources.length = 0;
             this.navigateToLoginRoute();
@@ -159,37 +127,37 @@ export class CmsDisplayPanelComponent implements OnInit, OnDestroy {
     /** 
      * This method handle logout of user
      * @method logoff
-     * @return {void}
+     * @return void
      */
-    private logoff() {
-        //  ask for clear grid confirmation
+    private logoff(): void{
+        //ask for clear grid confirmation
         this.showClearWallPopup = true;
     }
 
     /**
      * This method logs out the user and performs clean up
      * @method navigateToLoginRoute
-     * @return {void}
+     * @return void
      */
-    private navigateToLoginRoute() {
+    private navigateToLoginRoute(): void{
         this.cmsServerApi.logoutUser();
     }
 
     /**
      * This method close clear-wall-popup
      * @method closingClearWallPopup
-     * @return {void}
+     * @return void
      */
-    private closingClearWallPopup() {
+    private closingClearWallPopup(): void{
         this.showClearWallPopup = false;
     }
 
     /**
      * This method cancel clear-wall-popup and logout
      * @method cancelClearWallPopup
-     * @return {void}
+     * @return void
      */
-    private cancelClearWallPopup() {
+    private cancelClearWallPopup(): void{
         this.showClearWallPopup = false;
         this.navigateToLoginRoute();
     }
@@ -197,9 +165,9 @@ export class CmsDisplayPanelComponent implements OnInit, OnDestroy {
     /**
      * This method navigate to back page
      * @method navigateBack
-     * @return {void}
+     * @return void
      */
-    private navigateBack() {
+    private navigateBack(): void{
         window.history.back();
     }
 }

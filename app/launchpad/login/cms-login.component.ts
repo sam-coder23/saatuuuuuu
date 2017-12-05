@@ -1,9 +1,3 @@
-/**
- * Copyright (c) 2016 Barco n.v. All Rights Reserved. This software is confidential and proprietary information of Barco n.v.
- * ("Confidential Information"). You shall not disclose such Confidential Information and shall use it only in accordance with
- * the terms of the license agreement you entered into with Barco.
- */
-
 import { Component, OnInit, OnDestroy } from "@angular/core";
 import { Router } from "@angular/router";
 import { Response } from "@angular/http";
@@ -17,18 +11,22 @@ import { CmsSettingsService } from "../settings/cms-settings.service";
 import { CmsMiniDisplayService } from "./../../shared/mini-display/cms-mini-display.service";
 import { AppConfig } from "../../config";
 
-
-/**
- * This component creates the UI for the user login page and performs user login on submit.
- */
 @Component({
     //moduleId: module.id,
     selector: "cms-login",
     template: require("./cms-login.component.html"),
     styles: [require("./cms-login.component.scss")]
 })
-export class CmsLoginComponent implements OnInit, OnDestroy {
 
+/**
+ * This component creates the UI for the user login page and performs user login on submit.
+ * @class CmsLoginComponent
+ * @constructor constructor This will inject the following dependency cmsServerApi, storageManager, router etc.
+ * @property {boolean} hasError
+ * @property {string} isLoginInProgress Filter property which will filter the display list
+ * @property {string} errorMessage
+ */
+export class CmsLoginComponent implements OnInit, OnDestroy {
     // to show or hide login error
     private hasError: boolean = false;
 
@@ -38,17 +36,11 @@ export class CmsLoginComponent implements OnInit, OnDestroy {
     private user: UserConfig = {
         username: "",
         password: ""
-    }
+    };
 
     // error message to be shown to the user
     private errorMessage: string;
 
-    /**
-     * Invokes when this component is initialized by angular.
-     * This will inject Router and CmsAuthorizationService, StorageManager.
-     * See CmsModelModule for more detail
-     * @constructor constructor
-     */
     constructor(private cmsSettingsService: CmsSettingsService,
         private router: Router,
         private cmsServerApi: CmsApiService,
@@ -57,12 +49,7 @@ export class CmsLoginComponent implements OnInit, OnDestroy {
         private cmsMiniDisplayService: CmsMiniDisplayService,
         private appConfig: AppConfig) { }
 
-    /**
-     * This event is triggered by angularjs lifecycle when component is initialized.
-     * @event ngOnInit
-     */
-    ngOnInit() {
-        // Remove session variables
+    public ngOnInit() {
         this.storageManager.removeStorage();
         this.cmsMiniDisplayService.init();
         if (this.cmsSettingsService.selectedSources instanceof Array) {
@@ -70,11 +57,7 @@ export class CmsLoginComponent implements OnInit, OnDestroy {
         }
     }
 
-    /**
-     * This event is triggered by angularjs lifecycle when component is destroyed.
-     * @event ngOnDestroy
-     */
-    ngOnDestroy() {
+    public ngOnDestroy() {
         // called on destroy event to avoid UI flickering on language change
         this.cmsSettingsService.applyUserSelectedLanguage();
     }
@@ -82,26 +65,29 @@ export class CmsLoginComponent implements OnInit, OnDestroy {
     /**
      * This event will triggered from html when user will enter a key in username box.
      * This will hide error as user has entered a new key.
-     * @event userNameChanged
+     * @method userNameChanged
+     * @return void
      */
-    public userNameChanged() {
+    private userNameChanged(): void {
         this.hasError = false;
     }
 
     /**
      * This event will triggered from html when user will enter a key in password box.
      * This will hide error as user has entered a new key.
-     * @event passwordChanged
+     * @method passwordChanged
+     * @return void
      */
-    public passwordChanged() {
+    private passwordChanged(): void {
         this.hasError = false;
     }
 
     /**
      * Login form submit handler
      * @event onLoginSubmit
+     * @return void
      */
-    public onLoginSubmit() {
+    private onLoginSubmit(): void {
         this.blurInputs();
         this.login();
     }
@@ -110,8 +96,9 @@ export class CmsLoginComponent implements OnInit, OnDestroy {
      * This event will triggered from html when user will press the login button.
      * This is responsible for sending authentcation information to API.
      * @event login
+     * @return void
      */
-    private login() {
+    private login(): void {
         // remove white space at any (start and end of username)
         if (this.user.username) {
             this.user.username = this.user.username.trim();
@@ -156,9 +143,10 @@ export class CmsLoginComponent implements OnInit, OnDestroy {
 
     /**
      * This method removes focus from all input boxes on the page.
-     * @event blurInputs
+     * @method blurInputs
+     * @return void
      */
-    private blurInputs() {
+    private blurInputs(): void{
         let inputs = document.getElementsByTagName("input");
         let nodeValue: string;
         for (let i = 0; i < inputs.length; i++) {
@@ -171,8 +159,11 @@ export class CmsLoginComponent implements OnInit, OnDestroy {
 
     /**
      * This method will show appropriate message as per error status code.
+     * @method showErrorMessage
+     * @param {number} errorStatus
+     * @return void
      */
-    private showErrorMessage(errorStatus: number) {
+    private showErrorMessage(errorStatus: number): void{
         this.appConfig.log("CmsLoginComponent: login:: Show login error message for error status " + errorStatus);
 
         let messageKey: string = "";

@@ -35,14 +35,13 @@ class MockCmsEventEmitterService{
 
 class MockSettingsService {
     userSettings = settings;
+    selectedSources = [];
     updateWallConnectionSpecificDisplay() {
         return Observable.of(null);
     }
-
     updateWallConnectionRecentDisplay() {
         return Observable.of(null);
     }
-    selectedSources = [];
 }
 
 class MockRouter {

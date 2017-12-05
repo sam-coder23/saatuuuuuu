@@ -3,27 +3,32 @@ import { ActivatedRoute, Router } from "@angular/router";
 import { CmsApiService } from "../../cms/api/cms-api.service";
 import { AppConfig } from "../../config";
 
-/**
- * This is a tiles-panel component that defines the layout of a page which includes toolbar and tile list.
- */
 @Component({
     selector: "cms-tiles-panel",
     template: require("./cms-tiles-panel.component.html"),
     styles: [require("./cms-tiles-panel.component.scss")]
 })
+
+/**
+ * This is a tiles-panel component that defines the layout of a page which includes toolbar and tile list.
+ * @class CmsTilesPanelComponent
+ * @property {number} displayId
+ * @property {object} displayResolution
+ * @property {number} sourceCount
+ * @property {object} viewState
+ */
+
 export class CmsTilesPanelComponent implements OnInit {
-    // the selected display id
     private displayId: number;
     private displayResolution: { "width": number, "height": number };
     private sourceCount: number;
-
-    // all boolean states for the template
     public viewState = {
         reload: false,
         list: true
     };
 
-    constructor(private activatedRoute: ActivatedRoute,
+    constructor(
+        private activatedRoute: ActivatedRoute,
         private router: Router,
         private cmsServerApi: CmsApiService, 
         private appConfig: AppConfig) {
@@ -39,18 +44,28 @@ export class CmsTilesPanelComponent implements OnInit {
         this.sourceCount = parseInt(this.activatedRoute.queryParams["value"]["sourceCount"]);
     }
 
-
-    public navigateNext(): void {
+    /**
+     * This method navigate to next page
+     * @method navigateNext
+     * @return void
+     */
+    private navigateNext(): void {
         this.router.navigateByUrl(`display-panel/${this.displayId}`);
     }
 
-
+    /**
+     * This method navigate to back page
+     * @method navigateBack
+     * @return void
+     */
     public navigateBack(): void {
         window.history.back();
     }
 
     /**
-     * Reload sources list
+     * This method reload tile panel
+     * @method reloadList
+     * @return void
      */
     public reloadList(): void {
         this.viewState.reload = false;
@@ -61,7 +76,9 @@ export class CmsTilesPanelComponent implements OnInit {
     }
 
     /**
-     * On list modified event
+     * This method listen list change
+     * @method onListChanged
+     * @return void
      */
     public onListChanged(): void {
         this.viewState.reload = true;

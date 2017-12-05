@@ -42,12 +42,12 @@ export class CmsSettingsLanguagePanelComponent implements OnInit {
     /**
      * This method set lanaguage via user click action
      * @method setLanguage
-     * @return {void}
+     * @return void
      */
     private setLanguage(languageKey: string): void {
         // set language key
         this.translate.use(languageKey);
-        this.userSelectedLanguageKey = languageKey
+        this.userSelectedLanguageKey = languageKey;
 
         //update user settings in service
         let userprofileSettings = this.cmsSettingsService.userSettings;
@@ -63,7 +63,7 @@ export class CmsSettingsLanguagePanelComponent implements OnInit {
     /**
      * This method will navigate to back page
      * @method navigateBack
-     * @return {void}
+     * @return void
      */
     private navigateBack() {
         history.back();

@@ -1,4 +1,4 @@
-import { ComponentFixture, TestBed, async, inject} from "@angular/core/testing";
+import { ComponentFixture, TestBed, async, inject } from "@angular/core/testing";
 import { Location } from "@angular/common";
 import { DebugElement, CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA, ElementRef } from "@angular/core";
 import { HttpModule, Http } from "@angular/http";
@@ -159,19 +159,20 @@ describe("Component CmsSettingsLanguagePanelComponent", () => {
      * userprofilesettings with selected language, session storage settings
      * and route to settings page 
      */
-    it("should check setLanguage method and update userprofileSettings and navigate route to settings ", (done) => {
+    it("should check setLanguage method and update userprofileSettings and navigate back to settings ", (done) => {
         cmsSettingsService.userSettings = mockCmsSettingsData.userSettings;
         let languageKey = debugInstance.cmsLanguages[0].key;
         expect(languageKey).not.toBeUndefined();
         expect(languageKey).not.toBeNull();
         fixture.detectChanges();
         fixture.whenStable().then(() => {
+            let spyWindowHistoryBack = spyOn(window.history, "back").and.returnValue(null);
             debugInstance.setLanguage(languageKey);
             fixture.detectChanges();
             fixture.whenStable().then(() => {
                 let settings = JSON.parse(storageManager.appStorage.Settings);
                 expect(settings.language).toBe(languageKey);
-                expect(routerSpy.navigate).toHaveBeenCalledWith(["/settings"]);
+                expect(spyWindowHistoryBack).toHaveBeenCalled();
             });
             done();
         });

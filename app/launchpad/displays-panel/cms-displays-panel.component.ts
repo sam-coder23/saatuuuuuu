@@ -41,7 +41,8 @@ export class CmsDisplaysPanelComponent implements OnInit, AfterViewInit {
         list: true
     };
 
-    constructor(private storageManager: StorageManager, 
+    constructor(
+        private storageManager: StorageManager, 
         private appConfig: AppConfig, 
         private route: ActivatedRoute, 
         private cmsServerApi: CmsApiService) {
@@ -87,14 +88,18 @@ export class CmsDisplaysPanelComponent implements OnInit, AfterViewInit {
 
     /**
      * Use this method to mark and unmark favorite displays
+     * @method setFavourite
+     * @return void
      */
-    setFavourite(): void {
+    private setFavourite(): void {
         this.isFavoriteFilter = !this.isFavoriteFilter;
         this.storageManager.set(CMS_SESSION_STORAGE_ITEM.DISPLAYS_FAVORITE_FILTER, this.isFavoriteFilter);
     }
 
     /**
      * On list modified event
+     * @method onListChanged
+     * @return void
      */
     private onListChanged(): void {
         // disable back button if no display is selected
@@ -105,7 +110,7 @@ export class CmsDisplaysPanelComponent implements OnInit, AfterViewInit {
     /**
      * This method reloads the displays list.
      * @method reloadList
-     * @return {void} 
+     * @return void
      */
     private reloadList(): void {
         this.viewState.reload = false;
@@ -128,7 +133,7 @@ export class CmsDisplaysPanelComponent implements OnInit, AfterViewInit {
      * This method focus on search input box
      * @method initializeSearch
      * @param {event} e
-     * @return {void} 
+     * @return void 
      */
     private initializeSearch(e): void {
         let mdsearch = document.getElementById("display-list-search-input");
@@ -144,7 +149,7 @@ export class CmsDisplaysPanelComponent implements OnInit, AfterViewInit {
     /**
      * This method navigate back.
      * @method navigateBack
-     * @return {void}
+     * @return void
      */
     private navigateBack() {
         history.back();

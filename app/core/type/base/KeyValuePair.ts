@@ -1,4 +1,4 @@
 export class KeyValuePair {
-    key: string;
-    value: any;
+    public key: string;
+    public value: any;
 };

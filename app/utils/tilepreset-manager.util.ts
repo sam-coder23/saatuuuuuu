@@ -1,12 +1,12 @@
 import { ITilePreset } from "../cms/models/cms-tile-preset";
 
-export 
 /**
  * The responsibility of this class is to get tilepreset
  * based on selected source   
  * @class TilePresetManager
  */
-class TilePresetManager {
+
+export class TilePresetManager {
     /**
      * @method GetTileId
      * Accepts list of tilepreset, selected source count and displayId, and returns the tile Id.

@@ -3,7 +3,6 @@ $baseFont: RobotoRegular;
 $baseFont_light: RobotoLight;
 $baseFont_size: 24px; 
 
-
 //Colors Themes
 $blue_500:      #2196F3;
 $blue_200:      #90CAF9;
@@ -19,8 +18,6 @@ $grey_800:      #424242;
 $white:         #FFFFFF;
 $teal_500:      #009688;
 $black:         #212121;
-
-
 
 //Extend and Inheritance CSS Styles - Reusable Flex CSS Properties
 @mixin layout-row{

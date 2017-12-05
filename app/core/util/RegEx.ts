@@ -1,12 +1,11 @@
 import {Const} from "../util/Const";
 
-export
 /**
- * @class Url
  * Holds logic related to how regex will be implemented in our app
- *  Shouldn't hold anything except static.
+ * Shouldn't hold anything except static.
+ * @class Url
  */
-class RegExManager {    
+export class RegExManager {    
     /**
      * @method HasIP
      * Accepts a string and returns the converted url where ip is replaced with hostname.

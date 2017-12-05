@@ -1,9 +1,3 @@
-/**
- * Copyright (c) 2016 Barco n.v. All Rights Reserved. This software is confidential and proprietary information of Barco n.v.
- * ("Confidential Information"). You shall not disclose such Confidential Information and shall use it only in accordance with
- * the terms of the license agreement you entered into with Barco.
- */
-
 import { Component, OnInit, AfterViewInit, ElementRef } from "@angular/core";
 import { ActivatedRoute, Params, Router } from "@angular/router";
 import { DomManager } from "../../utils/dom-manager.util";
@@ -12,16 +6,28 @@ import { AppConfig } from "../../config";
 import { CMS_SESSION_STORAGE_ITEM } from "../../cms/models/cms-session-storage-item";
 import { StorageManager } from "../../cms/api/cms-storagemanager.service";
 import { TranslateService } from "@ngx-translate/core";
-import { CmsSourceListComponent } from "../../shared/source-list/cms-source-list.component"
 import { TilePresetManager } from "../../utils/tilepreset-manager.util";
-import { ITilePreset } from "../../cms/models/cms-tile-preset";
 import { CmsApiService } from "../../cms/api/cms-api.service";
 import { CmsSettingsService } from "../settings/cms-settings.service";
 import { CMSConstants } from "../../cms/models/cms-constants";
 import { Source } from "../../cms/models/cms-source";
+import { Display } from "./../../cms/models/cms-display";
 
 /**
  * This is a panel component that defines the layout of a page which includes toolbar and source list.
+ * @class CmsSourcesPanelComponent
+ * @property {CmsApiService} cmsServerApi
+ * @property {boolean} isFavoriteFilter
+ * @property {string} searchFilter
+ * @property {DomManager} domManager
+ * @property {ActivatedRoute} route
+ * @property {number} displayId
+ * @property {string} panelTitle
+ * @property {number} maxSelection
+ * @property {string} errorMessage
+ * @property {object} states
+ * @property {string} searchFilter
+ * @property {string} searchKey
  */
 @Component({
     //moduleId: module.id,
@@ -30,54 +36,38 @@ import { Source } from "../../cms/models/cms-source";
     styles: [require("./cms-sources-panel.component.scss")]
 })
 export class CmsSourcesPanelComponent implements OnInit {
-    private cmsServerApi: CmsApiService;
-    /**
-      * Filter property which will filter the source list
-      * @property {boolean} isFavoriteFilter
-      * @property {string} searchFilter
-      */
     private isFavoriteFilter: boolean;
-    public searchFilter: string;
-    public searchKey: string;
     private domManager: DomManager;
-    // all boolean states for the template
-    mStates = {
+    private displayId: number;
+    private panelTitle: string;
+    private maxSelection: number = CMSConstants.MAXSELECTION;
+    private errorMessage: string;
+    private states = {
         reload: false,
         list: true
     }
+    public searchFilter: string;
+    public searchKey: string;
 
-    // active route
-    private mRoute: ActivatedRoute;
+    constructor(
+        private route: ActivatedRoute,
+        private appConfig: AppConfig,
+        private storageManager: StorageManager,
+        private router: Router,
+        private cmsSettingService: CmsSettingsService,
+        private translate: TranslateService,
+        private cmsServerApi: CmsApiService,
+        private element: ElementRef) {
 
-    // the selected display id
-    private mDisplayId: number;
-
-    private panelTitle: string;
-
-    private maxSelection = CMSConstants.MAXSELECTION;
-    private errorMessage: string;
-
-    /**
-     * The constructor initializes various dependencies.
-     */
-    constructor(aRoute: ActivatedRoute, private appConfig: AppConfig, private storageManager: StorageManager,
-        private router: Router, private cmsSettingService: CmsSettingsService, private translate: TranslateService, 
-        private aCmsServerApi: CmsApiService, private element: ElementRef) {
         this.isFavoriteFilter = (this.storageManager.get(CMS_SESSION_STORAGE_ITEM.SOURCES_FAVORITE_FILTER) === "true") || false;
         this.searchFilter = this.storageManager.get(CMS_SESSION_STORAGE_ITEM.SOURCES_SEARCH_FILTER) || "";
         this.searchKey = this.searchFilter;
-        this.mRoute = aRoute;
-        this.cmsServerApi = aCmsServerApi;
         this.domManager = new DomManager(this.element);
     }
 
-    /**
-     * On component initialization, fetch display id from route parameters.
-     */
-    ngOnInit() {
-
-        this.mRoute.params.forEach((params: Params) => {
-            this.mDisplayId = +params["id"];
+    public ngOnInit() {
+        this.route.params.forEach((params: Params) => {
+            this.displayId = +params["id"];
         });
 
         this.translate.get("sourceList.connectTo", { value: CMSConstants.MAXSELECTION }).subscribe((response: string) => {
@@ -85,12 +75,7 @@ export class CmsSourcesPanelComponent implements OnInit {
         });
     }
 
-    /**
-      * This will register the functionality written inside of this block
-      * once component intialize successfully 
-      * @Hook {void} ngAfterViewInit Ng Life cycle hook
-      */
-    ngAfterViewInit() {
+    public ngAfterViewInit() {
         /**
          * Making an Observable to get the string token from 
          * HTML search input control and update the searchFilter by
@@ -107,34 +92,42 @@ export class CmsSourcesPanelComponent implements OnInit {
     };
 
     /**
-     * Use this method to mark and unmark favorite sources
+     * This method listen list changes
+     * @method onListChanged
+     * @return void
      */
-    setFavourite(): void {
+    public onListChanged(): void {
+        this.states.reload = true;
+    }
+
+    /**
+     * This method use this method to mark and unmark favorite sources
+     * @method setFavourite
+     * @return void
+     */
+    private setFavourite(): void {
         this.isFavoriteFilter = !this.isFavoriteFilter;
         this.storageManager.set(CMS_SESSION_STORAGE_ITEM.SOURCES_FAVORITE_FILTER, this.isFavoriteFilter);
     }
 
     /**
-     * On list modified event
+     * This method reload sources list
+     * @method reloadList
+     * @return void
      */
-    onListChanged(): void {
-        this.mStates.reload = true;
-    }
-
-    /**
-     * Reload sources list
-     */
-    reloadList(): void {
-        this.mStates.reload = false;
-        this.mStates.list = false;
-        //window.setImmediate.call(this, () => this.mStates.list = true);
+    private reloadList(): void {
+        this.states.reload = false;
+        this.states.list = false;
         window.setTimeout(() => {
-            this.mStates.list = true
+            this.states.list = true
         }, 0);
     }
 
     /**
-     * Focus on search input box
+     * This method focus on search input box
+     * @method initializeSearch
+     * @param {event} e
+     * @return void
      */
     private initializeSearch(e): void {
         let mdsearch = this.domManager.getElementById("sources-panel-search-input");
@@ -147,15 +140,29 @@ export class CmsSourcesPanelComponent implements OnInit {
         }
     }
 
-
     /**
-     * navigateNext
+     * This method navigate to Next page
+     * @method navigateNext
+     * @return void
      */
     public navigateNext(): void {
-        this.updateDisplayWall();
+        let selectedSourcesLength = this.cmsSettingService.selectedSources.length;
+        this.isSelectedSameAsSharedSource((sameAsShared) => {
+            if (sameAsShared) {
+                let url = `/displays/${this.displayId}/tiles-panel?sourceCount=${selectedSourcesLength}`;
+                this.router.navigateByUrl(url);
+            } else {
+                this.updateDisplayWall();
+            }
+        });
     }
 
-    private updateDisplayWall() {
+    /**
+     * This method update wall as per selected sources
+     * @method updateDisplayWall
+     * @return void
+     */
+    private updateDisplayWall(): void {
         let selectedSourcesLength = this.cmsSettingService.selectedSources.length;
         let resources = new Array(selectedSourcesLength);
         // Clone sources and delete selected property; API service rejects extra properties;
@@ -168,13 +175,14 @@ export class CmsSourcesPanelComponent implements OnInit {
         };
 
         this.cmsServerApi.getTilePresets().subscribe((tilers) => {
-            let tileId = TilePresetManager.GetTileId(tilers, selectedSourcesLength, this.mDisplayId);
+            let tileId = TilePresetManager.GetTileId(tilers, selectedSourcesLength, this.displayId);
 
             if (tileId === 0) {
                 this.setErrorMessage("sourceList.tileLayoutNotAvailable");
-            } else {
-                this.cmsServerApi.putContentsOnDisplay(this.mDisplayId, tileId, requestPayload).subscribe(response => {
-                    let url = `/displays/${this.mDisplayId}/tiles-panel?sourceCount=${selectedSourcesLength}`;
+            }
+            else {
+                this.cmsServerApi.putContentsOnDisplay(this.displayId, tileId, requestPayload).subscribe(response => {
+                    let url = `/displays/${this.displayId}/tiles-panel?sourceCount=${selectedSourcesLength}`;
                     this.router.navigateByUrl(url);
                 }, error => {
                     this.appConfig.error(error);
@@ -187,7 +195,39 @@ export class CmsSourcesPanelComponent implements OnInit {
     }
 
     /**
-     * navigateBack
+     * This method will check if all selected source are same as shared sources
+     * Then sameAsShared is true, a new tile will not be applied
+     * @method isSelectedSameAsSharedSource
+     * @param {method} callback
+     */
+    private isSelectedSameAsSharedSource(callback) {
+        let selectedSources = this.cmsSettingService.selectedSources;
+        let selectedSourceMatched = false;
+        this.cmsServerApi.getSelectedDisplayContent(this.displayId).subscribe((display) => {
+            let sharedcontent = display.content;
+            for (let selectedSourceIndex = 0; selectedSourceIndex < selectedSources.length; selectedSourceIndex++) {
+                let source = selectedSources[selectedSourceIndex];
+                for (let contentIndex = 0; contentIndex < sharedcontent.length; contentIndex++) {
+                    if ((source.id === sharedcontent[contentIndex].resourceId) && (source.type.toLowerCase() === sharedcontent[contentIndex].type.toLowerCase())) {
+                        selectedSourceMatched = true;
+                        break;
+                    }
+                    else {
+                        selectedSourceMatched = false;
+                    }
+                }
+            }
+
+            if (typeof callback === "function") {
+                callback(selectedSourceMatched);
+            }
+        });
+    }
+
+    /**
+     * This method navigate to back page
+     * @method navigateBack
+     * @return void
      */
     public navigateBack(): void {
         this.router.navigateByUrl(`/displays-panel`);
@@ -196,6 +236,7 @@ export class CmsSourcesPanelComponent implements OnInit {
     /**
      * Sets translated error message
      * @param messageKey : key for translation
+     * @return void
      */
     private setErrorMessage(messageKey: string): void {
         this.translate.get(messageKey).subscribe((value) => {
@@ -206,9 +247,9 @@ export class CmsSourcesPanelComponent implements OnInit {
     /**
      * This method logs out the user and performs clean up
      * @method logout
-     * @return {void}
+     * @return void
      */
-    private logout() {
+    private logout(): void {
         this.cmsServerApi.logoutUser();
     }
 }

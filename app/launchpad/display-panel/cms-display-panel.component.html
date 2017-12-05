@@ -1,17 +1,14 @@
 <md-toolbar id="dashboard-toolbar" class="toolbar-theme">
-
-    <div class="dashboard-toolbar-row" *ngIf="!isLongPressed">
+    <div class="dashboard-toolbar-row">
         <button id="dashboard-options-button" md-icon-button nd-click-debounce (ndClick)="viewOptions = true;">
             <i class="material-icons" aria-label="Options">menu</i>
         </button>
     </div>
-
     <span class="fill-remaining-space"></span>
 
     <cms-display-name></cms-display-name>
 
     <span class="fill-remaining-space"></span>
-
     <button id="log-off" md-button md-raised-button nd-click-debounce (ndClick)="logoff()">
             {{'common.logout' | translate}}
     </button>
@@ -38,7 +35,8 @@
 </md-toolbar>
 
 <nd-popup id="display-panel-clear-wall-popup" *ngIf="showClearWallPopup" class="confirm-popup" title="{{'displayPanel.clearWallConfirmationPopupTitle' | translate }}"
-    (done)="clearMiniDisplayWall()" (cancelled)="cancelClearWallPopup();" (closing)="closingClearWallPopup();" okText="{{'common.yes' | translate}}" cancelText="{{'common.no' | translate}}">
+    (done)="clearMiniDisplayWall()" (cancelled)="cancelClearWallPopup();" (closing)="closingClearWallPopup();" okText="{{'common.yes' | translate}}"
+    cancelText="{{'common.no' | translate}}">
     <popup-body>
         {{'displayPanel.clearWallConfirmationPopupMessage' | translate}}
     </popup-body>

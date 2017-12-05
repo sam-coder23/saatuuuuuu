@@ -5,7 +5,6 @@
 }
 
 .toolbar-theme {
-
     .dashboard-toolbar-row {
         @include layout-row();
         overflow: hidden;
@@ -14,16 +13,13 @@
     button {
         flex-shrink: 0
     }
-
 }
 
 .bottom {
     bottom: 0px;
 }
 
-
-
-#display-panel-next-button{
+.next-button{
     .centered-icon{
         padding-left: 10px;
     }

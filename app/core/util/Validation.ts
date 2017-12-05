@@ -1,11 +1,10 @@
-export
 /**
- * @class Validation
  * Holds validation methods.
  * Shouldn't hold anything except static.
+ * @class Validation
  */
-class Validation {    
 
+export class Validation {    
     /**
      * Returns true if value is null
      * @method IsNull

@@ -1,9 +1,3 @@
-/**
- * Copyright (c) 2016 Barco n.v. All Rights Reserved. This software is confidential and proprietary information of Barco n.v.
- * ("Confidential Information"). You shall not disclose such Confidential Information and shall use it only in accordance with
- * the terms of the license agreement you entered into with Barco.
- */
-
 /* Core */
 import { NgModule, NO_ERRORS_SCHEMA } from "@angular/core";
 import { BrowserModule } from "@angular/platform-browser";
@@ -26,7 +20,6 @@ import { CmsLoginComponent, CmsCanActivateViaAuthorizationService } from "./logi
 
 /* Displays Panel */
 import { CmsDisplaysPanelComponent } from "./displays-panel/cms-displays-panel.component";
-
 
 /* Display Panel */
 import { CmsDisplayPanelComponent } from "./display-panel/cms-display-panel.component";
@@ -52,6 +45,7 @@ import { CmsSettingsService } from "./settings/cms-settings.service";
 import { CmsAboutPanelComponent } from "./about/cms-about-panel.component";
 import { CmsTilesPanelComponent } from "./tiles-panel/cms-tiles-panel.component";
 
+/* Robo Module */
 import { RobotModule, BuilderService } from "core-components/app";
 
 /**

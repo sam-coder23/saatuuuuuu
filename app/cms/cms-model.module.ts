@@ -10,7 +10,6 @@ import { StorageManager } from "./api/cms-storagemanager.service";
 import { APIRequest } from "./api/api-request";
 import { AppConfig } from "../config";
 
-
 /**
  * This module defines various services which connect with CMS API and handle CMS events.
  * Also it contains variuos model objects corresponding to CMS models.

@@ -20,17 +20,18 @@ export class GenericCollection <T> implements ICollection <T> {
  
     /**
      * @method HasKey
-     * @param key {String} - The key which will used to store  
-     * @return {Boolean}
+     * @param {String} key The key which will used to store  
+     * @return Boolean
      */
     public HasKey(key: string): boolean {
         return this.items.hasOwnProperty(key);
     }
 
     /**
-     * @method HasKey
-     * @param key {String} - The key which will used to store  
-     * @return {Boolean}
+     * @method Add
+     * @param {String} key The key which will used to store  
+     * @param {T} value The value which will used to store 
+     * @return void
      */    
     public Add(key: string, value: T) {
         this.items[key] = value;

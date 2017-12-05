@@ -1,12 +1,5 @@
-/**
- * Copyright (c) 2016 Barco n.v. All Rights Reserved. This software is confidential and proprietary information of Barco n.v.
- * ("Confidential Information"). You shall not disclose such Confidential Information and shall use it only in accordance with
- * the terms of the license agreement you entered into with Barco.
- */
-
 import {ElementRef} from "@angular/core";
 
-export 
 /**
  * The responsibility of this class is to act as a replacement of jQuery
  * So we should write functions for all DOM queries, manipulation in this class.
@@ -14,11 +7,12 @@ export
  * @class DomManager
  * @constructor constructor This will inject the ElementRef dependency
  */
-class DomManager {
+
+export class DomManager {
     private nativeElement;
 
     constructor(element: ElementRef) {
-        this.nativeElement = element.nativeElement  
+        this.nativeElement = element.nativeElement;  
     }
 
     /**

@@ -24,7 +24,9 @@
 				<md-card class="setting-card setting-card-language">
 					<md-card-subtitle id="setting-panel-language-subtitle">{{ 'settings.language' | translate }}</md-card-subtitle>
 					<md-card-content>
-						<button md-raised-button class="language-button" id="setting-panel-language-link" (click)="showLanguages($event)" [disabled]="!localizationLicense">{{ userSelectedLanguage }} </button>
+						<button md-raised-button class="language-button" id="setting-panel-language-link" (click)="showLanguages($event)" [disabled]="!localizationLicense">
+							{{ userSelectedLanguage }} 
+						</button>
 					</md-card-content>
 				</md-card>
 
@@ -37,12 +39,16 @@
 								<div class="fill-remaining-space">{{ 'settings.timeOutInMinute' | translate }}</div>
 
 								<div class="setting-button-group">
-									<button md-raised-button class="setting-square-button" id="logoffTime-decrease-button" (click)="decreaseLogOffTime()" [disabled]="logOffTimeSteps[0] === userSettings.logOffTime">-</button>
+									<button md-raised-button class="setting-square-button" id="logoffTime-decrease-button" (click)="decreaseLogOffTime()" [disabled]="logOffTimeSteps[0] === userSettings.logOffTime">
+										-
+									</button>
 									<md-input-container class="setting-square-input">
 										<input md-input type="text" name="logOffTime" [value]="autoLogOffTime" [(ngModel)]="autoLogOffTime" (change)="updateLogOffTime($event)"
 										 #logOffTime>
 									</md-input-container>
-									<button md-raised-button class="setting-square-button" id="logoffTime-increase-button" (click)="increaseLogOffTime()" [disabled]="logOffTimeSteps[logOffTimeSteps.length-1] === userSettings.logOffTime">+</button>
+									<button md-raised-button class="setting-square-button" id="logoffTime-increase-button" (click)="increaseLogOffTime()" [disabled]="logOffTimeSteps[logOffTimeSteps.length-1] === userSettings.logOffTime">
+										+
+									</button>
 								</div>
 							</md-list-item>
 						</md-list>
@@ -54,7 +60,7 @@
 					<md-card-subtitle id="setting-panel-wallconnection-subtitle">{{ 'settings.wallConnection' | translate }}</md-card-subtitle>
 					<md-card-content>
 						<md-radio-group name="wallConnection-atstartup" [value]="userSettings.wallConnection.startUpAction" [(ngModel)]="userSettings.wallConnection.startUpAction"
-							(change)="updateUserSettingsByAction($event)" id="wallconnection-radiogroup">
+						 (change)="updateUserSettingsByAction($event)" id="wallconnection-radiogroup">
 							<md-list dense>
 								<md-list-item id="setting-panel-wallconnection-atstartup-subtitle">
 									{{ 'settings.atStartup' | translate }}
@@ -73,7 +79,7 @@
 									</div>
 									<div class="button-block">
 										<button md-raised-button class="wall-connection-button" [disabled]="!(userSettings.wallConnection.startUpAction === wallConnection.SPECIFIC_WALL)"
-											(click)="goToSelectDisplayForAutoConnect($event)" type="button" id="auto-connect-to-specific-wall-select-button">
+										 (click)="goToSelectDisplayForAutoConnect($event)" type="button" id="auto-connect-to-specific-wall-select-button">
 											<span *ngIf="!userSettings.wallConnection.specificDisplay">{{ 'settings.selectDisplay' | translate }}</span>
 											<span *ngIf="displayWallName ==='nodisplayfound'">{{ 'settings.noDisplayWallFound' | translate }}</span>
 											<span *ngIf="displayWallName !=='nodisplayfound'">{{ displayWallName }}</span>
@@ -81,7 +87,7 @@
 									</div>
 								</md-list-item>
 							</md-list>
-							</md-radio-group>
+						</md-radio-group>
 					</md-card-content>
 				</md-card>
 
@@ -93,13 +99,13 @@
 							<md-list-item>
 								<div class="fill-remaining-space">{{ 'settings.displaySourceName' | translate }}</div>
 								<md-slide-toggle [checked]="userSettings.sourceLabel.displaySourceNameLabels" name="sourceLabel-display-source-name-label"
-									[(ngModel)]="userSettings.sourceLabel.displaySourceNameLabels" (change)="updateUserSettingsByAction($event)" id="display-sourcename-labels-slider-button"></md-slide-toggle>
+								 [(ngModel)]="userSettings.sourceLabel.displaySourceNameLabels" (change)="updateUserSettingsByAction($event)" id="display-sourcename-labels-slider-button"></md-slide-toggle>
 							</md-list-item>
 							<md-divider></md-divider>
 							<md-list-item>
 								<div class="fill-remaining-space list-text" [class.disabled]="!userSettings.sourceLabel.displaySourceNameLabels">{{ 'settings.multipleLines' | translate }}</div>
 								<md-slide-toggle [checked]="userSettings.sourceLabel.useMultipleLines" name="sourceLabel-use-multiple-lines" [(ngModel)]="userSettings.sourceLabel.useMultipleLines"
-									(change)="updateUserSettingsByAction($event)" [disabled]="!userSettings.sourceLabel.displaySourceNameLabels" id="use-multiplelines-sourcename-labels-slider-button"></md-slide-toggle>
+								 (change)="updateUserSettingsByAction($event)" [disabled]="!userSettings.sourceLabel.displaySourceNameLabels" id="use-multiplelines-sourcename-labels-slider-button"></md-slide-toggle>
 							</md-list-item>
 							<md-divider></md-divider>
 
@@ -130,24 +136,24 @@
 									<!-- Font Size -->
 									<div class="setting-button-group cell-block-content">
 										<button md-raised-button class="setting-square-button small-label" (click)="decreaseFontSize()" [disabled]="fontSizeSteps[0] === fonSize.value"
-											id="font-decrease-button">A</button>
-											<md-input-container class="setting-square-input">
-												<input md-input type="text" [value]="userSettings.sourceLabel.fontSize" name="sourceLabel-font-size" [(ngModel)]="userSettings.sourceLabel.fontSize"
-													(change)="updateFontSize($event)" #fonSize id="font-size-input">
-											</md-input-container>
-											<button md-raised-button class="setting-square-button large-label" (click)="increaseFontSize()" [disabled]="fontSizeSteps[fontSizeSteps.length-1] === fonSize.value"
-												id="font-increase-button">A</button>
+										 id="font-decrease-button">A</button>
+										<md-input-container class="setting-square-input">
+											<input md-input type="text" [value]="userSettings.sourceLabel.fontSize" name="sourceLabel-font-size" [(ngModel)]="userSettings.sourceLabel.fontSize"
+											 (change)="updateFontSize($event)" #fonSize id="font-size-input">
+										</md-input-container>
+										<button md-raised-button class="setting-square-button large-label" (click)="increaseFontSize()" [disabled]="fontSizeSteps[fontSizeSteps.length-1] === fonSize.value"
+										 id="font-increase-button">A</button>
 									</div>
 									<!-- Transparency -->
 									<div class="setting-button-group cell-block-content">
 										<button md-raised-button class="setting-square-button" (click)="decreaseTransparency()" [disabled]="transparencySteps[0] === transparency.value"
-											id="transparency-decrease-button">-</button>
-											<md-input-container class="setting-square-input">
-												<input md-input type="text" name="sourceLabel-transparency" [value]="userSettings.sourceLabel.transparency" [(ngModel)]="userSettings.sourceLabel.transparency"
-													(change)="updateTransparency($event)" #transparency id="transparency-input">
-											</md-input-container>
-											<button md-raised-button class="setting-square-button" (click)="increaseTransparency()" [disabled]="transparencySteps[transparencySteps.length-1] === transparency.value"
-												id="transparency-increase-button">+</button>
+										 id="transparency-decrease-button">-</button>
+										<md-input-container class="setting-square-input">
+											<input md-input type="text" name="sourceLabel-transparency" [value]="userSettings.sourceLabel.transparency" [(ngModel)]="userSettings.sourceLabel.transparency"
+											 (change)="updateTransparency($event)" #transparency id="transparency-input">
+										</md-input-container>
+										<button md-raised-button class="setting-square-button" (click)="increaseTransparency()" [disabled]="transparencySteps[transparencySteps.length-1] === transparency.value"
+										 id="transparency-increase-button">+</button>
 									</div>
 								</div>
 							</md-list-item>

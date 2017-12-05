@@ -18,17 +18,11 @@ import { Source } from "./../../cms/models/cms-source";
  * This service provides method related to user settings.
  * @class CmsSettingsService
  * @property {IUserProfileSettings} userSettings
- * @property {Subject} longPressedSubject 
- * @property {boolean} isLongPressed
  * @property {Source[]} selectedSources
  */
 @Injectable()
 export class CmsSettingsService {
-    //store user profile settings
     public userSettings: IUserProfileSettings;
-    // Observable for longPress state
-    public longPressedSubject: Subject<boolean> = new Subject<boolean>();
-    public isLongPressed: boolean;
     public selectedSources: Source[] = [];
 
     constructor(
@@ -36,14 +30,13 @@ export class CmsSettingsService {
         private cmsServerApi: CmsApiService,
         private router: Router,
         private storageManager: StorageManager,
-        private appConfig: AppConfig) {
-    }
+        private appConfig: AppConfig) {}
 
     /**
      * This method get lanaguage value from key
      * @method getUserSelectedLanguageByKey
      * @param {string} languageKey Key is reference which is bind to specific language
-     * @return {string} 
+     * @return string 
      */
     public getUserSelectedLanguageByKey(languageKey: string): string {
         let cmsLanguages = CmsLanguages.languages;
@@ -84,7 +77,7 @@ export class CmsSettingsService {
     /**
      * This method sets user selected language on the basis of localization licesnse
      * @method applyUserSelectedLanguage
-     * @return {void}
+     * @return void
      */
     public applyUserSelectedLanguage(): void {
         let defaultLanguage = this.appConfig.DefaultLanguage;
@@ -96,7 +89,8 @@ export class CmsSettingsService {
             // set user selected language
             this.translate.use(defaultLanguage);
             this.setTextDirectionByLanguageKey(defaultLanguage);
-        } else {
+        }
+        else {
             if (!this.userSettings.language) {
                 this.userSettings.language = defaultLanguage;
             }
@@ -133,13 +127,12 @@ export class CmsSettingsService {
      * This method update user settings via API and execute optional callback function
      * @method updateUserProfileData
      * @param {IUserProfileSettings} data contain data-model of user settings
-     * @return {void}
+     * @return void
      */
     public updateUserProfileData(data: IUserProfileSettings, callback?): void {
         if (!data) { return };
 
         this.userSettings = data;
-
         this.cmsServerApi.updateUserProfileSettings(data)
             .then((response) => {
                 // store user setting in storage
@@ -157,7 +150,7 @@ export class CmsSettingsService {
       * This method update displayId related to wall connection
       * @method updateWallConnectionRecentDisplay
       * @param {Display} display wall info json
-      * @return {void}
+      * @return void
       */
     public updateWallConnectionRecentDisplay(display): void {
         if (display) {
@@ -170,7 +163,7 @@ export class CmsSettingsService {
       * This method update displayName related to wall connection
       * @method updateWallConnectionSpecificDisplay
       * @param {Display} display wall info json
-      * @return {void}
+      * @return void
       */
     public updateWallConnectionSpecificDisplay(display): void {
         if (display) {
@@ -247,10 +240,9 @@ export class CmsSettingsService {
     }
 
     /**
-     * @description 
      * This method connect to wall as per user selection of wall connection at startup
      * @method connectToWallAtStartup
-     * @return {void}
+     * @return void
      */
     public connectToWallAtStartup(): void {
         let selectedOption = this.userSettings.wallConnection.startUpAction;
@@ -284,7 +276,7 @@ export class CmsSettingsService {
      * This method navigates directly to the source panel if there is only one display available.
      * @method navigateToSourcePanel
      * @param {Display[]} displays
-     * @return {void}
+     * @return void
      */
     private navigateToSourcePanel(displays: Display[]): void {
         //update recentDisplayId on user profile data         
@@ -297,7 +289,7 @@ export class CmsSettingsService {
      * This method connect to most recent wall at startup
      * @method autoConnectToMostRecentWall
      * @param {string} recentDisplayName
-     * @return {void}
+     * @return void
      */
     private autoConnectToMostRecentWall(recentDisplayName: string): void {
         let start = 1, count = 1, search = recentDisplayName, isFavorite = false, display;
@@ -311,7 +303,6 @@ export class CmsSettingsService {
         this.cmsServerApi.getDisplayList(start, count, search, isFavorite)
             .subscribe((displays: Display[]) => {
                 if (displays.length) {
-
                     // filter display by name
                     for (let displayIndex = 0; displayIndex < displays.length; displayIndex++) {
                         if (displays[displayIndex].name === recentDisplayName) {
@@ -340,7 +331,7 @@ export class CmsSettingsService {
      * This method connect to specific wall at startup
      * @method autoConnectToSpecificWall
      * @param {string} autoConnectToSpecificWall
-     * @return {void}
+     * @return void
      */
     private autoConnectToSpecificWall(selectedDisplayName: string): void {
         let start = 1, count = 1, search = selectedDisplayName, isFavorite = false, display;
@@ -385,12 +376,12 @@ export class CmsSettingsService {
      * @method getNearestHighValue
      * @param {number} count
      * @param {number[]} data
-     * @return {number}
+     * @return number
      */
     private getNearestHighValue(count: number, data: number[]) {
-        for (let index = 0; index < data.length; index++) {
-            if (count < data[index]) {
-                return data[index];
+        for (let dataIndex = 0; dataIndex < data.length; dataIndex++) {
+            if (count < data[dataIndex]) {
+                return data[dataIndex];
             }
         }
     }
@@ -400,32 +391,21 @@ export class CmsSettingsService {
      * @method getNearestLowValue
      * @param {number} count
      * @param {number[]} data
-     * @return {number}
+     * @return number
      */
     private getNearestLowValue(count: number, data: number[]) {
-        for (let index = data.length - 1; index >= 0; index--) {
-            if (count > data[index]) {
-                return data[index];
+        for (let dataIndex = data.length - 1; dataIndex >= 0; dataIndex--) {
+            if (count > data[dataIndex]) {
+                return data[dataIndex];
             }
         }
-    }
-
-    /**
-     * This method update "isLongPress" property and update event emit
-     * @method updateIsLongPress
-     * @param {boolean} state
-     * @return {void}
-     */
-    public updateIsLongPress(state: boolean): void{
-        this.isLongPressed = state;
-        this.longPressedSubject.next(state);
     }
 
     /**
      * This method update text direction for whole application
      * @method setTextDirectionByLanguageKey
      * @param {string} languageKey
-     * @return {void}
+     * @return void
      */
     public setTextDirectionByLanguageKey(languageKey): void{
         let html = document.getElementsByTagName("html")[0];
@@ -436,7 +416,7 @@ export class CmsSettingsService {
      * This method return true if slected language is RTL Type
      * @method isRTLLanguage
      * @param {string} languageKey
-     * @return {boolean}
+     * @return boolean
      */
     public isRTLLanguage(languageKey): boolean{
         return CMSConstants.RTLLANGUAGES.indexOf(languageKey) !== -1;
@@ -445,7 +425,7 @@ export class CmsSettingsService {
     /**
      * This method set application language as per browser language 
      * @method setBrowserLanguage
-     * @return {void}
+     * @return void
      */
     public setBrowserLanguage(): void {
         let currentLang;

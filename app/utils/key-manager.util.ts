@@ -1,6 +1,5 @@
 import {GenericCollection} from "../core/type/extended/GenericCollection";
 
-export
 /**
  * Roles of this class is handle to keyboard related functionality.
  * Should hold all logic related to that in this class.
@@ -12,7 +11,7 @@ export
 
 // This must trun into Singleton, Okay for now.
 
-class KeyManager {
+export class KeyManager {
     private keyCollection : GenericCollection<number>;
     
     constructor() {

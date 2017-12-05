@@ -18,12 +18,6 @@
  * 
  * Display id should be defined from the route params;
  * expect loadDisplay should be called
- * expect longPressSubcription is set and on next isLongPressed is set;
- * 
- * 
- * ## ngOnDestroy ##
- * 
- * expect mDisplayPanelCmsEvent && longPressSubcription are unsubscribed;
  * 
  * 
  * ## fitHeight ##
@@ -31,9 +25,7 @@
  * expect fitHeightCount is incremented after each time fitHeight is called
  * 
  * 
- * ## backToDisplayPanel ## 
- * expect updateIsLongPress(false) to be called;
- * 
+ * ## backToDisplayPanel ##  
  * 
  * ## logoff ##
  * expect a popup on logoff
@@ -45,18 +37,15 @@
  * 
  * $$ Test cases for template $$
  * 
- * If isLongPressed is true
- *      #display-panel-back-button should be visible
- * Else
- *      #dashboard-options-button should be visible
- *      #dashboard-displayList-button should be visible
+ * #dashboard-options-button should be visible
+ * #dashboard-displayList-button should be visible
  *      
- *      If isDisplaySelected is true
- *          #dashboard-clear-wall-button should be visible
- *          <cms-mini-display> should be visible
- *      Else 
- *          .display-unavailable should be visible;
- *          Check its translated text content;
+ * If isDisplaySelected is true
+ * #dashboard-clear-wall-button should be visible
+ * <cms-mini-display> should be visible
+ *    Else 
+ *    .display-unavailable should be visible;
+ *    Check its translated text content;
  * 
  * If viewOptions is true
  *      <cms-options> should be visible
@@ -170,7 +159,6 @@ describe("CmsDisplayPanelComponent - Test Suite", () => {
 
     afterEach(() => {
         removeDisplay();
-        component.ngOnDestroy();
     });
 
     it("Component should be instantiated", () => {
@@ -201,28 +189,12 @@ describe("CmsDisplayPanelComponent - Test Suite", () => {
         tick();
 
         expect(debugInstance.displayId).toEqual(activatedRoute.params["value"]["id"]);
-        // make sure the subject is subscribed
-        expect(debugInstance.longPressSubcription instanceof Subscriber).toBeTruthy();
-
+        
         let spyLoadDisplay = spyOn(debugInstance, "loadDisplay").and.returnValue(null);
         component.ngOnInit();
 
         expect(spyLoadDisplay.calls.count()).toEqual(1);
     }));
-
-
-
-    it("should unsubscribe subscriptions on OnDestroy", fakeAsync(() => {
-        let settingsService: CmsSettingsService = injector.get(CmsSettingsService);
-        settingsService.longPressedSubject.next(true);
-        fixture.detectChanges();
-        tick();
-
-        expect(debugInstance.longPressSubcription.closed).toBeFalsy();
-        component.ngOnDestroy();
-        expect(debugInstance.longPressSubcription.closed).toBeTruthy();
-    }));
-
 
     it("should increment the fitHeightCount counter", () => {
         expect(debugInstance.fitHeightCount).toEqual(0);
@@ -231,19 +203,6 @@ describe("CmsDisplayPanelComponent - Test Suite", () => {
         debugInstance.fitHeight();
         expect(debugInstance.fitHeightCount).toEqual(2);
     });
-
-
-    it("should return back to display panel on long Press", () => {
-        fixture.detectChanges();
-
-        let settingsService: CmsSettingsService = injector.get(CmsSettingsService);
-        let spy = spyOn(settingsService, "updateIsLongPress");
-        debugInstance.backToDisplayPanel();
-
-        expect(spy.calls.count()).toEqual(1);
-        expect(spy.calls.argsFor(0)[0]).toEqual(false);
-    });
-
 
     it("should have back button and onclick should navigate back", () => {
         fixture.detectChanges();

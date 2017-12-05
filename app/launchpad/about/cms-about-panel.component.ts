@@ -1,3 +1,4 @@
+import { CMSConstants } from "./../../cms/models/cms-constants";
 import { Component, OnInit } from "@angular/core";
 import { TranslateService } from "@ngx-translate/core";
 import { CmsApiService } from "../../cms/api/cms-api.service";
@@ -43,7 +44,7 @@ export class CmsAboutPanelComponent implements OnInit {
     /**
      * This method will be fetch all system info, those will be display into about panel.
      * @method getSystemInfo
-     * @return {void} 
+     * @return void 
      */
     private getSystemInfo(): void {
         this.cmsServerApi.getSystemInfo()
@@ -59,11 +60,13 @@ export class CmsAboutPanelComponent implements OnInit {
                         this.translate.get("about.licenceValid").subscribe((response: string) => {
                             this.systemInfo.licenseStatus = response;
                         });
-                    } else {
-                        this.translate.get("about.daysRemaining", { value: response.LicenseInfo.daysRemaining }).subscribe((response: string) => {
-                            this.systemInfo.daysRemaining = response;
-                        });
-                        this.systemInfo.licenseStatus = response.LicenseInfo.licenseStatus + ", " + this.systemInfo.daysRemaining;
+                    }
+                    else {
+                        this.translate.get("about.daysRemaining", {value: response.LicenseInfo.daysRemaining})
+                            .subscribe((response: string) => {
+                                this.systemInfo.daysRemaining = response;
+                            });
+                        this.systemInfo.licenseStatus = `${response.LicenseInfo.licenseStatus},${this.systemInfo.daysRemaining}`;
                     }
                 }
 
@@ -77,13 +80,13 @@ export class CmsAboutPanelComponent implements OnInit {
             }
             );
 
-        this.systemInfo.version = "1.0.0";
+        this.systemInfo.version = CMSConstants.APP_VERSION;
     }
 
     /**
-     * Just go back from the about panel.
+     * This method just go back from the about panel.
      * @method goBack
-     * @return {void}
+     * @return void
      */
     private goBack(): void {
         window.history.back();
@@ -92,12 +95,12 @@ export class CmsAboutPanelComponent implements OnInit {
     /**
      * This method fetch year from client and update copyright text
      * @method updateCopyrightText
-     * @return {void}
+     * @return void
      */
     private updateCopyrightText(): void {
         this.translate.get("about.copyrightText", { value: this.appConfig.CopyrightYear }).subscribe((response: string) => {
             this.copyRightText = response;
-            this.loading = false; // hide loading state
+            this.loading = false;
         });
     }
 }

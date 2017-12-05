@@ -155,7 +155,7 @@ describe("CmsLoginComponent", () => {
 
     it("User Login: Success", (done) => {
         debugInstance.user = MockUser;
-        component.onLoginSubmit();
+        debugInstance.onLoginSubmit();
         fixture.detectChanges();
         fixture.whenStable().then(() => {
             let userModel = JSON.parse(storageManager.get(CMS_SESSION_STORAGE_ITEM.USER));
@@ -171,7 +171,7 @@ describe("CmsLoginComponent", () => {
 
     it("User Login: Failure", () => {
         debugInstance.user = {username: "test", password: "password"};
-        component.onLoginSubmit();
+        debugInstance.onLoginSubmit();
         fixture.detectChanges();
         fixture.whenStable().then(() => {
             expect(debugInstance.hasError).toEqual(true);

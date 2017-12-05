@@ -1,14 +1,12 @@
 <div class="page-toolbar">
     <md-toolbar id="sources-panel-toolbar" class="toolbar-theme">
         <span id="sources-panel-back-button-text">{{ panelTitle }}</span>
-
         <span class="fill-remaining-space"></span>
 
         <cms-display-name></cms-display-name>
 
         <span class="fill-remaining-space"></span>
-
-        <button id="sources-panel-reload-button" md-icon-button *ngIf="mStates.reload" (click)="reloadList()">
+        <button id="sources-panel-reload-button" md-icon-button *ngIf="states.reload" (click)="reloadList()">
             <i class="material-icons">refresh</i>
         </button>
         <button id="sources-panel-favorite-button" md-icon-button nd-click-debounce (ndClick)="setFavourite()">
@@ -28,7 +26,7 @@
 </div>
 
 <div class="sources-panel-main">
-    <cms-source-list [tilePresets] = "tilePresets" [displayId]="mDisplayId"  [selectedOnly]="selectedOnly" (change)="onListChanged()" *ngIf="mStates.list" [searchFilter]="searchFilter"
+    <cms-source-list [tilePresets]="tilePresets" [displayId]="displayId"  [selectedOnly]="selectedOnly" (change)="onListChanged()" *ngIf="states.list" [searchFilter]="searchFilter"
         [favoriteFilter]="isFavoriteFilter" (error)="errorMessage = $event"></cms-source-list>
 </div>
 <div class="page-toolbar bottom">

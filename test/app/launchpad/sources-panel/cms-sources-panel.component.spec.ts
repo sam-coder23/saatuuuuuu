@@ -1,4 +1,3 @@
-
 import { TestBed, async, fakeAsync, ComponentFixture, inject, tick, getTestBed } from "@angular/core/testing";
 import { By } from "@angular/platform-browser";
 import { DebugElement, NO_ERRORS_SCHEMA, CUSTOM_ELEMENTS_SCHEMA, Component, Injector } from "@angular/core";
@@ -21,6 +20,7 @@ import { CMSConstants } from "../../../../app/cms/models/cms-constants";
 import { CMS_SESSION_STORAGE_ITEM } from "../../../../app/cms/models/cms-session-storage-item";
 import { Source } from "../../../../app/cms/models/cms-source";
 import { TilePresetManager } from "../../../../app/utils/tilepreset-manager.util";
+import { MockTilersData, MockDisplay, MockSources } from "./cms-sources-mock";
 
 /**
 * Created mock services to fake real services injected into the CmsSourcesPanelComponent
@@ -30,70 +30,6 @@ let activatedRoute = new ActivatedRoute();
 activatedRoute.params = Observable.of({
     id: 1
 });
-
-let mockTilersData = [{
-    "id": 66,
-    "name": "TCR-01S",
-    "description": "",
-    "tags": "",
-    "base": {
-        "rowBound": 1,
-        "colBound": 1
-    },
-    "tiles": [
-        {
-            "left": 0,
-            "top": 0,
-            "width": 1,
-            "height": 1
-        }
-    ],
-    "isDefaultForAllDisplays": true,
-    "noOfTiles": 1,
-    "isGrid": false,
-    "defaultForDisplays": []
-},
-{
-    "id": 69,
-    "name": "TCR-04S",
-    "description": "",
-    "tags": "",
-    "base": {
-        "rowBound": 2,
-        "colBound": 2
-    },
-    "tiles": [
-        {
-            "left": 0,
-            "top": 0,
-            "width": 1,
-            "height": 1
-        },
-        {
-            "left": 1,
-            "top": 0,
-            "width": 1,
-            "height": 1
-        },
-        {
-            "left": 0,
-            "top": 1,
-            "width": 1,
-            "height": 1
-        },
-        {
-            "left": 1,
-            "top": 1,
-            "width": 1,
-            "height": 1
-        }
-    ],
-    "isDefaultForAllDisplays": true,
-    "noOfTiles": 2,
-    "isGrid": false,
-    "defaultForDisplays": []
-}
-];
 
 /**
  * Fake MockCmsSettingService with the below stub
@@ -125,38 +61,6 @@ class MockCmsSettingService {
     ]
 };
 
-let sources: Source[] = [
-    {
-        id: 548,
-        name: "Auto_edited_src11",
-        type: "Web",
-        description: "Auto_edited_desc",
-        snapshotPath: "",
-        x: 0,
-        y: 0,
-        zOrder: -1,
-        width: 100,
-        height: 200,
-        disabled: false,
-        favorite: true,
-        selected: true
-    },
-    {
-        id: 549,
-        name: "Manual_edited_src11",
-        type: "Web",
-        description: "Auto_edited_desc1",
-        snapshotPath: "x/y/z",
-        x: 10,
-        y: 20,
-        zOrder: -1,
-        width: 200,
-        height: 200,
-        disabled: false,
-        favorite: true,
-        selected: false
-    }
-];
 
 class MockCmsApiService {
     getTilers(): Observable<ITilePreset[]> {
@@ -167,7 +71,10 @@ class MockCmsApiService {
         return Observable.of(null);
     }
     getTilePresets(): Observable<ITilePreset[]> {
-        return Observable.of(mockTilersData);
+        return Observable.of(MockTilersData);
+    }
+    getSelectedDisplayContent(displayId){
+        return  Observable.of(MockDisplay);
     }
 
 };
@@ -252,8 +159,8 @@ describe("CmsSourcesPanelComponent", () => {
     it("component should be a defined and initialized with default values and elements", () => {
         expect(component).toBeDefined();
 
-        expect(component.mStates.list).toBeTruthy();
-        expect(component.mStates.reload).toBeFalsy();
+        expect(debugInstance.states.list).toBeTruthy();
+        expect(debugInstance.states.reload).toBeFalsy();
 
         let reLoadButton: DebugElement = fixture.debugElement.query(By.css(".sources-panel-reload-button"));
         expect(reLoadButton).toBeFalsy();
@@ -269,12 +176,12 @@ describe("CmsSourcesPanelComponent", () => {
 
     });
 
-    it("should have max count === 10, also panel title is same as defined pattern and display ID Initialized", () => {
+    it("should have max count === 20", () => {
         component.ngOnInit();
-        expect(debugInstance.mDisplayId).not.toBeNaN();
+        expect(debugInstance.displayId).not.toBeNaN();
         fixture.detectChanges();
         fixture.whenStable().then(() => {
-            expect(debugInstance.panelTitle).toEqual("Select sources");
+            expect(debugInstance.maxSelection).toBe(CMSConstants.MAXSELECTION);
         });
     });
 
@@ -283,7 +190,7 @@ describe("CmsSourcesPanelComponent", () => {
         let bottomToolbar: DebugElement = fixture.debugElement.query(By.css(".page-toolbar.bottom"));
         expect(bottomToolbar).toBeTruthy();
 
-        cmsSettingService.selectedSources = sources;
+        cmsSettingService.selectedSources = MockSources;
         expect(bottomToolbar).toBeTruthy();
     });
 
@@ -303,7 +210,7 @@ describe("CmsSourcesPanelComponent", () => {
         let spyNavigateByUrl = spyOn(router, "navigateByUrl").and.returnValue(null);
         buttonNext.triggerEventHandler("ndClick", null);
         expect(spyNavigateByUrl.calls.count()).toEqual(1);
-        expect(spyNavigateByUrl.calls.argsFor(0)[0]).toEqual(`/displays/${debugInstance.mDisplayId}/tiles-panel?sourceCount=${cmsSettingService.selectedSources.length}`);
+        expect(spyNavigateByUrl.calls.argsFor(0)[0]).toEqual(`/displays/${debugInstance.displayId}/tiles-panel?sourceCount=${cmsSettingService.selectedSources.length}`);
 
     }));
 
@@ -318,17 +225,15 @@ describe("CmsSourcesPanelComponent", () => {
         expect(spyNavigateByUrl.calls.argsFor(0)[0]).toEqual(`/displays-panel`);
     });
 
-
-
     it("should set reload to TRUE on list change", () => {
         component.onListChanged();
-        expect(component.mStates.reload).toBeTruthy();
+        expect(debugInstance.states.reload).toBeTruthy();
     });
 
     it("should set reload and list to FALSE on reload list", () => {
-        component.reloadList();
-        expect(component.mStates.reload).toBeFalsy();
-        expect(component.mStates.list).toBeFalsy();
+        debugInstance.reloadList();
+        expect(debugInstance.states.reload).toBeFalsy();
+        expect(debugInstance.states.list).toBeFalsy();
     });
 
     it("should set searchkey as set to session storage", () => {
@@ -397,8 +302,8 @@ describe("CmsSourcesPanelComponent", () => {
         fixture.detectChanges();
         component.navigateNext();
         let args = spyPutContentsOnDisplay.calls.mostRecent().args;
-        expect(args[0]).toEqual(debugInstance.mDisplayId);
-        expect(args[1]).toEqual(mockTilersData[1].id);
+        expect(args[0]).toEqual(debugInstance.displayId);
+        expect(args[1]).toEqual(MockTilersData[1].id);
         expect(args[2].resources[0].id).toEqual(debugInstance.cmsSettingService.selectedSources[0].id);
         expect(args[2].resources[1].id).toEqual(debugInstance.cmsSettingService.selectedSources[1].id);
         done();
