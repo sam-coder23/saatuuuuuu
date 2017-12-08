@@ -1,7 +1,9 @@
-import { TestBed, inject, async} from "@angular/core/testing";
+import { TestBed, inject, async, fakeAsync, tick } from "@angular/core/testing";
 import { CmsFavoriteService } from "../../../app/shared/cms-favorite.service";
 import { CmsApiService } from "../../../app/cms/api/cms-api.service";
 import { AppConfig } from "../../../app/config";
+import { Observable } from "rxjs/Observable";
+import "rxjs/add/operator/toPromise";
 
 describe("Service: CmsFavoriteService", () => {
 
@@ -64,7 +66,7 @@ describe("Service: CmsFavoriteService", () => {
 
             ]
         }
-    ]
+    ];
 
     let sources = [
         {
@@ -85,9 +87,9 @@ describe("Service: CmsFavoriteService", () => {
             "width": 200.0,
             "height": 200.0,
             "snapshotPath": "https://10.98.0.231/mediaconfiguration?action=get&path=images%2Fsnapshots%2Fsources%2Fsource-defaultimage.jpg",
-            "favorite": false
+            "favorite": true
         }
-    ]
+    ];
 
     let cmsFavoriteService;
     let cmsServerApi;
@@ -97,18 +99,20 @@ describe("Service: CmsFavoriteService", () => {
      * Mocked service for api service
      */
     class MockCmsApiService {
-        markAsFavorite(objectId, objectTypePrefix): Promise<Response> {
-            return new Promise((resolve, reject) => {
-                resolve({ id: `${objectTypePrefix}_{objectId}` });
-                reject(null)
-            });
+        markAsFavorite(objectId, objectTypePrefix): Promise<any> {
+            if (objectId === -1) {
+                return Promise.reject(null);
+            } else {
+                return Promise.resolve({ id: `${objectTypePrefix}_{objectId}` });
+            }
         }
 
-        markAsUnfavorite(objectId, objectTypePrefix): Promise<Response> {
-            return new Promise((resolve, reject) => {
-                resolve({ id: `${objectTypePrefix}_{objectId}` });
-                reject(null)
-            });
+        markAsUnfavorite(objectId, objectTypePrefix): Promise<any> {
+            if (objectId === -1) {
+                return Promise.reject(null);
+            } else {
+                return Promise.resolve({ id: `${objectTypePrefix}_{objectId}` });
+            }
         }
     }
 
@@ -147,32 +151,60 @@ describe("Service: CmsFavoriteService", () => {
         expect(cmsFavoriteService).toBeDefined();
     });
 
-    it("display: Service should mark favorite", async () => {
+    it("display: Service should mark favorite", fakeAsync(() => {
         cmsFavoriteService.markObjectAsFavorite(displays[0].id, displays[0].type, displays);
-        window.setTimeout(() => {
-            expect(displays[0].favorite).toBeTruthy();
-        }, 0);
-    });
+        tick();
+        expect(displays[0].favorite).toBeTruthy();
+    }));
 
-    it("display: Service should unmark favorite display", async () => {
+    it("display: Service should unmark favorite display", fakeAsync(() => {
         cmsFavoriteService.markObjectAsUnfavorite(displays[1].id, displays[1].type, displays);
-        window.setTimeout(() => {
-            expect(displays[1].favorite).toBeFalsy();
-        }, 0);
-    });
+        tick();
+        expect(displays[1].favorite).toBeFalsy();
+    }));
 
-    it("source: Service should mark favorite", async () => {
+    it("source: Service should mark favorite", fakeAsync(() => {
         cmsFavoriteService.markObjectAsFavorite(sources[0].id, sources[0].type, sources);
-        window.setTimeout(() => {
-            expect(sources[0].favorite).toBeTruthy();
-        }, 0);
-    });
+        tick();
+        expect(sources[0].favorite).toBeTruthy();
+    }));
 
-    it("Source: Service should unmark favorite display", async () => {
+    it("Source: Service should unmark favorite display", fakeAsync(() => {
         cmsFavoriteService.markObjectAsUnfavorite(sources[1].id, sources[1].type, sources);
-        window.setTimeout(() => {
-            expect(sources[1].favorite).toBeFalsy();
-        }, 0);
-    });
+        tick();
+        expect(sources[1].favorite).toBeFalsy();
+    }));
 
+    it("Service should return without invoking markAsFavorite API when objectType is empty", fakeAsync(() => {
+        let spyMarkAsFavorite = spyOn(cmsServerApi, "markAsFavorite").and.returnValue(Observable.of(null));
+        cmsFavoriteService.markObjectAsFavorite(0, "", []);
+        tick();
+        expect(spyMarkAsFavorite.calls.count()).toEqual(0);
+    }));
+
+    it("Service should return without invoking markAsUnFavorite API when objectType is empty", fakeAsync(() => {
+        let spyMarkAsUnFavorite = spyOn(cmsServerApi, "markAsUnfavorite").and.returnValue(Observable.of(null));
+        cmsFavoriteService.markObjectAsUnfavorite(0, "", []);
+        tick();
+        expect(spyMarkAsUnFavorite.calls.count()).toEqual(0);
+    }));
+
+    it("Service should throw error while invoking markAsFavorite API", fakeAsync(() => {
+        cmsFavoriteService.markObjectAsFavorite(-1, displays[0].type, displays);
+        tick();
+        expect(cmsFavoriteService.refreshSnapshot).toBeTruthy();
+    }));
+
+    it("Service should throw error while invoking markAsUnFavorite API", fakeAsync(() => {
+        cmsFavoriteService.markObjectAsUnfavorite(-1, displays[0].type, displays);
+        tick();
+        expect(cmsFavoriteService.refreshSnapshot).toBeTruthy();
+    }));
+
+    it("display: Service should remove card from list when favourite filter is active", fakeAsync(() => {
+        cmsFavoriteService.markObjectAsUnfavorite(displays[1].id, displays[1].type, displays, true);
+        tick();
+        expect(displays.length).toEqual(1);
+        expect(cmsFavoriteService.refreshSnapshot).toBeTruthy();
+    }));
 });
