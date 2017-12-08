@@ -9,12 +9,7 @@ import { Router, ActivatedRoute, Params } from "@angular/router";
 import { CMSConstants } from "../../cms/models/cms-constants";
 import { CmsApiService } from "../../cms/api/cms-api.service";
 
-@Component({
-    //moduleId: module.id,
-    selector: "cms-displays-panel",
-    template: require("./cms-displays-panel.component.html"),
-    styles: [require("./cms-displays-panel.component.scss")]
-})
+
 
 /**
  * This class will hold the logic of cms displays panel and hold layout of a displays page which includes toolbar and display list
@@ -27,16 +22,20 @@ import { CmsApiService } from "../../cms/api/cms-api.service";
  * @property {number} selectedDisplayId
  * @property {object} viewState
  */
+@Component({
+    //moduleId: module.id,
+    selector: "cms-displays-panel",
+    template: require("./cms-displays-panel.component.html"),
+    styles: [require("./cms-displays-panel.component.scss")]
+})
 export class CmsDisplaysPanelComponent implements OnInit, AfterViewInit {
     private isFavoriteFilter: boolean;
     private searchFilter: string;
     private searchKey: string;
     private isSelectDisplayView: boolean = false;
-    private selectedDisplayId: number;
 
     // all boolean states for the template
     private viewState = {
-        back: false,
         reload: false,
         list: true
     };
@@ -52,14 +51,6 @@ export class CmsDisplaysPanelComponent implements OnInit, AfterViewInit {
     }
 
     public ngOnInit() {
-        // disable back button if no display is selected
-        this.viewState.back = this.isDisplaySelected();
-
-        if (this.isDisplaySelected()) {
-            let display = <Display>JSON.parse(window.sessionStorage.getItem(CMS_SESSION_STORAGE_ITEM.DISPLAY));
-            this.selectedDisplayId = display.id;
-        }
-
         this.route.params.forEach((params: Params) => {
             let actionParam = params["action"];
 
@@ -102,8 +93,6 @@ export class CmsDisplaysPanelComponent implements OnInit, AfterViewInit {
      * @return void
      */
     private onListChanged(): void {
-        // disable back button if no display is selected
-        this.viewState.back = this.isDisplaySelected();
         this.viewState.reload = true;
     }
 
