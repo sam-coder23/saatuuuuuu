@@ -11,23 +11,21 @@ import { Source } from "./cms-source";
  */
 export class TileContent extends Source {
     public resourceId: number;
-	public lastModified: string;
+    public lastModified: string;
     public absoluteSize: Tile;
 
     constructor(contentModel) {
-        if (!contentModel) {
-            return null;
-        };
-        super(contentModel);
-        this.resourceId = contentModel.resourceId;
-        this.lastModified = contentModel.lastModified;
-        if (contentModel.absoluteSize) {
-            if (contentModel.absoluteSize instanceof Tile) {
-                this.absoluteSize = contentModel.absoluteSize;
-            } 
-            else {
-                this.absoluteSize = new Tile(contentModel.absoluteSize);
+        if (contentModel) {
+            super(contentModel);
+            this.resourceId = contentModel.resourceId;
+            this.lastModified = contentModel.lastModified;
+            if (contentModel.absoluteSize) {
+                if (contentModel.absoluteSize instanceof Tile) {
+                    this.absoluteSize = contentModel.absoluteSize;
+                } else {
+                    this.absoluteSize = new Tile(contentModel.absoluteSize);
+                }
             }
-        } 
+        }
     }
 }

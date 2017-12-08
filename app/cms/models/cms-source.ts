@@ -21,16 +21,15 @@ export class Source extends CmsResource {
     public selected?: boolean;
 
     constructor(sourceModel) {
-        if (!sourceModel) {
-            return null;
-        };
-        super(sourceModel);
-        this.type = sourceModel.type;
-        this.x = sourceModel.x;
-        this.y = sourceModel.y;
-        this.zOrder = sourceModel.zOrder;
-        this.width = sourceModel.width;
-        this.height = sourceModel.height;
-        this.selected = sourceModel.selected;
+        if (sourceModel) {
+            super(sourceModel);
+            this.type = sourceModel.type;
+            this.x = sourceModel.x;
+            this.y = sourceModel.y;
+            this.zOrder = sourceModel.zOrder;
+            this.width = sourceModel.width;
+            this.height = sourceModel.height;
+            this.selected = sourceModel.selected;
+        }
     }
 }
