@@ -174,7 +174,7 @@ class MockCmsFavoriteService {
     }
 }
 
-fdescribe("CmsDisplayListComponent", () => {
+describe("CmsDisplayListComponent", () => {
     let component: CmsDisplayListComponent;
     let fixture: ComponentFixture<CmsDisplayListComponent>;
     let cmsSettingsService: CmsSettingsService;
