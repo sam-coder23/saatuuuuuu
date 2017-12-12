@@ -16,6 +16,7 @@ import { CMSConstants } from "../../../../app/cms/models/cms-constants";
 import { Validation } from "../../../../app/core/util/Validation";
 
 class MockCmsApiServiceStub {
+    logoutUser() { }
 }
 
 describe("Component: CmsDisplaysPanelComponent", () => {
@@ -101,7 +102,6 @@ describe("Component: CmsDisplaysPanelComponent", () => {
         cmsDisplaysPanelComponentInstance = new CmsDisplaysPanelComponent(storageManager, appConfig, activatedRoute, cmsServerApi);
         let isDispSelected = cmsDisplaysPanelComponentInstance.isDisplaySelected();
         expect(debugInstance.viewState.reload).toBe(true);
-        expect(debugInstance.viewState.back).toBe(isDispSelected);
         fixture.detectChanges();
 
         let reloadButton = document.getElementById("display-panel-reload-button");
@@ -168,5 +168,16 @@ describe("Component: CmsDisplaysPanelComponent", () => {
         });
     });
 
-})
+    it("should have a logoff button, and it should logoff", async(() => {
+        let apiService = <CmsApiService>fixture.debugElement.injector.get(CmsApiService);
+        let spyLogoutUser = spyOn(apiService, "logoutUser").and.returnValue(null);
+        let logoffButton: DebugElement = fixture.debugElement.query(By.css("#log-off"));
+
+        expect(logoffButton).toBeDefined();
+
+        logoffButton.nativeElement.dispatchEvent(new Event("click"));
+        expect(spyLogoutUser.calls.count()).toEqual(1);
+    }));
+
+});
 
