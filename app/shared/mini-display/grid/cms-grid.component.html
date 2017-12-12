@@ -8,7 +8,7 @@
         <div class="content" *ngFor="let content of contents" [attr.data-content-id]="content.id" 
             [ngStyle]="formattedStyle(content)"
             [ngClass]="{'box-shadow' : showSelected(content.id)}">
-            <div class="source-label-container">
+            <div class="source-label-container"  [ngClass]="{singleline: !isMultiLine, multiline: isMultiLine}">
                 {{content.name}}
             </div>
         </div>

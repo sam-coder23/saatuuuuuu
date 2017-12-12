@@ -46,6 +46,8 @@ export class CmsGridComponent implements OnInit, AfterViewInit {
     private swappingContent: TileContent = null;
     // checking api call state
     private loading: boolean = false;
+    // hold source-label multiline state
+    private isMultiLine: boolean = false;
 
     constructor(
         private elementRef: ElementRef,
@@ -57,6 +59,9 @@ export class CmsGridComponent implements OnInit, AfterViewInit {
     public ngOnInit() {
         // apply source label styles as per user settings
         this.applySourceLabelSettings();
+
+        //set isMultiLine flag
+        this.setSourceLabelMultiLine();
     }
 
     public ngAfterViewInit() {
@@ -92,8 +97,7 @@ export class CmsGridComponent implements OnInit, AfterViewInit {
         } else if (transparency == 100) {
             transparency = 0;
         }
-        let multiline = userSettings.sourceLabel.useMultipleLines ? "normal" : "nowrap";
-        let sourcelabelStyles = `font-size: ${fontSize}px; color: ${fontColor}; white-space: ${multiline}; display: ${isSourceLableEnabled}`;
+        let sourcelabelStyles = `font-size: ${fontSize}px; color: ${fontColor}; display: ${isSourceLableEnabled}`;
         let sourceLableBackgroundStyles = `background: ${background}; opacity: ${transparency}`;
         this.createSourceLableStyleRule(sourcelabelStyles, sourceLableBackgroundStyles);
     }
@@ -285,10 +289,25 @@ export class CmsGridComponent implements OnInit, AfterViewInit {
         if (!Validation.IsNullOrUndefined(this.selectedContent)) {
             if ((contentId === this.selectedContent.id)
                 || (!Validation.IsNullOrUndefined(this.swappingContent) &&
-                 (this.swappingContent.id) === contentId)) {
+                    (this.swappingContent.id) === contentId)) {
                 return true;
             }
         }
         return false;
+    }
+
+    /**
+     * This method user settings for source Lable Multiline state
+     * @method setSourceLabelMultiLine 
+     * @return {void} 
+     */
+    private setSourceLabelMultiLine() {
+        let multiLine = false;
+
+        if (this.cmsSettingsService && this.cmsSettingsService.userSettings && this.cmsSettingsService.userSettings.sourceLabel) {
+            multiLine = this.cmsSettingsService.userSettings.sourceLabel.useMultipleLines;
+        }
+
+        this.isMultiLine = multiLine;
     }
 }
