@@ -233,17 +233,17 @@ describe("CmsLaunchpadComponent", () => {
                 expect(cmsSettingsService.userSettings).toEqual(JSON.parse(storageManager.get(CMS_SESSION_STORAGE_ITEM.SETTINGS)));
                 expect(cmsSettingsService.userSettings.language).toEqual(appConfig.DefaultLanguage);
                 nativeElement.click();
-                setTimeout(() => {
+                delay(2000).then(() => {
                     expect(cmsApiService.logoutUser).toHaveBeenCalled();
 
                     cmsSettingsService.userSettings.logOffTime = 10;
                     let userLastActionTime = storageManager.get(CMS_SESSION_STORAGE_ITEM.USER_LASTACTION_TIME);
                     nativeElement.click();
-                    setTimeout(() => {
+                    delay(1500).then(() => {
                         expect(parseInt(userLastActionTime)).toBeLessThanOrEqual(parseInt(storageManager.get(CMS_SESSION_STORAGE_ITEM.USER_LASTACTION_TIME)));
                         done();
-                    }, 1500);
-                }, 2000);
+                    });
+                });
 
                 debugInstance.applicationLevelEvent.next(
                     {
@@ -333,14 +333,14 @@ describe("CmsLaunchpadComponent", () => {
                 storageManager.remove(CMS_SESSION_STORAGE_ITEM.USER_LASTACTION_TIME);
                 cmsSettingsService.userSettings.logOffTime = 5;
                 nativeElement.click();
-                setTimeout(() => {
+                delay(2000).then(() => {
                     expect(parseInt(debugInstance.userLastActionTime)).toBeLessThanOrEqual(parseInt(storageManager.get(CMS_SESSION_STORAGE_ITEM.USER_LASTACTION_TIME)));
                     nativeElement.click();
-                    setTimeout(() => {
+                    delay(1500).then(() => {
                         expect(parseInt(debugInstance.userLastActionTime)).toBeLessThanOrEqual(parseInt(storageManager.get(CMS_SESSION_STORAGE_ITEM.USER_LASTACTION_TIME)));
                         done();
-                    }, 1500);
-                }, 2000);
+                    });
+                });
             });
         });
 
