@@ -45,7 +45,7 @@ class MockCmsApiService {
     }
 
     logoutUser() {
-        
+
     }
 
     makeSessionExpire() {
@@ -181,7 +181,6 @@ describe("CmsLaunchpadComponent", () => {
             spyOn(evtWheel, "preventDefault");
             window.document.dispatchEvent(evtWheel);
             expect(evtWheel.preventDefault).toHaveBeenCalled();
-
             let whichList = [61, 173, 107, 109, 187, 189, 116, 82];
             for (let whichListIndex = 0; whichListIndex < whichList.length; whichListIndex++) {
                 let evtKeyDown = new KeyboardEvent("keydown", { ctrlKey: true });
@@ -191,9 +190,9 @@ describe("CmsLaunchpadComponent", () => {
                 expect(evtKeyDown.preventDefault).toHaveBeenCalled();
             }
 
-            let evtTouchStart = new KeyboardEvent("touchstart");
-            Object.defineProperty(evtTouchStart, "touches", { get: function () { return [1, 2]; } });
+            let evtTouchStart = new Event("touchstart");
             spyOn(evtTouchStart, "preventDefault");
+            Object.defineProperty(evtTouchStart, "touches", { get: function () { return [1, 2]; } });
             window.document.dispatchEvent(evtTouchStart);
             expect(evtTouchStart.preventDefault).toHaveBeenCalled();
 
@@ -230,21 +229,21 @@ describe("CmsLaunchpadComponent", () => {
             fixture.detectChanges();
             fixture.whenStable().then(() => {
                 expect(cmsApiService.reconnectSessionWithServer).toHaveBeenCalled();
-               
+
                 expect(cmsSettingsService.userSettings).toEqual(JSON.parse(storageManager.get(CMS_SESSION_STORAGE_ITEM.SETTINGS)));
                 expect(cmsSettingsService.userSettings.language).toEqual(appConfig.DefaultLanguage);
                 nativeElement.click();
-                setTimeout(() => {
+                delay(2000).then(() => {
                     expect(cmsApiService.logoutUser).toHaveBeenCalled();
 
                     cmsSettingsService.userSettings.logOffTime = 10;
                     let userLastActionTime = storageManager.get(CMS_SESSION_STORAGE_ITEM.USER_LASTACTION_TIME);
                     nativeElement.click();
-                    setTimeout(() => {
-                        expect(parseInt(userLastActionTime)).toBeLessThan(parseInt(storageManager.get(CMS_SESSION_STORAGE_ITEM.USER_LASTACTION_TIME)));
+                    delay(1500).then(() => {
+                        expect(parseInt(userLastActionTime)).toBeLessThanOrEqual(parseInt(storageManager.get(CMS_SESSION_STORAGE_ITEM.USER_LASTACTION_TIME)));
                         done();
-                    }, 1500);
-                }, 2000);
+                    });
+                });
 
                 debugInstance.applicationLevelEvent.next(
                     {
@@ -288,13 +287,60 @@ describe("CmsLaunchpadComponent", () => {
                                 expect(debugInstance.showProgressDialog).toBeFalsy();
                                 expect(debugInstance.showSystemDialog).toBeTruthy();
                                 fixture.detectChanges();
+                                let popup = nativeElement.querySelector("nd-popup");
                                 let popupBody = nativeElement.querySelector("nd-popup popup-body");
                                 expect(popupBody.innerText).toEqual("Connection with the server is now established! Perform login again.");
+                                popup.dispatchEvent(new Event("done"));
+                                expect(debugInstance.showSystemDialog).toBeFalsy();
+                                debugInstance.applicationLevelEvent.next(
+                                    {
+                                        "eventType": "system",
+                                        "eventName": "system"
+                                    }
+                                );
+
+                                fixture.whenStable().then(() => {
+                                    popup.dispatchEvent(new Event("done"));
+                                    expect(cmsApiService.logoutUser).toHaveBeenCalled();
+
+                                    debugInstance.applicationEventType = "";
+                                    storageManager.remove(CMS_SESSION_STORAGE_ITEM.USER);
+
+                                    debugInstance.applicationLevelEvent.next(
+                                        {
+                                            "eventType": "not permission",
+                                            "eventName": "ServerConnected"
+                                        }
+                                    );
+
+                                    fixture.whenStable().then(() => {
+                                        expect(debugInstance.applicationEventType).toEqual("");
+                                    });
+
+                                });
                             });
                         });
                     });
                 });
+            });
+        });
 
+    it(`should reset last action time`, (done) => {
+            storageManager.set(CMS_SESSION_STORAGE_ITEM.USER, JSON.stringify(userData));
+            storageManager.set(CMS_SESSION_STORAGE_ITEM.SETTINGS, JSON.stringify(settingsData));
+            fixture.detectChanges();
+            fixture.whenStable().then(() => {
+                storageManager.remove(CMS_SESSION_STORAGE_ITEM.USER_LASTACTION_TIME);
+                cmsSettingsService.userSettings.logOffTime = 5;
+                nativeElement.click();
+                delay(2000).then(() => {
+                    expect(parseInt(debugInstance.userLastActionTime)).toBeLessThanOrEqual(parseInt(storageManager.get(CMS_SESSION_STORAGE_ITEM.USER_LASTACTION_TIME)));
+                    nativeElement.click();
+                    delay(1500).then(() => {
+                        expect(parseInt(debugInstance.userLastActionTime)).toBeLessThanOrEqual(parseInt(storageManager.get(CMS_SESSION_STORAGE_ITEM.USER_LASTACTION_TIME)));
+                        done();
+                    });
+                });
             });
         });
 
@@ -339,6 +385,15 @@ describe("CmsLaunchpadComponent", () => {
             spyOn(window, "clearTimeout");
             nativeElement.dispatchEvent(new Event("input"));
             expect(window.clearTimeout).toHaveBeenCalled();
+        });
+    }));
+
+    it("should set user last action time", async(() => {
+        storageManager.set(CMS_SESSION_STORAGE_ITEM.USER, JSON.stringify(userData));
+        storageManager.remove(CMS_SESSION_STORAGE_ITEM.SETTINGS);
+        component.ngOnInit();
+        fixture.whenStable().then(() => {
+            expect(cmsSettingsService.userSettings).toBeUndefined();
         });
     }));
 });

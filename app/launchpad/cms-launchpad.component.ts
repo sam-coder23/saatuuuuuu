@@ -112,9 +112,8 @@ export class CmsLaunchpadComponent implements OnInit, OnDestroy {
       let settingsStorageData = this.storageManager.get(CMS_SESSION_STORAGE_ITEM.SETTINGS);
       if (settingsStorageData) {
         this.cmsSettingsService.userSettings = JSON.parse(settingsStorageData);
-        if (!this.cmsSettingsService.userSettings) {
-          this.appConfig.error("ERR_NO_USER_SETTINGS: No user settings found after refresh.");
-        }
+      } else {
+        this.appConfig.error("ERR_NO_USER_SETTINGS: No user settings found after refresh.");
       }
 
       // apply user"s selected language
@@ -306,13 +305,12 @@ export class CmsLaunchpadComponent implements OnInit, OnDestroy {
       if (userAutoLogOffTime > 0) {
         //update local property from sessionStorage
         this.userLastActionTime = this.storageManager.get(CMS_SESSION_STORAGE_ITEM.USER_LASTACTION_TIME);
-
         if (!this.userLastActionTime) {
           // set user last action time if it is not present in sessionStorage
           this.userLastActionTime = Date.now();
           this.storageManager.set(CMS_SESSION_STORAGE_ITEM.USER_LASTACTION_TIME, Date.now());
         }
-        else if (this.userLastActionTime) {
+        else {
           let userCurrentActionTime = Date.now();
           let timeDiff = userCurrentActionTime - this.userLastActionTime;
           let minDiff = timeDiff / 60 / 1000;
