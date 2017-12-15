@@ -1,12 +1,12 @@
 import { ComponentFixture, TestBed, async, inject } from "@angular/core/testing";
 import { By } from "@angular/platform-browser";
-import { NO_ERRORS_SCHEMA, DebugElement } from "@angular/core";
+import { NO_ERRORS_SCHEMA, DebugElement, SimpleChange } from "@angular/core";
 import { Observable } from "rxjs/Observable";
 import { HttpModule, Http } from "@angular/http";
 import { MaterialModule } from "@angular/material";
 import { FormsModule } from "@angular/forms";
 import { Router } from "@angular/router";
-import { TranslateService, TranslateModule, TranslateLoader } from "@ngx-translate/core";
+import { TranslateModule, TranslateLoader } from "@ngx-translate/core";
 import { TranslateHttpLoader } from "@ngx-translate/http-loader";
 import { CmsCardComponent } from "../../../../app/shared/card/cms-card.component";
 import { AppConfig } from "../../../../app/config";
@@ -49,12 +49,11 @@ let MockDisplay = {
 
 class MockAppConfig {
     log() { }
-}
+};
 
 class MockCmsFavoriteService {
-    refreshSnapshot = true
-}
-
+    refreshSnapshot = true;
+};
 
 describe("CmsCardComponent", () => {
     let component: CmsCardComponent;
@@ -65,7 +64,7 @@ describe("CmsCardComponent", () => {
     let fixture2: ComponentFixture<CmsCardComponent>;
     let debugInstance2;
     let regEx = /&_=\d{10,14}/g;
-
+    let localHostRegEx = /localhost:3000/g;
     let card;
 
     beforeEach(async(() => {
@@ -109,7 +108,7 @@ describe("CmsCardComponent", () => {
         component.multi = false;
     });
 
-    it("Cms card should be defined", () => {
+    it("should define CMS-Card", () => {
         expect(component).toBeDefined();
 
         fixture.detectChanges();
@@ -153,14 +152,42 @@ describe("CmsCardComponent", () => {
         component2.card = new CmsResource(MockDisplay);
         component2.multi = false;
 
-        // trigger ngOnInit
-        component2.ngOnInit();
-
-        fixture.detectChanges();
-        fixture.whenStable().then(() => {
+        fixture2.detectChanges();
+        fixture2.whenStable().then(() => {
             let isTimeStamped = regEx.test(debugInstance2.cardSnapshot);
             expect(isTimeStamped).toBeFalsy();
         });
     });
 
+    it("Should not convert IPToHost when snapshot path has not an IP addresss", () => {
+        let snapshotPath = "localhost:3000//mediaconfiguration?action=get&path=images%2Fsnapshots%2Fdisplays%2F1.jpeg";
+
+        MockDisplay.snapshotPath = snapshotPath;
+        component2.card = new CmsResource(MockDisplay);
+        component2.ngOnInit();
+
+        expect(localHostRegEx.test(debugInstance2.cardSnapshot)).toBeTruthy();
+
+    });
+
+    it("Should be set refreshsnapshot and isFavorite on ngOnChanges event", () => {
+        component2.card.favorite = true;
+
+        component2.ngOnChanges({
+            favorite: new SimpleChange(null, component2.card.favorite)
+        });
+
+        expect(debugInstance2.favoriteService.refreshSnapshot).toBeTruthy();
+        expect(debugInstance2.isFavorite).toBeTruthy();
+    });
+
+    it("Should not emit event for disabled card", () => {
+        component2.card.disabled = true;
+
+        let card = fixture2.nativeElement.querySelector(".card");
+        spyOn(component2.selectedEventEmitter, "emit");
+        debugInstance2.selectCard(component2.card);
+
+        expect(component2.selectedEventEmitter.emit).not.toHaveBeenCalled();
+    });
 });

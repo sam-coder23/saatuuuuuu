@@ -55,8 +55,8 @@ export class CmsCardComponent implements OnInit, OnChanges {
         let snapshotPath = this.card.snapshotPath;
         this.isFavorite = this.card.favorite;
         if (snapshotPath && this.refreshSnapshot === true) {
-            if (Url.HasHostName() && !Validation.IsNullOrUndefined(snapshotPath) 
-            && Url.HasIP(snapshotPath)) {
+            if (Url.HasHostName() && !Validation.IsNullOrUndefined(snapshotPath)
+                && Url.HasIP(snapshotPath)) {
                 this.cardSnapshot = RegExManager.IPToHost(snapshotPath, this.appConfig.Host);
             }
             else {
@@ -86,12 +86,8 @@ export class CmsCardComponent implements OnInit, OnChanges {
         if (card.disabled) {
             return;
         }
-        if (card instanceof Source) {
-            this.selectedEventEmitter.emit((<Source>card).selected);
-        }
-        else {
-            this.selectedEventEmitter.emit();
-        }
+        
+        this.selectedEventEmitter.emit();
     }
 
     /**
