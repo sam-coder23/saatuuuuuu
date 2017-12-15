@@ -205,17 +205,22 @@ export class CmsSourcesPanelComponent implements OnInit {
         let selectedSourceMatched = false;
         this.cmsServerApi.getSelectedDisplayContent(this.displayId).subscribe((display) => {
             let sharedcontent = display.content;
-            for (let selectedSourceIndex = 0; selectedSourceIndex < selectedSources.length; selectedSourceIndex++) {
-                let source = selectedSources[selectedSourceIndex];
-                for (let contentIndex = 0; contentIndex < sharedcontent.length; contentIndex++) {
-                    if ((source.id === sharedcontent[contentIndex].resourceId) && (source.type.toLowerCase() === sharedcontent[contentIndex].type.toLowerCase())) {
-                        selectedSourceMatched = true;
-                        break;
-                    }
-                    else {
-                        selectedSourceMatched = false;
+            if (selectedSources.length === sharedcontent.length) {
+                for (let selectedSourceIndex = 0; selectedSourceIndex < selectedSources.length; selectedSourceIndex++) {
+                    let source = selectedSources[selectedSourceIndex];
+                    for (let contentIndex = 0; contentIndex < sharedcontent.length; contentIndex++) {
+                        if ((source.id === sharedcontent[contentIndex].resourceId) && (source.type.toLowerCase() === sharedcontent[contentIndex].type.toLowerCase())) {
+                            selectedSourceMatched = true;
+                            break;
+                        }
+                        else {
+                            selectedSourceMatched = false;
+                        }
                     }
                 }
+            }
+            else {
+                selectedSourceMatched = false;
             }
 
             if (typeof callback === "function") {
