@@ -53,12 +53,7 @@ export class CmsMiniDisplayComponent implements OnInit, OnChanges, OnDestroy {
     @Input() fitHeight: number;
     // required for zooming, sets and gets zoom level in integer
     @Output("onZoom") zoomLevelEventEmitter: EventEmitter<number> = new EventEmitter<number>();
-    /**
-     * This will reponsible to commmunicate to its parent component once
-     * display get update from event coming server
-     * @Output {EventEmitter<any>} displayUpdate
-     */
-    @Output("displayUpdate") displayUpdateEventEmitter: EventEmitter<any> = new EventEmitter<any>();
+
     // it will contain mini display style
     private miniDisplayStyle: any = {
         width: "98%",
@@ -109,7 +104,7 @@ export class CmsMiniDisplayComponent implements OnInit, OnChanges, OnDestroy {
         //Initating the domManager instance
         this.domManager = new DomManager(this.element);
     }
-   
+
     public ngOnInit() {
         if (this.miniDisplayHelper.display && this.miniDisplayHelper.display.id !== this.display.id) {
             this.miniDisplayHelper.init();
@@ -266,28 +261,28 @@ export class CmsMiniDisplayComponent implements OnInit, OnChanges, OnDestroy {
      * This method handles various events corresponding to mini-display tiler and content.
      * @method handleMiniDisplayChangeEvent
      * @param {string} anEventType Specifies the type of the event.
-     * @param {any} aResponseBody speciefies the body Object for the event.
+     * @param {any} responseBody speciefies the body Object for the event.
      * @return {void}
      */
-    private handleMiniDisplayChangeEvent(anEventType: string, aResponseBody: any) {
+    private handleMiniDisplayChangeEvent(anEventType: string, responseBody: any) {
         switch (anEventType) {
             // This event is received when tiles list and content list is updated on changing layout,
             // changing tiler, addition/deletion of content and updation of z-order.
             case "TilerAndContentUpdated":
-                if (!Validation.IsUndefined(aResponseBody.tiles)) {
-                    if (aResponseBody.tiles.length > 0) {
-                        this.miniDisplayTilerList = this.miniDisplayHelper.calculateAdjustedViewTilerRectangles(aResponseBody.tiles);
-                        this.displayTilerList = aResponseBody.tiles;
+                if (!Validation.IsUndefined(responseBody.tiles)) {
+                    if (responseBody.tiles.length > 0) {
+                        this.miniDisplayTilerList = this.miniDisplayHelper.calculateAdjustedViewTilerRectangles(responseBody.tiles);
+                        this.displayTilerList = responseBody.tiles;
                     }
                     else {
                         this.miniDisplayTilerList = [];
                         this.displayTilerList = [];
                     }
                 }
-                if (!Validation.IsUndefined(aResponseBody.content)) {
-                    if (aResponseBody.content.length > 0) {
+                if (!Validation.IsUndefined(responseBody.content)) {
+                    if (responseBody.content.length > 0) {
                         this.miniDisplayContentList = this.miniDisplayHelper.calculateAdjustedViewSourceRectangles(
-                            aResponseBody.content,
+                            responseBody.content,
                             this.miniDisplayContentList, false
                         );
                     }
@@ -310,41 +305,39 @@ export class CmsMiniDisplayComponent implements OnInit, OnChanges, OnDestroy {
                             newContentList[index] = this.miniDisplayContentList[index];
                         }
                         for (let index = 0; index < newContentList.length; index++) {
-                            if (newContentList[index].id === aResponseBody.content.id) {
+                            if (newContentList[index].id === responseBody.content.id) {
                                 newContentList[index] = this.miniDisplayHelper
-                                    .calculateAdjustedViewSourceRectangle(aResponseBody.content, [], true);
+                                    .calculateAdjustedViewSourceRectangle(responseBody.content, [], true);
                                 break;
                             }
                         }
 
                         this.miniDisplayContentList = newContentList;
                         this.appConfig.log(`CmsMiniDisplayComponent: handleMiniDisplayChangeEvent:: 
-                        Content [id: ${aResponseBody.content.id}] size or position updated.`);
+                        Content [id: ${responseBody.content.id}] size or position updated.`);
                     }
                 }
                 break;
 
             // This event is received when current display property is updated
-            case "DISPLAY_UPDATED":
-                let display = JSON.parse(this.storageManager.get(CMS_SESSION_STORAGE_ITEM.DISPLAY));
-                // update display name in the toolbar
-                if (display.name !== aResponseBody.name) {
-                    this.displayUpdateEventEmitter.emit(aResponseBody);
-                }
+            case "DisplayUpdated":
+                
+                let display = new Display(JSON.parse(this.storageManager.get(CMS_SESSION_STORAGE_ITEM.DISPLAY)));
+                let displayResponse = new Display(responseBody);
                 // Re-initialize mini display when width or height of mini-display is changed
-                if (display.width !== aResponseBody.width || display.height !== aResponseBody.height) {
+                if (display.width !== displayResponse.width || display.height !== displayResponse.height) {
                     this.initDisplayTileInfoWithContent();
                 }
                 // update display stored in session storage
-                this.storageManager.set(CMS_SESSION_STORAGE_ITEM.DISPLAY, JSON.stringify(aResponseBody));
+                this.storageManager.set(CMS_SESSION_STORAGE_ITEM.DISPLAY, JSON.stringify(displayResponse));
                 break;
 
             // This event is received when current display is deleted
             case "DisplayDeleted":
 
-                if (this.display.id === aResponseBody.id) {
+                if (this.display.id === responseBody.id) {
                     this.appConfig.log(`CmsMiniDisplayComponent: handleMiniDisplayChangeEvent:: 
-                    Current display [id: ${aResponseBody.id}] deleted. Routing to display list.`);
+                    Current display [id: ${responseBody.id}] deleted. Routing to display list.`);
                     // remove display from session storage and route to display list
                     this.storageManager.remove(CMS_SESSION_STORAGE_ITEM.DISPLAY);
                     this.router.navigate(["/displays-panel"]);
@@ -353,6 +346,7 @@ export class CmsMiniDisplayComponent implements OnInit, OnChanges, OnDestroy {
 
             // This event is received when source on tile is updated
             case "ResourceUpdated":
+
                 if (!Validation.IsUndefined(this.miniDisplayContentList)) {
                     if (this.miniDisplayContentList.length > 0) {
                         let newContentList: TileContent[] = new Array(this.miniDisplayContentList.length);
@@ -360,17 +354,17 @@ export class CmsMiniDisplayComponent implements OnInit, OnChanges, OnDestroy {
                             newContentList[index] = this.miniDisplayContentList[index];
                         }
                         for (let index = 0; index < newContentList.length; index++) {
-                            if (newContentList[index].resourceId === aResponseBody.id
-                                && newContentList[index].type === aResponseBody.type) {
-                                newContentList[index].name = aResponseBody.name;
-                                newContentList[index].snapshotPath = aResponseBody.snapshotpath;
+                            if (newContentList[index].resourceId === responseBody.id
+                                && newContentList[index].type === responseBody.type) {
+                                newContentList[index].name = responseBody.name;
+                                newContentList[index].snapshotPath = responseBody.snapshotPath;
                                 newContentList[index].lastModified = Date.now().toString();
                                 break;
                             }
                         }
                         this.miniDisplayContentList = newContentList;
                         this.appConfig.log(`CmsMiniDisplayComponent: handleMiniDisplayChangeEvent:: 
-                        Content source [id: ${aResponseBody.id}] updated with name or snapshot path.`);
+                        Content source [id: ${responseBody.id}] updated with name or snapshot path.`);
                     }
                 }
                 break;
@@ -379,9 +373,9 @@ export class CmsMiniDisplayComponent implements OnInit, OnChanges, OnDestroy {
             case "ResourceDeleted":
                 if (!Validation.IsUndefined(this.miniDisplayContentList)) {
                     this.miniDisplayContentList = this.miniDisplayContentList
-                        .filter(content => content.resourceId !== aResponseBody.id);
+                        .filter(content => content.resourceId !== responseBody.id);
                     this.appConfig.log(`CmsMiniDisplayComponent: handleMiniDisplayChangeEvent:: 
-                    Content source [id: ${aResponseBody.id}] removed.`);
+                    Content source [id: ${responseBody.id}] removed.`);
                     this.checkDisplayContentVisibility();
                 }
                 break;

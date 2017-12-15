@@ -40,8 +40,8 @@ class CmsMiniDisplayServiceStub {
     private miniDisplaySize: any;
     private displaySize: any;
     private zoomLevel: number;
-    public display: MockDisplay = mDisplay;
-    
+    public display: MockDisplay = mockDisplay;
+
     public init() {
         this.display = null;
         this.zoomLevel = 0;
@@ -51,13 +51,21 @@ class CmsMiniDisplayServiceStub {
         this.windowResizeEndEvent = Observable.fromEvent(window, "resize").debounce(() => Observable.timer(500));
         this.panend = false;
     }
-    
-    getMiniDisplayTilerInfoWithContent(): Observable<any> {
-        return Observable.of(miniDisplay);
+
+    getMiniDisplayTilerInfoWithContent(displayId: number, container: HTMLElement): Observable<any> {
+        if (displayId === -1) {
+            return Observable.throw(null);
+        } else {
+            return Observable.of(miniDisplay);
+        }
     }
 
     calculateAdjustedViewTilerRectangles(aDisplayTilerList: Tile[]): Tile[] {
         return reFactoredTile;
+    }
+
+    calculateAdjustedViewSourceRectangle(): TileContent {
+        return reFactoredTileContent;
     }
 
     calculateAdjustedViewSourceRectangles(): TileContent[] {
@@ -76,33 +84,58 @@ const reFactoredTile: Tile[] = [
     }
 ];
 
-const reFactoredSource: TileContent[] =[{
-        "id": 35,
-        "name": "XYZ refactored",
-        "type": "Perspective",
-        "resourceId": 75,
-        "x": 0.5727923293933467,
-        "y": 1.0861839727755316,
-        "width": 98.85441534121331,
-        "height": 97.82763205444894,
-        "description": "La",
-        "disabled" : false,
-        "favorite" : false,
-        "snapshotPath": "",
-        "zOrder": 1,
-        "absoluteSize": {
-            "width": 2048,
-            "height": 1080,
-            "left": 0,
-            "top": 0,
-            "x": 0.8397480038430362,
-            "y": 2.687193612297716
-        },
-        "lastModified": "1510741729389"
-    }
-    ]
+const reFactoredSource: TileContent[] = [{
+    "id": 35,
+    "name": "XYZ refactored",
+    "type": "Perspective",
+    "resourceId": 75,
+    "x": 0.5727923293933467,
+    "y": 1.0861839727755316,
+    "width": 98.85441534121331,
+    "height": 97.82763205444894,
+    "description": "La",
+    "disabled": false,
+    "favorite": false,
+    "snapshotPath": "",
+    "zOrder": 1,
+    "absoluteSize": {
+        "width": 2048,
+        "height": 1080,
+        "left": 0,
+        "top": 0,
+        "x": 0.8397480038430362,
+        "y": 2.687193612297716
+    },
+    "lastModified": "1510741729389"
+}
+]
 
-const mDisplay: MockDisplay = {
+const reFactoredTileContent: TileContent = {
+    "id": 35,
+    "name": "XYZ refactored",
+    "type": "Perspective",
+    "resourceId": 75,
+    "x": 57.27923293933467,
+    "y": 1.0861839727755316,
+    "width": 98.85441534121331,
+    "height": 97.82763205444894,
+    "description": "La",
+    "disabled": false,
+    "favorite": false,
+    "snapshotPath": "",
+    "zOrder": 1,
+    "absoluteSize": {
+        "width": 2048,
+        "height": 1080,
+        "left": 0,
+        "top": 0,
+        "x": 0.8397480038430362,
+        "y": 2.687193612297716
+    },
+    "lastModified": "1510741729391"
+}
+
+const mockDisplay: MockDisplay = {
     "type": "NGPWall",
     "id": 56,
     "name": "ngp_display",
@@ -111,6 +144,25 @@ const mDisplay: MockDisplay = {
     "resolution": {
         "width": 1280,
         "height": 1024
+    },
+    "online": false,
+    "favorite": false,
+    "disabled": false,
+    "width": 1280,
+    "height": 1024,
+    "tiles": [],
+    "content": []
+}
+
+const mockDisplayForService: MockDisplay = {
+    "type": "NGPWall",
+    "id": 2,
+    "name": "Demo Room, USA",
+    "description": "Customer Demo Center\r5th floor, room 5.01,\rPhone +49 123 456-141",
+    "snapshotPath": "",
+    "resolution": {
+        "width": 1600,
+        "height": 900
     },
     "online": false,
     "favorite": false,
@@ -194,8 +246,10 @@ const EventCases: any = {
         "type": "NGPWall",
         "id": 561,
         "name": "ngp_display",
-        "width": 1288,
-        "height": 1029,
+        "resolution": {
+            "width": 1288,
+            "height": 1029
+        }
     },
     "DisplayDeleted": {
         "type": "NGPWall",
@@ -223,8 +277,33 @@ const EventCases: any = {
         "content": [{
             "height": 1080,
             "id": 58,
+        }]
+    },
+    "ContentUpdated": {
+        "content": {
+            "id": 35,
+            "name": "XYZ refactored",
+            "type": "Perspective",
+            "resourceId": 75,
+            "x": 0.5727923293933467,
+            "y": 1.0861839727755316,
+            "width": 98.85441534121331,
+            "height": 97.82763205444894,
+            "description": "La",
+            "snapshotPath": "",
+            "zOrder": 1
         }
-        ]
+    },
+    "ResourceUpdated": {
+        "id": 75,
+        "name": "ABC refactored",
+        "type": "Perspective",
+        "dimensions": {
+            "width": 600,
+            "height": 450
+        },
+        "description": "La",
+        "snapshotPath": "some path",
     }
 }
 
@@ -233,12 +312,14 @@ export {
     MiniDisplay,
     MockDisplay,
     MockElementRef,
-    mDisplay,
+    mockDisplay,
+    mockDisplayForService,
     miniDisplay,
     CmsMiniDisplayServiceStub,
     RouterStub,
     MockCmsEventEmitterService,
     EventCases,
     reFactoredTile,
-    reFactoredSource
+    reFactoredSource,
+    reFactoredTileContent
 };
