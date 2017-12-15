@@ -90,11 +90,7 @@ export class CmsDisplayPanelComponent implements OnInit {
         let display = this.storageManager.get(CMS_SESSION_STORAGE_ITEM.DISPLAY);
 
         // If selected display is not available, route to display list.
-        if (Validation.IsNullOrUndefined(display)) {
-            this.appConfig.error("Display not found! Routing to display list.");
-            return false;
-        }
-        else {
+        if (display) {
             this.display = <CmsResource>JSON.parse(display);
             return true;
         }
@@ -105,7 +101,7 @@ export class CmsDisplayPanelComponent implements OnInit {
      * @method fitHeight
      * @return void
      */
-    private fitHeight(): void{
+    private fitHeight(): void {
         this.fitHeightCount++;
     }
 
@@ -114,7 +110,7 @@ export class CmsDisplayPanelComponent implements OnInit {
      * @method clearMiniDisplayWall
      * @return void
      */
-    private clearMiniDisplayWall(): void{
+    private clearMiniDisplayWall(): void {
         this.cmsServerApi.putContentsOnDisplay(this.displayId, 0, {}).subscribe(response => {
             this.cmsSettingsService.selectedSources.length = 0;
             this.navigateToLoginRoute();
@@ -129,7 +125,7 @@ export class CmsDisplayPanelComponent implements OnInit {
      * @method logoff
      * @return void
      */
-    private logoff(): void{
+    private logoff(): void {
         //ask for clear grid confirmation
         this.showClearWallPopup = true;
     }
@@ -139,7 +135,7 @@ export class CmsDisplayPanelComponent implements OnInit {
      * @method navigateToLoginRoute
      * @return void
      */
-    private navigateToLoginRoute(): void{
+    private navigateToLoginRoute(): void {
         this.cmsServerApi.logoutUser();
     }
 
@@ -148,7 +144,7 @@ export class CmsDisplayPanelComponent implements OnInit {
      * @method closingClearWallPopup
      * @return void
      */
-    private closingClearWallPopup(): void{
+    private closingClearWallPopup(): void {
         this.showClearWallPopup = false;
     }
 
@@ -157,17 +153,17 @@ export class CmsDisplayPanelComponent implements OnInit {
      * @method cancelClearWallPopup
      * @return void
      */
-    private cancelClearWallPopup(): void{
+    private cancelClearWallPopup(): void {
         this.showClearWallPopup = false;
         this.navigateToLoginRoute();
     }
-    
+
     /**
      * This method navigate to back page
      * @method navigateBack
      * @return void
      */
-    private navigateBack(): void{
+    private navigateBack(): void {
         window.history.back();
     }
 }

@@ -1,64 +1,7 @@
-/** 
- * Test cases:
- * 
- * ## Constructor ##
- * Option menu should be hidden;
- * Zoom level should be 100%;
- * Don't allow user to save a new layout
- * 
- * 
- * ## loadDisplay ##
- * 
- * expect storage manager provides selected display info;
- * expect if no display is set then router navigates;
- * else display and displayName is set;
- * 
- *
- * ## ngOnInit ##
- * 
- * Display id should be defined from the route params;
- * expect loadDisplay should be called
- * 
- * 
- * ## fitHeight ##
- * 
- * expect fitHeightCount is incremented after each time fitHeight is called
- * 
- * 
- * ## backToDisplayPanel ##  
- * 
- * ## logoff ##
- * expect a popup on logoff
- * click on close icon, popoup should be closed and mini-display should be remain present
- * 
- * ## clearMiniDisplayWall ## 
- * expect the API to clear display wall is called and it is resolved;
- * 
- * 
- * $$ Test cases for template $$
- * 
- * #dashboard-options-button should be visible
- * #dashboard-displayList-button should be visible
- *      
- * If isDisplaySelected is true
- * #dashboard-clear-wall-button should be visible
- * <cms-mini-display> should be visible
- *    Else 
- *    .display-unavailable should be visible;
- *    Check its translated text content;
- * 
- * If viewOptions is true
- *      <cms-options> should be visible
- * 
- * If showClearWallPopup is true
- *      #display-panel-clear-wall-popup should be visible;
- */
-
-
 import { ComponentFixture, TestBed, async, fakeAsync, tick } from "@angular/core/testing";
 import { By } from "@angular/platform-browser";
 import { DebugElement, CUSTOM_ELEMENTS_SCHEMA, Injector } from "@angular/core";
-import { ActivatedRoute, Router, RouterModule } from "@angular/router";
+import { ActivatedRoute, Router, RouterModule, Params } from "@angular/router";
 import { Observable } from "rxjs/Observable";
 import { HttpModule, Http } from "@angular/http";
 import { TranslateModule, TranslateLoader, TranslateService } from "@ngx-translate/core";
@@ -73,6 +16,7 @@ import { StorageManager } from "../../../../app/cms/api/cms-storagemanager.servi
 import { CmsSettingsService } from "../../../../app/launchpad/settings/cms-settings.service";
 import { CmsApiService } from "../../../../app/cms/api/cms-api.service";
 import { CMS_SESSION_STORAGE_ITEM } from "../../../../app/cms/models/cms-session-storage-item";
+import { Subject } from "rxjs/Subject";
 
 // Fake CmsApiService Service with the below stub
 class MockCmsApiServiceStub {
@@ -85,22 +29,21 @@ class MockCmsApiServiceStub {
     }
 };
 
-describe("CmsDisplayPanelComponent - Test Suite", () => {
-
+fdescribe("CmsDisplayPanelComponent - Test Suite", () => {
     let component: CmsDisplayPanelComponent;
     let fixture: ComponentFixture<CmsDisplayPanelComponent>;
     let debugInstance, nativeElement;
     let injector: Injector;
     let activatedRoute = new ActivatedRoute();
-
     let display = {
         name: "My display",
         id: 1
     };
-
     let mockSettings = new MockCmsSettingsServiceStub();
+    let params: Subject<Params>;
 
     beforeEach(async(() => {
+        params = new Subject<Params>();
         TestBed.configureTestingModule({
             declarations: [CmsDisplayPanelComponent],
             providers: [
@@ -189,7 +132,7 @@ describe("CmsDisplayPanelComponent - Test Suite", () => {
         tick();
 
         expect(debugInstance.displayId).toEqual(activatedRoute.params["value"]["id"]);
-        
+
         let spyLoadDisplay = spyOn(debugInstance, "loadDisplay").and.returnValue(null);
         component.ngOnInit();
 
@@ -242,7 +185,7 @@ describe("CmsDisplayPanelComponent - Test Suite", () => {
         fixture.detectChanges();
 
         expect(component["showClearWallPopup"]).toBeFalsy();
-        
+
         let miniDisplayContainer = nativeElement.querySelector("cms-mini-display");
         expect(miniDisplayContainer).toBeDefined();
     });
@@ -281,5 +224,9 @@ describe("CmsDisplayPanelComponent - Test Suite", () => {
 
     function setDisplay() {
         window.sessionStorage.setItem(CMS_SESSION_STORAGE_ITEM.DISPLAY, JSON.stringify(display));
+    }
+
+    function setUndefinedDisplay() {
+        window.sessionStorage.setItem(CMS_SESSION_STORAGE_ITEM.DISPLAY, "null");
     }
 });
