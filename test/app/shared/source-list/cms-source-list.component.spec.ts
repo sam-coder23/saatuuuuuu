@@ -363,9 +363,9 @@ describe("CmsSourceListComponent", () => {
         component.ngOnChanges(null);
         fixture.whenStable().then(() => {
             // updated state of sources
-          //  expect(debugInstance.mSources[0].selected).toBeTruthy();
-           // expect(debugInstance.mSources[1].selected).toBeTruthy();
-            expect(debugInstance.mSources[2].selected).toBeFalsy();
+          //  expect(debugInstance.sources[0].selected).toBeTruthy();
+           // expect(debugInstance.sources[1].selected).toBeTruthy();
+            expect(debugInstance.sources[2].selected).toBeFalsy();
         });
     });
 

@@ -50,23 +50,25 @@ export class CmsAboutPanelComponent implements OnInit {
         this.cmsServerApi.getSystemInfo()
             .subscribe(
             response => {
-                this.systemInfo.licensedTo = response.LicenseInfo.customerName;
-                this.systemInfo.projectName = response.LicenseInfo.projectName;
-                this.systemInfo.server = response.ServerInfo.ip;
-                this.systemInfo.serverVersion = response.ServerInfo.version;
+                if (response) {
+                    this.systemInfo.licensedTo = response.LicenseInfo.customerName;
+                    this.systemInfo.projectName = response.LicenseInfo.projectName;
+                    this.systemInfo.server = response.ServerInfo.ip;
+                    this.systemInfo.serverVersion = response.ServerInfo.version;
 
-                if (response.LicenseInfo.licenseStatus) {
-                    if (response.LicenseInfo.licenseStatus === "LicenseAccepted") {
-                        this.translate.get("about.licenceValid").subscribe((response: string) => {
-                            this.systemInfo.licenseStatus = response;
-                        });
-                    }
-                    else {
-                        this.translate.get("about.daysRemaining", {value: response.LicenseInfo.daysRemaining})
-                            .subscribe((response: string) => {
-                                this.systemInfo.daysRemaining = response;
+                    if (response.LicenseInfo.licenseStatus) {
+                        if (response.LicenseInfo.licenseStatus === "LicenseAccepted") {
+                            this.translate.get("about.licenceValid").subscribe((response: string) => {
+                                this.systemInfo.licenseStatus = response;
                             });
-                        this.systemInfo.licenseStatus = `${response.LicenseInfo.licenseStatus},${this.systemInfo.daysRemaining}`;
+                        }
+                        else {
+                            this.translate.get("about.daysRemaining", { value: response.LicenseInfo.daysRemaining })
+                                .subscribe((response: string) => {
+                                    this.systemInfo.daysRemaining = response;
+                                });
+                            this.systemInfo.licenseStatus = `${response.LicenseInfo.licenseStatus},${this.systemInfo.daysRemaining}`;
+                        }
                     }
                 }
 
@@ -77,8 +79,7 @@ export class CmsAboutPanelComponent implements OnInit {
             error => {
                 this.appConfig.log("Error in getSystemInfo", error);
                 this.loading = false;
-            }
-            );
+            });
 
         this.systemInfo.version = CMSConstants.APP_VERSION;
     }

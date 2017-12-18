@@ -73,10 +73,13 @@ class MockCmsApiService {
     getTilePresets(): Observable<ITilePreset[]> {
         return Observable.of(MockTilersData);
     }
-    getSelectedDisplayContent(displayId){
-        return  Observable.of(MockDisplay);
+    getSelectedDisplayContent(displayId) {
+        return Observable.of(MockDisplay);
     }
 
+    logoutUser() {
+        return;
+    }
 };
 
 describe("CmsSourcesPanelComponent", () => {
@@ -92,8 +95,8 @@ describe("CmsSourcesPanelComponent", () => {
     let panelTitle: string;
     let cmsApiService: CmsApiService;
     let tilePresetManager: TilePresetManager;
-    let spyPutContentsOnDisplay: jasmine.Spy;
     let spyGetTileId;
+    let appConfig: AppConfig;
 
     beforeEach(async(() => {
         TestBed.configureTestingModule({
@@ -129,7 +132,7 @@ describe("CmsSourcesPanelComponent", () => {
                 TranslateModule.forRoot({
                     loader: {
                         provide: TranslateLoader,
-                        useFactory: (http: Http) => new TranslateHttpLoader(http, "base/app/i18n/", ".json"),
+                        useFactory: (http: Http) => new TranslateHttpLoader(http, "/base/app/i18n/", ".json"),
                         deps: [Http]
                     }
                 })
@@ -145,7 +148,7 @@ describe("CmsSourcesPanelComponent", () => {
             cmsSettingService = injector.get(CmsSettingsService);
             cmsApiService = injector.get(CmsApiService);
             translateService = injector.get(TranslateService);
-            spyPutContentsOnDisplay = spyOn(cmsApiService, "putContentsOnDisplay").and.returnValue(Observable.of(null));
+            appConfig = injector.get(AppConfig);
 
             translateService.setDefaultLang("en");
             translateService.get("sourceList.connectTo", { value: CMSConstants.MAXSELECTION }).subscribe((response: string) => {
@@ -299,8 +302,10 @@ describe("CmsSourcesPanelComponent", () => {
     });
 
     it("should call CmsApiService.putContentsOnDisplay when source is selected", (done) => {
+        let spyPutContentsOnDisplay = spyOn(cmsApiService, "putContentsOnDisplay").and.returnValue(Observable.of(null));
         fixture.detectChanges();
         component.navigateNext();
+
         let args = spyPutContentsOnDisplay.calls.mostRecent().args;
         expect(args[0]).toEqual(debugInstance.displayId);
         expect(args[1]).toEqual(MockTilersData[1].id);
@@ -308,4 +313,82 @@ describe("CmsSourcesPanelComponent", () => {
         expect(args[2].resources[1].id).toEqual(debugInstance.cmsSettingService.selectedSources[1].id);
         done();
     });
-})
+
+    it("should handle and log error when CmsApiService.putContentsOnDisplay throws error", () => {
+        let error = "Server error";
+        let spyPutContentsOnDisplay = spyOn(cmsApiService, "putContentsOnDisplay").and.returnValue(Observable.throw(error));
+        let spyError = spyOn(appConfig, "error");
+
+        fixture.detectChanges();
+        component.navigateNext();
+        let args = spyError.calls.mostRecent().args;
+        expect(args[0]).toEqual(error);
+    });
+
+    it("should navigate to tile-panel directly, if selected sources are same as shared on display", () => {
+        let selectedSource = [
+            {
+                "id": 23,
+                "name": "Blue",
+                "type": "Perspective"
+            },
+            {
+                "id": 39,
+                "name": "DefaultProSource[AutoTestDisplay11]",
+                "type": "Perspective"
+            }
+        ];
+
+        let spyNavigateToTilesPanel = spyOn(debugInstance, "navigateToTilesPanel").and.returnValue(null);
+        let spyUpdateDisplayWall = spyOn(debugInstance, "updateDisplayWall").and.returnValue(null);
+        let settingService = <CmsSettingsService>fixture.debugElement.injector.get(CmsSettingsService);
+
+        settingService.selectedSources = selectedSource.map((s) => new Source(s));
+
+        component.navigateNext();
+
+        expect(spyNavigateToTilesPanel.calls.count()).toEqual(1);
+        expect(spyUpdateDisplayWall.calls.count()).toEqual(0);
+    });
+
+
+    it("should update display wall when navigate next is clicked", () => {
+        let spyNavigateToTilesPanel = spyOn(debugInstance, "navigateToTilesPanel").and.returnValue(null);
+        let spyUpdateDisplayWall = spyOn(debugInstance, "updateDisplayWall").and.returnValue(null);
+        let settingService = <CmsSettingsService>fixture.debugElement.injector.get(CmsSettingsService);
+
+        settingService.selectedSources = [];
+
+        component.navigateNext();
+
+        expect(spyNavigateToTilesPanel.calls.count()).toEqual(0);
+        expect(spyUpdateDisplayWall.calls.count()).toEqual(1);
+    });
+
+    it("should logoutUser on logout", () => {
+        let apiService = <CmsApiService>fixture.debugElement.injector.get(CmsApiService);
+        let spyLogoutUser = spyOn(apiService, "logoutUser").and.returnValue(null);
+
+        expect(spyLogoutUser.calls.count()).toEqual(0);
+
+        debugInstance.logout();
+
+        expect(spyLogoutUser.calls.count()).toEqual(1);
+    });
+
+    it("should set the errorMessage when there are no tilers", () => {
+        cmsSettingService.selectedSources = [];
+        let spyTilers = spyOn(cmsApiService, "getTilePresets").and.returnValue(Observable.of([]));
+        let errorMessage = "No tile layout found for loading source on display wall.";
+
+        debugInstance.updateDisplayWall();
+        expect(debugInstance.errorMessage).toEqual(errorMessage);
+
+        // spyTilers = spyOn(cmsApiService, "getTilePresets").and.returnValue(Observable.throw([]));
+        spyTilers.and.returnValue(Observable.throw([]));
+        debugInstance.errorMessage = "";
+
+        debugInstance.updateDisplayWall();
+        expect(debugInstance.errorMessage).toEqual(errorMessage);
+    });
+});

@@ -45,7 +45,7 @@ export class CmsSourcesPanelComponent implements OnInit {
     private states = {
         reload: false,
         list: true
-    }
+    };
     public searchFilter: string;
     public searchKey: string;
 
@@ -146,11 +146,9 @@ export class CmsSourcesPanelComponent implements OnInit {
      * @return void
      */
     public navigateNext(): void {
-        let selectedSourcesLength = this.cmsSettingService.selectedSources.length;
         this.isSelectedSameAsSharedSource((sameAsShared) => {
             if (sameAsShared) {
-                let url = `/displays/${this.displayId}/tiles-panel?sourceCount=${selectedSourcesLength}`;
-                this.router.navigateByUrl(url);
+                this.navigateToTilesPanel();
             } else {
                 this.updateDisplayWall();
             }
@@ -179,11 +177,9 @@ export class CmsSourcesPanelComponent implements OnInit {
 
             if (tileId === 0) {
                 this.setErrorMessage("sourceList.tileLayoutNotAvailable");
-            }
-            else {
+            } else {
                 this.cmsServerApi.putContentsOnDisplay(this.displayId, tileId, requestPayload).subscribe(response => {
-                    let url = `/displays/${this.displayId}/tiles-panel?sourceCount=${selectedSourcesLength}`;
-                    this.router.navigateByUrl(url);
+                    this.navigateToTilesPanel();
                 }, error => {
                     this.appConfig.error(error);
                 });
@@ -256,5 +252,14 @@ export class CmsSourcesPanelComponent implements OnInit {
      */
     private logout(): void {
         this.cmsServerApi.logoutUser();
+    }
+
+    /**
+     * @method navigateToTilesPanel - navigates to tiles panel route
+     */
+    private navigateToTilesPanel() {
+        let selectedSourcesLength = this.cmsSettingService.selectedSources.length;
+        let url = `/displays/${this.displayId}/tiles-panel?sourceCount=${selectedSourcesLength}`;
+        this.router.navigateByUrl(url);
     }
 }

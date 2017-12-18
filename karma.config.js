@@ -81,7 +81,7 @@ module.exports = function (config) {
                         if(context.module.indexOf('.scss') !== -1) {
                             context.source = context.source.replace(
                                 '@import "variables.global";',
-                                '@import "base/app/_variables.global.css"'
+                                '@import "/base/app/_variables.global.css"'
                             );
                             return callback(undefined, true);
                         }

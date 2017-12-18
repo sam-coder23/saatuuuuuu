@@ -139,7 +139,9 @@ export class CmsSettingsPanelComponent implements OnInit {
         this.cmsServerApi.getSystemInfo()
             .subscribe(
             response => {
-                this.localizationLicense = response.LicenseInfo.localization;
+                if(response) {
+                    this.localizationLicense = response.LicenseInfo.localization;
+                }
             });
     }
 

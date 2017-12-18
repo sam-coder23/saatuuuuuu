@@ -106,7 +106,7 @@ describe("Component CmsSettingsLanguagePanelComponent", () => {
                 TranslateModule.forRoot({
                     loader: {
                         provide: TranslateLoader,
-                        useFactory: (http: Http) => new TranslateHttpLoader(http, "base/app/i18n/", ".json"),
+                        useFactory: (http: Http) => new TranslateHttpLoader(http, "/base/app/i18n/", ".json"),
                         deps: [Http]
                     }
                 })
@@ -117,7 +117,6 @@ describe("Component CmsSettingsLanguagePanelComponent", () => {
             component = fixture.componentInstance;
             nativeElement = fixture.nativeElement;
             debugInstance = fixture.debugElement.componentInstance;
-            cmsSettingsLanguagePanelComponent = new CmsSettingsLanguagePanelComponent(translate, cmsApiService, router, activatedRoute, cmsSettingsService);
             cmsSettingsService = fixture.debugElement.injector.get(CmsSettingsService);
             cmsApiService = fixture.debugElement.injector.get(CmsApiService);
         });
@@ -151,7 +150,6 @@ describe("Component CmsSettingsLanguagePanelComponent", () => {
             expect(settingLanguagePanelTitleText).not.toBeNull();
             let settingLanguagePanelBackButton = fixture.nativeElement.querySelector("#setting-language-panel-back-button");
             expect(settingLanguagePanelBackButton).toBeTruthy();
-            debugInstance.navigateBack();
         });
     });
 

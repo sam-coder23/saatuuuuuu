@@ -220,7 +220,7 @@ describe("CmsDisplayListComponent", () => {
                     loader: {
                         provide: TranslateLoader,
                         useFactory: (http: Http) => new TranslateHttpLoader(
-                            http, "base/app/i18n/", ".json"),
+                            http, "/base/app/i18n/", ".json"),
                         deps: [Http]
                     }
                 })
