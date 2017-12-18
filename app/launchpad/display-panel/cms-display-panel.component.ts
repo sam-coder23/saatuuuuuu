@@ -94,6 +94,9 @@ export class CmsDisplayPanelComponent implements OnInit {
             this.display = <CmsResource>JSON.parse(display);
             return true;
         }
+        else{
+            return false;
+        }
     }
 
     /**

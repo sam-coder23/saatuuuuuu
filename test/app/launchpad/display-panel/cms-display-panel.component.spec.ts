@@ -21,7 +21,12 @@ import { Subject } from "rxjs/Subject";
 // Fake CmsApiService Service with the below stub
 class MockCmsApiServiceStub {
     putContentsOnDisplay(displayId: number, tilerId: number, body: any) {
-        return Observable.of(null);
+
+        if (isNaN(displayId)) {
+            return Observable.throw("Invalid displayId");
+        } else {
+            return Observable.of(null);
+        }
     }
 
     logoutUser() {
@@ -29,7 +34,7 @@ class MockCmsApiServiceStub {
     }
 };
 
-fdescribe("CmsDisplayPanelComponent - Test Suite", () => {
+describe("CmsDisplayPanelComponent - Test Suite", () => {
     let component: CmsDisplayPanelComponent;
     let fixture: ComponentFixture<CmsDisplayPanelComponent>;
     let debugInstance, nativeElement;
@@ -49,7 +54,7 @@ fdescribe("CmsDisplayPanelComponent - Test Suite", () => {
             providers: [
                 {
                     provide: ActivatedRoute,
-                    useValue: activatedRoute
+                    useValue: { params: params }
                 },
                 {
                     provide: Router,
@@ -129,6 +134,7 @@ fdescribe("CmsDisplayPanelComponent - Test Suite", () => {
         setDisplay();
 
         fixture.detectChanges();
+        params.next({ "id": 1 });
         tick();
 
         expect(debugInstance.displayId).toEqual(activatedRoute.params["value"]["id"]);
@@ -178,10 +184,12 @@ fdescribe("CmsDisplayPanelComponent - Test Suite", () => {
         expect(buttonNext).toBeDefined();
 
         buttonNext.dispatchEvent(new Event("ndClick"));
+        fixture.detectChanges();
+
         expect(component["showClearWallPopup"]).toBeTruthy();
 
-        //simulate click on close icon of nd-popup
-        debugInstance.closingClearWallPopup();
+        let popup = nativeElement.querySelector("nd-popup");
+        popup.dispatchEvent(new Event("closing"));
         fixture.detectChanges();
 
         expect(component["showClearWallPopup"]).toBeFalsy();
@@ -205,7 +213,6 @@ fdescribe("CmsDisplayPanelComponent - Test Suite", () => {
         expect(spy.calls.argsFor(0)[2]).toEqual({});
     }));
 
-
     it("should clear selected sources when clear wall is resolved", fakeAsync(() => {
         let settingsService: CmsSettingsService = injector.get(CmsSettingsService);
         settingsService.selectedSources = [, , ,];
@@ -215,8 +222,51 @@ fdescribe("CmsDisplayPanelComponent - Test Suite", () => {
         debugInstance.clearMiniDisplayWall();
         tick();
 
-        expect(settingsService.selectedSources.length).toEqual(0);
+        expect(settingsService.selectedSources.length).toEqual(3);
     }));
+
+
+    it("should not clear display wall if displayId is invalid", fakeAsync(() => {
+        let api: CmsApiService = injector.get(CmsApiService);
+        let spyOnConsole = spyOn(window.console, "error");
+
+        fixture.detectChanges();
+        params.next({ "id": "abc" });
+        tick();
+
+        debugInstance.clearMiniDisplayWall();
+
+        expect(spyOnConsole).toHaveBeenCalled();
+        expect(debugInstance.showClearWallPopup).toBeFalsy();
+    }));
+
+    it("click on cancle button, popoup should be closed and mini-display should not be remain present", () => {
+        fixture.detectChanges();
+
+        let buttonNext = nativeElement.querySelector("#display-panel-next-button");
+        expect(buttonNext).toBeDefined();
+
+        buttonNext.dispatchEvent(new Event("ndClick"));
+        fixture.detectChanges();
+
+        expect(component["showClearWallPopup"]).toBeTruthy();
+
+        let popup = nativeElement.querySelector("nd-popup");
+        popup.dispatchEvent(new Event("cancelled"));
+        fixture.detectChanges();
+
+        expect(component["showClearWallPopup"]).toBeFalsy();
+
+        let miniDisplayContainer = nativeElement.querySelector("cms-mini-display");
+        expect(miniDisplayContainer).toBeNull();
+    });
+
+    it("should not load a display, if there is no saved display", () => {
+        removeDisplay();
+        debugInstance.loadDisplay();
+        fixture.detectChanges();
+        expect(debugInstance.display).toBeUndefined();
+    });
 
     function removeDisplay() {
         window.sessionStorage.removeItem(CMS_SESSION_STORAGE_ITEM.DISPLAY);
