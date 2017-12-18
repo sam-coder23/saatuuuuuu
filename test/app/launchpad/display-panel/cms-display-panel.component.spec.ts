@@ -225,7 +225,6 @@ describe("CmsDisplayPanelComponent - Test Suite", () => {
         expect(settingsService.selectedSources.length).toEqual(3);
     }));
 
-
     it("should not clear display wall if displayId is invalid", fakeAsync(() => {
         let api: CmsApiService = injector.get(CmsApiService);
         let spyOnConsole = spyOn(window.console, "error");
@@ -274,9 +273,5 @@ describe("CmsDisplayPanelComponent - Test Suite", () => {
 
     function setDisplay() {
         window.sessionStorage.setItem(CMS_SESSION_STORAGE_ITEM.DISPLAY, JSON.stringify(display));
-    }
-
-    function setUndefinedDisplay() {
-        window.sessionStorage.setItem(CMS_SESSION_STORAGE_ITEM.DISPLAY, "null");
     }
 });
