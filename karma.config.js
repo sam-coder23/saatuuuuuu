@@ -16,6 +16,7 @@ module.exports = function (config) {
             ,'app/*.*scss': ['scss']
             ,'app/**/*.*scss': ['scss']
         },
+        autoWatch: true,
         files: [
             {
                 pattern: 'test/base.ts'
@@ -49,7 +50,8 @@ module.exports = function (config) {
             exclude: ["broken"],
             tsconfig: './tsconfig.json',
             coverageOptions: {
-                instrumentation: true                
+                instrumentation: true,
+                exclude: [/\.(spec|mock).ts$/i, /test/, /deps.ts/, /main.ts/]
             },
             remapOptions: {
                 warn: function(message){
