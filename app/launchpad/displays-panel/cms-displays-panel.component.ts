@@ -1,6 +1,9 @@
 import { Component, OnInit, AfterViewInit } from "@angular/core";
 import { CMS_SESSION_STORAGE_ITEM } from "../../cms/models/cms-session-storage-item";
 import { StorageManager } from "../../cms/api/cms-storagemanager.service";
+
+
+                
 import { Display } from "../../cms/models/cms-display";
 import { Observable } from "rxjs/Rx";
 import { AppConfig } from "../../config";
@@ -22,6 +25,7 @@ import { CmsApiService } from "../../cms/api/cms-api.service";
  * @property {number} selectedDisplayId
  * @property {object} viewState
  */
+
 @Component({
     //moduleId: module.id,
     selector: "cms-displays-panel",

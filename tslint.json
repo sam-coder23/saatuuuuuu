@@ -1,0 +1,468 @@
+/**
+ * there are a few rules which apply to react DOM parsing
+ * there is no side effect of keeping them here
+ * will be removed after another round of detailed review
+ * logically all can go however we need alternatives
+ */
+ {
+  "rules": {
+      "insecure-random": true,
+      "no-banned-terms": true,
+      "no-cookies": true,
+      /*
+        Do not delete expressions
+        Only properties should be deleted
+      */
+      "no-delete-expression": true,
+      "no-disable-auto-sanitization": true,
+      /*
+        Do not write to document.domain
+        Scripts setting document.domain to any value should be validated to ensure that the value is on a list of allowed sites
+        https://msdn.microsoft.com/en-us/library/cc307418.aspx
+      */
+      "no-document-domain": true,
+      /*
+        Do not use document.write	
+      */
+      "no-document-write": true,
+      /*
+        Disallows eval function invocations
+        eval() is dangerous as it allows arbitrary code execution with full privileges
+      */
+      "no-eval": true,
+      "no-exec-script": true,
+      /*
+        Do not use the version of the Function constructor that accepts a string argument to define the body of the function
+      */
+      "no-function-constructor-with-string-args": true,
+      /*
+        Do not use strings that start with 'http:'
+        URL strings should start with 'https:'
+        Http strings can be a security problem and indicator that your software may suffer from cookie-stealing attacks
+      */
+      "no-http-string": [
+          true,
+          "http://www.example.com/?.*",
+          "http://www.examples.com/?.*"
+      ],
+      "no-inner-html": false,
+      "no-octal-literal": true,
+      "no-reserved-keywords": false,
+      "no-string-based-set-immediate": true,
+      "no-string-based-set-interval": true,
+      "no-string-based-set-timeout": true,
+      "non-literal-require": true,
+      "possible-timing-attack": true,
+      "react-anchor-blank-noopener": true,
+      "react-iframe-missing-sandbox": true,
+      "react-no-dangerous-html": true,
+      "await-promise": true,
+      /*
+       Requires a for ... in statement to be filtered with an if statement
+       Prevents accidental iteration over properties inherited from an object’s prototype
+       for (let key in someObject) {
+         if (someObject.hasOwnProperty(key)) {
+           // code here
+         }
+       }
+      */
+      "forin": true,
+      "jquery-deferred-must-complete": true,
+      "label-position": true,
+      "match-default-export-name": true,
+      "mocha-avoid-only": true,
+      "mocha-no-side-effect-code": true,
+      /*
+        Disallows usages of any as a type declaration
+        @TARJU TDB
+      */
+      "no-any": false,
+      "no-arg": true,
+      "no-backbone-get-set-outside-model": false,
+      "no-bitwise": true,
+      "no-conditional-assignment": true,
+      "no-console": [
+          false,
+          "debug",
+          "info",
+          "log",
+          "time",
+          "timeEnd",
+          "trace"
+      ],
+      "no-constant-condition": true,
+      "no-control-regex": true,
+      /*
+        Disallows debugger statements
+        In general, debugger statements aren’t appropriate for production code.
+      */
+      "no-debugger": true,
+      "no-duplicate-case": true,
+      "no-duplicate-super": true,
+      "no-duplicate-variable": true,
+      /*
+        Disallows empty blocks
+        Blocks with a comment inside are not considered empty
+        Empty blocks are often indicators of missing code        
+      */
+      "no-empty": false,
+      "no-floating-promises": true,
+      "no-for-in-array": true,
+      "no-import-side-effect": false,
+      "no-increment-decrement": false,
+      "no-invalid-regexp": true,
+      "no-invalid-template-strings": true,
+      "no-invalid-this": true,
+      "no-jquery-raw-elements": true,
+      "no-misused-new": true,
+      "no-non-null-assertion": true,
+      "no-reference-import": true,
+      "no-regex-spaces": true,
+      "no-sparse-arrays": true,
+      "no-stateless-class": false,
+      "no-string-literal": false,
+      "no-string-throw": true,
+      "no-unnecessary-bind": true,
+      "no-unnecessary-callback-wrapper": true,
+      "no-unnecessary-initializer": true,
+      "no-unnecessary-override": true,
+      "no-unsafe-any": true,
+      "no-unsafe-finally": true,
+      "no-unused-expression": true,
+      "no-use-before-declare": true,
+      "no-with-statement": true,
+      "promise-function-async": true,
+      "promise-must-complete": true,
+      /*
+        Requires the radix parameter to be specified when calling parseInt
+        If radix is undefined or 0 (or absent), JavaScript assumes the following:
+        If the input string begins with "0x" or "0X", radix is 16 (hexadecimal) and the remainder of the string is parsed
+        If the input string begins with "0", radix is eight (octal) or 10 (decimal)
+        Exactly which radix is chosen is implementation-dependent
+        ECMAScript 5 specifies that 10 (decimal) is used, but not all browsers support this yet
+        For this reason always specify a radix when using parseInt
+        If the input string begins with any other value, the radix is 10 (decimal)
+      */
+      "radix": true,
+      "react-this-binding-issue": true,
+      "react-unused-props-and-state": true,
+      "restrict-plus-operands": true,
+      "strict-boolean-expressions": true,
+      "switch-default": true,
+      "triple-equals": [
+          true,
+          "allow-null-check"
+      ],
+      "use-isnan": true,
+      "use-named-parameter": true,
+      "valid-typeof": true,
+      "adjacent-overload-signatures": true,
+      "array-type": [
+          false,
+          "array"
+      ],
+      /*
+        Requires parentheses around the parameters of arrow function definitions
+        // Bad
+        a => {}
+        // Good
+        (a) => {}
+        https://eslint.org/docs/rules/arrow-parens
+        https://palantir.github.io/tslint/rules/arrow-parens/
+      */
+      "arrow-parens": true,
+      /*
+        
+      */
+      "callable-types": true,
+      "chai-prefer-contains-to-index-of": true,
+      "chai-vague-errors": true,
+      /*
+        Enforces PascalCase class and interface names
+      */
+      "class-name": false,
+      /*
+        Enforces formatting rules for single-line comments
+        Note that for comments starting with multiple slashes, e.g. ///
+        leading slashes are ignored
+      */
+      "comment-format": [false,
+          "check-space",
+          "check-uppercase"
+      ],
+      /*
+        Enforces documentation for important items be filled out
+      */
+      "completed-docs": [
+          true,
+          "classes",
+          "enums",
+          "functions",
+          "interfaces",
+          "properties",
+          "types",
+          "methods"
+      ],
+      /*
+        The name of the exported module must match the filename of the source file
+      */
+      "export-name": false,
+      /*
+        @TARJU - TDB
+        Deprecated - This rule can be replaced with TSLint's variable-name
+      */
+      "function-name": false,
+      /*
+        The name of the imported module must match the name of the thing being imported
+      */
+      "import-name": false,
+      /*
+        Requires interface names to begin with a capital I
+      */
+      "interface-name": [false,
+          "always-prefix"
+      ],
+      /*
+        Enforces basic format rules for JSDoc comments
+      */
+      "jsdoc-format": false,
+      /*
+        A file may not contain more than the specified number of classes
+        Ensures that files have a single responsibility so that that classes each exist in their own files
+      */
+      "max-classes-per-file": [
+          true,
+          2
+      ],
+      /*
+        Requires files to remain under a certain number of lines
+        Limiting the number of lines allowed in a file allows files to remain small, single purpose, and maintainable.
+      */
+      "max-file-line-count": [true,
+          5000
+      ],
+      /*
+        Avoid long functions
+        
+        @TARJU - TDB
+        Disabled for now
+      */
+      "max-func-body-length": [
+          false,
+          100,
+          {
+              "ignore-parameters-to-function-regex": "describe"
+          }
+      ],
+      /*
+        Requires lines to be under a certain max length
+        Limiting the length of a line of code improves code readability
+        It also makes comparing code side-by-side easier and improves compatibility with various editors, IDEs, and diff viewers
+        @TARJU - TDB
+        140 for now should be 80
+      */        
+      "max-line-length": [
+          true,
+          1400
+      ],
+      /*
+        Requires explicit visibility declarations for class members
+      */
+      "member-access": true,
+      /*
+        Enforces member ordering
+        A consistent ordering for class members can make classes easier to read, navigate, and edit
+      */
+      "member-ordering": [
+          true,
+          {
+              "order": "fields-first"
+          }
+      ],
+      /*
+        @TARJU TBD
+        Deprecated - This rule can be replaced with TSLint's file-header.
+      */
+      "missing-jsdoc": true,
+      "mocha-unneeded-done": true,
+      "new-parens": true,
+      "no-construct": true,
+      "no-default-export": true,
+      "no-empty-interface": true,
+      /*
+        Disallows iterating over an array with a for-in loop
+        Disallows iterating over an array with a for-in loop.
+        A for-in loop (for (var k in o)) iterates over the properties of an Object.
+        While it is legal to use for-in loops with array types, it is not common. for-in will iterate over the indices of the array as strings, omitting any “holes” in the array.
+        More common is to use for-of, which iterates over the values of an array. If you want to iterate over the indices, alternatives include:
+        array.forEach((value, index) => { … });
+        for (const [index, value] of array.entries()) { … }
+        for (let i = 0; i < array.length; i++) { … }          
+      */
+      "no-for-in": false,
+      "no-function-expression": true,
+      "no-inferrable-types": false,
+      "no-multiline-string": true,
+      /*
+        Disallows use of the null keyword literal
+        Instead of having the dual concepts of null andundefined in a codebase, this rule ensures that only undefined is used
+      */
+      "no-null-keyword": false,
+      "no-parameter-properties": false,
+      "no-relative-imports": false,
+      "no-require-imports": false,
+      "no-shadowed-variable": true,
+      "no-suspicious-comment": true,
+      "no-typeof-undefined": true,
+      "no-unnecessary-field-initialization": true,
+      "no-unnecessary-local-variable": true,
+      "no-unnecessary-qualifier": true,
+      "no-unsupported-browser-code": true,
+      "no-useless-files": true,
+      /*
+        Disallows usage of the var keyword
+        Use let or const instead
+      */
+      "no-var-keyword": true,
+      /*
+        Disallows the use of require statements except in import statements
+        In other words, the use of forms such as var module = require("module") are banned
+        Instead use ES6 style imports or import foo = require('foo') imports          
+      */
+      "no-var-requires": true,
+      "no-var-self": true,
+      "no-void-expression": true,
+      "object-literal-sort-keys": false,
+      "one-variable-per-declaration": true,
+      "only-arrow-functions": false,
+      "ordered-imports": false,
+      "prefer-array-literal": false,
+      /*
+        Requires that variable declarations use const instead of let and var if possible
+        If a variable is only assigned to once when it is declared, it should be declared using const
+      */
+      "prefer-const": true,
+      "prefer-for-of": false,
+      "prefer-method-signature": true,
+      "prefer-template": true,
+      "return-undefined": false,
+      "typedef": [
+          true,
+          "call-signature",
+          "arrow-call-signature",
+          "parameter",
+          "arrow-parameter",
+          "property-declaration",
+          "variable-declaration",
+          "member-variable-declaration"
+      ],
+      "underscore-consistent-invocation": true,
+      "unified-signatures": true,
+      "variable-name": true,
+      "react-a11y-anchors": true,
+      "react-a11y-aria-unsupported-elements": true,
+      "react-a11y-event-has-role": true,
+      "react-a11y-image-button-has-alt": true,
+      "react-a11y-img-has-alt": true,
+      "react-a11y-lang": true,
+      "react-a11y-meta": true,
+      "react-a11y-props": true,
+      "react-a11y-proptypes": true,
+      "react-a11y-role": true,
+      "react-a11y-role-has-required-aria-props": true,
+      "react-a11y-role-supports-aria-props": true,
+      "react-a11y-tabindex-no-positive": true,
+      "react-a11y-titles": true,
+      "align": [
+          true,
+          //"parameters",
+          //"arguments",
+          "statements"
+      ],
+      "curly": true,
+      "eofline": true,
+      "import-spacing": true,
+      "indent": [
+          true,
+          "spaces"
+      ],
+      "linebreak-style": [
+          true,
+          "CRLF"
+      ],
+      "newline-before-return": true,
+      "no-consecutive-blank-lines": true,
+      "no-empty-line-after-opening-brace": false,
+      "no-single-line-block-comment": true,
+      /* no white space is allowed at the end of line or any where */
+      "no-trailing-whitespace": true,
+      /* no unwanted semicolons are allowed */
+      "no-unnecessary-semicolons": true,
+      "object-literal-key-quotes": [
+          false,
+          "as-needed"
+      ],
+      "one-line": [
+          true,
+          "check-open-brace",
+          "check-catch",
+          "check-else",
+          "check-whitespace"
+      ],
+      /* only double quotemark are allowed */
+      "quotemark": [
+          true,
+          "double"
+      ],
+      "react-tsx-curly-spacing": true,
+      /* you can't miss semicolon */
+      "semicolon": [
+          true,
+          "always"
+      ],
+      /* trailing comma is not allowed */
+      "trailing-comma": [
+          true,
+          {
+              "singleline": "never",
+              "multiline": "never"
+          }
+      ],
+      "typedef-whitespace": false,
+      "whitespace": [
+          true,
+          "check-branch",
+          "check-decl",
+          "check-operator",
+          "check-separator",
+          "check-type"
+      ],
+      "ban": false,
+      "ban-types": true,
+      "cyclomatic-complexity": false,
+      "file-header": false,
+      "import-blacklist": false,
+      "interface-over-type-literal": false,
+      "no-angle-bracket-type-assertion": false,
+      "no-inferred-empty-object-type": false,
+      "no-internal-module": false,
+      "no-magic-numbers": false,
+      "no-mergeable-namespace": false,
+      "no-namespace": false,
+      "no-reference": true,
+      "no-unexternalized-strings": false,
+      "object-literal-shorthand": false,
+      "prefer-type-cast": true,
+      "space-before-function-paren": false,
+      "missing-optional-annotation": false,
+      "no-duplicate-parameter-names": false,
+      "no-empty-interfaces": false,
+      "no-missing-visibility-modifiers": false,
+      "no-multiple-var-decl": false,
+      "no-switch-case-fall-through": false,
+      "typeof-compare": false
+  },
+  "rulesDirectory": [
+      "./node_modules/tslint-microsoft-contrib"
+  ]    
+}

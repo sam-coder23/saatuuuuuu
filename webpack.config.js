@@ -92,16 +92,9 @@ module.exports = {
   ],
 
   tslint: {
-    configuration: {
-      rules: {
-        quotemark: [true, "double"]
-        // impact auto import by VS using single quote
-      }
-    },
-
     // can specify a custom config file relative to current directory or with absolute path 
     // "tslint-custom.json" 
-    configFile: false,
+    configFile: "tslint.json",
 
     // tslint errors are displayed by default as warnings 
     // set emitErrors to true to display them as errors 
