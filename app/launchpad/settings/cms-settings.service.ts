@@ -30,25 +30,24 @@ export class CmsSettingsService {
         private cmsServerApi: CmsApiService,
         private router: Router,
         private storageManager: StorageManager,
-        private appConfig: AppConfig) {}
+        private appConfig: AppConfig) { }
 
     /**
      * This method get lanaguage value from key
      * @method getUserSelectedLanguageByKey
      * @param {string} languageKey Key is reference which is bind to specific language
-     * @return string 
+     * @return string
      */
     public getUserSelectedLanguageByKey(languageKey: string): string {
-        let cmsLanguages = CmsLanguages.languages;
+        const cmsLanguages: any = CmsLanguages.languages;
 
         //looping in all lanaguage and get value as per key
-        for (let index = 0; index < cmsLanguages.length; index++) {
+        for (let index: number = 0; index < cmsLanguages.length; index++) {
             if (cmsLanguages[index]["key"] === languageKey) {
                 return cmsLanguages[index]["value"];
             }
         }
     }
-
 
     /**
      * This method fetch user profile settings and update local property and execute optional callback function
@@ -56,9 +55,9 @@ export class CmsSettingsService {
      * @param {any} callback
      * @param {any} failure
      */
-    public setUserProfileSettings(callback?, failure?): void {
+    public setUserProfileSettings(callback?: any, failure?: any): void {
         this.cmsServerApi.getUserProfileSettings()
-            .then((response) => {
+            .then((response: any) => {
                 if (response) {
                     this.userSettings = response;
 
@@ -67,7 +66,7 @@ export class CmsSettingsService {
                     }
                 }
             })
-            .catch((error) => {
+            .catch((error: any) => {
                 if (failure) {
                     failure();
                 }
@@ -80,7 +79,7 @@ export class CmsSettingsService {
      * @return void
      */
     public applyUserSelectedLanguage(): void {
-        let defaultLanguage = this.appConfig.DefaultLanguage;
+        const defaultLanguage: string = this.appConfig.DefaultLanguage;
 
         // if language is not available
         if (!this.userSettings) {
@@ -89,8 +88,7 @@ export class CmsSettingsService {
             // set user selected language
             this.translate.use(defaultLanguage);
             this.setTextDirectionByLanguageKey(defaultLanguage);
-        }
-        else {
+        } else {
             if (!this.userSettings.language) {
                 this.userSettings.language = defaultLanguage;
             }
@@ -103,9 +101,9 @@ export class CmsSettingsService {
         // fetch localization licence info and set default language if licence is not available
         this.cmsServerApi.getSystemInfo()
             .subscribe(
-            response => {
+            (response: any) => {
                 if (response) {
-                    let localizationLicense = response.LicenseInfo && response.LicenseInfo.localization;
+                    const localizationLicense: boolean = response.LicenseInfo && response.LicenseInfo.localization;
 
                     if (!localizationLicense) {
                         this.translate.use(defaultLanguage);
@@ -118,7 +116,7 @@ export class CmsSettingsService {
                     }
                 }
             },
-            error => {
+            (error: any) => {
                 this.appConfig.log("cmsServerApi.getSystemInfo api fail Error");
             });
     }
@@ -129,30 +127,30 @@ export class CmsSettingsService {
      * @param {IUserProfileSettings} data contain data-model of user settings
      * @return void
      */
-    public updateUserProfileData(data: IUserProfileSettings, callback?): void {
-        if (!data) { return };
+    public updateUserProfileData(data: IUserProfileSettings, callback?: any): void {
+        if (!data) { return; }
 
         this.userSettings = data;
         this.cmsServerApi.updateUserProfileSettings(data)
-            .then((response) => {
+            .then((response: any) => {
                 // store user setting in storage
                 this.storageManager.set(CMS_SESSION_STORAGE_ITEM.SETTINGS, JSON.stringify(this.userSettings));
                 if (callback) {
                     callback();
                 }
             })
-            .catch((error) => {
+            .catch((error: any) => {
                 this.appConfig.log("CmsSettingsService: updateUserProfileData error");
             });
     }
 
     /**
-      * This method update displayId related to wall connection
-      * @method updateWallConnectionRecentDisplay
-      * @param {Display} display wall info json
-      * @return void
-      */
-    public updateWallConnectionRecentDisplay(display): void {
+     * This method update displayId related to wall connection
+     * @method updateWallConnectionRecentDisplay
+     * @param {Display} display wall info json
+     * @return void
+     */
+    public updateWallConnectionRecentDisplay(display: Display): void {
         if (display) {
             this.userSettings.wallConnection.recentDisplay = display.name;
             this.updateUserProfileData(this.userSettings);
@@ -160,12 +158,12 @@ export class CmsSettingsService {
     }
 
     /**
-      * This method update displayName related to wall connection
-      * @method updateWallConnectionSpecificDisplay
-      * @param {Display} display wall info json
-      * @return void
-      */
-    public updateWallConnectionSpecificDisplay(display): void {
+     * This method update displayName related to wall connection
+     * @method updateWallConnectionSpecificDisplay
+     * @param {Display} display wall info json
+     * @return void
+     */
+    public updateWallConnectionSpecificDisplay(display: Display): void {
         if (display) {
             this.userSettings.wallConnection.specificDisplay = display.name;
             this.updateUserProfileData(this.userSettings, () => history.back());
@@ -181,19 +179,19 @@ export class CmsSettingsService {
      * @return number
      */
     public validateCountData(count: number, data: any, defaultCount: number): number {
-        let maxCount = data[data.length - 1];
-        let minCount = data[0];
-        
-        if (isNaN(count)) { 
+        const maxCount: number = data[data.length - 1];
+        const minCount: number = data[0];
+
+        if (isNaN(count)) {
             return defaultCount;
         }
 
-        if (count <= minCount) { 
-            return minCount; 
+        if (count <= minCount) {
+            return minCount;
         }
 
-        if (count >= maxCount) { 
-            return maxCount; 
+        if (count >= maxCount) {
+            return maxCount;
         }
 
         return count;
@@ -207,9 +205,9 @@ export class CmsSettingsService {
      * @return number
      */
     public increaseCount(count: number, data: any): number {
-        let countIndex = data.indexOf(count);
+        const countIndex: number = data.indexOf(count);
 
-        if (countIndex == -1) {
+        if (countIndex === -1) {
             return this.getNearestHighValue(count, data);
         } else {
             if (data.length - 1 !== countIndex) {
@@ -228,14 +226,15 @@ export class CmsSettingsService {
      * @return number
      */
     public decreaseCount(count: number, data: any): number {
-        let countIndex = data.indexOf(count);
-        if (countIndex == -1) {
+        const countIndex: number = data.indexOf(count);
+        if (countIndex === -1) {
             return this.getNearestLowValue(count, data);
         } else {
             if (countIndex !== 0) {
                 return data[countIndex - 1];
             }
         }
+
         return count;
     }
 
@@ -245,14 +244,15 @@ export class CmsSettingsService {
      * @return void
      */
     public connectToWallAtStartup(): void {
-        let selectedOption = this.userSettings.wallConnection.startUpAction;
-        let selectedDisplayName = this.userSettings.wallConnection.specificDisplay;
-        let recentDisplayName = this.userSettings.wallConnection.recentDisplay;
+        const selectedOption: string = this.userSettings.wallConnection.startUpAction;
+        const selectedDisplayName: string = this.userSettings.wallConnection.specificDisplay;
+        const recentDisplayName: string = this.userSettings.wallConnection.recentDisplay;
 
         this.cmsServerApi.getDisplayList().subscribe((displays: Display[]) => {
             //Check for if only one display is available.
             if (displays.length === 1) {
                 this.navigateToSourcePanel(displays);
+
                 return;
             }
 
@@ -268,8 +268,59 @@ export class CmsSettingsService {
                 case CMSConstants.WALL_CONNECTION.SPECIFIC_WALL:
                     this.autoConnectToSpecificWall(selectedDisplayName);
                     break;
+
+                default:
             }
         });
+    }
+
+    /**
+     * This method update text direction for whole application
+     * @method setTextDirectionByLanguageKey
+     * @param {string} languageKey
+     * @return void
+     */
+    public setTextDirectionByLanguageKey(languageKey: string): void {
+        const html: HTMLElement = document.getElementsByTagName("html")[0];
+        html.setAttribute("dir", this.isRTLLanguage(languageKey) ? "rtl" : "ltr");
+    }
+
+    /**
+     * This method return true if slected language is RTL Type
+     * @method isRTLLanguage
+     * @param {string} languageKey
+     * @return boolean
+     */
+    public isRTLLanguage(languageKey: string): boolean {
+        return CMSConstants.RTLLANGUAGES.indexOf(languageKey) !== -1;
+    }
+
+    /**
+     * This method set application language as per browser language
+     * @method setBrowserLanguage
+     * @return void
+     */
+    public setBrowserLanguage(): void {
+        let currentLang: string;
+        const settingsStorageData: any = this.storageManager.get(CMS_SESSION_STORAGE_ITEM.SETTINGS);
+
+        if (settingsStorageData) {
+            const userSettings: IUserProfileSettings = JSON.parse(settingsStorageData);
+            if (userSettings && userSettings.language) {
+                currentLang = userSettings.language;
+            }
+        }
+
+        if (!currentLang) {
+            const browserLang: string = this.translate.getBrowserLang();
+            const languagesRegEx: RegExp = CmsLanguages.languagesRegExPattern;
+            currentLang = browserLang.match(languagesRegEx) ? browserLang : this.appConfig.DefaultLanguage;
+        }
+
+        this.translate.use(currentLang);
+
+        //update text direction
+        this.setTextDirectionByLanguageKey(currentLang);
     }
 
     /**
@@ -279,7 +330,7 @@ export class CmsSettingsService {
      * @return void
      */
     private navigateToSourcePanel(displays: Display[]): void {
-        //update recentDisplayId on user profile data         
+        //update recentDisplayId on user profile data
         this.updateWallConnectionRecentDisplay(displays[0]);
         this.storageManager.set(CMS_SESSION_STORAGE_ITEM.DISPLAY, JSON.stringify(displays[0]));
         this.router.navigate([`/displays/${displays[0].id}/sources-panel`]);
@@ -292,36 +343,42 @@ export class CmsSettingsService {
      * @return void
      */
     private autoConnectToMostRecentWall(recentDisplayName: string): void {
-        let start = 1, count = 1, search = recentDisplayName, isFavorite = false, display;
+        const start: number = 1;
+        const count: number = 1;
+        const search: string = recentDisplayName;
+        const isFavorite: boolean = false;
+        let display: Display;
 
         if (recentDisplayName === "") {
             this.router.navigate(["/displays-panel"]);
+
             return;
         }
 
         // get display wall details as per displayName
         this.cmsServerApi.getDisplayList(start, count, search, isFavorite)
-            .subscribe((displays: Display[]) => {
+            .subscribe(
+            (displays: Display[]) => {
                 if (displays.length) {
                     // filter display by name
-                    for (let displayIndex = 0; displayIndex < displays.length; displayIndex++) {
+                    for (let displayIndex: number = 0; displayIndex < displays.length; displayIndex++) {
                         if (displays[displayIndex].name === recentDisplayName) {
                             display = displays[displayIndex];
                             break;
                         }
-                    };
+                    }
 
                     if (display) {
                         this.storageManager.set(CMS_SESSION_STORAGE_ITEM.DISPLAY, JSON.stringify(display));
                         this.router.navigate([`/displays/${display.id}/sources-panel`]);
-                    }
-                    else {
+                    } else {
                         this.router.navigate(["/displays-panel"]);
                     }
                 } else {
                     this.router.navigate(["/displays-panel"]);
                 }
-            }, (error) => {
+            },
+            (error: any) => {
                 this.router.navigate(["/displays-panel"]);
                 this.appConfig.log("CmsSettingsService: connectToWallAtStartup");
             });
@@ -334,38 +391,44 @@ export class CmsSettingsService {
      * @return void
      */
     private autoConnectToSpecificWall(selectedDisplayName: string): void {
-        let start = 1, count = 1, search = selectedDisplayName, isFavorite = false, display;
+        const start: number = 1;
+        const count: number = 1;
+        const search: string = selectedDisplayName;
+        const isFavorite: boolean = false;
+        let display: Display;
 
         if (selectedDisplayName === "") {
             this.router.navigate(["/displays-panel"]);
+
             return;
         }
 
         this.cmsServerApi.getDisplayList(start, count, search, isFavorite)
-            .subscribe((displays: Display[]) => {
+            .subscribe(
+            (displays: Display[]) => {
                 if (displays.length) {
                     // filter display by name
-                    for (let displayIndex = 0; displayIndex < displays.length; displayIndex++) {
+                    for (let displayIndex: number = 0; displayIndex < displays.length; displayIndex++) {
                         if (displays[displayIndex].name === selectedDisplayName) {
                             display = displays[displayIndex];
                             break;
                         }
-                    };
+                    }
 
                     if (display) {
-                        //update recentDisplay on user profile data 
+                        //update recentDisplay on user profile data
                         this.updateWallConnectionRecentDisplay(display);
 
                         this.storageManager.set(CMS_SESSION_STORAGE_ITEM.DISPLAY, JSON.stringify(display));
                         this.router.navigate([`/displays/${display.id}/sources-panel`]);
-                    }
-                    else {
+                    } else {
                         this.router.navigate(["/displays-panel"]);
                     }
                 } else {
                     this.router.navigate(["/displays-panel"]);
                 }
-            }, (error) => {
+            },
+            (error: any) => {
                 this.router.navigate(["/displays-panel"]);
                 this.appConfig.log("CmsSettingsService: connectToWallAtStartup");
             });
@@ -376,10 +439,10 @@ export class CmsSettingsService {
      * @method getNearestHighValue
      * @param {number} count
      * @param {number[]} data
-     * @return number
+     * @return {number}
      */
-    private getNearestHighValue(count: number, data: number[]) {
-        for (let dataIndex = 0; dataIndex < data.length; dataIndex++) {
+    private getNearestHighValue(count: number, data: number[]): number {
+        for (let dataIndex: number = 0; dataIndex < data.length; dataIndex++) {
             if (count < data[dataIndex]) {
                 return data[dataIndex];
             }
@@ -391,62 +454,14 @@ export class CmsSettingsService {
      * @method getNearestLowValue
      * @param {number} count
      * @param {number[]} data
-     * @return number
+     * @return {number}
      */
-    private getNearestLowValue(count: number, data: number[]) {
-        for (let dataIndex = data.length - 1; dataIndex >= 0; dataIndex--) {
+    private getNearestLowValue(count: number, data: number[]): number {
+        for (let dataIndex: number = data.length - 1; dataIndex >= 0; dataIndex--) {
             if (count > data[dataIndex]) {
                 return data[dataIndex];
             }
         }
     }
 
-    /**
-     * This method update text direction for whole application
-     * @method setTextDirectionByLanguageKey
-     * @param {string} languageKey
-     * @return void
-     */
-    public setTextDirectionByLanguageKey(languageKey): void{
-        let html = document.getElementsByTagName("html")[0];
-        html.setAttribute("dir", this.isRTLLanguage(languageKey) ? "rtl" : "ltr");
-    }
-
-    /**
-     * This method return true if slected language is RTL Type
-     * @method isRTLLanguage
-     * @param {string} languageKey
-     * @return boolean
-     */
-    public isRTLLanguage(languageKey): boolean{
-        return CMSConstants.RTLLANGUAGES.indexOf(languageKey) !== -1;
-    }
-
-    /**
-     * This method set application language as per browser language 
-     * @method setBrowserLanguage
-     * @return void
-     */
-    public setBrowserLanguage(): void {
-        let currentLang;
-        let settingsStorageData = this.storageManager.get(CMS_SESSION_STORAGE_ITEM.SETTINGS);
-        
-        if (settingsStorageData) {
-            let userSettings = JSON.parse(settingsStorageData);
-            if (userSettings && userSettings.language) {
-                currentLang = userSettings.language;
-            }
-        }
-
-        if (!currentLang) {
-            let browserLang = this.translate.getBrowserLang();
-            let languagesRegEx = CmsLanguages.languagesRegExPattern;
-            currentLang = browserLang.match(languagesRegEx) ? browserLang : this.appConfig.DefaultLanguage;
-        }
-
-        this.translate.use(currentLang);
-
-        //update text direction
-        this.setTextDirectionByLanguageKey(currentLang);
-    }
 }

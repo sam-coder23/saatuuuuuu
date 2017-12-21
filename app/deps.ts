@@ -1,3 +1,7 @@
+/**
+ * @class deps
+ * This file imports all necesaary dependencies
+ */
 import "core-js";
 import "hammerjs";
 import "rxjs";

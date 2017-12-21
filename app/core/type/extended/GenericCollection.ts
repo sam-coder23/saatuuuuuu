@@ -8,19 +8,19 @@ import {ICollection} from "../base/ICollection";
  * @class GenericCollection
  */
 export class GenericCollection <T> implements ICollection <T> {
-    private items: { 
-        [index: string]: T 
+    private items: {
+        [index: string]: T
     };
- 
+
     private length: number = 0;
 
     constructor() {
         this.items = {};
     }
- 
+
     /**
      * @method HasKey
-     * @param {String} key The key which will used to store  
+     * @param {String} key The key which will used to store
      * @return Boolean
      */
     public HasKey(key: string): boolean {
@@ -29,22 +29,22 @@ export class GenericCollection <T> implements ICollection <T> {
 
     /**
      * @method Add
-     * @param {String} key The key which will used to store  
-     * @param {T} value The value which will used to store 
-     * @return void
-     */    
-    public Add(key: string, value: T) {
+     * @param {String} key The key which will used to store
+     * @param {T} value The value which will used to store
+     * @return {void}
+     */
+    public Add(key: string, value: T): void {
         this.items[key] = value;
         this.length++;
     }
- 
-     /**
-     * This method is responsible for returning an item from the collection by its key. 
+
+    /**
+     * This method is responsible for returning an item from the collection by its key.
      * @method Item
-     * @param key {String} - The key which will used to find an item in collection  
+     * @param key {String} - The key which will used to find an item in collection
      * @return {T} This will be type of the object using which this class is instantiated
      */
     public Item(key: string): T {
         return this.items[key];
-    } 
-};
+    }
+}

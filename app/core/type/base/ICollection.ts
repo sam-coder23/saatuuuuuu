@@ -9,7 +9,7 @@
  * @interface ICollection
  */
 export interface ICollection <T> {
-    Add(key: string, value: T);
+    Add(key: string, value: T): any;
     HasKey(key: string): boolean;
     Item(key: string): T;
-};
+}

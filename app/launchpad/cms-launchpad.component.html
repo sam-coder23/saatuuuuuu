@@ -1,0 +1,22 @@
+<router-outlet></router-outlet>
+<nd-popup *ngIf="showSystemDialog" id="sytem-events-alert-popup" class="confirm-popup" title="{{'systemDialog.confirmationTitlePopup' | translate }}"
+    (done)="onDialogConfirmation()" (closing)="showSystemDialog = false;" okText="{{'common.ok' | translate}}">
+    <popup-body>
+        {{dialogMessage}}
+    </popup-body>
+</nd-popup>
+<div *ngIf="showProgressDialog" class="cms-dialog-content-block">
+    <div class="cms-dialog-content">
+        <md-card>
+            <md-card-content>
+                <div class="cms-dialog-message-container">
+                    <md-progress-circle color="primary" mode="indeterminate"></md-progress-circle>
+                </div>
+                <div class="message">
+                    {{dialogMessage}}
+                </div>
+            </md-card-content>
+        </md-card>
+    </div>
+    <div class="cms-dialog-overlay"></div>
+</div>

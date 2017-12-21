@@ -3,7 +3,7 @@ import { Validation } from "../util/Validation";
 
 /**
  * Holds logic related to Url related method.
- * Shouldn't hold anything except static. 
+ * Shouldn't hold anything except static.
  * @class Url
  * @property {boolean} HasIP
  * @property {boolean} HasHostName
@@ -14,9 +14,10 @@ export class Url {
      * @method HasIP
      * @return {boolean} return true if it has ip in url
      */
-    public static HasIP(url): boolean {
-        let status = false;
-        status = url.match(Const.IPRegex);
+    public static HasIP(url: any): boolean {
+        let status: boolean = false;
+        status = url.match(Const.ipRegex);
+
         return !Validation.IsNullOrUndefined(status);
     }
 

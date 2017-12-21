@@ -2,7 +2,7 @@ import { ITilePreset } from "../cms/models/cms-tile-preset";
 
 /**
  * The responsibility of this class is to get tilepreset
- * based on selected source   
+ * based on selected source
  * @class TilePresetManager
  */
 
@@ -20,18 +20,18 @@ export class TilePresetManager {
         }
 
         // if selected display is associated with specific tilepreset and no. of selected sources are equal to no. of tiles
-        let tileIdIndex = tilePresets.findIndex(tilePreset => tilePreset.noOfTiles === sourceCount && 
-                                            tilePreset.defaultForDisplays && 
-                                            (tilePreset.defaultForDisplays.indexOf(displayId) != -1));
+        let tileIdIndex: number = tilePresets.findIndex((tilePreset: ITilePreset) => tilePreset.noOfTiles === sourceCount &&
+                                            tilePreset.defaultForDisplays &&
+                                            (tilePreset.defaultForDisplays.indexOf(displayId) !== -1));
 
         if (tileIdIndex === -1) {
             // if all displays are set as default (generic) and no. of selected sources are equal to no. of tiles
-            tileIdIndex = tilePresets.findIndex(tilePreset => tilePreset.noOfTiles === sourceCount && 
+            tileIdIndex = tilePresets.findIndex((tilePreset: ITilePreset) => tilePreset.noOfTiles === sourceCount &&
                                                 tilePreset.isDefaultForAllDisplays);
-            
+
             if (tileIdIndex === -1) {
                 // if no. of selected sources are equal to no. of tiles
-                tileIdIndex = tilePresets.findIndex(tilePreset => tilePreset.noOfTiles === sourceCount);
+                tileIdIndex = tilePresets.findIndex((tilePreset: ITilePreset) => tilePreset.noOfTiles === sourceCount);
             }
         }
 

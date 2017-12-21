@@ -1,10 +1,10 @@
-/* Core Module*/
+// Core Module
 import { NgModule } from "@angular/core";
 
-/* CMS API */
+// CMS API
 import { CmsApiService } from "./api/cms-api.service";
 
-/* Event emitter */
+// Event emitter
 import { CmsEventEmitterService } from "./api/cms-event-emitter.service";
 import { StorageManager } from "./api/cms-storagemanager.service";
 import { APIRequest } from "./api/api-request";

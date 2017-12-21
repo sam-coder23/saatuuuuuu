@@ -1,7 +1,7 @@
-import {Injectable} from "@angular/core";
+import { Injectable } from "@angular/core";
 
 /**
- * Roles of this class is to store the value into session storage 
+ * Roles of this class is to store the value into session storage
  * or get the value from session storage for a specific key
  * @class StorageManager
  * @property {Storage} appStorage
@@ -10,15 +10,15 @@ import {Injectable} from "@angular/core";
 @Injectable()
 export class StorageManager {
     private appStorage: Storage;
-    
+
     constructor() {
         /**
-         * Basically in appStorage variable, application is defining the storage type means storage which application 
-         * is using. If in future, due to some reason, application need to switch its storage type from 
-         * sessionStorage to localstorage then developer need to change here only 
+         * Basically in appStorage variable, application is defining the storage type means storage which application
+         * is using. If in future, due to some reason, application need to switch its storage type from
+         * sessionStorage to localstorage then developer need to change here only
          * For ex: this.appStorage = window.localStorage
          * @property appStorage
-         * @type {any}  
+         * @type {any}
          */
         this.appStorage = window.sessionStorage;
     }
@@ -30,7 +30,7 @@ export class StorageManager {
      * @param {any} val  Value which Application want to store
      * @return void
      */
-    public set(key: any, val: any): void{
+    public set(key: any, val: any): void {
         this.appStorage.setItem(key, val);
     }
 
@@ -48,18 +48,18 @@ export class StorageManager {
      * This method is responsible to remove the specific key and its value from storage
      * @method remove
      * @param {any} key Key name , application will remove the key and its value from storage
-     * @return void 
+     * @return void
      */
-    public remove(key: any): void{
+    public remove(key: any): void {
         this.appStorage.removeItem(key);
     }
-    
+
     /**
      * This method is responsible to remove the all key and their value from storage
      * @method removeStorage
      * @return void
      */
-    public removeStorage(): void{
-      this.appStorage.clear();
+    public removeStorage(): void {
+        this.appStorage.clear();
     }
 }

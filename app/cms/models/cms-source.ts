@@ -5,7 +5,7 @@ import { CmsResource } from "./cms-resource";
  * @class Source
  * @property {string} type type of source [perspective, source, web]
  * @property {number} x horizontal cordinates
- * @property {number} y vertical cordinates 
+ * @property {number} y vertical cordinates
  * @property {number} zOrder depth of the source, overlapp
  * @property {number} width
  * @property {number} height
@@ -20,8 +20,10 @@ export class Source extends CmsResource {
     public height: number;
     public selected?: boolean;
 
-    constructor(sourceModel) {
-        if (sourceModel) {
+    constructor(source: object) {
+        let sourceModel: Source;
+        if (source) {
+            sourceModel = <Source>source;
             super(sourceModel);
             this.type = sourceModel.type;
             this.x = sourceModel.x;

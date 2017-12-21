@@ -5,5 +5,5 @@
  */
 import { CmsResource } from "./../../cms/models/cms-resource";
 
-export class Source extends CmsResource {  
+export class Source extends CmsResource {
 }

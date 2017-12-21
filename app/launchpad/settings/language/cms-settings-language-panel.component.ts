@@ -4,6 +4,7 @@ import { TranslateService } from "@ngx-translate/core";
 import { CmsLanguages } from "../../../i18n/cms-languages";
 import { CmsApiService } from "../../../cms/api/cms-api.service";
 import { CmsSettingsService } from "./../../settings/cms-settings.service";
+import { IUserProfileSettings } from "../../../cms/models/cms-user-profile-settings";
 
 @Component({
     //moduleId: module.id,
@@ -14,10 +15,10 @@ import { CmsSettingsService } from "./../../settings/cms-settings.service";
 })
 
 /**
- * This class will be responsible to display language listing page 
+ * This class will be responsible to display language listing page
  * @class CmsSettingsLanguagePanelComponent
  * @property {string} userSelectedLanguageKey Key of selected language
- * @property {CmsLanguages} cmsLanguages 
+ * @property {CmsLanguages} cmsLanguages
  */
 export class CmsSettingsLanguagePanelComponent implements OnInit {
     // User selected language key
@@ -27,13 +28,13 @@ export class CmsSettingsLanguagePanelComponent implements OnInit {
     private cmsLanguages: CmsLanguages = CmsLanguages.languages;
 
     constructor(
-        private translate: TranslateService, 
-        private cmsServerApi: CmsApiService, 
-        private router: Router, 
-        private route: ActivatedRoute, 
+        private translate: TranslateService,
+        private cmsServerApi: CmsApiService,
+        private router: Router,
+        private route: ActivatedRoute,
         private cmsSettingsService: CmsSettingsService) {}
 
-    public ngOnInit() {
+    public ngOnInit(): void {
         this.route.params.forEach((params: Params) => {
             this.userSelectedLanguageKey = params["key"];
         });
@@ -50,7 +51,7 @@ export class CmsSettingsLanguagePanelComponent implements OnInit {
         this.userSelectedLanguageKey = languageKey;
 
         //update user settings in service
-        let userprofileSettings = this.cmsSettingsService.userSettings;
+        const userprofileSettings: IUserProfileSettings = this.cmsSettingsService.userSettings;
         userprofileSettings.language = languageKey;
 
         //update text direction
@@ -65,7 +66,7 @@ export class CmsSettingsLanguagePanelComponent implements OnInit {
      * @method navigateBack
      * @return void
      */
-    private navigateBack() {
+    private navigateBack(): void {
         history.back();
     }
 }

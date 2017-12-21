@@ -49,7 +49,7 @@ export class CmsLoginComponent implements OnInit, OnDestroy {
         private cmsMiniDisplayService: CmsMiniDisplayService,
         private appConfig: AppConfig) { }
 
-    public ngOnInit() {
+    public ngOnInit(): void {
         this.storageManager.removeStorage();
         this.cmsMiniDisplayService.init();
         if (this.cmsSettingsService.selectedSources instanceof Array) {
@@ -57,7 +57,7 @@ export class CmsLoginComponent implements OnInit, OnDestroy {
         }
     }
 
-    public ngOnDestroy() {
+    public ngOnDestroy(): void {
         // called on destroy event to avoid UI flickering on language change
         this.cmsSettingsService.applyUserSelectedLanguage();
     }
@@ -104,15 +104,15 @@ export class CmsLoginComponent implements OnInit, OnDestroy {
             this.user.username = this.user.username.trim();
         }
 
-        let userModel = new User(this.user);
+        const userModel: User = new User(this.user);
         this.isLoginInProgress = true;
 
         this.cmsServerApi.login(userModel)
             .subscribe(
-            response => {
+            (response: any) => {
                 // Set user settings on login and set user selected language and wall connection
                 this.cmsSettingsService.setUserProfileSettings(() => {
-                    // fetch user settings success 
+                    // fetch user settings success
                     // store logged in user info in storage
                     userModel.LoggedIn = true;
                     this.storageManager.set(CMS_SESSION_STORAGE_ITEM.USER, JSON.stringify(userModel.asSerializable()));
@@ -126,14 +126,14 @@ export class CmsLoginComponent implements OnInit, OnDestroy {
                     this.cmsSettingsService.applyUserSelectedLanguage();
                     this.cmsSettingsService.connectToWallAtStartup();
                 }, () => {
-                    // fetch user settings fail 
+                    // fetch user settings fail
                     this.appConfig.log("CmsLoginComponent: login:: User settings json is corrupt.");
                     this.isLoginInProgress = false;
                     this.hasError = true;
                     this.showErrorMessage(406);
                 });
             },
-            (error: Response) => {
+            (error: any) => {
                 this.appConfig.log("CmsLoginComponent: login:: Login failed.");
                 this.isLoginInProgress = false;
                 this.hasError = true;
@@ -146,13 +146,13 @@ export class CmsLoginComponent implements OnInit, OnDestroy {
      * @method blurInputs
      * @return void
      */
-    private blurInputs(): void{
-        let inputs = document.getElementsByTagName("input");
+    private blurInputs(): void {
+        const inputs: NodeListOf<HTMLInputElement> = document.getElementsByTagName("input");
         let nodeValue: string;
-        for (let i = 0; i < inputs.length; i++) {
-            nodeValue = inputs[i].attributes["type"].nodeValue;
+        for (let index: number = 0; index < inputs.length; index++) {
+            nodeValue = inputs[index].attributes["type"].nodeValue;
             if (nodeValue === "text" || nodeValue === "password") {
-                inputs[i].blur();
+                inputs[index].blur();
             }
         }
     }
@@ -163,27 +163,22 @@ export class CmsLoginComponent implements OnInit, OnDestroy {
      * @param {number} errorStatus
      * @return void
      */
-    private showErrorMessage(errorStatus: number): void{
-        this.appConfig.log("CmsLoginComponent: login:: Show login error message for error status " + errorStatus);
+    private showErrorMessage(errorStatus: number): void {
+        this.appConfig.log(`CmsLoginComponent: login:: Show login error message for error status ${errorStatus}`);
 
         let messageKey: string = "";
 
         if (errorStatus === 403) {
             messageKey = "login.licenceError";
-        }
-        else if (errorStatus === 503) {
+        } else if (errorStatus === 503) {
             messageKey = "login.serverNotReadyError";
-        }
-        else if (errorStatus === 406) {
+        } else if (errorStatus === 406) {
             messageKey = "login.settingsReadyError";
-        }
-        else if (errorStatus === 409) {
+        } else if (errorStatus === 409) {
             messageKey = "login.userDisabledError";
-        }
-        else if (errorStatus === 0 || errorStatus === 404) {
+        } else if (errorStatus === 0 || errorStatus === 404) {
             messageKey = "login.serverUnavailableError";
-        }
-        else {
+        } else {
             messageKey = "login.error";
         }
 

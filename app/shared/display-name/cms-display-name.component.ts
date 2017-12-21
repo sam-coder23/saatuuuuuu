@@ -12,15 +12,15 @@ import { Validation } from "../../core/util/Validation";
 
 @Component({
     selector: "cms-display-name",
-    template: `<span id="display-name">{{ displayName }}</span>`
+    template: "<span id='display-name'>{{ displayName }}</span>"
 })
 /**
- * This class contains the behaviour for display-name component used in all the launchpad 
+ * This class contains the behaviour for display-name component used in all the launchpad
  * components to use the selected display namae across application.
  * @class CmsDisplayNameComponent
  * @property {Subscription} displayEventsSubscription
  * @property {string} displayName
- * @constructor injects all the nessecary dependencies required for the component intilalizes 
+ * @constructor injects all the nessecary dependencies required for the component intilalizes
  * display name to a blank screen at start.
  */
 export class CmsDisplayNameComponent implements OnInit, OnDestroy {
@@ -30,12 +30,12 @@ export class CmsDisplayNameComponent implements OnInit, OnDestroy {
         this.displayName = "";
     }
 
-    public ngOnInit() {
+    public ngOnInit(): void {
         this.setDisplayName();
         this.subscribeDisplayEvents();
     }
 
-    public ngOnDestroy() {
+    public ngOnDestroy(): void {
         this.unsubscribeDisplayEvents();
     }
 
@@ -44,10 +44,10 @@ export class CmsDisplayNameComponent implements OnInit, OnDestroy {
      * @method subscribeDisplayEvents
      * @return {void}.
      */
-    public subscribeDisplayEvents() {
+    public subscribeDisplayEvents(): void {
         this.displayEventsSubscription = CmsEventEmitterService.get(CMS_EVENTS.DisplayList)
             .subscribe((response: { uri: string, body: any, verb: string }) => {
-                let display = this.storageManager.get(CMS_SESSION_STORAGE_ITEM.DISPLAY);
+                let display: any = this.storageManager.get(CMS_SESSION_STORAGE_ITEM.DISPLAY);
                 if (Validation.IsNullOrUndefined(response)
                     || response.verb !== "PUT"
                     || Validation.IsNullOrUndefined(response.body)
@@ -61,12 +61,12 @@ export class CmsDisplayNameComponent implements OnInit, OnDestroy {
             });
     }
 
-     /**
+    /**
      * unscubscribes the subscribed observables.
      * @method unsubscribeDisplayEvents
      * @return {void}.
      */
-    private  unsubscribeDisplayEvents() {
+    private  unsubscribeDisplayEvents(): void {
         if (!Validation.IsNullOrUndefined(this.displayEventsSubscription)) {
             this.displayEventsSubscription.unsubscribe();
         }
@@ -77,8 +77,8 @@ export class CmsDisplayNameComponent implements OnInit, OnDestroy {
      * @method setDisplayName
      * @return {void}.
      */
-    private setDisplayName() {
-        let display = this.storageManager.get(CMS_SESSION_STORAGE_ITEM.DISPLAY);
+    private setDisplayName(): void {
+        let display: any = this.storageManager.get(CMS_SESSION_STORAGE_ITEM.DISPLAY);
         if (!Validation.IsNull(display)) {
             display = JSON.parse(display);
             if (display && display.name) {

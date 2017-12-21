@@ -2,7 +2,7 @@ import { Location, APP_BASE_HREF } from "@angular/common";
 import { TestBed, async } from "@angular/core/testing";
 import { RouterTestingModule } from "@angular/router/testing";
 import { Router, ActivatedRoute } from "@angular/router";
-import { CmsLaunchpadRouter } from "../../../app/launchpad/cms-launchpad.routing"
+import { launchpadRouter } from "../../../app/launchpad/cms-launchpad.routing";
 import { CmsLoginComponent } from "../../../app/launchpad/login/cms-login.component";
 import { CmsDisplayPanelComponent } from "../../../app/launchpad/display-panel/cms-display-panel.component";
 import { CmsLaunchpadComponent } from "../../../app/launchpad/cms-launchpad.component";
@@ -36,7 +36,7 @@ describe("Router: App", () => {
     let canActiveViaAuthorizationService;
     beforeEach(async(() => {
         TestBed.configureTestingModule({
-            imports: [CmsLaunchpadRouter,
+            imports: [launchpadRouter,
                 FormsModule,
                 HttpModule, MaterialModule.forRoot(),
                 TranslateModule.forRoot({

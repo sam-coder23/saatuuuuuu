@@ -14,7 +14,7 @@ import { CmsSettingsService } from "./../launchpad/settings/cms-settings.service
  * @property {number} count
  * @property {number} max
  * @property {HTMLElement} scrollTarget
- * @property {Function} scrollCallback
+ * @property {void} scrollCallback
  * @property {number} dataCount
  * @constructor sets the loading to false on initialization of service and sets count to
  * default page size for inifinite scroll.
@@ -23,10 +23,10 @@ export class CmsVirtualScrollService {
 
     public loading: boolean;
     public count: number;
+    public dataCount: number = 0;
     public max: number;
     private scrollTarget: HTMLElement;
-    private scrollCallback: Function;
-    public dataCount: number = 0;
+    private scrollCallback: () => void;
 
     constructor(private cmsSettingsService: CmsSettingsService) {
         this.loading = false;
@@ -37,10 +37,10 @@ export class CmsVirtualScrollService {
      * add scroll event listener on scrollTarget
      * @method addScrollListener
      * @param {HTMLElement} scrollTarget
-     * @param {Function} scrollCallback
+     * @param {void} scrollCallback
      * @return {void}
      */
-    public addScrollListener(scrollTarget: HTMLElement, scrollCallback: Function) {
+    public addScrollListener(scrollTarget: HTMLElement, scrollCallback: () => void): void {
         this.scrollTarget = scrollTarget;
         this.scrollCallback = scrollCallback;
         if (this.scrollTarget) {
@@ -54,10 +54,10 @@ export class CmsVirtualScrollService {
 
     /**
      * remove scroll event listener on mScrollTarget
-     * @method removeScrollListener 
+     * @method removeScrollListener
      * @return {void}
      */
-    public removeScrollListener() {
+    public removeScrollListener(): void {
         if (this.scrollTarget) {
             EventManager.removeEventOnElement(
                 this.scrollTarget,
@@ -72,8 +72,8 @@ export class CmsVirtualScrollService {
      * @method onScroll
      * @return {void}
      */
-    private onScroll() {
-        let scrollPercent;
+    private onScroll(): void {
+        let scrollPercent: number;
         if (this.loading) {
             return;
         }

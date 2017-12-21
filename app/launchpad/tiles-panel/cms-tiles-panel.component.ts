@@ -19,18 +19,18 @@ import { AppConfig } from "../../config";
  */
 
 export class CmsTilesPanelComponent implements OnInit {
-    private displayId: number;
-    private displayResolution: { "width": number, "height": number };
-    private sourceCount: number;
-    public viewState = {
+    public viewState: any = {
         reload: false,
         list: true
     };
+    private displayId: number;
+    private displayResolution: { "width": number, "height": number };
+    private sourceCount: number;
 
     constructor(
         private activatedRoute: ActivatedRoute,
         private router: Router,
-        private cmsServerApi: CmsApiService, 
+        private cmsServerApi: CmsApiService,
         private appConfig: AppConfig) {
 
         this.displayResolution = {
@@ -39,18 +39,9 @@ export class CmsTilesPanelComponent implements OnInit {
         };
     }
 
-    public ngOnInit() {
-        this.displayId = parseInt(this.activatedRoute.params["value"]["id"]);
-        this.sourceCount = parseInt(this.activatedRoute.queryParams["value"]["sourceCount"]);
-    }
-
-    /**
-     * This method navigate to next page
-     * @method navigateNext
-     * @return void
-     */
-    private navigateNext(): void {
-        this.router.navigateByUrl(`display-panel/${this.displayId}`);
+    public ngOnInit(): void {
+        this.displayId = parseInt(this.activatedRoute.params["value"]["id"], 10);
+        this.sourceCount = parseInt(this.activatedRoute.queryParams["value"]["sourceCount"], 10);
     }
 
     /**
@@ -72,7 +63,7 @@ export class CmsTilesPanelComponent implements OnInit {
         this.viewState.list = false;
         window.setTimeout(() => {
             this.viewState.list = true;
-        }, 0);
+                       }, 0);
     }
 
     /**
@@ -85,11 +76,20 @@ export class CmsTilesPanelComponent implements OnInit {
     }
 
     /**
+     * This method navigate to next page
+     * @method navigateNext
+     * @return void
+     */
+    private navigateNext(): void {
+        this.router.navigateByUrl(`display-panel/${this.displayId}`);
+    }
+
+    /**
      * This method logs out the user and performs clean up
      * @method logout
      * @return {void}
      */
-    private logout() {
+    private logout(): void {
         this.cmsServerApi.logoutUser();
     }
 }

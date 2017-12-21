@@ -10,7 +10,6 @@ import { CMS_EVENTS } from "./cms-events.enum";
  */
 @Injectable()
 export class CmsEventEmitterService {
-    
     // defining an event store
     private static emitters: { [ID: string]: EventEmitter<any> } = {};
 
@@ -18,13 +17,13 @@ export class CmsEventEmitterService {
      * Set a new event in the event store with a given ID as key
      * @method get
      * @param {CMS_EVENTS} ID
-     * @return EventEmitter<any> 
+     * @return EventEmitter<any>
      */
     public static get(ID: CMS_EVENTS): EventEmitter<any> {
-        if (!this.emitters[ID]){
+        if (!this.emitters[ID]) {
             this.emitters[ID] = new EventEmitter();
         }
-        
+
         return this.emitters[ID];
     }
 }

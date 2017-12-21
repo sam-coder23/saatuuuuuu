@@ -4,7 +4,7 @@
  * @interface ICmsEvent
  */
 export interface ICmsEvent {
-    body: any,
-    uri: string,
-    verb: string
+    body: any;
+    uri: string;
+    verb: string;
 }

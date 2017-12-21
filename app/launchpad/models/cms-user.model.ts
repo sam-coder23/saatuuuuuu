@@ -7,8 +7,8 @@ import { IUserToken } from "./cms-user-token";
  * @property {string} password For password type check
  */
 export interface UserConfig {
-    username: string,
-    password: string
+    username: string;
+    password: string;
 }
 
 /**
@@ -23,7 +23,7 @@ export class User {
     public username: string;
     public password: string;
     public loggedIn: boolean;
-    
+
     constructor(user: UserConfig) {
         this.username = user.username;
         this.password = user.password;
@@ -37,7 +37,7 @@ export class User {
     public get LoggedIn(): boolean {
         return this.loggedIn;
     }
-    
+
     /**
      * This setter method will set the loggedIn status of user
      * @method LoggedIn:
@@ -48,7 +48,7 @@ export class User {
     }
 
     /**
-     * This getter method is reponsible to get the userName 
+     * This getter method is reponsible to get the userName
      * @method Username
      * @return string
      */
@@ -57,11 +57,11 @@ export class User {
     }
 
     /**
-     * This getter method is reponsible to get the user password 
+     * This getter method is reponsible to get the user password
      * @method Password
      * @return string
      */
-    public get Password() {
+    public get Password(): string {
         return this.password;
     }
 
@@ -71,7 +71,7 @@ export class User {
      * @method getSerializable
      * @return IUserToken
      */
-    public asSerializable(): IUserToken{
+    public asSerializable(): IUserToken {
         return {
             username : this.username,
             loggedIn: this.loggedIn
@@ -82,7 +82,7 @@ export class User {
      * With the help of this getter method, application can get the username and password
      * @method toJSON
      * @return UserConfig
-     */    
+     */
      public toJSON() : UserConfig {
         return {
             username : this.username,

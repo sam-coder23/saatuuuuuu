@@ -68,15 +68,16 @@ export class CmsDisplayPanelComponent implements OnInit {
         this.isSaveLayoutEnabled = false;
     }
 
-    public ngOnInit() {
+    public ngOnInit(): void {
         this.route.params.forEach((params: Params) => {
-            this.displayId = parseInt(params["id"]);
+            this.displayId = parseInt(params["id"], 10);
         });
         if (isNaN(this.displayId)) {
             return;
         }
         if (!this.loadDisplay()) {
             this.router.navigateByUrl("/displays-panel");
+
             return;
         }
     }
@@ -87,14 +88,14 @@ export class CmsDisplayPanelComponent implements OnInit {
      * @return boolean
      */
     private loadDisplay(): boolean {
-        let display = this.storageManager.get(CMS_SESSION_STORAGE_ITEM.DISPLAY);
+        const display: any = this.storageManager.get(CMS_SESSION_STORAGE_ITEM.DISPLAY);
 
         // If selected display is not available, route to display list.
         if (display) {
             this.display = <CmsResource>JSON.parse(display);
+
             return true;
-        }
-        else{
+        } else {
             return false;
         }
     }
@@ -102,7 +103,7 @@ export class CmsDisplayPanelComponent implements OnInit {
     /**
      * This increases the fit height count
      * @method fitHeight
-     * @return void
+     * @return {void}
      */
     private fitHeight(): void {
         this.fitHeightCount++;
@@ -114,16 +115,19 @@ export class CmsDisplayPanelComponent implements OnInit {
      * @return void
      */
     private clearMiniDisplayWall(): void {
-        this.cmsServerApi.putContentsOnDisplay(this.displayId, 0, {}).subscribe(response => {
-            this.cmsSettingsService.selectedSources.length = 0;
-            this.navigateToLoginRoute();
-        }, error => {
-            console.error(error);
-        });
+        this.cmsServerApi.putContentsOnDisplay(this.displayId, 0, {})
+            .subscribe(
+            (response: any) => {
+                this.cmsSettingsService.selectedSources.length = 0;
+                this.navigateToLoginRoute();
+            },
+            (error: any) => {
+                console.error(error);
+            });
         this.showClearWallPopup = false;
     }
 
-    /** 
+    /**
      * This method handle logout of user
      * @method logoff
      * @return void

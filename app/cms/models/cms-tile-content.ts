@@ -2,7 +2,7 @@ import { Tile } from "./cms-tile";
 import { Source } from "./cms-source";
 /**
  * Specifies the model of TileContent.
- * Inherits source's properties as source is presented as tile content on mini-display. 
+ * Inherits source's properties as source is presented as tile content on mini-display.
  * @class TileContent
  * @property {number} resourceId  id of any type of resource shared on display
  * @property {string} lastModified last modified timestamp for snapshot, the reason we marked it
@@ -14,8 +14,10 @@ export class TileContent extends Source {
     public lastModified: string;
     public absoluteSize: Tile;
 
-    constructor(contentModel) {
-        if (contentModel) {
+    constructor(content: object) {
+        let contentModel: TileContent;
+        if (content) {
+            contentModel = <TileContent>content;
             super(contentModel);
             this.resourceId = contentModel.resourceId;
             this.lastModified = contentModel.lastModified;

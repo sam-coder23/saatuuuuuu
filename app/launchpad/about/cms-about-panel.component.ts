@@ -12,7 +12,7 @@ import { AppConfig } from "../../config";
 })
 
 /**
- * This class will be responsible to display the about page content 
+ * This class will be responsible to display the about page content
  * @class CmsAboutPanelComponent
  * @property {boolean} loading To show or hide loading process.
  * @property {object} systemInfo conatin system information of project name, license, version etc.
@@ -20,7 +20,7 @@ import { AppConfig } from "../../config";
  */
 export class CmsAboutPanelComponent implements OnInit {
     private loading: boolean = false;
-    private systemInfo = {
+    private systemInfo: any = {
         licensedTo: "",
         projectName: "",
         licenseStatus: "",
@@ -37,19 +37,19 @@ export class CmsAboutPanelComponent implements OnInit {
         private appConfig: AppConfig) {
     }
 
-    public ngOnInit() {
+    public ngOnInit(): void {
         this.getSystemInfo();
     }
 
     /**
      * This method will be fetch all system info, those will be display into about panel.
      * @method getSystemInfo
-     * @return void 
+     * @return void
      */
     private getSystemInfo(): void {
         this.cmsServerApi.getSystemInfo()
             .subscribe(
-            response => {
+            (response: any) => {
                 if (response) {
                     this.systemInfo.licensedTo = response.LicenseInfo.customerName;
                     this.systemInfo.projectName = response.LicenseInfo.projectName;
@@ -58,25 +58,24 @@ export class CmsAboutPanelComponent implements OnInit {
 
                     if (response.LicenseInfo.licenseStatus) {
                         if (response.LicenseInfo.licenseStatus === "LicenseAccepted") {
-                            this.translate.get("about.licenceValid").subscribe((response: string) => {
-                                this.systemInfo.licenseStatus = response;
+                            this.translate.get("about.licenceValid").subscribe((licenseStatus: string) => {
+                                this.systemInfo.licenseStatus = licenseStatus;
                             });
-                        }
-                        else {
+                        } else {
                             this.translate.get("about.daysRemaining", { value: response.LicenseInfo.daysRemaining })
-                                .subscribe((response: string) => {
-                                    this.systemInfo.daysRemaining = response;
+                                .subscribe((daysRemaining: string) => {
+                                    this.systemInfo.daysRemaining = daysRemaining;
                                 });
                             this.systemInfo.licenseStatus = `${response.LicenseInfo.licenseStatus},${this.systemInfo.daysRemaining}`;
                         }
                     }
                 }
 
-                //update copyright text with year, 
-                //after success set "loading" false as translate is asyn call 
+                //update copyright text with year,
+                //after success set "loading" false as translate is asyn call
                 this.updateCopyrightText();
             },
-            error => {
+            (error: any) => {
                 this.appConfig.log("Error in getSystemInfo", error);
                 this.loading = false;
             });

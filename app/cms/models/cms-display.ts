@@ -20,7 +20,7 @@ export class Display extends CmsResource {
     public resolution: {
         width: number;
         height: number;
-    }
+    };
     public tiles: Tile[];
     public content: TileContent[];
 
@@ -32,19 +32,21 @@ export class Display extends CmsResource {
         return this.resolution.height;
     }
 
-    constructor(display) {
+    constructor(display: object) {
+        let displayObject: Display;
         if (display) {
-            super(display);
-            this.type = display.type;
-            this.online = display.online;
-            this.resolution = display.resolution;
-            if (display.tiles instanceof Array) {
-                this.tiles = display.tiles.map(tile => new Tile(tile));
+            displayObject = <Display>display;
+            super(displayObject);
+            this.type = displayObject.type;
+            this.online = displayObject.online;
+            this.resolution = displayObject.resolution;
+            if (displayObject.tiles instanceof Array) {
+                this.tiles = displayObject.tiles.map((tile: Tile) => new Tile(tile));
             }
-            if (display.content instanceof Array) {
-                this.content = display.content.map(content => new TileContent(content));
+            if (displayObject.content instanceof Array) {
+                this.content = displayObject.content.map((content: TileContent) => new TileContent(content));
             }
-            this.tilerId = display.tilerId;
+            this.tilerId = displayObject.tilerId;
         }
     }
 }

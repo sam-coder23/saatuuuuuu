@@ -10,7 +10,7 @@ export class APIResponse {
     private status: boolean;
     private errorMessage: string;
     private response: any;
-    
+
     constructor(status: boolean, errorMessage: string, response?: any) {
         this.status = status;
         this.errorMessage = errorMessage;
@@ -19,15 +19,15 @@ export class APIResponse {
 
     /**
      * This method will keep the status of API status
-     * @method Status 
+     * @method Status
      * @return boolean
      */
     public get Status(): boolean {
         return this.status;
     }
-    
+
     /**
-     * This method is reponsible to get the ErrorMessage 
+     * This method is reponsible to get the ErrorMessage
      * @method ErrorMessage
      * @return strin
      */
@@ -48,14 +48,14 @@ export class APIResponse {
      * @method getSerializable
      * @return object
      */
-    public asSerializable() {
+    public asSerializable(): {} {
         return {};
     }
 
     /**
      * @method toJSON
      * @return object
-     */    
+     */
      public toJSON() : any {
         return {};
     }

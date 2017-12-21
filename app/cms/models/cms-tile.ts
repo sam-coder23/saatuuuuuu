@@ -12,7 +12,7 @@ export class Tile {
     public width: number;
     public height: number;
     public left?: number;
-    public top?: number
+    public top?: number;
     public set x(v: number) {
         this.left = v;
     }
@@ -29,8 +29,10 @@ export class Tile {
         return this.top;
     }
 
-    constructor(tileModel?) {
-        if (tileModel) {
+    constructor(tile?: object) {
+        let tileModel: Tile;
+        if (tile) {
+            tileModel = <Tile>tile;
             this.width = tileModel.width;
             this.height = tileModel.height;
             this.left = tileModel.left >= 0 ? tileModel.left : tileModel.x;

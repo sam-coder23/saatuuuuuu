@@ -1,6 +1,6 @@
 /**
  * Display list component fetches the list of available displays from CMS Server API and
- * loads the list in UI in the form of cards (representing a single display with available information 
+ * loads the list in UI in the form of cards (representing a single display with available information
  * about the display).
  */
 import { Subscription } from "rxjs/Rx";
@@ -27,7 +27,7 @@ import { CMSConstants } from "../../cms/models/cms-constants";
  * This class contains the behaviour for display list component, contains methods that comprise of
  * functionality for making API request on selecting the display Wall.
  * @class CmsDisplayListComponent
- * @property {boolean} favoriteFilter filter for favorite marked displays 
+ * @property {boolean} favoriteFilter filter for favorite marked displays
  * @property {string} searchFilter search string to filter out textbased search
  * @property {EventEmitter} changeEmitter emits each change to the displays panel.
  * @property {Display[]} displays all the displays to be listed
@@ -37,9 +37,10 @@ import { CMSConstants } from "../../cms/models/cms-constants";
  * @property {string} dialogMessage
  */
 export class CmsDisplayListComponent implements OnChanges, OnDestroy {
-    @Input() favoriteFilter: boolean;
-    @Input() searchFilter: string;
-    @Output("change") changeEmitter = new EventEmitter();
+    @Output("change") public changeEmitter: EventEmitter<{}> = new EventEmitter();
+    @Input() public favoriteFilter: boolean;
+    @Input() public searchFilter: string;
+
     private displays: Display[];
     private eventSubscription: Subscription;
     private action: string;
@@ -57,30 +58,29 @@ export class CmsDisplayListComponent implements OnChanges, OnDestroy {
     ) {
     }
 
-    public ngOnChanges(cahnges: SimpleChanges) {
+    public ngOnChanges(changes: SimpleChanges): void {
         this.displays = [];
         this.getDisplays();
     }
 
-    public ngOnDestroy() {
+    public ngOnDestroy(): void {
         if (this.eventSubscription) {
             this.eventSubscription.unsubscribe();
         }
     }
 
-    private connectWall(display: Display) {
+    private connectWall(display: Display): void {
         if (display.disabled) {
             return;
         }
         // fetch the param and select the display for wall auto-connection
         this.route.params.forEach((params: Params) => {
-            let actionParam = params["action"];
+            const actionParam: string = params["action"];
             // Check for change in settings for specific selected wall.
             if (actionParam === CMSConstants.SELECT_DISPLAY) {
                 this.cmsSettingsService.updateWallConnectionSpecificDisplay(display);
-            }
-            else {
-                //update recentDisplayId on user profile data 
+            } else {
+                //update recentDisplayId on user profile data
                 this.cmsSettingsService.updateWallConnectionRecentDisplay(display);
                 this.storageManager.set(CMS_SESSION_STORAGE_ITEM.DISPLAY, JSON.stringify(display));
                 this.cmsSettingsService.selectedSources.length = 0;
@@ -96,7 +96,7 @@ export class CmsDisplayListComponent implements OnChanges, OnDestroy {
      * @param {Display} display specifies the toggled sources to be favorited.
      * @returns {void}.
      */
-    private toggleDisplayFavorite(display: Display) {
+    private toggleDisplayFavorite(display: Display): void {
         if (display.disabled) {
             return;
         }
@@ -108,9 +108,8 @@ export class CmsDisplayListComponent implements OnChanges, OnDestroy {
                 this.displays,
                 this.favoriteFilter
             );
-        }
-        // if display is unfavorite, mark it as favorite
-        else {
+        } else {
+            // if display is unfavorite, mark it as favorite
             this.favoriteService.markObjectAsFavorite(display.id, display.type, this.displays);
         }
     }
@@ -120,9 +119,9 @@ export class CmsDisplayListComponent implements OnChanges, OnDestroy {
      * @method onConfirmation
      * @returns {void}
      */
-    private onConfirmation() {
+    private onConfirmation(): void {
         this.route.params.forEach((params: Params) => {
-            let actionParam = params["action"];
+            const actionParam: string = params["action"];
             if (actionParam === CMSConstants.SELECT_DISPLAY) {
                 this.router.navigate(["/settings"]);
             }
@@ -135,7 +134,7 @@ export class CmsDisplayListComponent implements OnChanges, OnDestroy {
      * @method getDisplays
      * @returns {void}
      */
-    private getDisplays() {
+    private getDisplays(): Subscription {
         return this.cmsServerApi.getDisplayList(1, 0, this.searchFilter, this.favoriteFilter)
             .subscribe(
             (displays: Display[]) => {
@@ -150,7 +149,7 @@ export class CmsDisplayListComponent implements OnChanges, OnDestroy {
                     this.showDialogMessage();
                 }
             },
-            error => {
+            (error: any) => {
                 this.showDialogMessage();
             });
     }
@@ -160,7 +159,7 @@ export class CmsDisplayListComponent implements OnChanges, OnDestroy {
      * @method showDialogMessage
      * @returns {void}
      */
-    private showDialogMessage() {
+    private showDialogMessage(): void {
         //show confimation dialog
         this.showConfirmationPopup = true;
         // dialog message using TranslateService
@@ -176,17 +175,17 @@ export class CmsDisplayListComponent implements OnChanges, OnDestroy {
      * @param {ICmsEvent} event subscription event of type Display.
      * @returns {void}
      */
-    private handleDisplayListEvents(event: ICmsEvent) {
+    private handleDisplayListEvents(event: ICmsEvent): void {
         //show confimation dialog
         this.showConfirmationPopup = false;
         if (event.verb.toLowerCase() === "deleted") {
-            let id = (<{ id: number }>event.body).id;
-            let display = this.displays.find(display => display.id === id);
-            if (display) {
-                display.disabled = true;
+            const id: number = (<{ id: number }>event.body).id;
+            let filteredDisplay: Display = this.displays.find((display: Display) => display.id === id);
+            if (filteredDisplay) {
+                filteredDisplay.disabled = true;
             }
-            display = JSON.parse(this.storageManager.get(CMS_SESSION_STORAGE_ITEM.DISPLAY));
-            if (display && display.id === id) {
+            filteredDisplay = JSON.parse(this.storageManager.get(CMS_SESSION_STORAGE_ITEM.DISPLAY));
+            if (filteredDisplay && filteredDisplay.id === id) {
                 this.storageManager.remove(CMS_SESSION_STORAGE_ITEM.DISPLAY);
             }
         }

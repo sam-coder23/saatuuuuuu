@@ -13,7 +13,7 @@ import {GenericCollection} from "../core/type/extended/GenericCollection";
 
 export class KeyManager {
     private keyCollection : GenericCollection<number>;
-    
+
     constructor() {
         this.keyCollection = new GenericCollection<number>();
         this.keyCollection.Add("Escape", 27);
@@ -25,8 +25,8 @@ export class KeyManager {
      * @method HasKey
      * @param  {String} keyName
      * This is the key for which item will be returned from the collection.
-     * @return {Boolean} 
-     * true if key exists flase if does not. 
+     * @return {Boolean}
+     * true if key exists flase if does not.
      */
     public HasKey(keyName: string) : boolean {
         return this.keyCollection.HasKey(keyName);
@@ -35,16 +35,16 @@ export class KeyManager {
     /**
      * This is responsible for checking whether a key is added to collection
      * @method hasKey
-     * @param {String} keyName 
+     * @param {String} keyName
      * This is the key for which item will be returned from the collection.
-     * @return {Boolean} 
-     * 0 if key does not exists or the actual keycode for the key you have asked. 
+     * @return {Boolean}
+     * 0 if key does not exists or the actual keycode for the key you have asked.
      */
     public KeyCode(keyName: string) : number {
-        let exists = this.HasKey(keyName),
-            returnValue = 0; // 0 in javascript represents empty string i.e ""
+        const exists: boolean = this.HasKey(keyName);
+        let returnValue: number = 0; // 0 in javascript represents empty string i.e ""
 
-        if(exists) {
+        if (exists) {
             returnValue = this.keyCollection.Item(keyName);
         }
 
@@ -52,17 +52,17 @@ export class KeyManager {
     }
 
     /**
-     * This will check and return true if it was ESC key press by user false otherwise. 
+     * This will check and return true if it was ESC key press by user false otherwise.
      * @method IsEscapeKey
      * @param {KeyboardEvent} e
      * This will provide access to keyCode and which those will be used to get to know whether its escape key.
-     * @return {Boolean} true 
+     * @return {Boolean} true
      * if it is escape key otherwise false
      */
     public IsEscapeKey(e: KeyboardEvent): boolean {
-        let value = this.KeyCode("Escape"),
-            keyCode = e.keyCode,
-            which = e.which;
+        const value: number = this.KeyCode("Escape");
+        const keyCode: number = e.keyCode;
+        const which: number = e.which;
 
         return keyCode === value || which === value;
     }

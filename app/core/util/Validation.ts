@@ -4,13 +4,13 @@
  * @class Validation
  */
 
-export class Validation {    
+export class Validation {
     /**
      * Returns true if value is null
      * @method IsNull
      * @return {boolean}
      */
-    public static IsNull(value) : boolean {
+    public static IsNull(value: any) : boolean {
         return value === null;
     }
 
@@ -19,8 +19,8 @@ export class Validation {
      * @method IsNull
      * @return {boolean}
      */
-    public static IsUndefined(value) : boolean {
-        return typeof value === "undefined";
+    public static IsUndefined(value: any) : boolean {
+        return value === undefined;
     }
 
     /**
@@ -28,7 +28,7 @@ export class Validation {
      * @method IsNullOrUndefined
      * @return {boolean}
      */
-    public static IsNullOrUndefined(value) : boolean {
+    public static IsNullOrUndefined(value: any) : boolean {
         return Validation.IsNull(value) || Validation.IsUndefined(value);
     }
 }

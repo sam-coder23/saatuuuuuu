@@ -6,6 +6,7 @@ import { CmsApiService } from "../../../cms/api/cms-api.service";
 import { StorageManager } from "../../../cms/api/cms-storagemanager.service";
 import { CMS_SESSION_STORAGE_ITEM } from "../../../cms/models/cms-session-storage-item";
 import { AppConfig } from "../../../config";
+import { User } from "../../models/cms-user.model";
 
 @Component({
     //moduleId: module.id,
@@ -21,13 +22,22 @@ import { AppConfig } from "../../../config";
  * @property {object} keyManager
  * @property {number} zoomLevel
  * @property {EventEmitter} closeEmitter
-`* @property {EventEmitter} fitHeightEmitter 
+ * @property {EventEmitter} fitHeightEmitter
  * @property {boolean} disableOptionOnDisplayUnavailable
  * @property {boolean} isHideOption
  */
 export class CmsOptionsComponent implements OnInit {
+    // zoom level of mini-Display
+    @Input("zoom") public zoomLevel: number;
+
+    @ViewChild("sidenav") public sidenav: any;
+    // Create a "close" event
+    @Output("close") public closeEmitter: EventEmitter<{}> = new EventEmitter();
+
+    // create "fit-height" event mini-display
+    @Output("fitHeight") public fitHeightEmitter: EventEmitter<{}> = new EventEmitter();
     private displayId: number;
-    private keyManager = new KeyManager();
+    private keyManager: KeyManager = new KeyManager();
 
     //This flag will disable certain options if display is not available
     private disableOptionOnDisplayUnavailable: boolean;
@@ -35,29 +45,18 @@ export class CmsOptionsComponent implements OnInit {
     //This flag will hide certain options
     private isHideOption: boolean;
 
-    // zoom level of mini-Display
-    @Input("zoom") zoomLevel: number;
-
-    // Create a "close" event
-    @Output("close") closeEmitter = new EventEmitter();
-
-    // create "fit-height" event mini-display
-    @Output("fitHeight") fitHeightEmitter = new EventEmitter(); 
-
-    @ViewChild("sidenav") sidenav;
-
     constructor(
-        private route: ActivatedRoute, 
-        private router: Router, 
-        private cmsApiService: CmsApiService, 
-        private storageManager: StorageManager, 
+        private route: ActivatedRoute,
+        private router: Router,
+        private cmsApiService: CmsApiService,
+        private storageManager: StorageManager,
         private appConfig: AppConfig) {
-        
+
         this.disableOptionOnDisplayUnavailable = false;
         this.isHideOption = true;
     }
 
-    public ngOnInit() {
+    public ngOnInit(): void {
         EventManager.addEvent("keyup", this.onKeyUP.bind(this));
 
         // Open sidenav with animation
@@ -69,17 +68,18 @@ export class CmsOptionsComponent implements OnInit {
 
         // fetch selected display id from url parameter
         this.route.params.forEach((params: Params) => {
-            this.displayId = parseInt(params["id"]);
+            this.displayId = parseInt(params["id"], 10);
         });
     }
 
     /**
-     * This will return the logged in user name. Being used by template 
+     * This will return the logged in user name. Being used by template
      * @property UserName {String}
      * @return {String}
      */
     private get UserName(): string {
-        let user = JSON.parse(this.storageManager.get(CMS_SESSION_STORAGE_ITEM.USER));
+        const user: User = JSON.parse(this.storageManager.get(CMS_SESSION_STORAGE_ITEM.USER));
+
         return user.username;
     }
 
@@ -89,7 +89,7 @@ export class CmsOptionsComponent implements OnInit {
      * @method close
      * @return void
      */
-    private close(): void{
+    private close(): void {
         EventManager.removeEvent("keyup", this.onKeyUP);
         this.closeEmitter.emit();
     }
@@ -117,12 +117,12 @@ export class CmsOptionsComponent implements OnInit {
      * This event handler will be invoked when user will press escape key.
      * @method onKeyUP
      * @param e - Native event object provided by the browser when key is pressed
-     * @return void   
+     * @return void
      */
-    private onKeyUP(e): void{
+    private onKeyUP(e: any): void {
         if (this.keyManager.IsEscapeKey(e)) {
             this.sidenav.close();
         }
-    };
-    
+    }
+
 }

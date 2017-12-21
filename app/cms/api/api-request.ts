@@ -1,6 +1,6 @@
 import { StorageManager } from "./cms-storagemanager.service";
 import { Injectable } from "@angular/core";
-import { Http, Headers, RequestOptionsArgs , Response, URLSearchParams } from "@angular/http";
+import { Http, Headers, RequestOptionsArgs, Response, URLSearchParams } from "@angular/http";
 import { AppConfig } from "../../config";
 import { Observable } from "rxjs/Rx";
 import { Router } from "@angular/router";
@@ -10,7 +10,7 @@ import "rxjs/add/operator/map";
 import "rxjs/add/operator/catch";
 
 /**
- * This class will hold logic related all kind of api intialization and 
+ * This class will hold logic related all kind of api intialization and
  * it will normalize https request for the entire application
  * @class APIRequest
  * @property {string} serverURL This will base server url
@@ -20,21 +20,21 @@ import "rxjs/add/operator/catch";
  */
 @Injectable()
 export class APIRequest {
-    private serverURL: string;
     public headers: Headers;
-    public requestOption: RequestOptionsArgs;    
-    
+    public requestOption: RequestOptionsArgs;
+    private serverURL: string;
+
     constructor(
-        private http: Http, 
-        private router: Router, 
-        private appConfig: AppConfig, 
+        private http: Http,
+        private router: Router,
+        private appConfig: AppConfig,
         private storageManager: StorageManager) {
-            
-        this.serverURL = this.appConfig.ServerURL;        
-        this.headers = new Headers({"Content-Type": "application/json" });
+
+        this.serverURL = this.appConfig.ServerURL;
+        this.headers = new Headers({ "Content-Type": "application/json" });
         this.requestOption = {
             headers: this.headers,
-            withCredentials: true            
+            withCredentials: true
         };
     }
 
@@ -43,26 +43,25 @@ export class APIRequest {
      * @method getURL
      * @param {string} url
      */
-    public GetURL(url: string) {
+    public GetURL(url: string): string {
         if (url.lastIndexOf("?") !== -1) {
             url = `${url}&_=${Date.now()}`;
-        }
-        else {
+        }else {
             url = `${url}?_=${Date.now()}`;
         }
 
         return `${this.serverURL}/${url}`;
-    } 
+    }
 
     /**
      * This will hold logic which will send the post request to concerned server
      * @method post
      * @param {string} url Request url
-     * @param {any} body 
+     * @param {any} body
      */
     public post(url: string, body: any): Observable<any> {
         return this.http.post(this.GetURL(url), body, this.requestOption)
-            .map((response : any) => response.json())
+            .map((response: any) => response.json())
             .catch(this.handleError.bind(this));
     }
 
@@ -70,28 +69,28 @@ export class APIRequest {
      * This will hold logic whiich will send the get request to concerned server
      * @method get
      * @param {string} url Request url
-     * @param {URLSearchParams} params 
+     * @param {URLSearchParams} params
      */
-    public get(url: string) : Observable<any> {
-        //@pending - we need to see whether all server responses are of type JSON      
+    public get(url: string): Observable<any> {
+        //@pending - we need to see whether all server responses are of type JSON
         return this.http.get(this.GetURL(url), this.requestOption)
-            .map((response:any) => response.json())
+            .map((response: any) => response.json())
             .catch(this.handleError.bind(this));
     }
 
     /**
      * This will hold the logic which will send the put request
      * to the server
-     * @method put 
-     * @param {any} body 
+     * @method put
+     * @param {any} body
      * @param {string} url
      */
-     public put(url: string, body?:any) : Observable<any> {
+    public put(url: string, body?: any): Observable<any> {
         return this.http.put(this.GetURL(url), body, this.requestOption)
-            .map((response : any) => { 
+            .map((response: any) => {
                 try {
                     return response.json();
-                }catch (error) {
+                } catch (error) {
                     return response._body;
                 }
             })
@@ -101,29 +100,29 @@ export class APIRequest {
     /**
      * This will hold the logic which will send the delete request
      * @method delete
-     * @param {string} url 
+     * @param {string} url
      */
-    public delete(url: string) : Observable<any> {
-         return this.http.delete(this.GetURL(url), this.requestOption)
-            .map((response : any) => response.json())
+    public delete(url: string): Observable<any> {
+        return this.http.delete(this.GetURL(url), this.requestOption)
+            .map((response: any) => response.json())
             .catch(this.handleError.bind(this));
     }
 
-     /**
-     * This is used to handle the error
-     * @method handleError
-     * @param {any} error 
-     */
-    public handleError(error): Observable<any> {
+   /**
+    * This is used to handle the error
+    * @method handleError
+    * @param {any} error
+    */
+    public handleError(error: any): Observable<any> {
         if (error.status === 401) {
             this.get("logout")
-                .finally(() => this.storageManager.removeStorage())    
-                .subscribe(()=> {
+                .finally(() => this.storageManager.removeStorage())
+                .subscribe(() => {
                     this.appConfig.log("Something wrong with server, Logout users successfully");
                 });
 
             this.router.navigate(["/login"]);
-       }
+        }
 
         return Observable.throw(error || "Server error");
     }

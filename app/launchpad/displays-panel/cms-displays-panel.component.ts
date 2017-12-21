@@ -1,9 +1,6 @@
 import { Component, OnInit, AfterViewInit } from "@angular/core";
 import { CMS_SESSION_STORAGE_ITEM } from "../../cms/models/cms-session-storage-item";
 import { StorageManager } from "../../cms/api/cms-storagemanager.service";
-
-
-                
 import { Display } from "../../cms/models/cms-display";
 import { Observable } from "rxjs/Rx";
 import { AppConfig } from "../../config";
@@ -11,8 +8,6 @@ import { Validation } from "../../core/util/Validation";
 import { Router, ActivatedRoute, Params } from "@angular/router";
 import { CMSConstants } from "../../cms/models/cms-constants";
 import { CmsApiService } from "../../cms/api/cms-api.service";
-
-
 
 /**
  * This class will hold the logic of cms displays panel and hold layout of a displays page which includes toolbar and display list
@@ -39,24 +34,24 @@ export class CmsDisplaysPanelComponent implements OnInit, AfterViewInit {
     private isSelectDisplayView: boolean = false;
 
     // all boolean states for the template
-    private viewState = {
+    private viewState: any = {
         reload: false,
         list: true
     };
 
     constructor(
-        private storageManager: StorageManager, 
-        private appConfig: AppConfig, 
-        private route: ActivatedRoute, 
+        private storageManager: StorageManager,
+        private appConfig: AppConfig,
+        private route: ActivatedRoute,
         private cmsServerApi: CmsApiService) {
         this.isFavoriteFilter = this.storageManager.get(CMS_SESSION_STORAGE_ITEM.DISPLAYS_FAVORITE_FILTER) === String(true);
         this.searchFilter = this.storageManager.get(CMS_SESSION_STORAGE_ITEM.DISPLAYS_SEARCH_FILTER) || "";
         this.searchKey = this.searchFilter;
     }
 
-    public ngOnInit() {
+    public ngOnInit(): void {
         this.route.params.forEach((params: Params) => {
-            let actionParam = params["action"];
+            const actionParam: string = params["action"];
 
             // Check for change in settings for specific selected wall.
             if (actionParam === CMSConstants.SELECT_DISPLAY) {
@@ -65,21 +60,21 @@ export class CmsDisplaysPanelComponent implements OnInit, AfterViewInit {
         });
     }
 
-    public ngAfterViewInit() {
+    public ngAfterViewInit(): void {
         /**
-         * Making an Observable to get the string token from 
+         * Making an Observable to get the string token from
          * HTML search input control and update the searchFilter by
          * subscribing this Observable
          */
-        let searchInput = document.getElementById("display-list-search-input");
+        const searchInput: HTMLElement = document.getElementById("display-list-search-input");
         Observable.fromEvent(searchInput, "keyup")
             .map((e: any) => e.target.value.trim())
             .debounceTime(500)
-            .subscribe(searchString => {
+            .subscribe((searchString: string) => {
                 this.searchFilter = searchString;
                 this.storageManager.set(CMS_SESSION_STORAGE_ITEM.DISPLAYS_SEARCH_FILTER, searchString);
             });
-    };
+    }
 
     /**
      * Use this method to mark and unmark favorite displays
@@ -109,14 +104,14 @@ export class CmsDisplaysPanelComponent implements OnInit, AfterViewInit {
         this.viewState.reload = false;
         this.viewState.list = false;
         window.setTimeout(() => {
-            this.viewState.list = true
+            this.viewState.list = true;
         }, 0);
     }
 
     /**
      * This method returns the selected display if any.
      * @method isDisplaySelected
-     * @return {boolean}  
+     * @return {boolean}
      */
     private isDisplaySelected(): boolean {
         return !Validation.IsNull(this.storageManager.get(CMS_SESSION_STORAGE_ITEM.DISPLAY));
@@ -126,10 +121,10 @@ export class CmsDisplaysPanelComponent implements OnInit, AfterViewInit {
      * This method focus on search input box
      * @method initializeSearch
      * @param {event} e
-     * @return void 
+     * @return void
      */
-    private initializeSearch(e): void {
-        let mdsearch = document.getElementById("display-list-search-input");
+    private initializeSearch(e: any): void {
+        const mdsearch: HTMLElement = document.getElementById("display-list-search-input");
         let searchInput: NodeListOf<HTMLInputElement>;
         if (mdsearch) {
             searchInput = mdsearch.getElementsByTagName("input");
@@ -144,7 +139,7 @@ export class CmsDisplaysPanelComponent implements OnInit, AfterViewInit {
      * @method navigateBack
      * @return void
      */
-    private navigateBack() {
+    private navigateBack(): void {
         history.back();
     }
 
@@ -153,7 +148,7 @@ export class CmsDisplaysPanelComponent implements OnInit, AfterViewInit {
      * @method logout
      * @return {void}
      */
-    private logout() {
+    private logout(): void {
         this.cmsServerApi.logoutUser();
     }
 }

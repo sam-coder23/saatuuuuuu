@@ -1,6 +1,6 @@
 /**
  * This a source list component that fetches the combined list of available sources, perspectives and display specific
- * applications from CMS Server API and loads the list in UI in the form of cards (representing a single source with 
+ * applications from CMS Server API and loads the list in UI in the form of cards (representing a single source with
  * available information about the source, perspective or application).
  */
 import { Component, OnInit, ElementRef, OnDestroy, EventEmitter, Output, Input, OnChanges, SimpleChanges } from "@angular/core";
@@ -19,6 +19,8 @@ import { TranslateService } from "@ngx-translate/core";
 import { CMSConstants } from "../../cms/models/cms-constants";
 import { Display } from "../../cms/models/cms-display";
 import { Validation } from "../../core/util/Validation";
+import { TileContent } from "../../cms/models/cms-tile-content";
+import { Observable } from "rxjs/Observable";
 
 @Component({
     selector: "cms-source-list",
@@ -28,7 +30,7 @@ import { Validation } from "../../core/util/Validation";
 /**
  * This class contains the behaviour for sourelist component.
  * @class CmsSourceListComponent
- * @property {boolean} favoriteFilter @Input 
+ * @property {boolean} favoriteFilter @Input
  * @property {string} searchFilter @Input
  * @property {boolean} selectedOnly @Input
  * @property {displayId} number @Input selected display's id.
@@ -39,12 +41,13 @@ import { Validation } from "../../core/util/Validation";
  * @constructor contains the dependencies required for the component to function.
  */
 export class CmsSourceListComponent implements OnInit, OnChanges, OnDestroy {
-    @Input() favoriteFilter: boolean;
-    @Input() searchFilter: string;
-    @Input() selectedOnly: boolean = false;
-    @Input() displayId: number;
-    @Output("change") changeEmitter = new EventEmitter();
-    @Output("error") errorEmitter = new EventEmitter<string>();
+    @Output("change") public changeEmitter: EventEmitter<{}> = new EventEmitter();
+    @Output("error") public errorEmitter: EventEmitter<string> = new EventEmitter<string>();
+    @Input() public favoriteFilter: boolean;
+    @Input() public searchFilter: string;
+    @Input() public selectedOnly: boolean = false;
+    @Input() public displayId: number;
+
     private sources: Source[];
     private scrollTarget: HTMLElement;
     // dependencies initialized in constructor
@@ -53,7 +56,7 @@ export class CmsSourceListComponent implements OnInit, OnChanges, OnDestroy {
     private sourceListCmsEvent: EventEmitter<any> = null;
     //Define domManager variable of DomaManager type to handle dom related stuff
     private domManager: DomManager;
-    private selectedDisplay;
+    private selectedDisplay: Display;
     /**
      * The constructor initializes various dependencies.
      */
@@ -70,11 +73,11 @@ export class CmsSourceListComponent implements OnInit, OnChanges, OnDestroy {
         this.domManager = new DomManager(this.element);
     }
 
-    public ngOnInit() {
+    public ngOnInit(): void {
         this.getDisplayDetails();
     }
 
-    public ngOnChanges(changes: SimpleChanges) {
+    public ngOnChanges(changes: SimpleChanges): void {
         this.scroller.removeScrollListener();
         this.sources = [];
         this.scroller.dataCount = 0;
@@ -83,18 +86,17 @@ export class CmsSourceListComponent implements OnInit, OnChanges, OnDestroy {
         this.scrollTarget = this.domManager.getElementById("source-list-card-container");
         this.getSources();
         if (this.scrollTarget) {
-            this.scroller.addScrollListener(this.scrollTarget, function () {
+            this.scroller.addScrollListener(this.scrollTarget, () => {
                 if (Validation.IsNull(this.scroller.max)) {
                     this.getSources();
                 }
-            }.bind(this));
-        }
-        else {
+            });
+        } else {
             this.appConfig.error("Scroll target not found on source list. Scrolling will not work.");
         }
     }
 
-    public ngOnDestroy() {
+    public ngOnDestroy(): void {
         if (this.scroller) {
             this.scroller.removeScrollListener();
         }
@@ -107,26 +109,24 @@ export class CmsSourceListComponent implements OnInit, OnChanges, OnDestroy {
      * On selecting a card, the respective source will added to
      * selectedSources of cms setings.
      * @method updateSelection
-     * @param {boolean} selected indicates the selected status of the selected source 
+     * @param {boolean} selected indicates the selected status of the selected source
      * @param {Source} source selected source
      * @return {void}.
      */
-    private updateSelection(selected: boolean, source: Source) {
+    private updateSelection(selected: boolean, source: Source): void {
         if (source.selected) {
-            let index = this.cmsSettingsService.selectedSources.findIndex(
-                resource => resource.id === source.id
+            const index: number = this.cmsSettingsService.selectedSources.findIndex(
+                (resource: Source) => resource.id === source.id
             );
             this.cmsSettingsService.selectedSources.splice(index, 1);
             source.selected = false;
             this.errorEmitter.emit("");
-        }
-        else if (this.cmsSettingsService.selectedSources.length < CMSConstants.MAXSELECTION) {
+        } else if (this.cmsSettingsService.selectedSources.length < CMSConstants.MAXSELECTION) {
             this.cmsSettingsService.selectedSources.push(source);
             source.selected = true;
-        }
-        else {
-            this.translateService.get("sourceList.maxSelection",
-                { value: CMSConstants.MAXSELECTION }).subscribe((value) => {
+        } else {
+            this.translateService.get("sourceList.maxSelection", { value: CMSConstants.MAXSELECTION })
+                .subscribe((value: string) => {
                     this.errorEmitter.emit(value);
                 });
         }
@@ -138,7 +138,7 @@ export class CmsSourceListComponent implements OnInit, OnChanges, OnDestroy {
      * @param {Source} source  source to be set to favorite.
      * @return {void}
      */
-    private toggleSourceFavorite(source: Source) {
+    private toggleSourceFavorite(source: Source): void {
         if (source.disabled) {
             return;
         }
@@ -150,9 +150,8 @@ export class CmsSourceListComponent implements OnInit, OnChanges, OnDestroy {
                 this.sources,
                 this.favoriteFilter
             );
-        }
-        // if source is unfavorite, mark it as favorite
-        else {
+        } else {
+            // if source is unfavorite, mark it as favorite
             this.favoriteService.markObjectAsFavorite(source.id, source.type, this.sources);
         }
     }
@@ -162,12 +161,13 @@ export class CmsSourceListComponent implements OnInit, OnChanges, OnDestroy {
      * @method getSources
      * @return {void}.
      */
-    private getSources() {
+    private getSources(): void {
         if (isNaN(this.displayId)) {
             return;
         }
         if (this.selectedOnly) {
             this.sources.push(...this.cmsSettingsService.selectedSources);
+
             return;
         }
         if (!Validation.IsNull(this.scroller.max)) {
@@ -179,13 +179,14 @@ export class CmsSourceListComponent implements OnInit, OnChanges, OnDestroy {
             this.displayId,
             this.searchFilter,
             this.favoriteFilter)
-            .subscribe((sources: Source[]) => {
-                this.appConfig.log(`CmsSourceListComponent: getSources:: Sources list from server = `);
+            .subscribe(
+                (sources: Source[]) => {
+                this.appConfig.log("CmsSourceListComponent: getSources:: Sources list from server = ");
                 this.scroller.dataCount = sources.length;
                 // mark selected source which are currently shared on display
                 this.markSelectedSourcesSharedOnDisplay(this.selectedDisplay, sources);
                 this.sources.push(...sources);
-                // if max source has been loaded then set maxSources else again addScrollListener                    
+                // if max source has been loaded then set maxSources else again addScrollListener
                 if (sources.length < this.scroller.count) {
                     this.scroller.max = sources.length;
                 }
@@ -197,8 +198,7 @@ export class CmsSourceListComponent implements OnInit, OnChanges, OnDestroy {
                             eventType: string, body: any
                         }) => this.handleSourceListEvents(res.eventType, res.body));
                 }
-            },
-            error => {
+            },  (error: any) => {
                 this.scroller.loading = false;
             });
     }
@@ -210,12 +210,12 @@ export class CmsSourceListComponent implements OnInit, OnChanges, OnDestroy {
      * @param {any} aResponseBody specifies the body of the event.
      * @return {void}.
      */
-    private handleSourceListEvents(anEventType: string, aResponseBody: any) {
+    private handleSourceListEvents(anEventType: string, aResponseBody: any): void {
         if (anEventType === "ResourceDeleted") {
             // find the source in the source list and disable it
-            let source = this.sources.find(source => source.id === aResponseBody.id);
-            if (source) {
-                source.disabled = true;
+            const filteredSource: Source = this.sources.find((source: Source) => source.id === aResponseBody.id);
+            if (filteredSource) {
+                filteredSource.disabled = true;
             }
         }
         // send change event to sources panel to show refresh button
@@ -227,35 +227,36 @@ export class CmsSourceListComponent implements OnInit, OnChanges, OnDestroy {
      * @method getDisplayDetails
      * @return {void}
      */
-    private getDisplayDetails() {
-        let displayObservable = this.cmsServerApi.getSelectedDisplayContent(this.displayId);
-        displayObservable.subscribe((displayDetail) => {
+    private getDisplayDetails(): Observable<Display> {
+        const displayObservable: Observable<Display> = this.cmsServerApi.getSelectedDisplayContent(this.displayId);
+        displayObservable.subscribe((displayDetail: Display) => {
             this.selectedDisplay = displayDetail;
             this.cmsSettingsService.selectedSources = this.convertSourcesFromDisplayContent(
                 displayDetail.content
             );
         });
+
         return displayObservable;
     }
 
     /**
-     * This function marks the shared resources on the display wall as selected. 
+     * This function marks the shared resources on the display wall as selected.
      * @method markSelectedSourcesSharedOnDisplay
      * @param {Display} display current active Display
      * @param {Source[]} sources current list of resources
      * @return {void}
      */
-    private markSelectedSourcesSharedOnDisplay(display: Display, sources: Source[]) {
+    private markSelectedSourcesSharedOnDisplay(display: Display, sources: Source[]): void {
         if (!display || (sources && !sources.length)) { return; }
-        let sharedContent = display.content;
+        const sharedContent: TileContent[] = display.content;
         // if current display has any shared content
         if (sharedContent && sharedContent.length) {
             // looping through all shared content on display
-            for (let contentIndex = 0; contentIndex < sharedContent.length; contentIndex++) {
-                let resourceId = sharedContent[contentIndex].resourceId;
-                let resourceType = sharedContent[contentIndex].type;
+            for (let contentIndex: number = 0; contentIndex < sharedContent.length; contentIndex++) {
+                const resourceId: number = sharedContent[contentIndex].resourceId;
+                const resourceType: string = sharedContent[contentIndex].type;
                 // looping through all available sources
-                for (let sourceIndex = 0; sourceIndex < sources.length; sourceIndex++) {
+                for (let sourceIndex: number = 0; sourceIndex < sources.length; sourceIndex++) {
                     if ((sources[sourceIndex].id === resourceId)
                         && (sources[sourceIndex].type.toLowerCase() === resourceType.toLowerCase()
                         )) {
@@ -272,15 +273,15 @@ export class CmsSourceListComponent implements OnInit, OnChanges, OnDestroy {
      * This function converts sources from the content on display.
      * @method convertSourcesFromDisplayContent
      * @param {any} displayContent: content array of display
-     * @return {void}
+     * @return {Source[]}
      */
-    private convertSourcesFromDisplayContent(displayContent: any) {
-        let selectedSources = [];
+    private convertSourcesFromDisplayContent(displayContent: any): Source[] {
+        const selectedSources: any[] = [];
         if (displayContent && !displayContent.length) {
             return selectedSources;
         }
-        for (let sourceIndex = 0; sourceIndex < displayContent.length; sourceIndex++) {
-            // fetch display content and map to resource properties  
+        for (let sourceIndex: number = 0; sourceIndex < displayContent.length; sourceIndex++) {
+            // fetch display content and map to resource properties
             selectedSources.push({
                 id: displayContent[sourceIndex].resourceId,
                 name: displayContent[sourceIndex].name,
@@ -293,6 +294,7 @@ export class CmsSourceListComponent implements OnInit, OnChanges, OnDestroy {
                 selected: true
             });
         }
+
         return selectedSources;
     }
 

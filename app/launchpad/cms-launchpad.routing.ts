@@ -6,7 +6,7 @@ import { CmsDisplayPanelComponent } from "./display-panel/cms-display-panel.comp
 import { CmsLoginComponent, CmsCanActivateViaAuthorizationService } from "./login/index";
 import { CmsSourcesPanelComponent } from "./sources-panel/cms-sources-panel.component";
 import { CmsSettingsPanelComponent } from "./settings/cms-settings-panel.component";
-import { CmsSettingsLanguagePanelComponent } from "./settings/language/cms-settings-language-panel.component"; 
+import { CmsSettingsLanguagePanelComponent } from "./settings/language/cms-settings-language-panel.component";
 import { CmsAboutPanelComponent } from "./about/cms-about-panel.component";
 import { CmsTilesPanelComponent } from "./tiles-panel/cms-tiles-panel.component";
 
@@ -26,4 +26,4 @@ export const routes: Routes = [
   { path: "**", redirectTo: "/login" }
 ];
 
-export const CmsLaunchpadRouter: ModuleWithProviders = RouterModule.forRoot(routes);
+export const launchpadRouter: ModuleWithProviders = RouterModule.forRoot(routes);

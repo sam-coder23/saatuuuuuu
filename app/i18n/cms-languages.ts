@@ -6,7 +6,7 @@
  * @property {RegExp} languagesRegExPattern
  */
 export class CmsLanguages {
-    public static languages = [
+    public static languages: any = [
         { key: "ar", value: "العربية" },
         { key: "de", value: "German" },
         { key: "en", value: "English" },
@@ -20,7 +20,7 @@ export class CmsLanguages {
         { key: "ru", value: "русский"}
     ];
 
-    public static languagesKeys = ["ar", "de", "en", "es", "fr", "ja", "pl", "pt", "zh", "tr", "ru"];
+    public static languagesKeys: string[] = ["ar", "de", "en", "es", "fr", "ja", "pl", "pt", "zh", "tr", "ru"];
 
-    public static languagesRegExPattern = /ar|de|en|es|fr|ja|pl|pt|zh|tr|ru/
+    public static languagesRegExPattern: RegExp = /ar|de|en|es|fr|ja|pl|pt|zh|tr|ru/;
 }

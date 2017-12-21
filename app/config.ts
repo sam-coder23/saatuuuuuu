@@ -8,13 +8,13 @@ import { CMSConstants } from "./cms/models/cms-constants";
 
 @Injectable()
 export
-/**
- * This class contains application level configuration 
- * @class APIConfig
- * @constructor constructor
- */
-class AppConfig {
-    private serverURL:string;
+    /**
+     * This class contains application level configuration
+     * @class APIConfig
+     * @constructor constructor
+     */
+    class AppConfig {
+    private serverURL: string;
     private defaultLanguage: string;
     private copyrightYear: string;
     private host: string;
@@ -25,7 +25,7 @@ class AppConfig {
      * @constructor
      */
     constructor() {
-        let location = window.document.location;
+        const location: Location = window.document.location;
 
         this.host = location.host;
         this.serverURL = `${location.protocol}//${this.host}/cms-rest/v1`;
@@ -38,12 +38,12 @@ class AppConfig {
      * @method ServerURL
      * @return This will return string type data
      */
-    public get ServerURL() : string {
+    public get ServerURL(): string {
         return this.serverURL;
     }
 
     /**
-     * This method is responsible for returing the current host name 
+     * This method is responsible for returing the current host name
      * @method Host
      * @return {string}
      */
@@ -52,7 +52,7 @@ class AppConfig {
     }
 
     /**
-     * This method is responsible for returing default language 
+     * This method is responsible for returing default language
      * @method DefaultLanguage
      * @return {string}
      */
@@ -61,13 +61,13 @@ class AppConfig {
     }
 
     /**
-     * This method is responsible for returing the copyright year 
+     * This method is responsible for returing the copyright year
      * @method CopyrightYear
      * @return {string}
      */
     public get CopyrightYear(): string {
         return this.copyrightYear;
-    }    
+    }
 
     /**
      * This is just a wrapper arroud the console info log
@@ -76,12 +76,12 @@ class AppConfig {
      * @return void
      */
     public log(...args: any[]): void {
-        let today = new Date();
-        let dateTime = today.toLocaleString();
-        if(args && args.length > 0) {
-            console.log(dateTime , " - info " , args);
+        const today: Date = new Date();
+        const dateTime: string = today.toLocaleString();
+        if (args && args.length > 0) {
+            console.log(dateTime, " - info ", args);
         }
-    }    
+    }
 
     /**
      * This is just a wrapper arroud the console log for warning logs
@@ -90,10 +90,10 @@ class AppConfig {
      * @return void
      */
     public warn(...args: any[]): void {
-        let today = new Date();
-        let dateTime = today.toLocaleString();
-        if(args && args.length > 0) {
-            console.log(dateTime , " - warn " , args);
+        const today: Date = new Date();
+        const dateTime: string = today.toLocaleString();
+        if (args && args.length > 0) {
+            console.log(dateTime, " - warn ", args);
         }
     }
 
@@ -104,10 +104,10 @@ class AppConfig {
      * @return void
      */
     public error(...args: any[]): void {
-        let today = new Date();
-        let dateTime = today.toLocaleString();
-        if(args && args.length > 0) {
-            console.log(dateTime , " - error " , args);
+        const today: Date = new Date();
+        const dateTime: string = today.toLocaleString();
+        if (args && args.length > 0) {
+            console.log(dateTime, " - error ", args);
         }
     }
 }
