@@ -1,10 +1,6 @@
 <div class="page-toolbar">
     <md-toolbar id="displays-panel-toolbar" class="toolbar-theme">
-        <button id="displays-panel-back-button" *ngIf="isSelectDisplayView" md-icon-button nd-click-debounce (ndClick)="navigateBack()">
-            <i class="material-icons">arrow_back</i>
-        </button>
         <span id="displays-panel-back-button-text">{{ 'displayList.connectTo' | translate }}</span>
-
         <span class="fill-remaining-space"></span>
 
         <button id="display-panel-reload-button" md-icon-button *ngIf="viewState.reload" nd-click-debounce (ndClick)="reloadList()">
@@ -19,10 +15,6 @@
         <md-input-container id="display-list-search-input">
             <input md-input type="text" placeholder="{{ 'panelToolbar.search' | translate }}" [(ngModel)]="searchKey">
         </md-input-container>
-
-        <button id="log-off" md-button md-raised-button (click)="logout()">
-            {{'common.logout' | translate}}
-        </button>
     </md-toolbar>
 </div>
 

@@ -1,0 +1,71 @@
+<div class="page-toolbar">
+      <md-toolbar class="toolbar-theme">
+            <!-- logoff-button -->
+            <button class="action-button-exit" md-raised-button nd-click-debounce (ndClick)="userLogoff()">
+                  {{ 'home.logoff' | translate}}
+            </button>
+            <!-- end -->
+            <span class="fill-remaining-space"></span>
+            <cms-display-name></cms-display-name>
+            <span class="fill-remaining-space"></span>
+            <i class="material-icons menu-button" [mdMenuTriggerFor]="menu">more_vert</i>
+            <md-menu #menu="mdMenu">
+                  <div class="home-menu-option">
+                        <!-- setting button -->
+                        <button class="menu-option" md-menu-item nd-click-debounce (ndClick)="navigateToSettings()">
+                              <md-icon>settings</md-icon>
+                              <span>{{ 'home.settings' | translate }}</span>
+                        </button>
+                        <!-- end -->
+                        <!-- about button -->
+                        <button class="menu-option" md-menu-item nd-click-debounce (ndClick)="navigateToAbout()">
+                              <md-icon>info</md-icon>
+                              <span>{{ 'home.about' | translate }}</span>
+                        </button>
+                        <!-- end -->
+                  </div>
+            </md-menu>
+      </md-toolbar>
+</div>
+
+<div class="home-panel-wrapper" *ngIf="showHomePanel">
+      <!-- Source Block -->
+      <md-card class="card source-block" nd-click-debounce (ndClick)="navigateToSource()">
+            <div class="card-content">
+                  <md-card-title class="card-title">
+                        {{ 'home.selectSource' | translate }}
+                  </md-card-title>
+                  <i aria-label="Sources" class="material-icons">check_box_outline_blank</i>
+            </div>
+      </md-card>
+      <!-- end -->
+      <!-- Layout Block -->
+      <md-card class="card layout-block" nd-click-debounce (ndClick)="navigateToLayout()" [ngClass]="{disabled: isDisabled}">
+            <div class="card-content">
+                  <md-card-title class="card-title">
+                        {{ 'home.selectLayout' | translate }}
+                  </md-card-title>
+                  <i aria-label="Layout" class="material-icons">dashboard</i>
+            </div>
+      </md-card>
+      <!-- end -->
+      <!-- Reposition Block -->
+      <md-card class="card reposition-block" nd-click-debounce (ndClick)="navigateToResposition()" [ngClass]="{disabled: isDisabled}">
+            <div class="card-content">
+                  <md-card-title class="card-title">
+                        {{ 'home.repositionSources' | translate }}
+                  </md-card-title>
+                  <i aria-label="Sources" class="material-icons">picture_in_picture_alt</i>
+            </div>
+      </md-card>
+      <!-- end -->
+      <!-- popup -->
+      <nd-popup *ngIf="showClearWallPopup" class="confirm-popup" title="{{'home.clearWallConfirmationPopupTitle' | translate }}"
+            (done)="clearMiniDisplayWall()" (cancelled)="cancelClearWallPopup();" (closing)="closingClearWallPopup();" okText="{{'common.yes' | translate}}"
+            cancelText="{{'common.no' | translate}}">
+            <popup-body>
+                  {{'home.clearWallConfirmationPopupMessage' | translate}}
+            </popup-body>
+      </nd-popup>
+      <!-- end -->
+</div>

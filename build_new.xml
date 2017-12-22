@@ -1,18 +1,18 @@
-<project name="TCR-UI" default="build">
+<project name="CWM" default="build">
  
  <property environment="env" />
  <property name="build.sandbox" value="../../../../CMS" />
  <property file="${build.sandbox}/build.properties" />
  
  <!--======================================================
-  This project is used to compile TCR-UI code in CMS. 
+  This project is used to compile CWM code in CMS. 
   ========================================================-->
     
- <target name="build" depends="delete.CrisisRoomUI.war, installDependencies, compileCrisisRoomUI, create.CrisisRoomUI.war" />
+ <target name="build" depends="delete.CollaborationWallManager.war, installDependencies, compileCollaborationWallManager, create.CollaborationWallManager.war" />
  
-   <!-- create CrisisRoomUI.war -->
-   <target name="create.CrisisRoomUI.war">
-		<jar destfile="CrisisRoomUI.war" update="true" >
+   <!-- create CollaborationWallManager.war -->
+   <target name="create.CollaborationWallManager.war">
+		<jar destfile="CollaborationWallManager.war" update="true" >
 			<zipfileset dir="./dist" includes="**/**" excludes="build_new.xml, .svn, .js.map, .git"/>
 		</jar>
    </target>
@@ -30,8 +30,8 @@
 	</target>
 
   <!-- Delete CrisisRoomUI.war if it exists -->
-  <target name="delete.CrisisRoomUI.war">
-	     <delete file="CrisisRoomUI.war" failonerror="false" />
+  <target name="delete.CollaborationWallManager.war">
+	     <delete file="CollaborationWallManager.war" failonerror="false" />
   </target> 
    
 </project>

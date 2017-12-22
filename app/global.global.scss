@@ -81,30 +81,41 @@ cms-launchpad{
             justify-content: space-evenly !important;
         }
     }
-
-    #log-off{
-        background-color: transparent;
-        display: flex;
-        align-content: center;
-        align-items: center;
-        font-size: 20px;    
-
-        .md-button-wrapper{
-            display: flex;
-            align-content: center;
-        }
-    }
     
-    .next-button,
-    .back-button{
-        color: rgba(0,0,0,.62) !important;
-        background-color: #eeeeee !important; 
+   .action-button-clear{
+        color: rgb(0, 0, 0) !important;
+        background-color: $grey_300 !important;
         min-width: 0;
-        width: 140px;
+        width: 150px;
     }
 
-    .next-button[hidden]{
-        opacity: 0;
-        pointer-events: none;
+    .action-button-share{
+        color: rgb(0, 0, 0) !important;
+        background-color:$grey_300 !important;
+        min-width: 0;
+        width: 150px;
+    }
+
+    .action-button-exit{
+        color: rgb(0, 0, 0) !important;
+        background-color:$grey_300 !important;
+    }
+
+    .disabled {
+        opacity: 0.3;
+        cursor: no-drop !important; 
+        box-shadow: 0px 0px 0px transparent; 
+    }
+    .disabled:hover{
+        box-shadow: 0px 0px 0px transparent;
+        .card-title{
+            color: #333333;
+        } 
+        .material-icons{
+            color: #333333;
+        } 
+    }
+    .disabled * {
+        cursor: no-drop !important;       
     }
 }

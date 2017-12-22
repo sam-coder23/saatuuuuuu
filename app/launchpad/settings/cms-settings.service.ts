@@ -24,7 +24,7 @@ import { Source } from "./../../cms/models/cms-source";
 export class CmsSettingsService {
     public userSettings: IUserProfileSettings;
     public selectedSources: Source[] = [];
-
+    public sourcesOnDisplay: Source[] = []; //Cache the sources on display for repositioning calculations
     constructor(
         private translate: TranslateService,
         private cmsServerApi: CmsApiService,
@@ -267,9 +267,12 @@ export class CmsSettingsService {
 
                 case CMSConstants.WALL_CONNECTION.SPECIFIC_WALL:
                     this.autoConnectToSpecificWall(selectedDisplayName);
+                    // this.router.navigate(["/home"]);
                     break;
 
                 default:
+                    console.log("default case");
+                    break;
             }
         });
     }

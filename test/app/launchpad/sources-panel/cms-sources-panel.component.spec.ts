@@ -137,7 +137,7 @@ describe("CmsSourcesPanelComponent", () => {
                     }
                 })
             ],
-            schemas: [CUSTOM_ELEMENTS_SCHEMA]
+            schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA]
         }).compileComponents().then(() => {
             fixture = TestBed.createComponent(CmsSourcesPanelComponent);
             component = fixture.componentInstance;
@@ -175,7 +175,7 @@ describe("CmsSourcesPanelComponent", () => {
         let expectedSourcesSearchFilter = storageManager.get(CMS_SESSION_STORAGE_ITEM.SOURCES_SEARCH_FILTER) || "";
 
         expect(expectedSourcesFavoriteFilter).toBe(debugInstance.isFavoriteFilter);
-        expect(expectedSourcesSearchFilter).toBe(component.searchFilter);
+        expect(expectedSourcesSearchFilter).toBe(debugInstance.searchFilter);
 
     });
 
@@ -204,28 +204,22 @@ describe("CmsSourcesPanelComponent", () => {
         expect(bottomToolbar.nativeElement.innerText).toBeTruthy(selectedSource);
     });
 
-    it("should have next button and onclick it navigates to next route", async(() => {
+    it("should have next button appeared to share the sources", async(() => {
         fixture.detectChanges();
-
-        let buttonNext: DebugElement = fixture.debugElement.query(By.css("#sources-panel-next-button"));
-        expect(buttonNext).toBeTruthy();
-        let router = fixture.debugElement.injector.get(Router);
-        let spyNavigateByUrl = spyOn(router, "navigateByUrl").and.returnValue(null);
-        buttonNext.triggerEventHandler("ndClick", null);
-        expect(spyNavigateByUrl.calls.count()).toEqual(1);
-        expect(spyNavigateByUrl.calls.argsFor(0)[0]).toEqual(`/displays/${debugInstance.displayId}/tiles-panel?sourceCount=${cmsSettingService.selectedSources.length}`);
-
+        let buttonShare: DebugElement = fixture.debugElement.query(By.css("#sources-panel-next-button"));
+        expect(buttonShare).toBeTruthy();
     }));
 
     it("should have back button and onclick should navigate back", () => {
         fixture.detectChanges();
-        let buttonBack: DebugElement = fixture.debugElement.query(By.css("#sources-panel-back-button"));
+        let buttonBack = nativeElement.querySelector("#sources-panel-back-button");
         expect(buttonBack).toBeTruthy();
         let router = fixture.debugElement.injector.get(Router);
         let spyNavigateByUrl = spyOn(router, "navigateByUrl").and.returnValue(null);
         buttonBack.triggerEventHandler("ndClick", null);
-        expect(spyNavigateByUrl.calls.count()).toEqual(1);
-        expect(spyNavigateByUrl.calls.argsFor(0)[0]).toEqual(`/displays-panel`);
+        buttonBack.dispatchEvent(new Event("ndClick"));
+        expect(debugInstance.showClearWallPopup).toBeTruthy()
+        expect(spyNavigateByUrl.calls.argsFor(0)[0]).toEqual(`/home/${debugInstance.displayId}`);
     });
 
     it("should set reload to TRUE on list change", () => {
@@ -254,7 +248,7 @@ describe("CmsSourcesPanelComponent", () => {
         fixture.detectChanges();
         fixture.whenStable().then(() => {
             delay(500).then(() => {
-                expect(component.searchFilter).toBe(searchString);
+                expect(debugInstance.searchFilter).toBe(searchString);
                 expect(storageManager.get(CMS_SESSION_STORAGE_ITEM.SOURCES_SEARCH_FILTER)).toBe(searchString);
             });
         });
@@ -301,94 +295,14 @@ describe("CmsSourcesPanelComponent", () => {
         });
     });
 
-    it("should call CmsApiService.putContentsOnDisplay when source is selected", (done) => {
-        let spyPutContentsOnDisplay = spyOn(cmsApiService, "putContentsOnDisplay").and.returnValue(Observable.of(null));
-        fixture.detectChanges();
-        component.navigateNext();
-
-        let args = spyPutContentsOnDisplay.calls.mostRecent().args;
-        expect(args[0]).toEqual(debugInstance.displayId);
-        expect(args[1]).toEqual(MockTilersData[1].id);
-        expect(args[2].resources[0].id).toEqual(debugInstance.cmsSettingService.selectedSources[0].id);
-        expect(args[2].resources[1].id).toEqual(debugInstance.cmsSettingService.selectedSources[1].id);
-        done();
-    });
-
-    it("should handle and log error when CmsApiService.putContentsOnDisplay throws error", () => {
-        let error = "Server error";
-        let spyPutContentsOnDisplay = spyOn(cmsApiService, "putContentsOnDisplay").and.returnValue(Observable.throw(error));
-        let spyError = spyOn(appConfig, "error");
-
-        fixture.detectChanges();
-        component.navigateNext();
-        let args = spyError.calls.mostRecent().args;
-        expect(args[0]).toEqual(error);
-    });
-
-    it("should navigate to tile-panel directly, if selected sources are same as shared on display", () => {
-        let selectedSource = [
-            {
-                "id": 23,
-                "name": "Blue",
-                "type": "Perspective"
-            },
-            {
-                "id": 39,
-                "name": "DefaultProSource[AutoTestDisplay11]",
-                "type": "Perspective"
-            }
-        ];
-
-        let spyNavigateToTilesPanel = spyOn(debugInstance, "navigateToTilesPanel").and.returnValue(null);
-        let spyUpdateDisplayWall = spyOn(debugInstance, "updateDisplayWall").and.returnValue(null);
-        let settingService = <CmsSettingsService>fixture.debugElement.injector.get(CmsSettingsService);
-
-        settingService.selectedSources = selectedSource.map((s) => new Source(s));
-
-        component.navigateNext();
-
-        expect(spyNavigateToTilesPanel.calls.count()).toEqual(1);
-        expect(spyUpdateDisplayWall.calls.count()).toEqual(0);
-    });
-
-
-    it("should update display wall when navigate next is clicked", () => {
-        let spyNavigateToTilesPanel = spyOn(debugInstance, "navigateToTilesPanel").and.returnValue(null);
-        let spyUpdateDisplayWall = spyOn(debugInstance, "updateDisplayWall").and.returnValue(null);
-        let settingService = <CmsSettingsService>fixture.debugElement.injector.get(CmsSettingsService);
-
-        settingService.selectedSources = [];
-
-        component.navigateNext();
-
-        expect(spyNavigateToTilesPanel.calls.count()).toEqual(0);
-        expect(spyUpdateDisplayWall.calls.count()).toEqual(1);
-    });
-
-    it("should logoutUser on logout", () => {
-        let apiService = <CmsApiService>fixture.debugElement.injector.get(CmsApiService);
-        let spyLogoutUser = spyOn(apiService, "logoutUser").and.returnValue(null);
-
-        expect(spyLogoutUser.calls.count()).toEqual(0);
-
-        debugInstance.logout();
-
-        expect(spyLogoutUser.calls.count()).toEqual(1);
-    });
-
-    it("should set the errorMessage when there are no tilers", () => {
-        cmsSettingService.selectedSources = [];
-        let spyTilers = spyOn(cmsApiService, "getTilePresets").and.returnValue(Observable.of([]));
-        let errorMessage = "No tile layout found for loading source on display wall.";
-
-        debugInstance.updateDisplayWall();
-        expect(debugInstance.errorMessage).toEqual(errorMessage);
-
-        // spyTilers = spyOn(cmsApiService, "getTilePresets").and.returnValue(Observable.throw([]));
-        spyTilers.and.returnValue(Observable.throw([]));
-        debugInstance.errorMessage = "";
-
-        debugInstance.updateDisplayWall();
-        expect(debugInstance.errorMessage).toEqual(errorMessage);
-    });
-});
+    // it("should call CmsApiService.putContentsOnDisplay when source is selected", (done) => {
+    //     fixture.detectChanges();
+    //     component.shareTheSources();
+    //     let args = spyPutContentsOnDisplay.calls.mostRecent().args;
+    //     expect(args[0]).toEqual(debugInstance.displayId);
+    //     expect(args[1]).toEqual(MockTilersData[1].id);
+    //     expect(args[2].resources[0].id).toEqual(debugInstance.cmsSettingService.selectedSources[0].id);
+    //     expect(args[2].resources[1].id).toEqual(debugInstance.cmsSettingService.selectedSources[1].id);
+    //     done();
+    // });
+})

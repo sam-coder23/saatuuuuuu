@@ -48,6 +48,9 @@ import { CmsTilesPanelComponent } from "./tiles-panel/cms-tiles-panel.component"
 // Robo Module
 import { RobotModule, BuilderService } from "core-components/app";
 
+// CMS Home Component
+import { CmsHomePanelComponent } from "./home/cms-home-panel.component";
+
 /**
  * This is the main module which defines various its own components and services along with other dependent modules
  * such as router, shared and CMS.
@@ -84,7 +87,8 @@ import { RobotModule, BuilderService } from "core-components/app";
     CmsSettingsPanelComponent,
     CmsSettingsLanguagePanelComponent,
     CmsAboutPanelComponent,
-    CmsTilesPanelComponent
+    CmsTilesPanelComponent,
+    CmsHomePanelComponent
   ],
 
   bootstrap: [CmsLaunchpadComponent],

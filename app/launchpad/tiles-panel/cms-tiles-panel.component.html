@@ -1,35 +1,19 @@
 <div class="page-toolbar">
     <md-toolbar id="tiles-panel-toolbar" class="toolbar-theme">
-        <span id="tiles-panel-title">{{ 'tilePresetList.layouts' | translate }}</span>
+        <button id="layouts-panel-back-button" class = "action-button-exit" md-button md-raised-button routerLink="/home/{{displayId}}">
+            <md-icon class="material-icons"> arrow_back </md-icon>
+            {{'common.exit' | translate}}
+        </button>
         <span class="fill-remaining-space"></span>
         <cms-display-name></cms-display-name>
         <span class="fill-remaining-space"></span>
-        <button id="tiles-panel-reload-button" md-icon-button *ngIf="viewState.reload"
-            (click)="reloadList()">
+        <button id="tiles-panel-reload-button" md-icon-button *ngIf="viewState.reload" (click)="reloadList()">
             <i class="material-icons">refresh</i>
-        </button>
-        <button id="log-off" md-button md-raised-button (click)="logout()">
-            {{'common.logout' | translate}}
         </button>
     </md-toolbar>
 </div>
 
 <div class="tiles-panel-main">
-    <cms-tile-list [sourceCount]="sourceCount" [displayResolution]="displayResolution"
-        (change)="onListChanged()" *ngIf="viewState.list">
+    <cms-tile-list [sourceCount]="sourceCount" [displayResolution]="displayResolution" (change)="onListChanged()" *ngIf="viewState.list">
     </cms-tile-list>
-</div>
-
-<div class="page-toolbar bottom">
-    <md-toolbar id="tiles-panel-bottom-toolbar" class="toolbar-theme">
-        <button id="tiles-panel-back-button" md-button md-raised-button nd-click-debounce (ndClick)="navigateBack()" class="back-button">
-            <md-icon>navigate_before</md-icon>
-            {{'common.sources' | translate}}
-        </button>
-        <span class="fill-remaining-space"></span>
-        <button id="tiles-panel-next-button" md-button md-raised-button nd-click-debounce (ndClick)="navigateNext()" class="next-button">
-            {{'common.display' | translate}}
-            <md-icon>navigate_next</md-icon>
-        </button>
-    </md-toolbar>
 </div>

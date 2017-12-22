@@ -31,6 +31,6 @@ export class CMSConstants {
     public static DEFAULT_FONT_COLOR: string = "#000";
     public static DEFAULT_BACKGROUND_COLOR: string = "#bdbdbd";
     public static NO_DISPLAY_FOUND: string = "nodisplayfound";
-    public static APP_VERSION: string = "1.0.0";
+    public static APP_VERSION: string = "1.0.1";
     public static BUILD_VERSION: string = "1.1 Build";
 }

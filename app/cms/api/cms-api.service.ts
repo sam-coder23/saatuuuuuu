@@ -151,7 +151,7 @@ export class CmsApiService {
      * @param {number} displayId Selected Diplay Id
      * @param {number} body Display content
      */
-    public putContentsOnDisplay(displayId: number, tilerId: number, body: any): any {
+    public putContentsOnDisplay(displayId: number, tilerId: number, body: any): Observable<any> {
         const url: string = `displays/${displayId}/content?tilerId=${tilerId}`;
 
         return this.apiRequest.put(url, body);

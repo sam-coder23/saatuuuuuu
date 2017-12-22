@@ -1,5 +1,4 @@
 import { ComponentFixture, TestBed, async, fakeAsync, tick } from "@angular/core/testing";
-import { By } from "@angular/platform-browser";
 import { DebugElement, CUSTOM_ELEMENTS_SCHEMA, Injector } from "@angular/core";
 import { ActivatedRoute, Router, RouterModule, Params } from "@angular/router";
 import { Observable } from "rxjs/Observable";
@@ -16,6 +15,8 @@ import { StorageManager } from "../../../../app/cms/api/cms-storagemanager.servi
 import { CmsSettingsService } from "../../../../app/launchpad/settings/cms-settings.service";
 import { CmsApiService } from "../../../../app/cms/api/cms-api.service";
 import { CMS_SESSION_STORAGE_ITEM } from "../../../../app/cms/models/cms-session-storage-item";
+import { CmsResource } from "../../../../app/cms/models/cms-resource";
+import { By } from "@angular/platform-browser";
 import { Subject } from "rxjs/Subject";
 
 // Fake CmsApiService Service with the below stub
@@ -56,23 +57,10 @@ describe("CmsDisplayPanelComponent - Test Suite", () => {
                     provide: ActivatedRoute,
                     useValue: { params: params }
                 },
-                {
-                    provide: Router,
-                    useClass: MockRouterStub
-                },
                 StorageManager,
                 {
                     provide: AppConfig,
                     useClass: MockLogger
-                },
-                TranslateService,
-                {
-                    provide: CmsSettingsService,
-                    useValue: mockSettings
-                },
-                {
-                    provide: CmsApiService,
-                    useClass: MockCmsApiServiceStub
                 }
             ],
             imports: [
@@ -112,9 +100,7 @@ describe("CmsDisplayPanelComponent - Test Suite", () => {
     it("Component should be instantiated", () => {
         expect(component instanceof CmsDisplayPanelComponent).toBeTruthy();
 
-        expect(debugInstance.viewOptions).toBeFalsy();
         expect(debugInstance.zoomLevel).toEqual(100);
-        expect(debugInstance.isSaveLayoutEnabled).toBeFalsy();
         expect(debugInstance.fitHeightCount).toEqual(0);
     });
 
@@ -125,7 +111,7 @@ describe("CmsDisplayPanelComponent - Test Suite", () => {
         setDisplay();
         debugInstance.loadDisplay();
         expect(debugInstance.display.id).toEqual(display.id);
-        expect(JSON.stringify(debugInstance.display)).toEqual(JSON.stringify(display));
+        expect(debugInstance.display instanceof CmsResource).toBeTruthy();
     });
 
     it("should load a display if displayId is available", fakeAsync(() => {
@@ -154,117 +140,13 @@ describe("CmsDisplayPanelComponent - Test Suite", () => {
     });
 
     it("should have back button and onclick should navigate back", () => {
-        fixture.detectChanges();
+        let buttonBack = fixture.debugElement.query(By.css("#display-panel-back-button"));
+        expect(buttonBack instanceof DebugElement).toBeTruthy();
 
-        let buttonBack = nativeElement.querySelector("#display-panel-back-button");
-        expect(buttonBack).toBeDefined();
+        let spyNavigateBack = spyOn(debugInstance, "navigateBack").and.returnValue(null);
+        buttonBack.nativeElement.dispatchEvent(new Event("ndClick"));
 
-        let router = fixture.debugElement.injector.get(Router);
-        let spyWindowHistoryBack = spyOn(window.history, "back").and.returnValue(null);
-        buttonBack.dispatchEvent(new Event("ndClick"));
-
-        expect(spyWindowHistoryBack).toHaveBeenCalled();
-        expect(spyWindowHistoryBack.calls.count()).toEqual(1);
-    });
-
-    it("should have next button and onclick should display a popup for logoff", () => {
-        fixture.detectChanges();
-
-        let buttonNext = nativeElement.querySelector("#display-panel-next-button");
-        expect(buttonNext).toBeDefined();
-
-        buttonNext.dispatchEvent(new Event("ndClick"));
-        expect(component["showClearWallPopup"]).toBeTruthy();
-    });
-
-    it("click on close icon, popoup should be closed and mini-display should be remain present", () => {
-        fixture.detectChanges();
-
-        let buttonNext = nativeElement.querySelector("#display-panel-next-button");
-        expect(buttonNext).toBeDefined();
-
-        buttonNext.dispatchEvent(new Event("ndClick"));
-        fixture.detectChanges();
-
-        expect(component["showClearWallPopup"]).toBeTruthy();
-
-        let popup = nativeElement.querySelector("nd-popup");
-        popup.dispatchEvent(new Event("closing"));
-        fixture.detectChanges();
-
-        expect(component["showClearWallPopup"]).toBeFalsy();
-
-        let miniDisplayContainer = nativeElement.querySelector("cms-mini-display");
-        expect(miniDisplayContainer).toBeDefined();
-    });
-
-
-    it("should clear display wall", fakeAsync(() => {
-        let api: CmsApiService = injector.get(CmsApiService);
-        let spy = spyOn(api, "putContentsOnDisplay").and.returnValue(Observable.of(null));
-
-        debugInstance.displayId = 1;
-        debugInstance.clearMiniDisplayWall();
-        tick();
-
-        expect(spy.calls.count()).toEqual(1);
-        expect(spy.calls.argsFor(0)[0]).toEqual(1);
-        expect(spy.calls.argsFor(0)[1]).toEqual(0);
-        expect(spy.calls.argsFor(0)[2]).toEqual({});
-    }));
-
-    it("should clear selected sources when clear wall is resolved", fakeAsync(() => {
-        let settingsService: CmsSettingsService = injector.get(CmsSettingsService);
-        settingsService.selectedSources = [, , ,];
-
-        fixture.detectChanges();
-        tick();
-        debugInstance.clearMiniDisplayWall();
-        tick();
-
-        expect(settingsService.selectedSources.length).toEqual(3);
-    }));
-
-    it("should not clear display wall if displayId is invalid", fakeAsync(() => {
-        let api: CmsApiService = injector.get(CmsApiService);
-        let spyOnConsole = spyOn(window.console, "error");
-
-        fixture.detectChanges();
-        params.next({ "id": "abc" });
-        tick();
-
-        debugInstance.clearMiniDisplayWall();
-
-        expect(spyOnConsole).toHaveBeenCalled();
-        expect(debugInstance.showClearWallPopup).toBeFalsy();
-    }));
-
-    it("click on cancle button, popoup should be closed and mini-display should not be remain present", () => {
-        fixture.detectChanges();
-
-        let buttonNext = nativeElement.querySelector("#display-panel-next-button");
-        expect(buttonNext).toBeDefined();
-
-        buttonNext.dispatchEvent(new Event("ndClick"));
-        fixture.detectChanges();
-
-        expect(component["showClearWallPopup"]).toBeTruthy();
-
-        let popup = nativeElement.querySelector("nd-popup");
-        popup.dispatchEvent(new Event("cancelled"));
-        fixture.detectChanges();
-
-        expect(component["showClearWallPopup"]).toBeFalsy();
-
-        let miniDisplayContainer = nativeElement.querySelector("cms-mini-display");
-        expect(miniDisplayContainer).toBeNull();
-    });
-
-    it("should not load a display, if there is no saved display", () => {
-        removeDisplay();
-        debugInstance.loadDisplay();
-        fixture.detectChanges();
-        expect(debugInstance.display).toBeUndefined();
+        expect(spyNavigateBack.calls.count()).toEqual(1);
     });
 
     function removeDisplay() {

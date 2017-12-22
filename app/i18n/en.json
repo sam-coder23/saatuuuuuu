@@ -121,16 +121,31 @@
         "no": "No",
         "ok": "OK",
         "exit": "Exit",
+        "clear" : "Clear All",
+        "share": "Show Sources",
         "logout" : "Log off",
         "layouts": "Layouts",
         "sources": "Sources",
         "displays": "Displays",
         "display": "Preview",
         "of": "of", 
-        "source": "sources"
+        "source": "sources",
+        "clearWallMessage": "Do you wish to clear the wall?",
+        "clearWallTitle": "Clear the wall"
     },
     "tilePresetList": {
         "unavailable": "No Tile Layouts",
         "layouts": "Load a layout"
+    },
+    "home": {
+        "selectSource": "Select Sources",
+        "selectLayout": "Select Layout",
+        "repositionSources": "Reposition Sources",
+        "settings": "Settings",
+        "about": "About",
+        "logoff": "Log Off",
+        "clearWallConfirmationPopupTitle": "Log Off",
+        "clearWallConfirmationPopupMessage": "Do you want to clear the display wall before logging off?"
+
     }
 }

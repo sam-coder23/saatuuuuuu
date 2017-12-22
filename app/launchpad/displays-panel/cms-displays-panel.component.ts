@@ -5,7 +5,7 @@ import { Display } from "../../cms/models/cms-display";
 import { Observable } from "rxjs/Rx";
 import { AppConfig } from "../../config";
 import { Validation } from "../../core/util/Validation";
-import { Router, ActivatedRoute, Params } from "@angular/router";
+import { ActivatedRoute, Params } from "@angular/router";
 import { CMSConstants } from "../../cms/models/cms-constants";
 import { CmsApiService } from "../../cms/api/cms-api.service";
 
@@ -132,15 +132,6 @@ export class CmsDisplaysPanelComponent implements OnInit, AfterViewInit {
                 searchInput[0].focus();
             }
         }
-    }
-
-    /**
-     * This method navigate back.
-     * @method navigateBack
-     * @return void
-     */
-    private navigateBack(): void {
-        history.back();
     }
 
     /**

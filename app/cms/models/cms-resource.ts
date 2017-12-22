@@ -17,13 +17,15 @@ export class CmsResource {
     public favorite: boolean = false;
 
     constructor(resource: object) {
-        const resourceObject: CmsResource = <CmsResource>resource;
+        if (resource) {
+            const resourceObject: CmsResource = <CmsResource>resource;
 
-        this.id = resourceObject.id;
-        this.name = resourceObject.name;
-        this.description = resourceObject.description;
-        this.snapshotPath = resourceObject.snapshotPath;
-        this.disabled = resourceObject.disabled;
-        this.favorite = resourceObject.favorite;
+            this.id = resourceObject.id;
+            this.name = resourceObject.name;
+            this.description = resourceObject.description;
+            this.snapshotPath = resourceObject.snapshotPath;
+            this.disabled = resourceObject.disabled;
+            this.favorite = resourceObject.favorite;
+        }
     }
 }

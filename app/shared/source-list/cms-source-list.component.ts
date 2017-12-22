@@ -19,6 +19,7 @@ import { TranslateService } from "@ngx-translate/core";
 import { CMSConstants } from "../../cms/models/cms-constants";
 import { Display } from "../../cms/models/cms-display";
 import { Validation } from "../../core/util/Validation";
+import { SourceRepositionUtility } from "../../utils/source-reposition.util";
 import { TileContent } from "../../cms/models/cms-tile-content";
 import { Observable } from "rxjs/Observable";
 
@@ -106,6 +107,23 @@ export class CmsSourceListComponent implements OnInit, OnChanges, OnDestroy {
     }
 
     /**
+     * To be accessed from with in the Sources Panel component in order to remove the selected
+     * property of the selected Sources so that they get unselected on clear display action.
+     * @method clearSelectedSourceList
+     * @return {void}
+     */
+    public clearSelectedSourceList(): void {
+        if (this.sources) {
+            this.sources.forEach(
+                (source: Source) => {
+                    if (source.selected) {
+                        source.selected = false;
+                    }
+                });
+        }
+    }
+
+    /**
      * On selecting a card, the respective source will added to
      * selectedSources of cms setings.
      * @method updateSelection
@@ -180,7 +198,7 @@ export class CmsSourceListComponent implements OnInit, OnChanges, OnDestroy {
             this.searchFilter,
             this.favoriteFilter)
             .subscribe(
-                (sources: Source[]) => {
+            (sources: Source[]) => {
                 this.appConfig.log("CmsSourceListComponent: getSources:: Sources list from server = ");
                 this.scroller.dataCount = sources.length;
                 // mark selected source which are currently shared on display
@@ -198,7 +216,7 @@ export class CmsSourceListComponent implements OnInit, OnChanges, OnDestroy {
                             eventType: string, body: any
                         }) => this.handleSourceListEvents(res.eventType, res.body));
                 }
-            },  (error: any) => {
+            }, (error: any) => {
                 this.scroller.loading = false;
             });
     }
@@ -231,8 +249,11 @@ export class CmsSourceListComponent implements OnInit, OnChanges, OnDestroy {
         const displayObservable: Observable<Display> = this.cmsServerApi.getSelectedDisplayContent(this.displayId);
         displayObservable.subscribe((displayDetail: Display) => {
             this.selectedDisplay = displayDetail;
-            this.cmsSettingsService.selectedSources = this.convertSourcesFromDisplayContent(
-                displayDetail.content
+            const displaySorted: TileContent[] = SourceRepositionUtility.sortSourceArray(this.selectedDisplay.content);
+            this.cmsSettingsService.sourcesOnDisplay = SourceRepositionUtility.convertSourcesFromDisplayContent(
+                displaySorted);
+            this.cmsSettingsService.selectedSources = SourceRepositionUtility.convertSourcesFromDisplayContent(
+                displaySorted
             );
         });
 
@@ -267,35 +288,6 @@ export class CmsSourceListComponent implements OnInit, OnChanges, OnDestroy {
                 }
             }
         }
-    }
-
-    /**
-     * This function converts sources from the content on display.
-     * @method convertSourcesFromDisplayContent
-     * @param {any} displayContent: content array of display
-     * @return {Source[]}
-     */
-    private convertSourcesFromDisplayContent(displayContent: any): Source[] {
-        const selectedSources: any[] = [];
-        if (displayContent && !displayContent.length) {
-            return selectedSources;
-        }
-        for (let sourceIndex: number = 0; sourceIndex < displayContent.length; sourceIndex++) {
-            // fetch display content and map to resource properties
-            selectedSources.push({
-                id: displayContent[sourceIndex].resourceId,
-                name: displayContent[sourceIndex].name,
-                description: "",
-                type: displayContent[sourceIndex].type,
-                width: displayContent[sourceIndex].width,
-                height: displayContent[sourceIndex].height,
-                snapshotPath: displayContent[sourceIndex].snapshotPath,
-                favorite: false,
-                selected: true
-            });
-        }
-
-        return selectedSources;
     }
 
 }

@@ -1,7 +1,8 @@
-<md-toolbar id="dashboard-toolbar" class="toolbar-theme">
-    <div class="dashboard-toolbar-row">
-        <button id="dashboard-options-button" md-icon-button nd-click-debounce (ndClick)="viewOptions = true;">
-            <i class="material-icons" aria-label="Options">menu</i>
+<md-toolbar id="display-panel-toolbar" class="toolbar-theme">
+    <div class="display-panel-toolbar-row">
+        <button id="display-panel-back-button" class="action-button-exit" md-raised-button nd-click-debounce (ndClick)="navigateBack()">
+            <md-icon class="material-icons"> arrow_back </md-icon>
+            {{'common.exit' | translate}}
         </button>
     </div>
     <span class="fill-remaining-space"></span>
@@ -9,35 +10,7 @@
     <cms-display-name></cms-display-name>
 
     <span class="fill-remaining-space"></span>
-    <button id="log-off" md-button md-raised-button nd-click-debounce (ndClick)="logoff()">
-            {{'common.logout' | translate}}
-    </button>
 </md-toolbar>
-
-<!-- @pending  We need to add handlers and put some business logic before updating our variables -->
-<cms-options *ngIf="viewOptions" (close)="viewOptions = false;" [zoom]="zoomLevel" (fitHeight)="fitHeight()" [isSaveLayoutEnabled]="isSaveLayoutEnabled"></cms-options>
 
 <cms-mini-display *ngIf="display" [display]="display" (onZoom)="zoomLevel = $event" (close)="setFocusOnMiniDisplayContainer()"
     [fitHeight]="fitHeightCount"></cms-mini-display>
-
-<md-toolbar id="bottom-toolbar" class="page-toolbar toolbar-theme bottom">
-    <button md-button md-raised-button nd-click-debounce id="display-panel-back-button" (ndClick)="navigateBack()" class="back-button">
-        <md-icon>navigate_before</md-icon>
-        {{'common.layouts' | translate}}
-    </button>
-
-    <span class="fill-remaining-space"></span>
-
-    <button md-button md-raised-button nd-click-debounce id="display-panel-next-button" (ndClick)="logoff()" class="next-button">
-        {{'common.exit' | translate}}
-        <img src="resources/icons/logout.svg" class = "centered-icon">
-    </button>
-</md-toolbar>
-
-<nd-popup id="display-panel-clear-wall-popup" *ngIf="showClearWallPopup" class="confirm-popup" title="{{'displayPanel.clearWallConfirmationPopupTitle' | translate }}"
-    (done)="clearMiniDisplayWall()" (cancelled)="cancelClearWallPopup();" (closing)="closingClearWallPopup();" okText="{{'common.yes' | translate}}"
-    cancelText="{{'common.no' | translate}}">
-    <popup-body>
-        {{'displayPanel.clearWallConfirmationPopupMessage' | translate}}
-    </popup-body>
-</nd-popup>

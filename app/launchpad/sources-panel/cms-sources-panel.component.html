@@ -1,10 +1,12 @@
 <div class="page-toolbar">
     <md-toolbar id="sources-panel-toolbar" class="toolbar-theme">
-        <span id="sources-panel-back-button-text">{{ panelTitle }}</span>
+        <button id="layouts-panel-back-button" class = "action-button-exit" md-button md-raised-button routerLink="/home/{{displayId}}">
+            <md-icon class="material-icons"> arrow_back </md-icon>
+            {{'common.exit' | translate}}
+        </button>
         <span class="fill-remaining-space"></span>
-
+        <span class="fill-remaining-space"></span>
         <cms-display-name></cms-display-name>
-
         <span class="fill-remaining-space"></span>
         <button id="sources-panel-reload-button" md-icon-button *ngIf="states.reload" (click)="reloadList()">
             <i class="material-icons">refresh</i>
@@ -18,22 +20,19 @@
         <md-input-container id="sources-panel-search-input">
             <input md-input type="text" placeholder="{{ 'panelToolbar.search' | translate }}" [(ngModel)]="searchKey">
         </md-input-container>
-
-        <button id="log-off" md-button md-raised-button (click)="logout()">
-            {{'common.logout' | translate}}
-        </button>
     </md-toolbar>
 </div>
 
 <div class="sources-panel-main">
-    <cms-source-list [tilePresets]="tilePresets" [displayId]="displayId"  [selectedOnly]="selectedOnly" (change)="onListChanged()" *ngIf="states.list" [searchFilter]="searchFilter"
-        [favoriteFilter]="isFavoriteFilter" (error)="errorMessage = $event"></cms-source-list>
+    <cms-source-list #sourceListComp [tilePresets]="tilePresets" [displayId]="displayId" [selectedOnly]="selectedOnly" (change)="onListChanged()"
+        *ngIf="states.list" [searchFilter]="searchFilter" [favoriteFilter]="isFavoriteFilter" (error)="errorMessage = $event">
+    </cms-source-list>
 </div>
 <div class="page-toolbar bottom">
     <md-toolbar id="sources-panel-bottom-toolbar" class="toolbar-theme">
-        <button id="sources-panel-back-button" md-button md-raised-button nd-click-debounce (ndClick)="navigateBack()" class="back-button">
-            <md-icon>navigate_before</md-icon>
-            {{'common.displays' | translate}} 
+        <button md-button md-raised-button nd-click-debounce id="sources-panel-back-button" [hidden]="!cmsSettingService?.selectedSources?.length > 0"
+            (ndClick)="showClearWallPopup = true" class="action-button-clear">
+            {{'common.clear' | translate}}
         </button>
         <span class="fill-remaining-space"></span>
         <span>
@@ -44,9 +43,17 @@
             {{errorMessage}}
         </span>
         <span class="fill-remaining-space"></span>
-        <button md-button md-raised-button nd-click-debounce id="sources-panel-next-button" [hidden]="!cmsSettingService?.selectedSources?.length > 0" (ndClick)="navigateNext()" class="next-button">
-            {{'common.layouts' | translate}} 
-            <md-icon>navigate_next</md-icon>
+        <button id="sources-panel-next-button" md-button md-raised-button nd-click-debounce (ndClick)="shareTheSources()" class="action-button-share {{ cmsSettingService?.selectedSources?.length === 0 ? 'disabled': ''}}"
+        [disabled]="cmsSettingService?.selectedSources?.length === 0">
+            {{'common.share' | translate}}
         </button>
     </md-toolbar>
+
+    <nd-popup id="display-panel-clear-wall-popup" *ngIf="showClearWallPopup" class="confirm-popup" title="{{'common.clearWallTitle' | translate }}"
+        (done)="clearMiniDisplayWall()" (cancelled)="cancelClearWallPopup();" (closing)="closingClearWallPopup();" okText="{{'common.yes' | translate}}"
+        cancelText="{{'common.no' | translate}}">
+        <popup-body>
+            {{'common.clearWallMessage' | translate}}
+        </popup-body>
+    </nd-popup>
 </div>
