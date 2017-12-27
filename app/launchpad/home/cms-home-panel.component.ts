@@ -115,7 +115,7 @@ export class CmsHomePanelComponent implements OnInit {
     private clearMiniDisplayWall(): void {
         this.cmsServerApi.putContentsOnDisplay(this.displayId, 0, {})
             .finally(
-                () => {
+            () => {
                 this.closingClearWallPopup();
             })
             .subscribe(
@@ -168,6 +168,9 @@ export class CmsHomePanelComponent implements OnInit {
                 this.selectedSourcesLength = displayDetail.content.length;
                 this.isDisabled = this.selectedSourcesLength < 1;
                 this.showHomePanel = true;
+            },
+            (error: any) => {
+                console.log("ERROR: home panel", error);
             });
     }
 }

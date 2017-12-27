@@ -27,6 +27,7 @@ import { CmsCanActivateViaAuthorizationService } from "../../../app/launchpad/lo
 import { Observable } from "rxjs/Observable";
 import { CmsTilesPanelComponent } from "../../../app/launchpad/tiles-panel/cms-tiles-panel.component";
 import { CmsOptionsComponent } from "../../../app/launchpad/display-panel/options/cms-options.component";
+import { CmsHomePanelComponent } from "../../../app/launchpad/home/cms-home-panel.component";
 
 describe("Router: App", () => {
 
@@ -57,7 +58,8 @@ describe("Router: App", () => {
                 CmsAboutPanelComponent,
                 CmsTilesPanelComponent,
                 CmsOptionsComponent,
-                CmsLaunchpadComponent
+                CmsLaunchpadComponent,
+                CmsHomePanelComponent
             ],
             providers: [
                 { provide: APP_BASE_HREF, useValue: "/" },
@@ -179,4 +181,18 @@ describe("Router: App", () => {
             expect(location.path()).toEqual("/settings/language/en");
         });
     });
+
+    it("navigate to \"home/:displayId\" redirects you to /login without login", () => {
+        router.navigate(["/home/1"]).then(() => {
+            expect(location.path()).toEqual("/login");
+        });
+    });
+
+    it("navigate to \"home/:displayId\" redirects you to /home/1", () => {
+        spyOn(canActiveViaAuthorizationService, "canActivate").and.returnValue(true);
+        router.navigate(["/home/1"]).then(() => {
+            expect(location.path()).toEqual("/home/1");
+        });
+    });
+
 });
