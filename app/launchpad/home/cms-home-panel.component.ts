@@ -27,12 +27,6 @@ import { Display } from "../../cms/models/cms-display";
 })
 
 export class CmsHomePanelComponent implements OnInit {
-    private viewState: any = {
-        back: false,
-        reload: false,
-        list: true
-    };
-
     private showHomePanel: any = false;
     private displayId: number;
     private selectedSourcesLength: number;
