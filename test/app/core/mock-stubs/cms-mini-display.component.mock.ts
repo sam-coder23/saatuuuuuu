@@ -5,7 +5,6 @@ import { Tile } from "../../../../app/cms/models/cms-tile";
 import { TileContent } from "../../../../app/cms/models/cms-tile-content";
 import { ISize } from "../../../../app/cms/models/cms-size";
 
-
 class MockDisplay extends CmsResource {
     type: string;
     online: boolean;

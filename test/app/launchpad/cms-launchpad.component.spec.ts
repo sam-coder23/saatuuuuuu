@@ -8,8 +8,7 @@ import { FormsModule } from "@angular/forms";
 import { Router } from "@angular/router";
 import { TranslateService, TranslateModule, TranslateLoader } from "@ngx-translate/core";
 import { TranslateHttpLoader } from "@ngx-translate/http-loader";
-import { MockRouterStub } from "../core/mock-stubs/mock-router-stub";
-import { MockUserProfileSettings } from "./login/login.mock";
+import { MockRouterStub } from "../core/mock-stubs/mock-router.stub";
 import { IUserProfileSettings } from "../../../app/cms/models/cms-user-profile-settings";
 import { CmsLaunchpadComponent } from "../../../app/launchpad/cms-launchpad.component";
 import { StorageManager } from "../../../app/cms/api/cms-storagemanager.service";
@@ -19,6 +18,7 @@ import { AppConfig } from "../../../app/config";
 import { APIRequest } from "../../../app/cms/api/api-request";
 import { CMS_SESSION_STORAGE_ITEM } from "../../../app/cms/models/cms-session-storage-item";
 import { CmsLanguages } from "../../../app/i18n/cms-languages";
+import { MockUserProfileSettings } from "../core/mock-stubs/login.mock";
 
 /**
  * Fake CmsApiService Service

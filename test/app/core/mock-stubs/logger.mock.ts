@@ -3,9 +3,7 @@
  */
 
 export class MockLogger {
-    constructor() {
-
-    }
+    constructor() {}
 
     /**
      * returns logged arguments
@@ -15,8 +13,6 @@ export class MockLogger {
         return args;
     }
 
-
-    
 
     /**
      * returns logged arguments

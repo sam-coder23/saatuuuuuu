@@ -7,7 +7,6 @@ import { DebugElement, CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA, ElementRef } fr
 import { HttpModule, Http } from "@angular/http";
 import { TranslateModule, TranslateLoader, TranslateService } from "@ngx-translate/core";
 import { TranslateHttpLoader } from "@ngx-translate/http-loader";
-import { TilePresets } from "../tile-grid/tile-grid.mock";
 import { Observable } from "rxjs/Observable";
 import { CmsResource } from "../../../../app/cms/models/cms-resource";
 import { Source } from "../../../../app/cms/models/cms-source";

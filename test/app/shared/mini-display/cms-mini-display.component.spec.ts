@@ -1,4 +1,3 @@
-import { MiniDisplay, MockDisplay, MockElementRef, mockDisplay, mockDisplayForService, miniDisplay, CmsMiniDisplayServiceStub, RouterStub, MockCmsEventEmitterService, EventCases, reFactoredTile, reFactoredSource, reFactoredTileContent } from "./cms-mini-display.component.mock";
 import { ComponentFixture, TestBed, async, inject } from "@angular/core/testing";
 import { By } from "@angular/platform-browser";
 import { DebugElement, CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA, ElementRef, SimpleChanges } from "@angular/core";
@@ -14,6 +13,7 @@ import { CmsMiniDisplayService } from "../../../../app/shared/mini-display/cms-m
 import { EventManager } from "../../../../app/utils/event-manager.util";
 import { StorageManager } from "../../../../app/cms/api/cms-storagemanager.service";
 import { CMS_SESSION_STORAGE_ITEM } from "../../../../app/cms/models/cms-session-storage-item";
+import { MockElementRef, CmsMiniDisplayServiceStub, RouterStub, mockDisplay, EventCases, reFactoredTile, reFactoredSource, reFactoredTileContent, miniDisplay, mockDisplayForService } from "../../core/mock-stubs/cms-mini-display.component.mock";
 
 describe("CmsMiniDisplayComponent", () => {
     let component: CmsMiniDisplayComponent;

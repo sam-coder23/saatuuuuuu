@@ -3,16 +3,16 @@ import { By } from "@angular/platform-browser";
 import { DebugElement, NO_ERRORS_SCHEMA } from "@angular/core";
 import { ActivatedRoute } from "@angular/router";
 import { Observable } from "rxjs/Observable";
-import { TilePresets } from "../tile-grid/tile-grid.mock";
 import { TranslateModule, TranslateLoader } from "@ngx-translate/core";
 import { Http, HttpModule } from "@angular/http";
 import { TranslateHttpLoader } from "@ngx-translate/http-loader";
-import { MockDisplays } from "./tile.mock";
 import { ITilePreset } from "../../../../app/cms/models/cms-tile-preset";
 import { Display } from "../../../../app/cms/models/cms-display";
 import { CmsTileListComponent } from "../../../../app/shared/tile-list/cms-tile-list.component";
 import { CmsApiService } from "../../../../app/cms/api/cms-api.service";
 import { CmsSettingsService } from "../../../../app/launchpad/settings/cms-settings.service";
+import { MockDisplays } from "./../../core/mock-stubs/tile.mock";
+import { TilePresets } from "./../../core/mock-stubs/tile-grid.mock";
 
 // Fake ActivatedRoute Service
 class MockActivatedRoute {

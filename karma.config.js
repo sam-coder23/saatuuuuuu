@@ -71,7 +71,7 @@ module.exports = function (config) {
             tsconfig: './tsconfig.json',
             coverageOptions: {
                 instrumentation: true,
-                exclude: [/\.(spec|mock).ts$/i, /test/, /deps.ts/, /main.ts/]
+                exclude: [/\.(spec|mock|stub).ts$/i, /deps.ts/, /main.ts/, /base.ts/]
             },
             remapOptions: {
                 warn: function(message){

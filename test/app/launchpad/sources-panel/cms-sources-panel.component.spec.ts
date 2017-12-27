@@ -8,8 +8,7 @@ import { TranslateLoader, TranslateModule, TranslateService } from "@ngx-transla
 import { TranslateHttpLoader } from "@ngx-translate/http-loader";
 import { MaterialModule } from "@angular/material";
 import { FormsModule } from "@angular/forms";
-import { MockRouterStub } from "../../core/mock-stubs/mock-router-stub";
-import { TilePresets } from "../../shared/tile-grid/tile-grid.mock";
+import { MockRouterStub } from "../../core/mock-stubs/mock-router.stub";
 import { ITilePreset } from "../../../../app/cms/models/cms-tile-preset";
 import { CmsSourcesPanelComponent } from "../../../../app/launchpad/sources-panel/cms-sources-panel.component";
 import { StorageManager } from "../../../../app/cms/api/cms-storagemanager.service";
@@ -20,7 +19,8 @@ import { CMSConstants } from "../../../../app/cms/models/cms-constants";
 import { CMS_SESSION_STORAGE_ITEM } from "../../../../app/cms/models/cms-session-storage-item";
 import { Source } from "../../../../app/cms/models/cms-source";
 import { TilePresetManager } from "../../../../app/utils/tilepreset-manager.util";
-import { MockTilersData, MockDisplay, MockSources } from "./cms-sources-mock";
+import { MockTilersData, MockDisplay, MockSources } from "./../../core/mock-stubs/cms-sources.mock";
+import { TilePresets } from "./../../core/mock-stubs/tile-grid.mock";
 
 /**
 * Created mock services to fake real services injected into the CmsSourcesPanelComponent

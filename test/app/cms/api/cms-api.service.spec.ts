@@ -9,8 +9,7 @@ import { Router } from "@angular/router";
 import { MockBackend, MockConnection } from "@angular/http/testing";
 import { HttpModule, Http, BaseRequestOptions, XHRBackend, ResponseOptions, Response } from "@angular/http";
 import { Observable } from "rxjs/Observable";
-import { MockDisplayData, MockSourceListData, MockPutContentsOnDisplayData,MockSelectedDisplayData, 
-         MocksUerProfileSettingsData, MockServerInfoData, MockTilerData, MockGeometryContentForDisplay } from "./api.service.mock";
+
 import { Injector } from "@angular/core";
 
 import { CmsApiService } from "../../../../app/cms/api/cms-api.service";
@@ -19,6 +18,11 @@ import { AppConfig } from "../../../../app/config";
 import { StorageManager } from "../../../../app/cms/api/cms-storagemanager.service";
 import { User } from "../../../../app/launchpad/models/cms-user.model";
 import { Display } from "../../../../app/cms/models/cms-display";
+
+import {
+    MockDisplayData, MockSourceListData, MockPutContentsOnDisplayData, MockSelectedDisplayData,
+    MocksUerProfileSettingsData, MockServerInfoData, MockTilerData, MockGeometryContentForDisplay
+} from "./../../core/mock-stubs/api-service.mock";
 
 let spyRouter = {
     navigate: jasmine.createSpy("APIService")
@@ -40,7 +44,7 @@ describe("Service: CmsApiService", () => {
             providers: [
                 MockBackend,
                 StorageManager,
-                BaseRequestOptions, 
+                BaseRequestOptions,
                 APIRequest,
                 AppConfig,
                 CmsApiService,
@@ -136,7 +140,7 @@ describe("Service: CmsApiService", () => {
         let responseBody = MockSourceListData;
         let start: number = 1;
         let count: number = 1;
-        let aDisplayId: number = 9; 
+        let aDisplayId: number = 9;
         let search: string = "";
         let favorite: boolean = false;
 
@@ -192,7 +196,7 @@ describe("Service: CmsApiService", () => {
     //MARK AN OBJECT DISPLAY/SOURCE AS FAVRORITE
     it("Should mark an object as favorite ", () => {
         let responseBody = { "id": "DIS_1" };
-        let objectId: number = 1; 
+        let objectId: number = 1;
         let objectType: string = "DIS"
         mockbackend.connections.subscribe((connection: MockConnection) => {
             connection.mockRespond(new Response(
@@ -210,7 +214,7 @@ describe("Service: CmsApiService", () => {
     //MARK AN OBJECT DISPLAY/SOURCE AS UNFAVRORITE
     it("Should mark an object as unfavorite ", () => {
         let responseBody = { "Message": "Favorite has been deleted successfully." };
-        let objectId: number = 1; 
+        let objectId: number = 1;
         let objectType: string = "DIS"
         mockbackend.connections.subscribe((connection: MockConnection) => {
             connection.mockRespond(new Response(
@@ -257,8 +261,8 @@ describe("Service: CmsApiService", () => {
 
     //RECONNECT WITH SERVER SHOULD MAKE SESSION EXPIRE AND KEEP SESSION ALIVE
     it("Should call makeSessionExpire and keepSessionAlive from reconnectSessionWithServer ", () => {
-        spyOn(cmsApiService, "makeSessionExpire").and.returnValue(()=>{});
-        spyOn(cmsApiService, "keepSessionAlive").and.returnValue(()=>{});
+        spyOn(cmsApiService, "makeSessionExpire").and.returnValue(() => { });
+        spyOn(cmsApiService, "keepSessionAlive").and.returnValue(() => { });
         cmsApiService.reconnectSessionWithServer();
         expect(cmsApiService.makeSessionExpire).toHaveBeenCalled();
         expect(cmsApiService.keepSessionAlive).toHaveBeenCalled();
@@ -309,11 +313,11 @@ describe("Service: CmsApiService", () => {
             expect(data).toEqual(responseBody);
         });
     });
-    
+
     //UPDATE CONTENT GEOMETRY ON DISPLAY
     it("Should update content geormetry on display ", () => {
         let body = MockGeometryContentForDisplay;
-        let responseBody: any = {"Message": "Operation Successful."};
+        let responseBody: any = { "Message": "Operation Successful." };
         let displayId: number = 10, contentId: number = 35;
         mockbackend.connections.subscribe((connection: MockConnection) => {
             connection.mockRespond(new Response(

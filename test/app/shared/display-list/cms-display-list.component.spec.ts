@@ -7,7 +7,6 @@ import { TranslateModule, TranslateLoader, TranslateService } from "@ngx-transla
 import { TranslateHttpLoader } from "@ngx-translate/http-loader";
 import { Router, ActivatedRoute } from "@angular/router";
 import { Observable } from "rxjs/Observable";
-import { settings } from "./cms-displays-mock";
 import { CMS_EVENTS } from "../../../../app/cms/api/cms-events.enum";
 import { CmsDisplayListComponent } from "../../../../app/shared/display-list/cms-display-list.component";
 import { CmsSettingsService } from "../../../../app/launchpad/settings/cms-settings.service";
@@ -18,7 +17,8 @@ import { AppConfig } from "../../../../app/config";
 import { CMSConstants } from "../../../../app/cms/models/cms-constants";
 import { CMS_SESSION_STORAGE_ITEM } from "../../../../app/cms/models/cms-session-storage-item";
 import { Display } from "../../../../app/cms/models/cms-display";
-import { MockDisplay } from "../mini-display/cms-mini-display.component.mock";
+import { MocksUerProfileSettingsData } from "./../../core/mock-stubs/api-service.mock";
+import { MockDisplay } from "../../core/mock-stubs/cms-mini-display.component.mock";
 
 let displays: MockDisplay[] = [
     {
@@ -151,7 +151,7 @@ class MockCmsEventEmitterService {
 }
 
 class MockSettingsService {
-    userSettings = settings;
+    userSettings = MocksUerProfileSettingsData;
     updateWallConnectionSpecificDisplay() {
         return Observable.of(null);
     }

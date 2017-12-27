@@ -3,13 +3,11 @@ import { Subject } from "rxjs";
 import { IUserProfileSettings } from "../../../../app/cms/models/cms-user-profile-settings";
 
 export class MockCmsSettingsServiceStub {
-   public userSettings: IUserProfileSettings;
-   public longPressedSubject: Subject<boolean> = new Subject<boolean>();
-   public selectedSources = [];
+    public userSettings: IUserProfileSettings;
+    public longPressedSubject: Subject<boolean> = new Subject<boolean>();
+    public selectedSources = [];
 
-    constructor() {
-
-    }
+    constructor() {}
 
     updateIsLongPress(state: boolean) { }
 }

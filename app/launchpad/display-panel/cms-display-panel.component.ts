@@ -5,7 +5,6 @@ import { CMS_SESSION_STORAGE_ITEM } from "../../cms/models/cms-session-storage-i
 import { StorageManager } from "../../cms/api/cms-storagemanager.service";
 import { AppConfig } from "../../config";
 import { Validation } from "../../core/util/Validation";
-import { Display } from "../../shared/models/cms-display-card";
 
 /**
  * This class will hold the logic of cms display panel where it will display mini-display.

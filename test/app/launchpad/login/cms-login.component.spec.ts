@@ -1,7 +1,6 @@
 import { ComponentFixture, TestBed, async, inject } from "@angular/core/testing";
 import { By } from "@angular/platform-browser";
 import { DebugElement, NO_ERRORS_SCHEMA } from "@angular/core";
-import { MockUser, MockUserProfileSettings, MoclLicenseinfo } from "./login.mock";
 import { Observable } from "rxjs/Observable";
 import { TranslateLoader, TranslateModule, TranslateService } from "@ngx-translate/core";
 import { HttpModule, Http } from "@angular/http";
@@ -20,6 +19,7 @@ import { CmsMiniDisplayService } from "../../../../app/shared/mini-display/cms-m
 import { APIRequest } from "../../../../app/cms/api/api-request";
 import { AppConfig } from "../../../../app/config";
 import { CMS_SESSION_STORAGE_ITEM } from "../../../../app/cms/models/cms-session-storage-item";
+import { MockUser, MockUserProfileSettings, MoclLicenseinfo } from "./../../core/mock-stubs/login.mock";
 
 /**
  * Fake CmsApiService Service

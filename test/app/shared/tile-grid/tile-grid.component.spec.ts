@@ -1,9 +1,9 @@
 import { ComponentFixture, TestBed, async } from "@angular/core/testing";
 import { By } from "@angular/platform-browser";
 import { DebugElement } from "@angular/core";
-import { TilePresets } from "./tile-grid.mock";
 import { TileGridComponent } from "../../../../app/shared/tile-grid/tile-grid.component";
 import { Tile } from "../../../../app/cms/models/cms-tile";
+import { TilePresets } from "./../../core/mock-stubs/tile-grid.mock";
 
 describe("TileGridComponent", () => {
     let component: TileGridComponent;

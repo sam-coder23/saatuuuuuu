@@ -1,6 +1,5 @@
 import { TestBed, inject, async } from "@angular/core/testing";
 import { Observable } from "rxjs/Observable";
-import { mockDisplay1, mockDisplay2, expectedMiniDisplayResponse1, expectedMiniDisplayResponse2 } from "./cms-mini-display.service.mock";
 import { CmsMiniDisplayService } from "../../../../app/shared/mini-display/cms-mini-display.service";
 import { CmsApiService } from "../../../../app/cms/api/cms-api.service";
 import { AppConfig } from "../../../../app/config";
@@ -8,6 +7,7 @@ import { Display } from "../../../../app/cms/models/cms-display";
 import { ISize } from "../../../../app/cms/models/cms-size";
 import { TileContent } from "../../../../app/cms/models/cms-tile-content";
 import { Tile } from "../../../../app/cms/models/cms-tile";
+import { mockDisplay1, expectedMiniDisplayResponse1, mockDisplay2, expectedMiniDisplayResponse2 } from "../../core/mock-stubs/cms-mini-display.service.mock";
 
 
 describe("Service: CmsMiniDisplayService", () => {
