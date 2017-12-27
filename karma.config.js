@@ -1,5 +1,13 @@
 module.exports = function (config) {
     config.set({
+        proxies: {
+            "/settings/language/resources/": "/base/app/resources/",
+            "/settings/language/icon_barco.png": "/base/app/icon_barco.png",
+            "/display-panel/resources/": "/base/app/resources/",
+            "/display-panel/icon_barco.png": "/base/app/icon_barco.png",
+            "/resources/": "/base/app/resources/",
+            "/icon_barco.png": "/base/app/icon_barco.png"         
+        },
         frameworks: [
             'jasmine',
             'karma-typescript'
@@ -26,6 +34,18 @@ module.exports = function (config) {
             },
             {
                 pattern: 'test/**/*.ts'
+            },
+            {
+                pattern: 'app/**/*.png',
+                included: false
+            },
+            {
+                pattern: 'app/**/*.jpg',
+                included: false
+            },
+            {
+                pattern: 'app/**/*.svg',
+                included: false
             },
             {
                 pattern: "./app/i18n/*.json",
