@@ -12,7 +12,6 @@ import { StorageManager } from "../../../../app/cms/api/cms-storagemanager.servi
 import { AppConfig } from "../../../../app/config";
 import { CmsApiService } from "../../../../app/cms/api/cms-api.service";
 import { CMS_SESSION_STORAGE_ITEM } from "../../../../app/cms/models/cms-session-storage-item";
-import { CMSConstants } from "../../../../app/cms/models/cms-constants";
 import { Validation } from "../../../../app/core/util/Validation";
 
 class MockCmsApiServiceStub {
@@ -85,29 +84,14 @@ describe("Component: CmsDisplaysPanelComponent", () => {
         expect(backButton).toBeFalsy();
     }));
 
-    // it("should make back button visible when routed from settings panel", async(() => {
-    //     debugInstance.route.params = [{ "action": CMSConstants.SELECT_DISPLAY }];
-    //     fixture.detectChanges();
+    it("should call onListChanged: ", async(() => {
+        debugInstance.onListChanged();
+        expect(debugInstance.viewState.reload).toBe(true);
+        fixture.detectChanges();
 
-    //     let backButton: DebugElement = fixture.debugElement.query(By.css("#displays-panel-back-button"));
-    //     expect(backButton).toBeTruthy();
-
-    //     let spyNavigateByUrl = spyOn(window.history, "back").and.returnValue(null);
-    //     backButton.nativeElement.dispatchEvent(new Event("ndClick"));
-    //     expect(spyNavigateByUrl.calls.count()).toEqual(1);
-    // }));
-
-    // it("should call onListChanged: ", async(() => {
-    //     debugInstance.onListChanged();
-    //     cmsDisplaysPanelComponentInstance = new CmsDisplaysPanelComponent(storageManager, appConfig, activatedRoute, cmsServerApi);
-    //     let isDispSelected = cmsDisplaysPanelComponentInstance.isDisplaySelected();
-    //     expect(debugInstance.viewState.reload).toBe(true);
-    //     expect(debugInstance.viewState.back).toBe(isDispSelected);
-    //     fixture.detectChanges();
-
-    //     let reloadButton = document.getElementById("display-panel-reload-button");
-    //     expect(reloadButton).toBeTruthy();
-    // }));
+        let reloadButton = document.getElementById("display-panel-reload-button");
+        expect(reloadButton).toBeTruthy();
+    }));
 
     it("should call reloadList: ", async(() => {
         debugInstance.reloadList();
@@ -138,6 +122,7 @@ describe("Component: CmsDisplaysPanelComponent", () => {
     }));
 
     it("should set searchkey as set to session storage", () => {
+
         let storageManager = fixture.debugElement.injector.get(StorageManager);
         let searchBox = fixture.nativeElement.querySelector("#display-list-search-input");
         expect(searchBox).toBeTruthy();
@@ -146,6 +131,7 @@ describe("Component: CmsDisplaysPanelComponent", () => {
         searchBox.value = searchString;
         fixture.detectChanges();
         searchBox.dispatchEvent(new Event("keyup"));
+
         fixture.whenStable().then(() => {
             delay(500).then(() => {
                 expect(debugInstance.searchFilter).toBe(searchString);
@@ -168,17 +154,5 @@ describe("Component: CmsDisplaysPanelComponent", () => {
             expect(storageManager.get(CMS_SESSION_STORAGE_ITEM.DISPLAYS_FAVORITE_FILTER)).toBe((!favState).toString());
         });
     });
-
-    it("should have a logoff button, and it should logoff", async(() => {
-        let apiService = <CmsApiService>fixture.debugElement.injector.get(CmsApiService);
-        let spyLogoutUser = spyOn(apiService, "logoutUser").and.returnValue(null);
-        let logoffButton: DebugElement = fixture.debugElement.query(By.css("#log-off"));
-
-        expect(logoffButton).toBeDefined();
-
-        logoffButton.nativeElement.dispatchEvent(new Event("click"));
-        expect(spyLogoutUser.calls.count()).toEqual(1);
-    }));
-
 });
 
