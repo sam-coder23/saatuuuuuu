@@ -75,21 +75,4 @@ export class CmsTilesPanelComponent implements OnInit {
         this.viewState.reload = true;
     }
 
-    /**
-     * This method navigate to next page
-     * @method navigateNext
-     * @return void
-     */
-    private navigateNext(): void {
-        this.router.navigateByUrl(`display-panel/${this.displayId}`);
-    }
-
-    /**
-     * This method logs out the user and performs clean up
-     * @method logout
-     * @return {void}
-     */
-    private logout(): void {
-        this.cmsServerApi.logoutUser();
-    }
 }

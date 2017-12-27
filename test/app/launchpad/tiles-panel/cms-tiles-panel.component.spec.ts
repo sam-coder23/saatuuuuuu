@@ -71,38 +71,22 @@ describe("CmsTilesPanelComponent - Test Suite", () => {
         expect(component instanceof CmsTilesPanelComponent).toBeTruthy();
         expect(component["displayResolution"].height).toEqual(130);
         expect(component["displayResolution"].width).toEqual(230);
-
         fixture.detectChanges();
-
         expect(component["displayId"]).toEqual(1);
         expect(component["sourceCount"]).toEqual(1);
-
         expect(component.viewState.list).toBeTruthy();
         expect(component.viewState.reload).toBeFalsy();
-
         let reloadButton: DebugElement = fixture.debugElement.query(By.css("#tiles-panel-reload-button"));
         expect(reloadButton).toBeFalsy();
     });
 
-
-    // it("should have next button and onclick it navigates to next route", () => {
-    //     fixture.detectChanges();
-    //     // let buttonNext: DebugElement = fixture.debugElement.query(By.css("#tiles-panel-next-button"));
-    //     // expect(buttonNext).toBeDefined();
-    //     let router = fixture.debugElement.injector.get(Router);
-    //     let spyNavigateByUrl = spyOn(router, "navigateByUrl").and.returnValue(null);
-    //     buttonNext.triggerEventHandler("ndClick", null);
-    //     expect(spyNavigateByUrl.calls.count()).toEqual(1);
-    //     expect(spyNavigateByUrl.calls.argsFor(0)[0]).toEqual(`display-panel/${component["displayId"]}`);
-    // });
 
     it("should have back button and onclick it navigates to back history", () => {
         fixture.detectChanges();
         let buttonBack = fixture.nativeElement.querySelector("#layouts-panel-back-button");
         expect(buttonBack).toBeDefined();
         let spyWindowHistoryBack = spyOn(window.history, "back").and.returnValue(null);
-        buttonBack.dispatchEvent(new Event("ndClick"));
-        // expect(spyWindowHistoryBack).toHaveBeenCalled();
+        debugInstance.navigateBack();
         expect(spyWindowHistoryBack.calls.count()).toEqual(1);
     });
 
