@@ -64,7 +64,7 @@ let displayData = {
     "id": 1,
     "name": "Crisis room wall",
     "description": "",
-    "snapshotPath": "https://10.98.0.231//mediaconfiguration?action=get&path=images%2Fsnapshots%2Fdisplays%2F1.jpeg",
+    "snapshotPath": "display_snapshot.jpg",
     "type": "DisplayWall",
     "online": false,
     "resolution": {
@@ -102,7 +102,7 @@ let mockDisplaysData = {
         "name": "Crisis room wall",
         "type": "DisplayWall",
         "description": "",
-        "snapshotPath": "https://10.98.0.231//mediaconfiguration?action=get&path=images%2Fsnapshots%2Fdisplays%2F1.jpeg",
+        "snapshotPath": "display_snapshot.jpg",
         "resolution": {
             "width": 1600,
             "height": 1200

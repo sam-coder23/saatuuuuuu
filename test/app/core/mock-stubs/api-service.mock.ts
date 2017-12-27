@@ -48,7 +48,7 @@ export const MockSelectedDisplayData: any = {
     "id": 10,
     "name": "Conference Room",
     "description": "Customer and Demo Center\r2nd Floor, A Block, Noida\rFor meeting with guests",
-    "snapshotPath": "https://10.98.0.231//mediaconfiguration?action=get&path=images%2Fsnapshots%2Fdisplays%2F1.jpeg",
+    "snapshotPath": "display_snapshot.jpg",
     "type": "DisplayWall",
     "online": false,
     "resolution": {

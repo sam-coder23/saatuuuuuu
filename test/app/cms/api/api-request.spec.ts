@@ -67,7 +67,7 @@ describe("Service: APIRequest", () => {
 
     it("Should return specific url as per request - GetURL()", () => {
         let loginUrl = "login";
-        let snapshotUrl = "mediaconfiguration?action=get&path=images%2Fsnapshots%2Fdisplays%2F1.jpeg";
+        let snapshotUrl = "display_snapshot.jpg";
         let resourceRequestUrl = "displays/11/resources?start=1&count=20&filter=&onlyfavorite=false"
 
         let serverUrlRegex = /^https:\/\/0.0.0.0\/cms-rest\/v1/;

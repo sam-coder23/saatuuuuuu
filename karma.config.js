@@ -6,7 +6,8 @@ module.exports = function (config) {
             "/display-panel/resources/": "/base/app/resources/",
             "/display-panel/icon_barco.png": "/base/app/icon_barco.png",
             "/resources/": "/base/app/resources/",
-            "/icon_barco.png": "/base/app/icon_barco.png"         
+            "/icon_barco.png": "/base/app/icon_barco.png",
+ 			"/display_snapshot.jpg": "/base/app/resources/images/display_snapshot.jpg"
         },
         frameworks: [
             'jasmine',

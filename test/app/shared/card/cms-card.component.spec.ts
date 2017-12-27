@@ -18,7 +18,7 @@ let MockDisplay = {
     "name": "Crisis room wall",
     "type": "DisplayWall",
     "description": "",
-    "snapshotPath": "https://10.98.0.231//mediaconfiguration?action=get&path=images%2Fsnapshots%2Fdisplays%2F1.jpeg",
+    "snapshotPath": "display_snapshot.jpg?t=1",
     "resolution": {
         "width": 1920,
         "height": 1080
@@ -160,7 +160,7 @@ describe("CmsCardComponent", () => {
     });
 
     it("Should not convert IPToHost when snapshot path has not an IP addresss", () => {
-        let snapshotPath = "localhost:3000//mediaconfiguration?action=get&path=images%2Fsnapshots%2Fdisplays%2F1.jpeg";
+        let snapshotPath = "localhost:3000/display_snapshot.jpg";
 
         MockDisplay.snapshotPath = snapshotPath;
         component2.card = new CmsResource(MockDisplay);
