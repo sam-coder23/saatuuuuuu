@@ -23,7 +23,6 @@ import { CmsDisplaysPanelComponent } from "./displays-panel/cms-displays-panel.c
 
 // Display Panel
 import { CmsDisplayPanelComponent } from "./display-panel/cms-display-panel.component";
-import { CmsOptionsComponent } from "./display-panel/options/cms-options.component";
 
 // Sources Panel
 import { CmsSourcesPanelComponent } from "./sources-panel/cms-sources-panel.component";
@@ -81,7 +80,6 @@ import { CmsHomePanelComponent } from "./home/cms-home-panel.component";
     CmsLaunchpadComponent,
     CmsLoginComponent,
     CmsDisplayPanelComponent,
-    CmsOptionsComponent,
     CmsDisplaysPanelComponent,
     CmsSourcesPanelComponent,
     CmsSettingsPanelComponent,

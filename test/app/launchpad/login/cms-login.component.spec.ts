@@ -11,7 +11,6 @@ import { Router, ActivatedRoute } from "@angular/router";
 import { UserConfig } from "../../../../app/launchpad/models/cms-user.model";
 import { IUserProfileSettings } from "../../../../app/cms/models/cms-user-profile-settings";
 import { CmsLoginComponent } from "../../../../app/launchpad/login/cms-login.component";
-import { CmsOptionsComponent } from "../../../../app/launchpad/display-panel/options/cms-options.component";
 import { CmsSettingsService } from "../../../../app/launchpad/settings/cms-settings.service";
 import { CmsApiService } from "../../../../app/cms/api/cms-api.service";
 import { StorageManager } from "../../../../app/cms/api/cms-storagemanager.service";
@@ -87,13 +86,11 @@ describe("CmsLoginComponent", () => {
     let component: CmsLoginComponent;
     let fixture: ComponentFixture<CmsLoginComponent>;
     let debugInstance, nativeElement, storageManager;
-    let componentOptions: CmsOptionsComponent;
-    let fixtureOptions: ComponentFixture<CmsOptionsComponent>;
     let debugInstanceOptions, cmsApiService;
 
     beforeEach(async(() => {
         TestBed.configureTestingModule({
-            declarations: [CmsLoginComponent, CmsOptionsComponent],
+            declarations: [CmsLoginComponent],
             providers: [
                 {
                     provide: Router,
@@ -131,12 +128,6 @@ describe("CmsLoginComponent", () => {
             component = fixture.componentInstance;
             nativeElement = fixture.nativeElement;
             debugInstance = fixture.debugElement.componentInstance;
-
-            fixtureOptions = TestBed.createComponent(CmsOptionsComponent);
-            componentOptions = fixtureOptions.componentInstance;
-            debugInstanceOptions = fixtureOptions.debugElement.componentInstance;
-            cmsApiService = fixtureOptions.debugElement.injector.get(CmsApiService);
-            spyOn(cmsApiService, "logout").and.returnValue(Observable.of(null));
         });
     }));
 
@@ -149,7 +140,6 @@ describe("CmsLoginComponent", () => {
         expect(debugInstance.isLoginInProgress).toBeFalsy();
         expect(debugInstance.hasError).toBeFalsy();
 
-        expect(componentOptions).toBeDefined();
         expect(debugInstanceOptions.disableOptionOnDisplayUnavailable).toBeFalsy();
     });
 

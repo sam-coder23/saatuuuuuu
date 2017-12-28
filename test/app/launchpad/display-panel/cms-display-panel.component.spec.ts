@@ -143,10 +143,18 @@ describe("CmsDisplayPanelComponent - Test Suite", () => {
         let buttonBack = fixture.debugElement.query(By.css("#display-panel-back-button"));
         expect(buttonBack instanceof DebugElement).toBeTruthy();
 
-        let spyNavigateBack = spyOn(debugInstance, "navigateBack").and.returnValue(null);
+        let spyNavigateBack = spyOn(window.history, "back").and.returnValue(null);
         buttonBack.nativeElement.dispatchEvent(new Event("ndClick"));
 
         expect(spyNavigateBack.calls.count()).toEqual(1);
+    });
+
+
+    it("should give display null if no display in session storage", () => {
+        removeDisplay();
+
+        debugInstance.loadDisplay();
+        expect(debugInstance.display).toBeNull();
     });
 
     function removeDisplay() {

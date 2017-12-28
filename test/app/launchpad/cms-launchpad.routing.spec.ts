@@ -26,7 +26,6 @@ import { TranslateHttpLoader } from "@ngx-translate/http-loader";
 import { CmsCanActivateViaAuthorizationService } from "../../../app/launchpad/login/cms-can-activate-via-authorization.service";
 import { Observable } from "rxjs/Observable";
 import { CmsTilesPanelComponent } from "../../../app/launchpad/tiles-panel/cms-tiles-panel.component";
-import { CmsOptionsComponent } from "../../../app/launchpad/display-panel/options/cms-options.component";
 import { CmsHomePanelComponent } from "../../../app/launchpad/home/cms-home-panel.component";
 
 describe("Router: App", () => {
@@ -57,7 +56,6 @@ describe("Router: App", () => {
                 CmsSettingsLanguagePanelComponent,
                 CmsAboutPanelComponent,
                 CmsTilesPanelComponent,
-                CmsOptionsComponent,
                 CmsLaunchpadComponent,
                 CmsHomePanelComponent
             ],
