@@ -1,6 +1,6 @@
 <div class="page-toolbar">
     <md-toolbar id="sources-panel-toolbar" class="toolbar-theme">
-        <button id="layouts-panel-back-button" class = "action-button-exit" md-button md-raised-button routerLink="/home/{{displayId}}">
+        <button id="layouts-panel-back-button" class = "action-button-exit" md-button md-raised-button nd-click-debounce (ndClick)="navigateBack()">
             <md-icon class="material-icons"> arrow_back </md-icon>
             {{'common.exit' | translate}}
         </button>

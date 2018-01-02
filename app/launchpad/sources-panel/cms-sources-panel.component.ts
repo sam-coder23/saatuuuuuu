@@ -113,22 +113,7 @@ export class CmsSourcesPanelComponent implements OnInit {
      * @return void
      */
     public navigateBack(): void {
-        this.router.navigateByUrl("/displays-panel");
-    }
-
-    /**
-     * This method navigate to Next page
-     * @method navigateNext
-     * @return void
-     */
-    public navigateNext(): void {
-        this.isSelectedSameAsSharedSource((sameAsShared: boolean) => {
-            if (sameAsShared) {
-                this.navigateToTilesPanel();
-            } else {
-                this.updateDisplayWall();
-            }
-        });
+        this.router.navigateByUrl(`/home/${this.displayId}`);
     }
 
     /**
@@ -352,15 +337,5 @@ export class CmsSourcesPanelComponent implements OnInit {
             (error: any) => {
                 console.error(error);
             });
-    }
-
-    /**
-     * @method navigateToTilesPanel - navigates to tiles panel route
-     * @returns {void}
-     */
-    private navigateToTilesPanel(): void {
-        const selectedSourcesLength: number = this.cmsSettingService.selectedSources.length;
-        const url: string = `/displays/${this.displayId}/tiles-panel?sourceCount=${selectedSourcesLength}`;
-        this.router.navigateByUrl(url);
     }
 }

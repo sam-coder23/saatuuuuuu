@@ -50,7 +50,7 @@ export class CmsTilesPanelComponent implements OnInit {
      * @return void
      */
     public navigateBack(): void {
-        window.history.back();
+        this.router.navigateByUrl(`/home/${this.displayId}`);
     }
 
     /**

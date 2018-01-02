@@ -38,7 +38,7 @@ describe("Service: CmsVirtualScrollService", () => {
         cmsVirtualScrollService = new CmsVirtualScrollService(cmsSettingsService);
     });
 
-    it("service should be able to attach scroll event listener and able to call scroll function", () => {
+    it("service should be able to attach scroll event listener and able to call scroll function", (done) => {
         let scrollContainer = document.createElement("div");
         scrollContainer.setAttribute("id", "cms-scroller");
         scrollContainer.style.width = "1050px";
@@ -69,10 +69,11 @@ describe("Service: CmsVirtualScrollService", () => {
 
         window.setTimeout(() => {
             expect(dataStatus).toBe("recordsFetched");
+            done();
         }, 0)
     });
 
-    it("service should be able to attach scroll event listener and able to call scroll function", () => {
+    it("service should be able to attach scroll event listener and able to call scroll ", (done) => {
         let scrollContainer = document.createElement("div");
         scrollContainer.setAttribute("id", "cms-scroller");
         scrollContainer.style.width = "1050px";
@@ -104,6 +105,7 @@ describe("Service: CmsVirtualScrollService", () => {
         window.setTimeout(() => {
             expect(dataStatus).toBe("recordsFetched");
             dataStatus = "";
+            done();
         }, 0);
     });
 

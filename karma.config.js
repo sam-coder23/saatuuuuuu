@@ -7,6 +7,8 @@ module.exports = function (config) {
             "/display-panel/icon_barco.png": "/base/app/icon_barco.png",
             "/resources/": "/base/app/resources/",
             "/icon_barco.png": "/base/app/icon_barco.png",
+            "/home/resources/": "/base/app/resources/",
+            "/home/icon_barco.png": "/base/app/icon_barco.png",       
  			"/display_snapshot.jpg": "/base/app/resources/images/display_snapshot.jpg"
         },
         frameworks: [

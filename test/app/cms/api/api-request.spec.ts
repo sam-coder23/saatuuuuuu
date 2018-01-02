@@ -82,7 +82,7 @@ describe("Service: APIRequest", () => {
         expect(dateQuestionRegex.test(finalLoginUrl)).toBeTruthy();
 
         expect(serverUrlRegex.test(finalSnapshotUrl)).toBeTruthy();
-        expect(dateAmpersandRegex.test(finalSnapshotUrl)).toBeTruthy();
+        expect(dateAmpersandRegex.test(finalSnapshotUrl)).toBeFalsy();
 
         expect(serverUrlRegex.test(finalResourceRequestUrl)).toBeTruthy();
         expect(dateAmpersandRegex.test(finalResourceRequestUrl)).toBeTruthy();

@@ -210,15 +210,21 @@ describe("CmsSourcesPanelComponent", () => {
         expect(buttonShare).toBeTruthy();
     }));
 
-    it("should have back button and onclick should navigate back", () => {
+    it("should have raised clear wall popup", () => {
         fixture.detectChanges();
         let buttonBack = nativeElement.querySelector("#sources-panel-back-button");
         expect(buttonBack).toBeTruthy();
+        buttonBack.dispatchEvent(new Event("ndClick"));
+        expect(debugInstance.showClearWallPopup).toBeTruthy();
+    });
+
+    it("should have back button and onclick should navigate back", () => {
+        fixture.detectChanges();
+        let buttonBack = nativeElement.querySelector("#layouts-panel-back-button");
+        expect(buttonBack).toBeTruthy();
         let router = fixture.debugElement.injector.get(Router);
         let spyNavigateByUrl = spyOn(router, "navigateByUrl").and.returnValue(null);
-        buttonBack.triggerEventHandler("ndClick", null);
         buttonBack.dispatchEvent(new Event("ndClick"));
-        expect(debugInstance.showClearWallPopup).toBeTruthy()
         expect(spyNavigateByUrl.calls.argsFor(0)[0]).toEqual(`/home/${debugInstance.displayId}`);
     });
 

@@ -85,9 +85,10 @@ describe("CmsTilesPanelComponent - Test Suite", () => {
         fixture.detectChanges();
         let buttonBack = fixture.nativeElement.querySelector("#layouts-panel-back-button");
         expect(buttonBack).toBeDefined();
-        let spyWindowHistoryBack = spyOn(window.history, "back").and.returnValue(null);
-        debugInstance.navigateBack();
-        expect(spyWindowHistoryBack.calls.count()).toEqual(1);
+        let router = fixture.debugElement.injector.get(Router);
+        let spyNavigateByUrl = spyOn(router, "navigateByUrl").and.returnValue(null);
+        buttonBack.dispatchEvent(new Event("ndClick"));
+        expect(spyNavigateByUrl.calls.argsFor(0)[0]).toEqual(`/home/${debugInstance.displayId}`);
     });
 
     it("should set reload to TRUE on list change", () => {

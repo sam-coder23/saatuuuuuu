@@ -31,7 +31,6 @@ export class CmsDisplaysPanelComponent implements OnInit, AfterViewInit {
     private searchFilter: string;
     private searchKey: string;
     private isSelectDisplayView: boolean = false;
-    
     // all boolean states for the template
     private viewState: any = {
         reload: false,
