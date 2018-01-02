@@ -128,20 +128,20 @@ export class CmsSettingsService {
      * @return void
      */
     public updateUserProfileData(data: IUserProfileSettings, callback?: any): void {
-        if (!data) { return; }
-
-        this.userSettings = data;
-        this.cmsServerApi.updateUserProfileSettings(data)
-            .then((response: any) => {
-                // store user setting in storage
-                this.storageManager.set(CMS_SESSION_STORAGE_ITEM.SETTINGS, JSON.stringify(this.userSettings));
-                if (callback) {
-                    callback();
-                }
-            })
-            .catch((error: any) => {
-                this.appConfig.log("CmsSettingsService: updateUserProfileData error");
-            });
+        if (data) {
+            this.userSettings = data;
+            this.cmsServerApi.updateUserProfileSettings(data)
+                .then((response: any) => {
+                    // store user setting in storage
+                    this.storageManager.set(CMS_SESSION_STORAGE_ITEM.SETTINGS, JSON.stringify(this.userSettings));
+                    if (callback) {
+                        callback();
+                    }
+                })
+                .catch((error: any) => {
+                    this.appConfig.log("CmsSettingsService: updateUserProfileData error");
+                });
+        }
     }
 
     /**
