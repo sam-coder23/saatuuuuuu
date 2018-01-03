@@ -165,9 +165,11 @@ export class CmsHomePanelComponent implements OnInit {
         const displayObservable: Observable<Display> = this.cmsServerApi.getSelectedDisplayContent(this.displayId);
         displayObservable.subscribe(
             (displayDetail: Display) => {
-                this.selectedSourcesLength = displayDetail.content.length;
-                this.isDisabled = this.selectedSourcesLength < 1;
-                this.showHomePanel = true;
+                if (displayDetail) {
+                    this.selectedSourcesLength = displayDetail.content.length;
+                    this.isDisabled = this.selectedSourcesLength < 1;
+                    this.showHomePanel = true;
+                }
             },
             (error: any) => {
                 console.log("ERROR: home panel", error);

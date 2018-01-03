@@ -28,6 +28,21 @@ import { Observable } from "rxjs/Observable";
 import { CmsTilesPanelComponent } from "../../../app/launchpad/tiles-panel/cms-tiles-panel.component";
 import { CmsHomePanelComponent } from "../../../app/launchpad/home/cms-home-panel.component";
 
+class MockServerApi {
+    getSystemInfo(): Observable<any> {
+        return Observable.of(null);
+    }
+
+    getUserProfileSettings(): Promise<any> {
+        return new Promise((resolve, reject) => {
+            resolve(null);
+        });
+    }
+
+    getSelectedDisplayContent(): Observable<any> {
+        return Observable.of(null);
+    }
+}
 describe("Router: App", () => {
 
     let location: Location;
@@ -62,7 +77,10 @@ describe("Router: App", () => {
             providers: [
                 { provide: APP_BASE_HREF, useValue: "/" },
                 CmsSettingsService,
-                CmsApiService,
+                {
+                    provide: CmsApiService,
+                    useClass: MockServerApi
+                },
                 StorageManager,
                 TranslateService,
                 CmsMiniDisplayService,
@@ -75,7 +93,6 @@ describe("Router: App", () => {
             router = TestBed.get(Router);
             location = TestBed.get(Location);
             canActiveViaAuthorizationService = TestBed.get(CmsCanActivateViaAuthorizationService);
-            spyOn(TestBed.get(CmsApiService), "getSystemInfo").and.returnValue(Observable.of(null));
             fixture = TestBed.createComponent(CmsLaunchpadComponent);
             router.initialNavigation();
         });

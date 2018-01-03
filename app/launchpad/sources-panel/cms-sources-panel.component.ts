@@ -188,24 +188,32 @@ export class CmsSourcesPanelComponent implements OnInit {
         this.cmsServerApi.getSelectedDisplayContent(this.displayId)
             .subscribe(
                 (display: Display) => {
-                contentsOnDislay = display.content;
+                if (display) {
+                    contentsOnDislay = display.content;
 
-                if ((this.cmsSettingService.sourcesOnDisplay.length > 0) &&
-                    (this.cmsSettingService.selectedSources.length === this.cmsSettingService.sourcesOnDisplay.length)) {
-                    reStructuredPayload = SourceRepositionUtility.stickySources(
-                        sharedSources,
-                        selectedSources
-                    );
-                } else {
-                    if (sharedSources.length === 0 && selectedSources.length > 1) {
-                        if (contentsOnDislay.length > 0) {
-                            selectedSources = [...this.cmsSettingService.selectedSources];
-                            sharedSources = SourceRepositionUtility.sortSourceArray(contentsOnDislay);
-                            sortedShareSources = SourceRepositionUtility.convertSourcesFromDisplayContent(sharedSources);
-                            reStructuredPayload = SourceRepositionUtility.stickySources(
-                                sharedSources,
-                                selectedSources
-                            );
+                    if ((this.cmsSettingService.sourcesOnDisplay.length > 0) &&
+                        (this.cmsSettingService.selectedSources.length === this.cmsSettingService.sourcesOnDisplay.length)) {
+                        reStructuredPayload = SourceRepositionUtility.stickySources(
+                            sharedSources,
+                            selectedSources
+                        );
+                    } else {
+                        if (sharedSources.length === 0 && selectedSources.length > 1) {
+                            if (contentsOnDislay.length > 0) {
+                                selectedSources = [...this.cmsSettingService.selectedSources];
+                                sharedSources = SourceRepositionUtility.sortSourceArray(contentsOnDislay);
+                                sortedShareSources = SourceRepositionUtility.convertSourcesFromDisplayContent(sharedSources);
+                                reStructuredPayload = SourceRepositionUtility.stickySources(
+                                    sharedSources,
+                                    selectedSources
+                                );
+                            } else {
+                                this.cmsSettingService.selectedSources.forEach(
+                                    (element: any) => {
+                                        reStructuredPayload.push(element);
+                                    });
+                            }
+
                         } else {
                             this.cmsSettingService.selectedSources.forEach(
                                 (element: any) => {
@@ -213,41 +221,35 @@ export class CmsSourcesPanelComponent implements OnInit {
                                 });
                         }
 
-                    } else {
-                        this.cmsSettingService.selectedSources.forEach(
-                            (element: any) => {
-                                reStructuredPayload.push(element);
-                            });
                     }
+                    // Clone sources and delete selected property; API service rejects extra properties;
+                    for (let resourceIndex: number = 0; resourceIndex < resources.length; resourceIndex++) {
+                        resources[resourceIndex] = new Source(reStructuredPayload[resourceIndex]);
+                        delete resources[resourceIndex].selected;
+                    }
+                    const requestPayload: any = {
+                        "resources": resources
+                    };
 
-                }
-                // Clone sources and delete selected property; API service rejects extra properties;
-                for (let resourceIndex: number = 0; resourceIndex < resources.length; resourceIndex++) {
-                    resources[resourceIndex] = new Source(reStructuredPayload[resourceIndex]);
-                    delete resources[resourceIndex].selected;
-                }
-                const requestPayload: any = {
-                    "resources": resources
-                };
+                    this.cmsServerApi.getTilePresets().subscribe((tilers: ITilePreset[]) => {
+                        const tileId: number = TilePresetManager.GetTileId(tilers, selectedSourcesLength, this.displayId);
 
-                this.cmsServerApi.getTilePresets().subscribe((tilers: ITilePreset[]) => {
-                    const tileId: number = TilePresetManager.GetTileId(tilers, selectedSourcesLength, this.displayId);
-
-                    if (tileId === 0) {
+                        if (tileId === 0) {
+                            this.setErrorMessage("sourceList.tileLayoutNotAvailable");
+                        } else {
+                            this.cmsServerApi.putContentsOnDisplay(this.displayId, tileId, requestPayload)
+                                .subscribe(
+                                (response: any) => {
+                                },
+                                (error: any) => {
+                                    this.appConfig.error(error);
+                                });
+                        }
+                    }, (error: any) => {
+                        this.appConfig.error(error);
                         this.setErrorMessage("sourceList.tileLayoutNotAvailable");
-                    } else {
-                        this.cmsServerApi.putContentsOnDisplay(this.displayId, tileId, requestPayload)
-                            .subscribe(
-                            (response: any) => {
-                            },
-                            (error: any) => {
-                                this.appConfig.error(error);
-                            });
-                    }
-                }, (error: any) => {
-                    this.appConfig.error(error);
-                    this.setErrorMessage("sourceList.tileLayoutNotAvailable");
-                });
+                    });
+                }
             });
     }
 
@@ -261,25 +263,27 @@ export class CmsSourcesPanelComponent implements OnInit {
         const selectedSources: Source[] = this.cmsSettingService.selectedSources;
         let selectedSourceMatched: boolean = false;
         this.cmsServerApi.getSelectedDisplayContent(this.displayId).subscribe((display: Display) => {
-            const sharedcontent: TileContent[] = SourceRepositionUtility.sortSourceArray(display.content);
-            if (selectedSources.length === sharedcontent.length) {
-                for (let selectedSourceIndex: number = 0; selectedSourceIndex < selectedSources.length; selectedSourceIndex++) {
-                    const source: Source = selectedSources[selectedSourceIndex];
-                    for (let contentIndex: number = 0; contentIndex < sharedcontent.length; contentIndex++) {
-                        if ((source.id === sharedcontent[contentIndex].resourceId) && (source.type.toLowerCase() === sharedcontent[contentIndex].type.toLowerCase())) {
-                            selectedSourceMatched = true;
-                            break;
-                        } else {
-                            selectedSourceMatched = false;
+            if (display) {
+                const sharedcontent: TileContent[] = SourceRepositionUtility.sortSourceArray(display.content);
+                if (selectedSources.length === sharedcontent.length) {
+                    for (let selectedSourceIndex: number = 0; selectedSourceIndex < selectedSources.length; selectedSourceIndex++) {
+                        const source: Source = selectedSources[selectedSourceIndex];
+                        for (let contentIndex: number = 0; contentIndex < sharedcontent.length; contentIndex++) {
+                            if ((source.id === sharedcontent[contentIndex].resourceId) && (source.type.toLowerCase() === sharedcontent[contentIndex].type.toLowerCase())) {
+                                selectedSourceMatched = true;
+                                break;
+                            } else {
+                                selectedSourceMatched = false;
+                            }
                         }
                     }
+                } else {
+                    selectedSourceMatched = false;
                 }
-            } else {
-                selectedSourceMatched = false;
-            }
 
-            if (typeof callback === "function") {
-                callback(selectedSourceMatched);
+                if (typeof callback === "function") {
+                    callback(selectedSourceMatched);
+                }
             }
         });
     }

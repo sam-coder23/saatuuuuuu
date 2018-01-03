@@ -9,7 +9,8 @@ module.exports = function (config) {
             "/icon_barco.png": "/base/app/icon_barco.png",
             "/home/resources/": "/base/app/resources/",
             "/home/icon_barco.png": "/base/app/icon_barco.png",       
- 			"/display_snapshot.jpg": "/base/app/resources/images/display_snapshot.jpg"
+ 			"/display_snapshot.jpg": "/base/app/resources/images/display_snapshot.jpg",
+             "/home/display_snapshot.jpg": "/base/app/resources/images/display_snapshot.jpg"
         },
         frameworks: [
             'jasmine',

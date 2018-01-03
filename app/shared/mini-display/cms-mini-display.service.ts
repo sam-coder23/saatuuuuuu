@@ -82,27 +82,29 @@ export class CmsMiniDisplayService {
             this.cmsServerApi.getSelectedDisplayContent(aDisplayId)
                 .subscribe(
                 (display: Display) => {
-                    // initialize display size
-                    this.displaySize = {
-                        width: display.width,
-                        height: display.height
-                    };
-                    // initialize mini-display size
-                    this.miniDisplaySize = this.miniDisplayInitialSize(aContainer);
-                    // initialize mini-display tiler list
-                    const miniDisplayTilerList: Tile[] = this.calculateAdjustedViewTilerRectangles(display.tiles);
-                    // initialize mini-display content list
-                    const miniDisplayContentList: TileContent[] = this.calculateAdjustedViewSourceRectangles(
-                        display.content, []);
-                    const miniDisplayResponse: object = {
-                        displaySize: this.displaySize,
-                        miniDisplayTilerList: miniDisplayTilerList,
-                        miniDisplayContentList: miniDisplayContentList,
-                        displayTilerList: display.tiles,
-                        miniDisplaySize: this.miniDisplaySize
-                    };
-                    observer.next(miniDisplayResponse);
-                    observer.complete();
+                    if (display) {
+                        // initialize display size
+                        this.displaySize = {
+                            width: display.width,
+                            height: display.height
+                        };
+                        // initialize mini-display size
+                        this.miniDisplaySize = this.miniDisplayInitialSize(aContainer);
+                        // initialize mini-display tiler list
+                        const miniDisplayTilerList: Tile[] = this.calculateAdjustedViewTilerRectangles(display.tiles);
+                        // initialize mini-display content list
+                        const miniDisplayContentList: TileContent[] = this.calculateAdjustedViewSourceRectangles(
+                            display.content, []);
+                        const miniDisplayResponse: object = {
+                            displaySize: this.displaySize,
+                            miniDisplayTilerList: miniDisplayTilerList,
+                            miniDisplayContentList: miniDisplayContentList,
+                            displayTilerList: display.tiles,
+                            miniDisplaySize: this.miniDisplaySize
+                        };
+                        observer.next(miniDisplayResponse);
+                        observer.complete();
+                    }
                 },
                 (error: any) => {
                     Observable.throw(`MiniDisplayComponent: Display detail

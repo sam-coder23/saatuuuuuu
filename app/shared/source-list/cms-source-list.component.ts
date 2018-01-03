@@ -248,13 +248,15 @@ export class CmsSourceListComponent implements OnInit, OnChanges, OnDestroy {
     private getDisplayDetails(): Observable<Display> {
         const displayObservable: Observable<Display> = this.cmsServerApi.getSelectedDisplayContent(this.displayId);
         displayObservable.subscribe((displayDetail: Display) => {
-            this.selectedDisplay = displayDetail;
-            const displaySorted: TileContent[] = SourceRepositionUtility.sortSourceArray(this.selectedDisplay.content);
-            this.cmsSettingsService.sourcesOnDisplay = SourceRepositionUtility.convertSourcesFromDisplayContent(
-                displaySorted);
-            this.cmsSettingsService.selectedSources = SourceRepositionUtility.convertSourcesFromDisplayContent(
-                displaySorted
-            );
+            if (displayDetail) {
+                this.selectedDisplay = displayDetail;
+                const displaySorted: TileContent[] = SourceRepositionUtility.sortSourceArray(this.selectedDisplay.content);
+                this.cmsSettingsService.sourcesOnDisplay = SourceRepositionUtility.convertSourcesFromDisplayContent(
+                    displaySorted);
+                this.cmsSettingsService.selectedSources = SourceRepositionUtility.convertSourcesFromDisplayContent(
+                    displaySorted
+                );
+            }
         });
 
         return displayObservable;
