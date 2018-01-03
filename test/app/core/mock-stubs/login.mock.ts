@@ -1,7 +1,7 @@
-import { UserConfig } from "../../../../app/launchpad/models/cms-user.model";
+import { IUserConfig } from "../../../../app/launchpad/models/cms-user.model";
 import { IUserProfileSettings } from "../../../../app/cms/models/cms-user-profile-settings";
 
-export const MockUser: UserConfig = {
+export const MockUser: IUserConfig = {
     username: "bcd-se-test",
     password: "bcdsetest"
 }

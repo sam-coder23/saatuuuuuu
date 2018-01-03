@@ -14,7 +14,7 @@ import { AppConfig } from "../../../../../app/config";
 import { CmsLanguages } from "../../../../../app/i18n/cms-languages";
 import { StorageManager } from "../../../../../app/cms/api/cms-storagemanager.service";
 import { APIRequest } from "../../../../../app/cms/api/api-request";
-import { CMS_SESSION_STORAGE_ITEM } from "../../../../../app/cms/models/cms-session-storage-item";
+import { CmsSessionStorageItem } from "../../../../../app/cms/models/cms-session-storage-item";
 
 let routerSpy = {
     navigate: jasmine.createSpy("settings")
@@ -98,7 +98,7 @@ describe("Component CmsSettingsLanguagePanelComponent", () => {
                 AppConfig,
                 APIRequest,
                 TranslateService,
-                CMS_SESSION_STORAGE_ITEM,
+                CmsSessionStorageItem,
 
             ],
             imports: [
@@ -153,9 +153,9 @@ describe("Component CmsSettingsLanguagePanelComponent", () => {
         });
     });
 
-    /** Check after click on perticular language setlanguage method should update   
+    /** Check after click on perticular language setlanguage method should update
      * userprofilesettings with selected language, session storage settings
-     * and route to settings page 
+     * and route to settings page
      */
     it("should check setLanguage method and update userprofileSettings and navigate back to settings ", (done) => {
         cmsSettingsService.userSettings = mockCmsSettingsData.userSettings;

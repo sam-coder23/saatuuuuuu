@@ -14,7 +14,7 @@ export class EventManager {
      * @property {event} eventName
      * @property {method} handler
      */
-    public static removeEvent(eventName: string, handler: EventListenerOrEventListenerObject): void {
+    public static REMOVE_EVENT (eventName: string, handler: EventListenerOrEventListenerObject): void {
         this.document.removeEventListener(eventName, handler);
     }
 
@@ -24,7 +24,7 @@ export class EventManager {
      * @property {event} eventName
      * @property {method} handler
      */
-    public static addEvent(eventName: string, handler: EventListenerOrEventListenerObject): void {
+    public static ADD_EVENT (eventName: string, handler: EventListenerOrEventListenerObject): void {
         this.document.addEventListener(eventName, handler);
     }
 
@@ -35,7 +35,7 @@ export class EventManager {
      * @property {event} eventName
      * @property {method} handler
      */
-    public static addEventOnElement(element: HTMLElement, eventName: string, handler: EventListenerOrEventListenerObject): void {
+    public static ADD_EVENT_ON_ELEMENT (element: HTMLElement, eventName: string, handler: EventListenerOrEventListenerObject): void {
         element.addEventListener(eventName, handler);
     }
 
@@ -46,7 +46,7 @@ export class EventManager {
      * @property {event} eventName
      * @property {method} handler
      */
-    public static removeEventOnElement(element: HTMLElement, eventName: string, handler: EventListenerOrEventListenerObject): void {
+    public static REMOVE_EVENT_ON_ELEMENT (element: HTMLElement, eventName: string, handler: EventListenerOrEventListenerObject): void {
         element.removeEventListener(eventName, handler);
     }
 }

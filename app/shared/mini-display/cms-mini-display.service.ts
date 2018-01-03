@@ -2,16 +2,16 @@
  * This service performs various computations for mini display and its child components.
  */
 import { Injectable } from "@angular/core";
+import { Observer } from "rxjs/Observer";
+import { Observable } from "rxjs/Rx";
+
 import { CmsApiService } from "../../cms/api/cms-api.service";
-import { TileContent } from "./../../cms/models/cms-tile-content";
-import { Source } from "./../../cms/models/cms-source";
-import { Tile } from "../../cms/models/cms-tile";
 import { Display } from "../../cms/models/cms-display";
 import { ISize } from "../../cms/models/cms-size";
-import { Observable } from "rxjs/Rx";
+import { Tile } from "../../cms/models/cms-tile";
 import { AppConfig } from "../../config";
 import { Validation } from "../../core/util/Validation";
-import { Observer } from "rxjs/Observer";
+import { TileContent } from "./../../cms/models/cms-tile-content";
 
 @Injectable()
 /**
@@ -52,13 +52,14 @@ export class CmsMiniDisplayService {
      * @return {void}.
      */
     public init(): void {
-        this.display = null;
+        this.display = undefined;
         this.zoomLevel = 0;
-        this.displaySize = null;
-        this.miniDisplaySize = null;
+        this.displaySize = undefined;
+        this.miniDisplaySize = undefined;
         this.scrollPosition = { Left: 0, Top: 0 };
+        const timeValue: number = 500;
         this.windowResizeEndEvent = Observable.fromEvent(window, "resize").debounce(() =>
-            Observable.timer(500)
+            Observable.timer(timeValue)
         );
         this.panend = false;
     }
@@ -81,8 +82,9 @@ export class CmsMiniDisplayService {
         return Observable.create((observer: Observer<{}>) => {
             this.cmsServerApi.getSelectedDisplayContent(aDisplayId)
                 .subscribe(
-                (display: Display) => {
-                    if (display) {
+                (apiDisplay: Display) => {
+                    if (apiDisplay) {
+                        const display: Display = new Display(apiDisplay);
                         // initialize display size
                         this.displaySize = {
                             width: display.width,
@@ -91,14 +93,14 @@ export class CmsMiniDisplayService {
                         // initialize mini-display size
                         this.miniDisplaySize = this.miniDisplayInitialSize(aContainer);
                         // initialize mini-display tiler list
-                        const miniDisplayTilerList: Tile[] = this.calculateAdjustedViewTilerRectangles(display.tiles);
+                        const miniDisplayTiler: Tile[] = this.calculateAdjustedViewTilerRectangles(display.tiles);
                         // initialize mini-display content list
-                        const miniDisplayContentList: TileContent[] = this.calculateAdjustedViewSourceRectangles(
+                        const miniDisplayContent: TileContent[] = this.calculateAdjustedViewSourceRectangles(
                             display.content, []);
                         const miniDisplayResponse: object = {
                             displaySize: this.displaySize,
-                            miniDisplayTilerList: miniDisplayTilerList,
-                            miniDisplayContentList: miniDisplayContentList,
+                            miniDisplayTilerList: miniDisplayTiler,
+                            miniDisplayContentList: miniDisplayContent,
                             displayTilerList: display.tiles,
                             miniDisplaySize: this.miniDisplaySize
                         };
@@ -123,7 +125,7 @@ export class CmsMiniDisplayService {
     public calculateAdjustedViewTilerRectangles(aDisplayTilerList: Tile[]): Tile[] {
         let miniDisplayTilerList: Tile[];
         // creating a new list of adjusted tiler rectangles for mini-display after conversion from actual display
-        if (!Validation.IsUndefined(aDisplayTilerList) && aDisplayTilerList.length > 0) {
+        if (!Validation.IS_UNDEFINED(aDisplayTilerList) && aDisplayTilerList.length > 0) {
             miniDisplayTilerList = aDisplayTilerList;
             miniDisplayTilerList = miniDisplayTilerList.map((content: Tile) => {
                 return this.getModelToViewBounds(content);
@@ -148,7 +150,7 @@ export class CmsMiniDisplayService {
         updateLastModifed: boolean = true
     ): TileContent[] {
         let miniDisplayContentList: TileContent[];
-        if (!Validation.IsUndefined(displayContentList)) {
+        if (!Validation.IS_UNDEFINED(displayContentList)) {
             miniDisplayContentList = displayContentList;
             miniDisplayContentList = miniDisplayContentList.map((content: TileContent) => {
                 return this.calculateAdjustedViewSourceRectangle(
@@ -176,9 +178,8 @@ export class CmsMiniDisplayService {
         previousDisplayContentList: TileContent[],
         updateLastModifed: boolean = true
     ): TileContent {
-
         let existingContent: TileContent;
-        if (!Validation.IsNullOrUndefined(displayContent)) {
+        if (!Validation.IS_NULL_OR_UNDEFINED(displayContent)) {
             const adjustedRect: Tile = this.getModelToViewBounds(displayContent);
             displayContent.absoluteSize = new Tile(displayContent);
             displayContent.x = adjustedRect.x;
@@ -204,7 +205,7 @@ export class CmsMiniDisplayService {
             return displayContent;
         }
 
-        return null;
+        return undefined;
     }
 
     /**
@@ -220,30 +221,32 @@ export class CmsMiniDisplayService {
         }
         let leftPosition: number = aOriginalTileGeometry.left * this.miniDisplaySize.width / this.displaySize.width;
         let topPosition: number = aOriginalTileGeometry.top * this.miniDisplaySize.height / this.displaySize.height;
-        let width: number = aOriginalTileGeometry.width * this.miniDisplaySize.width / this.displaySize.width;
-        let height: number = aOriginalTileGeometry.height * this.miniDisplaySize.height / this.displaySize.height;
+        let widthValue: number = aOriginalTileGeometry.width * this.miniDisplaySize.width / this.displaySize.width;
+        let heightValue: number = aOriginalTileGeometry.height * this.miniDisplaySize.height / this.displaySize.height;
         const margin: number = 4;
+        const percentValue: number = 100;
+        const marginDivisor: number = 2;
         let tile: Tile;
         // adds the specified margin around the tile by adjusting tile position and size.
         leftPosition = (leftPosition + margin);
-        leftPosition /= this.miniDisplaySize.width / 100;
+        leftPosition /= this.miniDisplaySize.width / percentValue;
         topPosition = topPosition + margin;
-        topPosition /= this.miniDisplaySize.height / 100;
-        width = width - (margin * 2);
-        width /= this.miniDisplaySize.width / 100;
-        height = height - (margin * 2);
-        height /= this.miniDisplaySize.height / 100;
+        topPosition /= this.miniDisplaySize.height / percentValue;
+        widthValue = widthValue - (margin * marginDivisor);
+        widthValue /= this.miniDisplaySize.width / percentValue;
+        heightValue = heightValue - (margin * marginDivisor);
+        heightValue /= this.miniDisplaySize.height / percentValue;
         tile = new Tile({
             x: leftPosition,
             y: topPosition,
-            width: width,
-            height: height
+            width: widthValue,
+            height: heightValue
         });
 
         return tile;
     }
 
-	/**
+    /**
      * Calculate mini-display size as per actual display size and available screen size fit
      * @method miniDisplayInitialSize
      * @param {HTMLElement} aContainer: Container inside which the min-display renders.
@@ -263,27 +266,29 @@ export class CmsMiniDisplayService {
         const margin: number = 20;
         const scrollWidth: number = 23;
         const deltaZoom: number = 10;
+        const percentValue: number = 100;
+        const marginDivisor: number = 2;
         let diff: number;
         let diffPercent: number;
         // if width is more than height then fit by width otherwise fit by height
         if (displayRatio > miniDisplayContainerRatio) {
-            const width: number = miniDisplayContainerSize.width - scrollWidth - margin * 2;
+            const widthValue: number = miniDisplayContainerSize.width - scrollWidth - margin * marginDivisor;
             const mdSize: any = {
-                width: width,
-                height: width / displayRatio
+                width: widthValue,
+                height: widthValue / displayRatio
             };
-            diff = ((miniDisplayContainerSize.height - scrollWidth - margin * 2) - mdSize.height);
-            diffPercent = diff * 100 / mdSize.height;
+            diff = ((miniDisplayContainerSize.height - scrollWidth - margin * marginDivisor) - mdSize.height);
+            diffPercent = diff * percentValue / mdSize.height;
             this.fitHeightZoomLevel = diffPercent - (diffPercent % deltaZoom);
 
             return mdSize;
         } else {
-            const height: number = miniDisplayContainerSize.height - scrollWidth - margin * 2;
+            const heightValue: number = miniDisplayContainerSize.height - scrollWidth - margin * marginDivisor;
             this.fitHeightZoomLevel = 0;
 
             return {
-                width: height * displayRatio,
-                height: height
+                width: heightValue * displayRatio,
+                height: heightValue
             };
         }
     }

@@ -11,7 +11,7 @@ import { CmsDisplaysPanelComponent } from "../../../../app/launchpad/displays-pa
 import { StorageManager } from "../../../../app/cms/api/cms-storagemanager.service";
 import { AppConfig } from "../../../../app/config";
 import { CmsApiService } from "../../../../app/cms/api/cms-api.service";
-import { CMS_SESSION_STORAGE_ITEM } from "../../../../app/cms/models/cms-session-storage-item";
+import { CmsSessionStorageItem } from "../../../../app/cms/models/cms-session-storage-item";
 import { Validation } from "../../../../app/core/util/Validation";
 
 class MockCmsApiServiceStub {
@@ -39,7 +39,7 @@ describe("Component: CmsDisplaysPanelComponent", () => {
                 StorageManager,
                 TranslateService,
                 CmsApiService,
-                CMS_SESSION_STORAGE_ITEM,
+                CmsSessionStorageItem,
                 {
                     provide: ActivatedRoute,
                     useValue: activatedRoute
@@ -110,7 +110,7 @@ describe("Component: CmsDisplaysPanelComponent", () => {
 
     it("should call isDisplaySelected: ", async(() => {
         let isDispSelected = debugInstance.isDisplaySelected();
-        expect(isDispSelected).toBe(!Validation.IsNull(storageManager.get(CMS_SESSION_STORAGE_ITEM.DISPLAY)));
+        expect(isDispSelected).toBe(!Validation.IS_NULL(storageManager.getItem(CmsSessionStorageItem.DISPLAY)));
     }));
 
     it("should initialize search", async(() => {
@@ -135,7 +135,7 @@ describe("Component: CmsDisplaysPanelComponent", () => {
         fixture.whenStable().then(() => {
             delay(500).then(() => {
                 expect(debugInstance.searchFilter).toBe(searchString);
-                expect(storageManager.get(CMS_SESSION_STORAGE_ITEM.DISPLAYS_SEARCH_FILTER)).toBe(searchString);
+                expect(storageManager.get(CmsSessionStorageItem.DISPLAYS_SEARCH_FILTER)).toBe(searchString);
             });
         });
     });
@@ -151,8 +151,7 @@ describe("Component: CmsDisplaysPanelComponent", () => {
         fixture.detectChanges();
         fixture.whenStable().then(() => {
             expect(debugInstance.isFavoriteFilter).toBe(!favState);
-            expect(storageManager.get(CMS_SESSION_STORAGE_ITEM.DISPLAYS_FAVORITE_FILTER)).toBe((!favState).toString());
+            expect(storageManager.get(CmsSessionStorageItem.DISPLAYS_FAVORITE_FILTER)).toBe((!favState).toString());
         });
     });
 });
-

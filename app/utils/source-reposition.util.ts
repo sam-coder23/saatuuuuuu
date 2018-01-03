@@ -1,22 +1,21 @@
 /**
-    * This class is a static class and contains the utility functions that intend to seperate concerns of
-    * new approach for repositioning of the sources without disturbing the existing sahred sources.
-    * @class SourceRepositionUtility
-    * @static
-*/
+ * This class is a static class and contains the utility functions that intend to seperate concerns of
+ * new approach for repositioning of the sources without disturbing the existing shared sources
+ * @class SourceRepositionUtility
+ */
 
 import { Source } from "../cms/models/cms-source";
-import { Validation } from "../core/util/Validation";
 import { TileContent } from "../cms/models/cms-tile-content";
-export class SourceRepositionUtility {
+import { Validation } from "../core/util/Validation";
 
+export class SourceRepositionUtility {
     /**
      * Iterates over the entire array and group like properties specified as a callback param.
-     * @method groupBy
+     * @method GROUP_BY
      * @param sortedList
      * @param keyFunction
      */
-    public static groupBy(sortedList: any[], keyFunction: any): any[] {
+    public static GROUP_BY (sortedList: any[], keyFunction: any): any[] {
         const groups: any = {};
         sortedList.forEach(
             (el: any) => {
@@ -37,12 +36,12 @@ export class SourceRepositionUtility {
     }
 
     /**
-     * @method sortSourceArray
+     * @method SORT_SOURCE_ARRAY
      * @param { any[] } selectedArray
      * @return { Source[] }
      * This method returns the sorted and transposed array in increasing order row and then column.
      */
-    public static sortSourceArray(selectedArray: any[]): TileContent[] {
+    public static SORT_SOURCE_ARRAY (selectedArray: any[]): TileContent[] {
         let sortedSources: any[] = [];
         let newArr: any[] = [];
         const arrFromObject: any[] = [];
@@ -50,49 +49,49 @@ export class SourceRepositionUtility {
         sortedSources = selectedArray.sort((curr: any, next: any) => {
             return curr.x - next.x;
         });
-        reArranged = this.groupBy(sortedSources,
+        reArranged = this.GROUP_BY(sortedSources,
             (resource: any) => resource.x);
         sortedSources = reArranged.map(
             (element: any, index: number) => {
-                return element["values"].sort(
+                return element.values.sort(
                     (curr: any, next: any) => {
                         return curr.y - next.y;
                     });
             });
 
-        for (let index: number = 0; index < sortedSources.length; index++) {
-            newArr = newArr.concat(sortedSources[index]);
+        for (const source of sortedSources) {
+            newArr = newArr.concat(source);
         }
 
         return newArr;
     }
 
     /**
-     * @method stickySources
+     * @method STICKY_SOURCES
      * @param { Source[] } shared
      * @param { Sorce[] } selected
      * @return { Source[] } Returns the corrected array of sources wrt increasing x,y swapped with new sources
      * This function returns the new Array with new sources being swapped on thier supposed positions.
      */
-    public static stickySources(shared: Source[], selected: Source[]): Source[] {
+    public static STICKY_SOURCES (shared: Source[], selected: Source[]): Source[] {
         if (shared.length !== selected.length) {
             return;
         }
-        const removedIndexes: any[] = [];
+        const removedIndexes: number[] = [];
         shared.forEach(
             (sharedValue: Source, sharedIndex: number) => {
                 const selectedIndex: number = selected.findIndex(
                     (selectedValue: Source) =>
-                        !Validation.IsNull(selectedValue) && selectedValue.id === sharedValue.id);
+                        !Validation.IS_NULL(selectedValue) && selectedValue.id === sharedValue.id);
                 if (selectedIndex >= 0) {
-                    selected[selectedIndex] = null;
+                    selected[selectedIndex] = undefined;
                 } else {
-                    shared[sharedIndex] = null;
+                    shared[sharedIndex] = undefined;
                     removedIndexes.push(sharedIndex);
                 }
             });
         const addedSources: Source[] = selected.filter(
-            (selectedSource: Source) => !Validation.IsNull(selectedSource)
+            (selectedSource: Source) => !Validation.IS_NULL_OR_UNDEFINED(selectedSource)
         );
         addedSources.forEach(
             (addedSource: Source, addedIndex: number) => {
@@ -103,27 +102,27 @@ export class SourceRepositionUtility {
     }
 
     /**
-    * This function converts sources from the content on display.
-    * @method convertSourcesFromDisplayContent
-    * @param {any} displayContent: content array of display
-    * @return {Source[]}
-    * This function converts the display Content into an array of sources.
-    */
-    public static convertSourcesFromDisplayContent(displayContent: any): Source[] {
+     * This function converts sources from the content on display.
+     * @method CONVERT_SOURCES_FROM_DISPLAY_CONTENT
+     * @param {any} displayContent: content array of display
+     * @return {Source[]}
+     * This function converts the display Content into an array of sources.
+     */
+    public static CONVERT_SOURCES_FROM_DISPLAY_CONTENT (displayContent: any): Source[] {
         const selectedSources: any[] = [];
         if (displayContent && !displayContent.length) {
             return selectedSources;
         }
-        for (let sourceIndex: number = 0; sourceIndex < displayContent.length; sourceIndex++) {
+        for (const content of displayContent) {
             // fetch display content and map to resource properties
             selectedSources.push({
-                id: displayContent[sourceIndex].resourceId,
-                name: displayContent[sourceIndex].name,
+                id: content.resourceId,
+                name: content.name,
                 description: "",
-                type: displayContent[sourceIndex].type,
-                width: displayContent[sourceIndex].width,
-                height: displayContent[sourceIndex].height,
-                snapshotPath: displayContent[sourceIndex].snapshotPath,
+                type: content.type,
+                width: content.width,
+                height: content.height,
+                snapshotPath: content.snapshotPath,
                 favorite: false,
                 selected: true
             });

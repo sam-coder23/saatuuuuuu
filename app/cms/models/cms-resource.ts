@@ -8,6 +8,7 @@
  * @property {boolean} disabled default value false shows enabled status of the display
  * @property {boolean} favorite indicates the favorite flag marked for a source
  */
+
 export class CmsResource {
     public id: number;
     public name: string;
@@ -16,7 +17,7 @@ export class CmsResource {
     public disabled: boolean = false;
     public favorite: boolean = false;
 
-    constructor(resource: object) {
+    constructor (resource: object) {
         if (resource) {
             const resourceObject: CmsResource = <CmsResource>resource;
 

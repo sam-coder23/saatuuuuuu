@@ -10,7 +10,8 @@ export class Validation {
      * @method IsNull
      * @return {boolean}
      */
-    public static IsNull(value: any) : boolean {
+    public static IS_NULL (value: any) : boolean {
+        // tslint:disable-next-line:no-null-keyword
         return value === null;
     }
 
@@ -19,7 +20,7 @@ export class Validation {
      * @method IsNull
      * @return {boolean}
      */
-    public static IsUndefined(value: any) : boolean {
+    public static IS_UNDEFINED (value: any) : boolean {
         return value === undefined;
     }
 
@@ -28,7 +29,7 @@ export class Validation {
      * @method IsNullOrUndefined
      * @return {boolean}
      */
-    public static IsNullOrUndefined(value: any) : boolean {
-        return Validation.IsNull(value) || Validation.IsUndefined(value);
+    public static IS_NULL_OR_UNDEFINED (value: any) : boolean {
+        return Validation.IS_NULL(value) || Validation.IS_UNDEFINED(value);
     }
 }

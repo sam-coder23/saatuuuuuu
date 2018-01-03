@@ -1,19 +1,18 @@
-import { ModuleWithProviders } from "@angular/core";
-import { Routes, RouterModule } from "@angular/router";
-
-import { CmsDisplaysPanelComponent } from "./displays-panel/cms-displays-panel.component";
-import { CmsDisplayPanelComponent } from "./display-panel/cms-display-panel.component";
-import { CmsLoginComponent, CmsCanActivateViaAuthorizationService } from "./login/index";
-import { CmsSourcesPanelComponent } from "./sources-panel/cms-sources-panel.component";
-import { CmsSettingsPanelComponent } from "./settings/cms-settings-panel.component";
-import { CmsSettingsLanguagePanelComponent } from "./settings/language/cms-settings-language-panel.component";
-import { CmsAboutPanelComponent } from "./about/cms-about-panel.component";
-import { CmsTilesPanelComponent } from "./tiles-panel/cms-tiles-panel.component";
-import { CmsHomePanelComponent } from "./home/cms-home-panel.component";
-
 /**
  * This module defines root level routes for entire application.
  */
+import { ModuleWithProviders } from "@angular/core";
+import { RouterModule, Routes } from "@angular/router";
+import { CmsAboutPanelComponent } from "./about/cms-about-panel.component";
+import { CmsDisplayPanelComponent } from "./display-panel/cms-display-panel.component";
+import { CmsDisplaysPanelComponent } from "./displays-panel/cms-displays-panel.component";
+import { CmsHomePanelComponent } from "./home/cms-home-panel.component";
+import { CmsCanActivateViaAuthorizationService, CmsLoginComponent } from "./login/index";
+import { CmsSettingsPanelComponent } from "./settings/cms-settings-panel.component";
+import { CmsSettingsLanguagePanelComponent } from "./settings/language/cms-settings-language-panel.component";
+import { CmsSourcesPanelComponent } from "./sources-panel/cms-sources-panel.component";
+import { CmsTilesPanelComponent } from "./tiles-panel/cms-tiles-panel.component";
+
 export const routes: Routes = [
   { path: "", redirectTo: "/login", pathMatch: "full" },
   { path: "login", component: CmsLoginComponent },

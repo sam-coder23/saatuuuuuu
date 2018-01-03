@@ -1,5 +1,3 @@
-import {ICollection} from "../base/ICollection";
-
 /**
  * This class will act as a Generic collection for entire application.
  * This means when we will need to define a collection where data can be defined in form of
@@ -7,6 +5,9 @@ import {ICollection} from "../base/ICollection";
  * Initial draft - Subject to change based on application usage or might need more method as we go
  * @class GenericCollection
  */
+
+import { ICollection } from "../base/ICollection";
+
 export class GenericCollection <T> implements ICollection <T> {
     private items: {
         [index: string]: T
@@ -14,37 +15,37 @@ export class GenericCollection <T> implements ICollection <T> {
 
     private length: number = 0;
 
-    constructor() {
+    constructor () {
         this.items = {};
     }
 
     /**
-     * @method HasKey
+     * @method hasKey
      * @param {String} key The key which will used to store
      * @return Boolean
      */
-    public HasKey(key: string): boolean {
+    public hasKey (key: string): boolean {
         return this.items.hasOwnProperty(key);
     }
 
     /**
-     * @method Add
+     * @method add
      * @param {String} key The key which will used to store
      * @param {T} value The value which will used to store
      * @return {void}
      */
-    public Add(key: string, value: T): void {
+    public add (key: string, value: T): void {
         this.items[key] = value;
-        this.length++;
+        this.length += 1;
     }
 
     /**
      * This method is responsible for returning an item from the collection by its key.
-     * @method Item
+     * @method item
      * @param key {String} - The key which will used to find an item in collection
      * @return {T} This will be type of the object using which this class is instantiated
      */
-    public Item(key: string): T {
+    public item (key: string): T {
         return this.items[key];
     }
 }

@@ -1,8 +1,9 @@
 /**
  * This public static class defines keys that can be stored in the window.sessionStorage
- * @class CMS_SESSION_STORAGE_ITEM
+ * @class CmsSessionStorageItem
  */
-export class CMS_SESSION_STORAGE_ITEM {
+
+export class CmsSessionStorageItem {
     public static USER: string = "User";
     public static DISPLAY: string = "Display";
     public static SETTINGS: string = "Settings";

@@ -16,7 +16,7 @@ import { CmsSettingsService } from "../../../../app/launchpad/settings/cms-setti
 import { CmsApiService } from "../../../../app/cms/api/cms-api.service";
 import { AppConfig } from "../../../../app/config";
 import { CMSConstants } from "../../../../app/cms/models/cms-constants";
-import { CMS_SESSION_STORAGE_ITEM } from "../../../../app/cms/models/cms-session-storage-item";
+import { CmsSessionStorageItem } from "../../../../app/cms/models/cms-session-storage-item";
 import { Source } from "../../../../app/cms/models/cms-source";
 import { TilePresetManager } from "../../../../app/utils/tilepreset-manager.util";
 import { MockTilersData, MockDisplay, MockSources } from "./../../core/mock-stubs/cms-sources.mock";
@@ -162,8 +162,8 @@ describe("CmsSourcesPanelComponent", () => {
     it("component should be a defined and initialized with default values and elements", () => {
         expect(component).toBeDefined();
 
-        expect(debugInstance.states.list).toBeTruthy();
-        expect(debugInstance.states.reload).toBeFalsy();
+        expect(debugInstance.listState).toBeTruthy();
+        expect(debugInstance.reloadState).toBeFalsy();
 
         let reLoadButton: DebugElement = fixture.debugElement.query(By.css(".sources-panel-reload-button"));
         expect(reLoadButton).toBeFalsy();
@@ -171,8 +171,8 @@ describe("CmsSourcesPanelComponent", () => {
         let storageManager = fixture.debugElement.injector.get(StorageManager);
         fixture.detectChanges();
 
-        let expectedSourcesFavoriteFilter = (storageManager.get(CMS_SESSION_STORAGE_ITEM.SOURCES_FAVORITE_FILTER) === "true") || false;
-        let expectedSourcesSearchFilter = storageManager.get(CMS_SESSION_STORAGE_ITEM.SOURCES_SEARCH_FILTER) || "";
+        let expectedSourcesFavoriteFilter = (storageManager.getItem(CmsSessionStorageItem.SOURCES_FAVORITE_FILTER) === "true") || false;
+        let expectedSourcesSearchFilter = storageManager.getItem(CmsSessionStorageItem.SOURCES_SEARCH_FILTER) || "";
 
         expect(expectedSourcesFavoriteFilter).toBe(debugInstance.isFavoriteFilter);
         expect(expectedSourcesSearchFilter).toBe(debugInstance.searchFilter);
@@ -230,13 +230,13 @@ describe("CmsSourcesPanelComponent", () => {
 
     it("should set reload to TRUE on list change", () => {
         component.onListChanged();
-        expect(debugInstance.states.reload).toBeTruthy();
+        expect(debugInstance.reloadState).toBeTruthy();
     });
 
     it("should set reload and list to FALSE on reload list", () => {
         debugInstance.reloadList();
-        expect(debugInstance.states.reload).toBeFalsy();
-        expect(debugInstance.states.list).toBeFalsy();
+        expect(debugInstance.reloadState).toBeFalsy();
+        expect(debugInstance.listState).toBeFalsy();
     });
 
     it("should set searchkey as set to session storage", () => {
@@ -255,7 +255,7 @@ describe("CmsSourcesPanelComponent", () => {
         fixture.whenStable().then(() => {
             delay(500).then(() => {
                 expect(debugInstance.searchFilter).toBe(searchString);
-                expect(storageManager.get(CMS_SESSION_STORAGE_ITEM.SOURCES_SEARCH_FILTER)).toBe(searchString);
+                expect(storageManager.getItem(CmsSessionStorageItem.SOURCES_SEARCH_FILTER)).toBe(searchString);
             });
         });
     });
@@ -273,7 +273,7 @@ describe("CmsSourcesPanelComponent", () => {
         fixture.whenStable().then(() => {
             delay(500).then(() => {
                 expect(debugInstance.isFavoriteFilter).toBe(!favState);
-                expect(storageManager.get(CMS_SESSION_STORAGE_ITEM.SOURCES_FAVORITE_FILTER)).toBe((!favState).toString());
+                expect(storageManager.getItem(CmsSessionStorageItem.SOURCES_FAVORITE_FILTER)).toBe((!favState).toString());
             });
         });
     });

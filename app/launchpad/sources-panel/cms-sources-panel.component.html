@@ -8,7 +8,7 @@
         <span class="fill-remaining-space"></span>
         <cms-display-name></cms-display-name>
         <span class="fill-remaining-space"></span>
-        <button id="sources-panel-reload-button" md-icon-button *ngIf="states.reload" (click)="reloadList()">
+        <button id="sources-panel-reload-button" md-icon-button *ngIf="reloadState" (click)="reloadList()">
             <i class="material-icons">refresh</i>
         </button>
         <button id="sources-panel-favorite-button" md-icon-button nd-click-debounce (ndClick)="setFavourite()">
@@ -25,7 +25,7 @@
 
 <div class="sources-panel-main">
     <cms-source-list #sourceListComp [tilePresets]="tilePresets" [displayId]="displayId" [selectedOnly]="selectedOnly" (change)="onListChanged()"
-        *ngIf="states.list" [searchFilter]="searchFilter" [favoriteFilter]="isFavoriteFilter" (error)="errorMessage = $event">
+        *ngIf="listState" [searchFilter]="searchFilter" [favoriteFilter]="isFavoriteFilter" (error)="errorMessage = $event">
     </cms-source-list>
 </div>
 <div class="page-toolbar bottom">

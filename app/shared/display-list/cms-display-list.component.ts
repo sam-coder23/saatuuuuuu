@@ -3,20 +3,21 @@
  * loads the list in UI in the form of cards (representing a single display with available information
  * about the display).
  */
-import { Subscription } from "rxjs/Rx";
-import { Component, OnInit, OnDestroy, EventEmitter, Input, Output, OnChanges, SimpleChanges } from "@angular/core";
-import { Router, ActivatedRoute, Params } from "@angular/router";
-import { CmsApiService } from "../../cms/api/cms-api.service";
-import { CmsEventEmitterService } from "./../../cms/api/cms-event-emitter.service";
-import { CMS_EVENTS } from "../../cms/api/cms-events.enum";
-import { CMS_SESSION_STORAGE_ITEM } from "../../cms/models/cms-session-storage-item";
-import { ICmsEvent } from "../../cms/models/cms-event";
-import { Display } from "../../cms/models/cms-display";
-import { StorageManager } from "../../cms/api/cms-storagemanager.service";
-import { CmsFavoriteService } from "../cms-favorite.service";
-import { CmsSettingsService } from "../../launchpad/settings/cms-settings.service";
+import { Component, EventEmitter, Input, OnChanges, OnDestroy, Output, SimpleChanges } from "@angular/core";
+import { ActivatedRoute, Params, Router } from "@angular/router";
 import { TranslateService } from "@ngx-translate/core";
+import { Subscription } from "rxjs/Rx";
+
+import { CmsApiService } from "../../cms/api/cms-api.service";
+import { CMS_EVENTS } from "../../cms/api/cms-events.enum";
+import { StorageManager } from "../../cms/api/cms-storagemanager.service";
 import { CMSConstants } from "../../cms/models/cms-constants";
+import { Display } from "../../cms/models/cms-display";
+import { ICmsEvent } from "../../cms/models/cms-event";
+import { CmsSessionStorageItem } from "../../cms/models/cms-session-storage-item";
+import { CmsSettingsService } from "../../launchpad/settings/cms-settings.service";
+import { CmsFavoriteService } from "../cms-favorite.service";
+import { CmsEventEmitterService } from "./../../cms/api/cms-event-emitter.service";
 
 @Component({
     selector: "cms-display-list",
@@ -75,14 +76,14 @@ export class CmsDisplayListComponent implements OnChanges, OnDestroy {
         }
         // fetch the param and select the display for wall auto-connection
         this.route.params.forEach((params: Params) => {
-            const actionParam: string = params["action"];
+            const actionParam: string = params.action;
             // Check for change in settings for specific selected wall.
             if (actionParam === CMSConstants.SELECT_DISPLAY) {
                 this.cmsSettingsService.updateWallConnectionSpecificDisplay(display);
             } else {
                 //update recentDisplayId on user profile data
                 this.cmsSettingsService.updateWallConnectionRecentDisplay(display);
-                this.storageManager.set(CMS_SESSION_STORAGE_ITEM.DISPLAY, JSON.stringify(display));
+                this.storageManager.setItem(CmsSessionStorageItem.DISPLAY, JSON.stringify(display));
                 this.cmsSettingsService.selectedSources.length = 0;
                 this.router.navigate([`/displays/${display.id}/sources-panel`]);
             }
@@ -121,7 +122,7 @@ export class CmsDisplayListComponent implements OnChanges, OnDestroy {
      */
     private onConfirmation(): void {
         this.route.params.forEach((params: Params) => {
-            const actionParam: string = params["action"];
+            const actionParam: string = params.action;
             if (actionParam === CMSConstants.SELECT_DISPLAY) {
                 this.router.navigate(["/settings"]);
             }
@@ -141,7 +142,7 @@ export class CmsDisplayListComponent implements OnChanges, OnDestroy {
                 this.displays.push(...displays);
                 // subscribe for display list change events
                 if (!this.eventSubscription) {
-                    this.eventSubscription = CmsEventEmitterService.get(CMS_EVENTS.DisplayList)
+                    this.eventSubscription = CmsEventEmitterService.REGISTER(CMS_EVENTS.DisplayList)
                         .subscribe((event: ICmsEvent) => this.handleDisplayListEvents(event));
                 }
                 // show dialog if no displays are available
@@ -184,9 +185,9 @@ export class CmsDisplayListComponent implements OnChanges, OnDestroy {
             if (filteredDisplay) {
                 filteredDisplay.disabled = true;
             }
-            filteredDisplay = JSON.parse(this.storageManager.get(CMS_SESSION_STORAGE_ITEM.DISPLAY));
+            filteredDisplay = JSON.parse(this.storageManager.getItem(CmsSessionStorageItem.DISPLAY));
             if (filteredDisplay && filteredDisplay.id === id) {
-                this.storageManager.remove(CMS_SESSION_STORAGE_ITEM.DISPLAY);
+                this.storageManager.removeItem(CmsSessionStorageItem.DISPLAY);
             }
         }
         this.changeEmitter.emit();

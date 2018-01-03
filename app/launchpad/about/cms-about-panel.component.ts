@@ -1,8 +1,15 @@
-import { CMSConstants } from "./../../cms/models/cms-constants";
+/**
+ * This class will be responsible to display the about page content
+ * @class CmsAboutPanelComponent
+ * @property {boolean} loading To show or hide loading process.
+ * @property {object} systemInfo conatin system information of project name, license, version etc.
+ * @property {string} copyRightText
+ */
 import { Component, OnInit } from "@angular/core";
 import { TranslateService } from "@ngx-translate/core";
 import { CmsApiService } from "../../cms/api/cms-api.service";
 import { AppConfig } from "../../config";
+import { CMSConstants } from "./../../cms/models/cms-constants";
 
 @Component({
     //moduleId: module.id,
@@ -11,13 +18,6 @@ import { AppConfig } from "../../config";
     styles: [require("./cms-about-panel.component.scss")]
 })
 
-/**
- * This class will be responsible to display the about page content
- * @class CmsAboutPanelComponent
- * @property {boolean} loading To show or hide loading process.
- * @property {object} systemInfo conatin system information of project name, license, version etc.
- * @property {string} copyRightText
- */
 export class CmsAboutPanelComponent implements OnInit {
     private loading: boolean = false;
     private systemInfo: any = {

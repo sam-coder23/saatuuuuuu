@@ -1,35 +1,3 @@
-import { Component, OnInit, ElementRef, EventEmitter, OnDestroy } from "@angular/core";
-import { TranslateService } from "@ngx-translate/core";
-import { Observable } from "rxjs/Rx";
-import { Router } from "@angular/router";
-import { DomSanitizer } from "@angular/platform-browser";
-import { MdIconRegistry } from "@angular/material";
-import { EventManager } from "../utils/event-manager.util";
-import { CmsApiService } from "../cms/api/cms-api.service";
-import { CmsSettingsService } from "./settings/cms-settings.service";
-import { CmsLanguages } from "../i18n/cms-languages";
-import { StorageManager } from "../cms/api/cms-storagemanager.service";
-import { CMS_SESSION_STORAGE_ITEM } from "../cms/models/cms-session-storage-item";
-import { IUserToken } from "./models/cms-user-token";
-import { CMS_EVENTS } from "../cms/api/cms-events.enum";
-import { CmsEventEmitterService } from "../cms/api/cms-event-emitter.service";
-import { AppConfig } from "../config";
-import { Validation } from "../core/util/Validation";
-import { IUserProfileSettings } from "../cms/models/cms-user-profile-settings";
-
-import "../global.global.scss";
-import "../themes.global.scss";
-import "../override.global.scss";
-import "../resources/fonts/cmslaunchpad-fonts.css";
-import "../resources/fonts/material-fonts.css";
-
-@Component({
-  //moduleId: module.id,
-  selector: "cms-launchpad",
-  template: require("./cms-launchpad.component.html"),
-  styles: [require("./cms-launchpad.component.scss")]
-})
-
 /**
  * This is the main component that is bootstrapped and provides a router outlet for all other application pages to be shown.
  * @class CmsLaunchpadComponent
@@ -41,6 +9,38 @@ import "../resources/fonts/material-fonts.css";
  * @property {string} dialogMessage
  * @property {string} applicationEventType
  */
+import "../global.global.scss";
+import "../override.global.scss";
+import "../resources/fonts/cmslaunchpad-fonts.css";
+import "../resources/fonts/material-fonts.css";
+import "../themes.global.scss";
+
+import { Component, ElementRef, EventEmitter, OnDestroy, OnInit } from "@angular/core";
+import { MdIconRegistry } from "@angular/material";
+import { DomSanitizer } from "@angular/platform-browser";
+import { Router } from "@angular/router";
+import { TranslateService } from "@ngx-translate/core";
+
+import { CmsApiService } from "../cms/api/cms-api.service";
+import { CmsEventEmitterService } from "../cms/api/cms-event-emitter.service";
+import { CMS_EVENTS } from "../cms/api/cms-events.enum";
+import { StorageManager } from "../cms/api/cms-storagemanager.service";
+import { CmsSessionStorageItem } from "../cms/models/cms-session-storage-item";
+import { IUserProfileSettings } from "../cms/models/cms-user-profile-settings";
+import { AppConfig } from "../config";
+import { Validation } from "../core/util/Validation";
+import { CmsLanguages } from "../i18n/cms-languages";
+import { EventManager } from "../utils/event-manager.util";
+import { IUserToken } from "./models/cms-user-token";
+import { CmsSettingsService } from "./settings/cms-settings.service";
+
+@Component({
+  //moduleId: module.id,
+  selector: "cms-launchpad",
+  template: require("./cms-launchpad.component.html"),
+  styles: [require("./cms-launchpad.component.scss")]
+})
+
 export class CmsLaunchpadComponent implements OnInit, OnDestroy {
   // hold last time of user action like click or mousemove
   private userLastActionTime: number;
@@ -62,7 +62,6 @@ export class CmsLaunchpadComponent implements OnInit, OnDestroy {
     private appConfig: AppConfig,
     private mdIconRegistry: MdIconRegistry,
     private sanitizer: DomSanitizer) {
-
     this.showSystemDialog = false;
     this.showProgressDialog = false;
 
@@ -89,7 +88,7 @@ export class CmsLaunchpadComponent implements OnInit, OnDestroy {
       this.cmsServerApi.reconnectSessionWithServer();
 
       // Read user settings from storage manager
-      const settingsStorageData: any = this.storageManager.get(CMS_SESSION_STORAGE_ITEM.SETTINGS);
+      const settingsStorageData: any = this.storageManager.getItem(CmsSessionStorageItem.SETTINGS);
       if (settingsStorageData) {
         this.cmsSettingsService.userSettings = JSON.parse(settingsStorageData);
       } else {
@@ -100,13 +99,13 @@ export class CmsLaunchpadComponent implements OnInit, OnDestroy {
       this.cmsSettingsService.applyUserSelectedLanguage();
 
       // set UserLastActionTime after refresh
-      this.storageManager.set(CMS_SESSION_STORAGE_ITEM.USER_LASTACTION_TIME, Date.now());
+      this.storageManager.setItem(CmsSessionStorageItem.USER_LASTACTION_TIME, Date.now());
     }
 
     // add event listener for auto logOff Time
     this.addLogOffTimeObservable();
 
-    this.applicationLevelEvent = CmsEventEmitterService.get(CMS_EVENTS.Application)
+    this.applicationLevelEvent = CmsEventEmitterService.REGISTER(CMS_EVENTS.Application)
       .subscribe((res: { eventName: string, eventType: string }) => {
         this.appConfig.log("CmsLaunchpadComponent: Application level event received. ",
           res.eventName);
@@ -129,7 +128,7 @@ export class CmsLaunchpadComponent implements OnInit, OnDestroy {
 
   public ngOnDestroy(): void {
     // Unsubscribe cms events for launchpad component
-    if (!Validation.IsNullOrUndefined(this.applicationLevelEvent)) {
+    if (!Validation.IS_NULL_OR_UNDEFINED(this.applicationLevelEvent)) {
       this.applicationLevelEvent.unsubscribe();
     }
   }
@@ -140,11 +139,11 @@ export class CmsLaunchpadComponent implements OnInit, OnDestroy {
    * @return any
    */
   private getUserStorageData(): any {
-    const userStorageData: any = this.storageManager.get(CMS_SESSION_STORAGE_ITEM.USER);
+    const userStorageData: any = this.storageManager.getItem(CmsSessionStorageItem.USER);
     if (!userStorageData) {
       this.router.navigate(["/login"]);
 
-      return null;
+      return undefined;
     }
 
     return JSON.parse(userStorageData);
@@ -174,16 +173,17 @@ export class CmsLaunchpadComponent implements OnInit, OnDestroy {
    * @return void
    */
   private preventBrowserDefaults(): void {
+    const touchLength: number = 2;
     // disable zoom in browser with ctrl + mousewheel
-    EventManager.addEvent("wheel", this.onMouseWheel.bind(this));
+    EventManager.ADD_EVENT("wheel", this.onMouseWheel.bind(this));
 
     // Block certain keys for zooming and browser refresh
-    EventManager.addEvent("keydown", this.onKeyDown.bind(this));
+    EventManager.ADD_EVENT("keydown", this.onKeyDown.bind(this));
 
     // Block native pinch zoom
     document.addEventListener("touchstart", (e: TouchEvent) => {
       // check if its a 2 finger touch
-      if (e.touches.length === 2) {
+      if (e.touches.length === touchLength) {
         e.preventDefault();
       }
     });
@@ -196,23 +196,33 @@ export class CmsLaunchpadComponent implements OnInit, OnDestroy {
    * @returns {void}
    */
   private onKeyDown(event: MouseWheelEvent): void {
-    // disable zoom in browser with ctrl++ and ctrl--
-    if (event.ctrlKey &&
-      (event.which === 61 ||
-        event.which === 173 ||
-        event.which === 107 ||
-        event.which === 109 ||
-        event.which === 187 ||
-        event.which === 189)) {
-      event.preventDefault();
-    }
     // 107 Num Key  +
     // 109 Num Key  -
     // 173 Min Key  hyphen/underscor Hey
     // 61 Plus key  +/= key
-
+    const eventCtrlKeys: any = {
+      numAddKey: 107,
+      numMinusKey: 109,
+      minKey: 173,
+      plusKey: 61,
+      defaultKey: 187,
+      default2Key: 189,
+      f5key: 116,
+      ctrlrKey: 82
+    };
+    // disable zoom in browser with ctrl++ and ctrl--
+    if (event.ctrlKey &&
+      (event.which === eventCtrlKeys.plusKey ||
+        event.which === eventCtrlKeys.minKey ||
+        event.which === eventCtrlKeys.numAddKey ||
+        event.which === eventCtrlKeys.numMinusKey ||
+        event.which === eventCtrlKeys.defaultKey ||
+        event.which === eventCtrlKeys.default2Key
+      )) {
+      event.preventDefault();
+    }
     // blocking browser refresh with F5 and CTRL+R
-    if (event.which === 116 || (event.ctrlKey && event.which === 82)) {
+    if (event.which === eventCtrlKeys.f5key || (event.ctrlKey && event.which === eventCtrlKeys.ctrlrKey)) {
       this.appConfig.log("Blocking keys for browser refresh.");
       event.preventDefault();
     }
@@ -258,13 +268,14 @@ export class CmsLaunchpadComponent implements OnInit, OnDestroy {
    * @return void
    */
   private calculateUserLastActionTimes(): void {
+    const actionCount: number = 500;
     if (this.calculateUserWrapperHash) {
       window.clearTimeout(this.calculateUserWrapperHash);
       this.calculateUserWrapperHash = 0;
     }
     this.calculateUserWrapperHash = window.setTimeout(() => {
       this.calculateUserLastActionTimesFn();
-    }, 500);
+    }, actionCount);
   }
 
   /**
@@ -274,7 +285,9 @@ export class CmsLaunchpadComponent implements OnInit, OnDestroy {
    */
   private calculateUserLastActionTimesFn(): void {
     const userSettings: IUserProfileSettings = this.cmsSettingsService.userSettings;
-    const isUserLoggedIn: any = this.storageManager.get(CMS_SESSION_STORAGE_ITEM.USER);
+    const isUserLoggedIn: any = this.storageManager.getItem(CmsSessionStorageItem.USER);
+    const timeInterval: number = 60;
+    const basisValue: number = 1000;
 
     // if user settings is present and user is logged-in
     if (userSettings && isUserLoggedIn) {
@@ -283,15 +296,15 @@ export class CmsLaunchpadComponent implements OnInit, OnDestroy {
       // if userAutoLogOffTime in user settings is not "never" and greater than 0
       if (userAutoLogOffTime > 0) {
         //update local property from sessionStorage
-        this.userLastActionTime = this.storageManager.get(CMS_SESSION_STORAGE_ITEM.USER_LASTACTION_TIME);
+        this.userLastActionTime = this.storageManager.getItem(CmsSessionStorageItem.USER_LASTACTION_TIME);
         if (!this.userLastActionTime) {
           // set user last action time if it is not present in sessionStorage
           this.userLastActionTime = Date.now();
-          this.storageManager.set(CMS_SESSION_STORAGE_ITEM.USER_LASTACTION_TIME, Date.now());
+          this.storageManager.setItem(CmsSessionStorageItem.USER_LASTACTION_TIME, Date.now());
         } else {
           const userCurrentActionTime: number = Date.now();
           const timeDiff: number = userCurrentActionTime - this.userLastActionTime;
-          const minDiff: number = timeDiff / 60 / 1000;
+          const minDiff: number = timeDiff / timeInterval / basisValue;
           if (minDiff > userAutoLogOffTime) {
             //logoff user
             this.appConfig.log("CmsLaunchpadComponent: Performing auto logoff for the user due to inactivity...");
@@ -299,7 +312,7 @@ export class CmsLaunchpadComponent implements OnInit, OnDestroy {
           } else {
             //update user time in session
             this.userLastActionTime = Date.now();
-            this.storageManager.set(CMS_SESSION_STORAGE_ITEM.USER_LASTACTION_TIME, Date.now());
+            this.storageManager.setItem(CmsSessionStorageItem.USER_LASTACTION_TIME, Date.now());
           }
         }
       }

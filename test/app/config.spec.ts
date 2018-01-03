@@ -10,7 +10,7 @@ describe("Service: App Config", () => {
     let defaultLanguageExpectedValue = CMSConstants.DEFAULTLANGUAGE;
     let copyrightYearExpectedValue = CMSConstants.COPYRIGHTYEAR;
 
-    serverURLExpectedValue = `${window.document.location.protocol}//${window.document.location.host}/cms-rest/v1`;    
+    serverURLExpectedValue = `${window.document.location.protocol}//${window.document.location.host}/cms-rest/v1`;
 
     beforeEach(async () =>
         TestBed.configureTestingModule({
@@ -19,7 +19,7 @@ describe("Service: App Config", () => {
             ]
         }));
 
-    beforeEach(() => {        
+    beforeEach(() => {
         appConfig = new AppConfig();
         spyOnConsole = spyOn(console, "log").and.returnValue(null);
     });
@@ -33,7 +33,7 @@ describe("Service: App Config", () => {
         expect(appConfig.Host).toBe(hostExpectedValue);
         expect(appConfig.DefaultLanguage).toBe(defaultLanguageExpectedValue);
         expect(appConfig.CopyrightYear).toBe(copyrightYearExpectedValue);
-        
+
     });
 
     it("should not execute console log for the function log when args are null", () => {

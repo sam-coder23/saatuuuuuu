@@ -1,5 +1,3 @@
-import { Tile } from "./cms-tile";
-import { Source } from "./cms-source";
 /**
  * Specifies the model of TileContent.
  * Inherits source's properties as source is presented as tile content on mini-display.
@@ -9,12 +7,16 @@ import { Source } from "./cms-source";
  * as string type is that it holds a number not a real date.
  * @property {Tile} absoulteSize keeps absolute tile info as per display wall
  */
+
+import { Source } from "./cms-source";
+import { Tile } from "./cms-tile";
+
 export class TileContent extends Source {
     public resourceId: number;
     public lastModified: string;
     public absoluteSize: Tile;
 
-    constructor(content: object) {
+    constructor (content: object) {
         let contentModel: TileContent;
         if (content) {
             contentModel = <TileContent>content;

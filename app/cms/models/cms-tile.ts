@@ -8,6 +8,7 @@
  * @property {number} x x co-ordinate values
  * @property {number} y y co-ordinate values
  */
+
 export class Tile {
     public width: number;
     public height: number;
@@ -29,7 +30,7 @@ export class Tile {
         return this.top;
     }
 
-    constructor(tile?: object) {
+    constructor (tile?: object) {
         let tileModel: Tile;
         if (tile) {
             tileModel = <Tile>tile;

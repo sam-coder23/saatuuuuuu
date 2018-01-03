@@ -1,25 +1,23 @@
-import { Injectable } from "@angular/core";
-import { Observable } from "rxjs/Observable";
-import { Subject } from "rxjs/Subject";
-import { TranslateService } from "@ngx-translate/core";
-import { Router } from "@angular/router";
-
-import { CmsApiService } from "../../cms/api/cms-api.service";
-import { CmsLanguages } from "../../i18n/cms-languages";
-import { CMS_SESSION_STORAGE_ITEM } from "../../cms/models/cms-session-storage-item";
-import { StorageManager } from "../../cms/api/cms-storagemanager.service";
-import { IUserProfileSettings } from "../../cms/models/cms-user-profile-settings";
-import { Display } from "../../cms/models/cms-display";
-import { AppConfig } from "../../config";
-import { CMSConstants } from "../../cms/models/cms-constants";
-import { Source } from "./../../cms/models/cms-source";
-
 /**
  * This service provides method related to user settings.
  * @class CmsSettingsService
  * @property {IUserProfileSettings} userSettings
  * @property {Source[]} selectedSources
  */
+import { Injectable } from "@angular/core";
+import { Router } from "@angular/router";
+import { TranslateService } from "@ngx-translate/core";
+
+import { CmsApiService } from "../../cms/api/cms-api.service";
+import { StorageManager } from "../../cms/api/cms-storagemanager.service";
+import { CMSConstants } from "../../cms/models/cms-constants";
+import { Display } from "../../cms/models/cms-display";
+import { CmsSessionStorageItem } from "../../cms/models/cms-session-storage-item";
+import { IUserProfileSettings } from "../../cms/models/cms-user-profile-settings";
+import { AppConfig } from "../../config";
+import { CmsLanguages } from "../../i18n/cms-languages";
+import { Source } from "./../../cms/models/cms-source";
+
 @Injectable()
 export class CmsSettingsService {
     public userSettings: IUserProfileSettings;
@@ -42,9 +40,9 @@ export class CmsSettingsService {
         const cmsLanguages: any = CmsLanguages.languages;
 
         //looping in all lanaguage and get value as per key
-        for (let index: number = 0; index < cmsLanguages.length; index++) {
-            if (cmsLanguages[index]["key"] === languageKey) {
-                return cmsLanguages[index]["value"];
+        for (const languageItem of cmsLanguages) {
+            if (languageItem.key === languageKey) {
+                return languageItem.value;
             }
         }
     }
@@ -57,7 +55,7 @@ export class CmsSettingsService {
      */
     public setUserProfileSettings(callback?: any, failure?: any): void {
         this.cmsServerApi.getUserProfileSettings()
-            .then((response: any) => {
+            .then((response: IUserProfileSettings) => {
                 if (response) {
                     this.userSettings = response;
 
@@ -133,7 +131,7 @@ export class CmsSettingsService {
             this.cmsServerApi.updateUserProfileSettings(data)
                 .then((response: any) => {
                     // store user setting in storage
-                    this.storageManager.set(CMS_SESSION_STORAGE_ITEM.SETTINGS, JSON.stringify(this.userSettings));
+                    this.storageManager.setItem(CmsSessionStorageItem.SETTINGS, JSON.stringify(this.userSettings));
                     if (callback) {
                         callback();
                     }
@@ -198,7 +196,7 @@ export class CmsSettingsService {
     }
 
     /**
-     * This method increase count value as per it's index and nearest high value
+     * This method increase count value as per it"s index and nearest high value
      * @method increaseCount
      * @param {number} count
      * @param {any} data
@@ -271,7 +269,7 @@ export class CmsSettingsService {
                     break;
 
                 default:
-                    console.log("default case");
+                    this.appConfig.log("default case");
                     break;
             }
         });
@@ -305,7 +303,7 @@ export class CmsSettingsService {
      */
     public setBrowserLanguage(): void {
         let currentLang: string;
-        const settingsStorageData: any = this.storageManager.get(CMS_SESSION_STORAGE_ITEM.SETTINGS);
+        const settingsStorageData: any = this.storageManager.getItem(CmsSessionStorageItem.SETTINGS);
 
         if (settingsStorageData) {
             const userSettings: IUserProfileSettings = JSON.parse(settingsStorageData);
@@ -335,7 +333,7 @@ export class CmsSettingsService {
     private navigateToSourcePanel(displays: Display[]): void {
         //update recentDisplayId on user profile data
         this.updateWallConnectionRecentDisplay(displays[0]);
-        this.storageManager.set(CMS_SESSION_STORAGE_ITEM.DISPLAY, JSON.stringify(displays[0]));
+        this.storageManager.setItem(CmsSessionStorageItem.DISPLAY, JSON.stringify(displays[0]));
         this.router.navigate([`/displays/${displays[0].id}/sources-panel`]);
     }
 
@@ -364,15 +362,15 @@ export class CmsSettingsService {
             (displays: Display[]) => {
                 if (displays.length) {
                     // filter display by name
-                    for (let displayIndex: number = 0; displayIndex < displays.length; displayIndex++) {
-                        if (displays[displayIndex].name === recentDisplayName) {
-                            display = displays[displayIndex];
+                    for (const displayItem of displays) {
+                        if (displayItem.name === recentDisplayName) {
+                            display = displayItem;
                             break;
                         }
                     }
 
                     if (display) {
-                        this.storageManager.set(CMS_SESSION_STORAGE_ITEM.DISPLAY, JSON.stringify(display));
+                        this.storageManager.setItem(CmsSessionStorageItem.DISPLAY, JSON.stringify(display));
                         this.router.navigate([`/displays/${display.id}/sources-panel`]);
                     } else {
                         this.router.navigate(["/displays-panel"]);
@@ -411,9 +409,9 @@ export class CmsSettingsService {
             (displays: Display[]) => {
                 if (displays.length) {
                     // filter display by name
-                    for (let displayIndex: number = 0; displayIndex < displays.length; displayIndex++) {
-                        if (displays[displayIndex].name === selectedDisplayName) {
-                            display = displays[displayIndex];
+                    for (const displayItem of displays) {
+                        if (displayItem.name === selectedDisplayName) {
+                            display = displayItem;
                             break;
                         }
                     }
@@ -422,7 +420,7 @@ export class CmsSettingsService {
                         //update recentDisplay on user profile data
                         this.updateWallConnectionRecentDisplay(display);
 
-                        this.storageManager.set(CMS_SESSION_STORAGE_ITEM.DISPLAY, JSON.stringify(display));
+                        this.storageManager.setItem(CmsSessionStorageItem.DISPLAY, JSON.stringify(display));
                         this.router.navigate([`/displays/${display.id}/sources-panel`]);
                     } else {
                         this.router.navigate(["/displays-panel"]);
@@ -445,9 +443,9 @@ export class CmsSettingsService {
      * @return {number}
      */
     private getNearestHighValue(count: number, data: number[]): number {
-        for (let dataIndex: number = 0; dataIndex < data.length; dataIndex++) {
-            if (count < data[dataIndex]) {
-                return data[dataIndex];
+        for (const item of data) {
+            if (count < item) {
+                return item;
             }
         }
     }
@@ -460,9 +458,10 @@ export class CmsSettingsService {
      * @return {number}
      */
     private getNearestLowValue(count: number, data: number[]): number {
-        for (let dataIndex: number = data.length - 1; dataIndex >= 0; dataIndex--) {
-            if (count > data[dataIndex]) {
-                return data[dataIndex];
+        const dataOrder: number[] = data.reverse();
+        for (const dataItem of dataOrder) {
+            if (count > dataItem) {
+                return dataItem;
             }
         }
     }

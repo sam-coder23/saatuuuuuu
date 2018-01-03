@@ -1,35 +1,26 @@
 //This is the shared module contains all the shared components and services.
 // Core Moudules
 import { NgModule, NO_ERRORS_SCHEMA } from "@angular/core";
-import { BrowserModule } from "@angular/platform-browser";
-import { HttpModule, Http } from "@angular/http";
-import { RouterModule } from "@angular/router";
 import { FormsModule } from "@angular/forms";
-// Ngx-Translate
-import { TranslateModule, TranslateLoader } from "@ngx-translate/core";
-import { TranslateHttpLoader } from "@ngx-translate/http-loader";
-// Angular Material
+import { Http, HttpModule } from "@angular/http";
 import { MaterialModule, MdIconRegistry } from "@angular/material";
-// Card
+import { BrowserModule } from "@angular/platform-browser";
+import { RouterModule } from "@angular/router";
+import { TranslateLoader, TranslateModule } from "@ngx-translate/core";
+import { TranslateHttpLoader } from "@ngx-translate/http-loader";
+import { BuilderService, RobotModule } from "core-components/app";
+
 import { CmsCardComponent } from "./card/cms-card.component";
-// Mini-Display
+import { CmsFavoriteService } from "./cms-favorite.service";
+import { CmsVirtualScrollService } from "./cms-virtual-scroll.service";
+import { CmsDisplayListComponent } from "./display-list/cms-display-list.component";
+import { CmsDisplayNameComponent } from "./display-name/cms-display-name.component";
 import { CmsMiniDisplayComponent } from "./mini-display/cms-mini-display.component";
 import { CmsMiniDisplayService } from "./mini-display/cms-mini-display.service";
 import { CmsGridComponent } from "./mini-display/grid/cms-grid.component";
-
-// Display List
-import { CmsDisplayListComponent } from "./display-list/cms-display-list.component";
-
-// Source List
 import { CmsSourceListComponent } from "./source-list/cms-source-list.component";
-
-// Common Services for Lists
-import { CmsVirtualScrollService } from "./cms-virtual-scroll.service";
-import { CmsFavoriteService } from "./cms-favorite.service";
 import { TileGridComponent } from "./tile-grid/tile-grid.component";
 import { CmsTileListComponent } from "./tile-list/cms-tile-list.component";
-import { RobotModule, BuilderService } from "core-components/app";
-import { CmsDisplayNameComponent } from "./display-name/cms-display-name.component";
 
 /**
  * This module defines various components that are designed keeping in

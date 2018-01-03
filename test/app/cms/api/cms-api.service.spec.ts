@@ -28,8 +28,6 @@ let spyRouter = {
     navigate: jasmine.createSpy("APIService")
 };
 
-
-
 describe("Service: CmsApiService", () => {
     let cmsApiService: CmsApiService;
     let apiRequest: APIRequest

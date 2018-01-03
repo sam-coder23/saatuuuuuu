@@ -1,5 +1,3 @@
-import { Injectable } from "@angular/core";
-
 /**
  * Roles of this class is to store the value into session storage
  * or get the value from session storage for a specific key
@@ -7,6 +5,9 @@ import { Injectable } from "@angular/core";
  * @property {Storage} appStorage
  * @constructor
  */
+
+import { Injectable } from "@angular/core";
+
 @Injectable()
 export class StorageManager {
     private appStorage: Storage;
@@ -30,7 +31,7 @@ export class StorageManager {
      * @param {any} val  Value which Application want to store
      * @return void
      */
-    public set(key: any, val: any): void {
+    public setItem(key: string, val: any): void {
         this.appStorage.setItem(key, val);
     }
 
@@ -40,7 +41,7 @@ export class StorageManager {
      * @param {any} key  Session storage store the value with name of this key
      * @return any
      */
-    public get(key: any): any {
+    public getItem(key: string): any {
         return this.appStorage.getItem(key);
     }
 
@@ -50,7 +51,7 @@ export class StorageManager {
      * @param {any} key Key name , application will remove the key and its value from storage
      * @return void
      */
-    public remove(key: any): void {
+    public removeItem(key: string): void {
         this.appStorage.removeItem(key);
     }
 

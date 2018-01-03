@@ -1,25 +1,25 @@
-import { Component, OnInit } from "@angular/core";
-import { Router, ActivatedRoute, Params } from "@angular/router";
-import { TranslateService } from "@ngx-translate/core";
-import { CmsLanguages } from "../../../i18n/cms-languages";
-import { CmsApiService } from "../../../cms/api/cms-api.service";
-import { CmsSettingsService } from "./../../settings/cms-settings.service";
-import { IUserProfileSettings } from "../../../cms/models/cms-user-profile-settings";
-
-@Component({
-    //moduleId: module.id,
-    selector: "cms-settings-language-panel",
-    template: require("./cms-settings-language-panel.component.html"),
-    styles: [require("./cms-settings-language-panel.component.scss")]
-
-})
-
 /**
  * This class will be responsible to display language listing page
  * @class CmsSettingsLanguagePanelComponent
  * @property {string} userSelectedLanguageKey Key of selected language
  * @property {CmsLanguages} cmsLanguages
  */
+import { Component, OnInit } from "@angular/core";
+import { ActivatedRoute, Params, Router } from "@angular/router";
+import { TranslateService } from "@ngx-translate/core";
+
+import { CmsApiService } from "../../../cms/api/cms-api.service";
+import { IUserProfileSettings } from "../../../cms/models/cms-user-profile-settings";
+import { CmsLanguages } from "../../../i18n/cms-languages";
+import { CmsSettingsService } from "./../../settings/cms-settings.service";
+
+@Component({
+    //moduleId: module.id,
+    selector: "cms-settings-language-panel",
+    template: require("./cms-settings-language-panel.component.html"),
+    styles: [require("./cms-settings-language-panel.component.scss")]
+})
+
 export class CmsSettingsLanguagePanelComponent implements OnInit {
     // User selected language key
     private userSelectedLanguageKey: string;
@@ -36,7 +36,7 @@ export class CmsSettingsLanguagePanelComponent implements OnInit {
 
     public ngOnInit(): void {
         this.route.params.forEach((params: Params) => {
-            this.userSelectedLanguageKey = params["key"];
+            this.userSelectedLanguageKey = params.key;
         });
     }
 

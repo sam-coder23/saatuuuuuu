@@ -5,12 +5,12 @@ import { CMS_EVENTS } from "../../../../app/cms/api/cms-events.enum";
 describe("Service: cms-event-emitter", () => {
 
     it("Registered for MiniDisplay events", () => {
-        CmsEventEmitterService.get(CMS_EVENTS.MiniDisplay);
+        CmsEventEmitterService.REGISTER(CMS_EVENTS.MiniDisplay);
         expect((<any>CmsEventEmitterService).emitters[0]).toBeDefined();
     });
 
     it("Registered for TileList events", () => {
-        CmsEventEmitterService.get(CMS_EVENTS.TileList);
+        CmsEventEmitterService.REGISTER(CMS_EVENTS.TileList);
         expect((<any>CmsEventEmitterService).emitters[5]).toBeDefined();
     });
 

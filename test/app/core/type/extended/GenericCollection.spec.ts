@@ -5,29 +5,29 @@ describe("GenericCollection", () => {
     it("add key value(number) pair as defined collection and get the data as passed to collection", () => {
         let collection = new GenericCollection<number>();
         expect(collection).toBeDefined();
-        
-        collection.Add("limit", 10);
-        
-        let value = collection.HasKey("limit");
+
+        collection.add("limit", 10);
+
+        let value = collection.hasKey("limit");
         expect(value).toBe(true);
 
-        let noValue = collection.HasKey("source");
+        let noValue = collection.hasKey("source");
         expect(noValue).toBe(false);
 
-        let data = collection.Item("limit");
+        let data = collection.item("limit");
         expect(data).toBe(10);
     });
 
     it("add key value(string) pair as defined collection and get the data as passed to collection", () => {
         let collection = new GenericCollection<string>();
         expect(collection).toBeDefined();
-        
-        collection.Add("userName", "Kanchan");
-        
-        let value = collection.HasKey("userName");
+
+        collection.add("userName", "Kanchan");
+
+        let value = collection.hasKey("userName");
         expect(value).toBe(true);
 
-        let data = collection.Item("userName");
+        let data = collection.item("userName");
         expect(data).toBe("Kanchan");
     });
 });

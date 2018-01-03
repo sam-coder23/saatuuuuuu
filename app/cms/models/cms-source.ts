@@ -1,4 +1,3 @@
-import { CmsResource } from "./cms-resource";
 /**
  * Specifies the model of Source
  * Source type could be source or perspective.
@@ -11,7 +10,11 @@ import { CmsResource } from "./cms-resource";
  * @property {number} height
  * @property {boolean} selected optional, flag indicates selected status of the source
  */
+
+import { CmsResource } from "./cms-resource";
+
 export class Source extends CmsResource {
+    // tslint:disable-next-line:no-reserved-keywords
     public type: string;
     public x: number;
     public y: number;
@@ -20,7 +23,7 @@ export class Source extends CmsResource {
     public height: number;
     public selected?: boolean;
 
-    constructor(source: object) {
+    constructor (source: object) {
         let sourceModel: Source;
         if (source) {
             sourceModel = <Source>source;

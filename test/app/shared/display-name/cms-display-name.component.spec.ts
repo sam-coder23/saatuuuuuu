@@ -3,7 +3,7 @@ import { Subscriber } from "rxjs";
 import { Injector } from "@angular/core";
 import { CmsDisplayNameComponent } from "../../../../app/shared/display-name/cms-display-name.component";
 import { StorageManager } from "../../../../app/cms/api/cms-storagemanager.service";
-import { CMS_SESSION_STORAGE_ITEM } from "../../../../app/cms/models/cms-session-storage-item";
+import { CmsSessionStorageItem } from "../../../../app/cms/models/cms-session-storage-item";
 import { CMS_EVENTS } from "../../../../app/cms/api/cms-events.enum";
 import { CmsEventEmitterService } from "../../../../app/cms/api/cms-event-emitter.service";
 
@@ -65,18 +65,18 @@ describe("CmsDisplayNameComponent", () => {
             },
             verb: "PUT"
         };
-        CmsEventEmitterService.get(CMS_EVENTS.DisplayList).next(newDisplay);
+        CmsEventEmitterService.REGISTER(CMS_EVENTS.DisplayList).next(newDisplay);
         expect(component.displayName).toEqual(newDisplay.body.name);
     });
 
 
     function removeDisplay() {
         let storage: StorageManager = injector.get(StorageManager);
-        storage.remove(CMS_SESSION_STORAGE_ITEM.DISPLAY);
+        storage.removeItem(CmsSessionStorageItem.DISPLAY);
     }
 
     function setDisplay() {
         let storage: StorageManager = injector.get(StorageManager);
-        storage.set(CMS_SESSION_STORAGE_ITEM.DISPLAY, JSON.stringify(display));
+        storage.setItem(CmsSessionStorageItem.DISPLAY, JSON.stringify(display));
     }
 })

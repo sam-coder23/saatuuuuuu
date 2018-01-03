@@ -1,14 +1,3 @@
-import { StorageManager } from "./cms-storagemanager.service";
-import { Injectable } from "@angular/core";
-import { Http, Headers, RequestOptionsArgs, Response, URLSearchParams } from "@angular/http";
-import { AppConfig } from "../../config";
-import { Observable } from "rxjs/Rx";
-import { Router } from "@angular/router";
-
-//Import RxJs required methods
-import "rxjs/add/operator/map";
-import "rxjs/add/operator/catch";
-
 /**
  * This class will hold logic related all kind of api intialization and
  * it will normalize https request for the entire application
@@ -18,6 +7,16 @@ import "rxjs/add/operator/catch";
  * @property {RequestOptionsArgs} requestOption
  * @constructor constructor This will inject Http module to request on server
  */
+
+import { Injectable } from "@angular/core";
+import { Headers, Http, RequestOptionsArgs, Response, URLSearchParams } from "@angular/http";
+import { Router } from "@angular/router";
+import "rxjs/add/operator/catch";
+import "rxjs/add/operator/map";
+import { Observable } from "rxjs/Rx";
+import { AppConfig } from "../../config";
+import { StorageManager } from "./cms-storagemanager.service";
+
 @Injectable()
 export class APIRequest {
     public headers: Headers;
@@ -29,7 +28,6 @@ export class APIRequest {
         private router: Router,
         private appConfig: AppConfig,
         private storageManager: StorageManager) {
-
         this.serverURL = this.appConfig.ServerURL;
         this.headers = new Headers({ "Content-Type": "application/json" });
         this.requestOption = {
@@ -43,10 +41,10 @@ export class APIRequest {
      * @method getURL
      * @param {string} url
      */
-    public GetURL(url: string): string {
+    public getUrl(url: string): string {
         if (url.lastIndexOf("?") !== -1) {
             url = `${url}&_=${Date.now()}`;
-        }else {
+        } else {
             url = `${url}?_=${Date.now()}`;
         }
 
@@ -59,9 +57,9 @@ export class APIRequest {
      * @param {string} url Request url
      * @param {any} body
      */
-    public post(url: string, body: any): Observable<any> {
-        return this.http.post(this.GetURL(url), body, this.requestOption)
-            .map((response: any) => response.json())
+    public postRequest(url: string, body: any): Observable<any> {
+        return this.http.post(this.getUrl(url), body, this.requestOption)
+            .map((response: Response) => response.json())
             .catch(this.handleError.bind(this));
     }
 
@@ -71,10 +69,10 @@ export class APIRequest {
      * @param {string} url Request url
      * @param {URLSearchParams} params
      */
-    public get(url: string): Observable<any> {
+    public getRequest(url: string): Observable<any> {
         //@pending - we need to see whether all server responses are of type JSON
-        return this.http.get(this.GetURL(url), this.requestOption)
-            .map((response: any) => response.json())
+        return this.http.get(this.getUrl(url), this.requestOption)
+            .map((response: Response) => response.json())
             .catch(this.handleError.bind(this));
     }
 
@@ -85,8 +83,8 @@ export class APIRequest {
      * @param {any} body
      * @param {string} url
      */
-    public put(url: string, body?: any): Observable<any> {
-        return this.http.put(this.GetURL(url), body, this.requestOption)
+    public putRequest(url: string, body?: any): Observable<any> {
+        return this.http.put(this.getUrl(url), body, this.requestOption)
             .map((response: any) => {
                 try {
                     return response.json();
@@ -102,20 +100,21 @@ export class APIRequest {
      * @method delete
      * @param {string} url
      */
-    public delete(url: string): Observable<any> {
-        return this.http.delete(this.GetURL(url), this.requestOption)
-            .map((response: any) => response.json())
+    public deleteRequest(url: string): Observable<any> {
+        return this.http.delete(this.getUrl(url), this.requestOption)
+            .map((response: Response) => response.json())
             .catch(this.handleError.bind(this));
     }
 
-   /**
-    * This is used to handle the error
-    * @method handleError
-    * @param {any} error
-    */
+    /**
+     * This is used to handle the error
+     * @method handleError
+     * @param {any} error
+     */
     public handleError(error: any): Observable<any> {
-        if (error.status === 401) {
-            this.get("logout")
+        const unauthorizedError: number = 401;
+        if (error.status === unauthorizedError) {
+            this.getRequest("logout")
                 .finally(() => this.storageManager.removeStorage())
                 .subscribe(() => {
                     this.appConfig.log("Something wrong with server, Logout users successfully");

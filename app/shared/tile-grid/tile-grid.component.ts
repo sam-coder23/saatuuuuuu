@@ -1,6 +1,10 @@
+/**
+ * This component contains the behavior for dynamic tile grid shown inside the layout tiles
+ * based on the type of tiler selected.
+ */
 import { Component, Input } from "@angular/core";
-import { ITilePreset } from "../../cms/models/cms-tile-preset";
 import { Tile } from "../../cms/models/cms-tile";
+import { ITilePreset } from "../../cms/models/cms-tile-preset";
 
 @Component({
     selector: "cms-tile-grid",
@@ -23,7 +27,7 @@ export class TileGridComponent {
 
     private get displayBaseStyle(): any {
         if (!this.displayBase) {
-            return null;
+            return;
         }
         const style: { height: number, width: number } = Object.assign({}, this.displayBase);
         Object.keys(style).forEach((key: string) => style[key] += "px");

@@ -1,19 +1,14 @@
 /**
- * Copyright (c) 2016 Barco n.v. All Rights Reserved. This software is confidential and proprietary information of Barco n.v.
- * ("Confidential Information"). You shall not disclose such Confidential Information and shall use it only in accordance with
- * the terms of the license agreement you entered into with Barco.
+ * This class contains application level configuration
+ * @class APIConfig
+ * @constructor constructor
  */
+
 import { Injectable } from "@angular/core";
 import { CMSConstants } from "./cms/models/cms-constants";
 
 @Injectable()
-export
-    /**
-     * This class contains application level configuration
-     * @class APIConfig
-     * @constructor constructor
-     */
-    class AppConfig {
+export class AppConfig {
     private serverURL: string;
     private defaultLanguage: string;
     private copyrightYear: string;
@@ -24,9 +19,8 @@ export
      * Api server url being initialized based on window host and location
      * @constructor
      */
-    constructor() {
+    constructor () {
         const location: Location = window.document.location;
-
         this.host = location.host;
         this.serverURL = `${location.protocol}//${this.host}/cms-rest/v1`;
         this.defaultLanguage = CMSConstants.DEFAULTLANGUAGE;
@@ -75,10 +69,11 @@ export
      * @param {any[]} args
      * @return void
      */
-    public log(...args: any[]): void {
+    public log (...args: any[]): void {
         const today: Date = new Date();
         const dateTime: string = today.toLocaleString();
         if (args && args.length > 0) {
+            // tslint:disable-next-line:no-console
             console.log(dateTime, " - info ", args);
         }
     }
@@ -89,10 +84,11 @@ export
      * @param {any[]} args
      * @return void
      */
-    public warn(...args: any[]): void {
+    public warn (...args: any[]): void {
         const today: Date = new Date();
         const dateTime: string = today.toLocaleString();
         if (args && args.length > 0) {
+            // tslint:disable-next-line:no-console
             console.log(dateTime, " - warn ", args);
         }
     }
@@ -103,10 +99,11 @@ export
      * @param {any[]} args
      * @return void
      */
-    public error(...args: any[]): void {
+    public error (...args: any[]): void {
         const today: Date = new Date();
         const dateTime: string = today.toLocaleString();
         if (args && args.length > 0) {
+            // tslint:disable-next-line:no-console
             console.log(dateTime, " - error ", args);
         }
     }

@@ -20,7 +20,6 @@ import { CmsSettingsService } from "./../launchpad/settings/cms-settings.service
  * default page size for inifinite scroll.
  */
 export class CmsVirtualScrollService {
-
     public loading: boolean;
     public count: number;
     public dataCount: number = 0;
@@ -29,8 +28,9 @@ export class CmsVirtualScrollService {
     private scrollCallback: () => void;
 
     constructor(private cmsSettingsService: CmsSettingsService) {
+        const defaultPageSize: number = 20;
         this.loading = false;
-        this.count = cmsSettingsService.userSettings.pageSize || 20;
+        this.count = cmsSettingsService.userSettings.pageSize || defaultPageSize;
     }
 
     /**
@@ -44,7 +44,7 @@ export class CmsVirtualScrollService {
         this.scrollTarget = scrollTarget;
         this.scrollCallback = scrollCallback;
         if (this.scrollTarget) {
-            EventManager.addEventOnElement(
+            EventManager.ADD_EVENT_ON_ELEMENT(
                 this.scrollTarget,
                 "scroll",
                 this.onScroll.bind(this)
@@ -59,7 +59,7 @@ export class CmsVirtualScrollService {
      */
     public removeScrollListener(): void {
         if (this.scrollTarget) {
-            EventManager.removeEventOnElement(
+            EventManager.REMOVE_EVENT_ON_ELEMENT(
                 this.scrollTarget,
                 "scroll",
                 this.onScroll.bind(this)
@@ -73,6 +73,7 @@ export class CmsVirtualScrollService {
      * @return {void}
      */
     private onScroll(): void {
+        const defaultScrollPercent: number = 0.8;
         let scrollPercent: number;
         if (this.loading) {
             return;
@@ -82,7 +83,7 @@ export class CmsVirtualScrollService {
         }
         scrollPercent = (this.scrollTarget.scrollTop + this.scrollTarget.offsetHeight)
             / this.scrollTarget.scrollHeight;
-        if (scrollPercent >= 0.8 && this.dataCount > 0) {
+        if (scrollPercent >= defaultScrollPercent && this.dataCount > 0) {
             this.loading = true;
             this.scrollCallback();
         }

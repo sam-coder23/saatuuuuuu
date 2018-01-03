@@ -1,23 +1,3 @@
-import { Component, OnInit, OnDestroy } from "@angular/core";
-import { Router } from "@angular/router";
-import { Response } from "@angular/http";
-import { TranslateService } from "@ngx-translate/core";
-
-import { UserConfig, User } from "../models/cms-user.model";
-import { StorageManager } from "../../cms/api/cms-storagemanager.service";
-import { CmsApiService } from "../../cms/api/cms-api.service";
-import { CMS_SESSION_STORAGE_ITEM } from "../../cms/models/cms-session-storage-item";
-import { CmsSettingsService } from "../settings/cms-settings.service";
-import { CmsMiniDisplayService } from "./../../shared/mini-display/cms-mini-display.service";
-import { AppConfig } from "../../config";
-
-@Component({
-    //moduleId: module.id,
-    selector: "cms-login",
-    template: require("./cms-login.component.html"),
-    styles: [require("./cms-login.component.scss")]
-})
-
 /**
  * This component creates the UI for the user login page and performs user login on submit.
  * @class CmsLoginComponent
@@ -26,6 +6,25 @@ import { AppConfig } from "../../config";
  * @property {string} isLoginInProgress Filter property which will filter the display list
  * @property {string} errorMessage
  */
+import { Component, OnDestroy, OnInit } from "@angular/core";
+import { Router } from "@angular/router";
+import { TranslateService } from "@ngx-translate/core";
+
+import { CmsApiService } from "../../cms/api/cms-api.service";
+import { StorageManager } from "../../cms/api/cms-storagemanager.service";
+import { CmsSessionStorageItem } from "../../cms/models/cms-session-storage-item";
+import { AppConfig } from "../../config";
+import { IUserConfig, User } from "../models/cms-user.model";
+import { CmsSettingsService } from "../settings/cms-settings.service";
+import { CmsMiniDisplayService } from "./../../shared/mini-display/cms-mini-display.service";
+
+@Component({
+    //moduleId: module.id,
+    selector: "cms-login",
+    template: require("./cms-login.component.html"),
+    styles: [require("./cms-login.component.scss")]
+})
+
 export class CmsLoginComponent implements OnInit, OnDestroy {
     // to show or hide login error
     private hasError: boolean = false;
@@ -33,7 +32,7 @@ export class CmsLoginComponent implements OnInit, OnDestroy {
     // to show or hide login progress animation
     private isLoginInProgress: boolean = false;
 
-    private user: UserConfig = {
+    private user: IUserConfig = {
         username: "",
         password: ""
     };
@@ -105,6 +104,7 @@ export class CmsLoginComponent implements OnInit, OnDestroy {
         }
 
         const userModel: User = new User(this.user);
+        const errorCode: number = 406;
         this.isLoginInProgress = true;
 
         this.cmsServerApi.login(userModel)
@@ -115,14 +115,14 @@ export class CmsLoginComponent implements OnInit, OnDestroy {
                     // fetch user settings success
                     // store logged in user info in storage
                     userModel.LoggedIn = true;
-                    this.storageManager.set(CMS_SESSION_STORAGE_ITEM.USER, JSON.stringify(userModel.asSerializable()));
+                    this.storageManager.setItem(CmsSessionStorageItem.USER, JSON.stringify(userModel.asSerializable()));
                     this.isLoginInProgress = false;
 
                     // create session with server
                     this.cmsServerApi.keepSessionAlive();
 
                     // store user setting in storage
-                    this.storageManager.set(CMS_SESSION_STORAGE_ITEM.SETTINGS, JSON.stringify(this.cmsSettingsService.userSettings));
+                    this.storageManager.setItem(CmsSessionStorageItem.SETTINGS, JSON.stringify(this.cmsSettingsService.userSettings));
                     this.cmsSettingsService.applyUserSelectedLanguage();
                     this.cmsSettingsService.connectToWallAtStartup();
                 }, () => {
@@ -130,7 +130,7 @@ export class CmsLoginComponent implements OnInit, OnDestroy {
                     this.appConfig.log("CmsLoginComponent: login:: User settings json is corrupt.");
                     this.isLoginInProgress = false;
                     this.hasError = true;
-                    this.showErrorMessage(406);
+                    this.showErrorMessage(errorCode);
                 });
             },
             (error: any) => {
@@ -149,7 +149,9 @@ export class CmsLoginComponent implements OnInit, OnDestroy {
     private blurInputs(): void {
         const inputs: NodeListOf<HTMLInputElement> = document.getElementsByTagName("input");
         let nodeValue: string;
-        for (let index: number = 0; index < inputs.length; index++) {
+        // tslint:disable-next-line:prefer-for-of
+        for (let index: number = 0; index < inputs.length; index = index + 1) {
+            // tslint:disable-next-line:no-string-literal
             nodeValue = inputs[index].attributes["type"].nodeValue;
             if (nodeValue === "text" || nodeValue === "password") {
                 inputs[index].blur();
@@ -164,19 +166,27 @@ export class CmsLoginComponent implements OnInit, OnDestroy {
      * @return void
      */
     private showErrorMessage(errorStatus: number): void {
+        const errorCode: any = {
+            licenseError: 403,
+            serverError: 503,
+            settingsError: 406,
+            userDisabled: 409,
+            notFound: 404,
+            serverUnavailable: 0
+        };
         this.appConfig.log(`CmsLoginComponent: login:: Show login error message for error status ${errorStatus}`);
 
         let messageKey: string = "";
 
-        if (errorStatus === 403) {
+        if (errorStatus === errorCode.licenseError) {
             messageKey = "login.licenceError";
-        } else if (errorStatus === 503) {
+        } else if (errorStatus === errorCode.serverError) {
             messageKey = "login.serverNotReadyError";
-        } else if (errorStatus === 406) {
+        } else if (errorStatus === errorCode.settingsError) {
             messageKey = "login.settingsReadyError";
-        } else if (errorStatus === 409) {
+        } else if (errorStatus === errorCode.userDisabled) {
             messageKey = "login.userDisabledError";
-        } else if (errorStatus === 0 || errorStatus === 404) {
+        } else if (errorStatus === errorCode.serverUnavailable || errorStatus === errorCode.notFound) {
             messageKey = "login.serverUnavailableError";
         } else {
             messageKey = "login.error";

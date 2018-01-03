@@ -1,11 +1,11 @@
 import { TestBed, async } from "@angular/core/testing";
-import { UserConfig, User } from "../../../../app/launchpad/models/cms-user.model";
+import { IUserConfig, User } from "../../../../app/launchpad/models/cms-user.model";
 
 describe("User Model: ", () => {
 
     let user, expectedLoggedInState = true;
 
-    let expectedUserConfig: UserConfig = {
+    let expectedIUserConfig: IUserConfig = {
         username: "bcd-se-test",
         password: "bcdsetest"
     };
@@ -19,13 +19,13 @@ describe("User Model: ", () => {
         TestBed.configureTestingModule({}));
 
     beforeEach(() => {
-        user = new User(expectedUserConfig);
+        user = new User(expectedIUserConfig);
     });
 
     it("should be defined", () => {
         expect(user).toBeDefined();
-        expect(user.username).toBe(expectedUserConfig.username);
-        expect(user.password).toBe(expectedUserConfig.password);
+        expect(user.username).toBe(expectedIUserConfig.username);
+        expect(user.password).toBe(expectedIUserConfig.password);
     });
 
     it("should set and get LoggedIn method", () => {
@@ -38,8 +38,8 @@ describe("User Model: ", () => {
     });
 
     it("should get UserName and Password", () => {
-        expect(user.Username).toBe(expectedUserConfig.username);
-        expect(user.Password).toBe(expectedUserConfig.password);
+        expect(user.Username).toBe(expectedIUserConfig.username);
+        expect(user.Password).toBe(expectedIUserConfig.password);
     });
 
     it("should return expected object from asSerializable method", () => {
@@ -52,7 +52,7 @@ describe("User Model: ", () => {
 
     it("should return expected object from toJSON method", () => {
         let userJSON = user.toJSON();
-        expect(userJSON).toEqual(expectedUserConfig);
+        expect(userJSON).toEqual(expectedIUserConfig);
     });
 
 });

@@ -2,7 +2,7 @@ import { ActivatedRouteSnapshot, RouterStateSnapshot, Router } from "@angular/ro
 import { TestBed, inject } from "@angular/core/testing";
 import { CmsCanActivateViaAuthorizationService } from "../../../../app/launchpad/login/cms-can-activate-via-authorization.service";
 import { StorageManager } from "../../../../app/cms/api/cms-storagemanager.service";
-import { CMS_SESSION_STORAGE_ITEM } from "../../../../app/cms/models/cms-session-storage-item";
+import { CmsSessionStorageItem } from "../../../../app/cms/models/cms-session-storage-item";
 
 describe("CmsCanActivateViaAuthorizationService should", () => {
     let cmsCanActivateViaAuthorizationService: CmsCanActivateViaAuthorizationService;
@@ -37,14 +37,14 @@ describe("CmsCanActivateViaAuthorizationService should", () => {
     });
 
     it("not be be able to hit route when user is not logged in", () => {
-        storageManager.set(CMS_SESSION_STORAGE_ITEM.USER, "{}");
+        storageManager.setItem(CmsSessionStorageItem.USER, "{}");
         cmsCanActivateViaAuthorizationService.canActivate(next, state);
         expect(router.navigate).toHaveBeenCalledWith(["/login"]);
     });
 
     it("be able to hit route when user is logged in", () => {
-        storageManager.set(CMS_SESSION_STORAGE_ITEM.USER, JSON.stringify(user));
+        storageManager.setItem(CmsSessionStorageItem.USER, JSON.stringify(user));
         expect(cmsCanActivateViaAuthorizationService.canActivate(next, state)).toBe(true);
     });
-    
+
 });

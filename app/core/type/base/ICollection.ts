@@ -8,8 +8,9 @@
  * Count or Length
  * @interface ICollection
  */
+
 export interface ICollection <T> {
-    Add(key: string, value: T): any;
-    HasKey(key: string): boolean;
-    Item(key: string): T;
+    add (key: string, value: T): any;
+    hasKey (key: string): boolean;
+    item (key: string): T;
 }

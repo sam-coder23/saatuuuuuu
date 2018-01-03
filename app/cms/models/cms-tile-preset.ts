@@ -2,6 +2,7 @@
  * Interface defines the model configuration of TilePreset
  * @interface ITilePreset
  */
+
 export interface ITilePreset {
     "id"?: number;
     "name": string;
@@ -20,6 +21,6 @@ export interface ITilePreset {
     "isDefaultForAllDisplays"?: boolean;
     "noOfTiles"?: number;
     "isGrid"?: boolean;
-    "defaultForDisplays"?: Array<any>;
+    "defaultForDisplays"?: any[];
     "isSelected"?: boolean;
 }

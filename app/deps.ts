@@ -2,6 +2,8 @@
  * @class deps
  * This file imports all necesaary dependencies
  */
+
+ // tslint:disable:ordered-imports
 import "core-js";
 import "hammerjs";
 import "rxjs";

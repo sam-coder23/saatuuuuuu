@@ -1,22 +1,3 @@
-import { Component, OnInit } from "@angular/core";
-import { Router } from "@angular/router";
-import { TranslateService } from "@ngx-translate/core";
-import * as CoreComponent from "core-components/app";
-import { CmsApiService } from "../../cms/api/cms-api.service";
-import { IUserProfileSettings } from "../../cms/models/cms-user-profile-settings";
-import { CmsSettingsService } from "./cms-settings.service";
-import { Display } from "../../cms/models/cms-display";
-import { CMSConstants } from "../../cms/models/cms-constants";
-import { AppConfig } from "../../config";
-import { Subscription } from "rxjs/Subscription";
-
-@Component({
-    //moduleId: module.id,
-    selector: "cms-settings-panel",
-    template: require("./cms-settings-panel.component.html"),
-    styles: [require("./cms-settings-panel.component.scss")]
-})
-
 /**
  * This class defines the layout and feature of settings page.
  * @class CmsSettingsPanelComponent
@@ -43,6 +24,26 @@ import { Subscription } from "rxjs/Subscription";
  * @property {boolean} noDisplayAvailable
  * @property {string} wallConnection
  */
+import { Component, OnInit } from "@angular/core";
+import { Router } from "@angular/router";
+import { TranslateService } from "@ngx-translate/core";
+import { Subscription } from "rxjs/Subscription";
+
+import { CmsApiService } from "../../cms/api/cms-api.service";
+import { CMSConstants } from "../../cms/models/cms-constants";
+import { Display } from "../../cms/models/cms-display";
+import { IUserProfileSettings } from "../../cms/models/cms-user-profile-settings";
+import { AppConfig } from "../../config";
+import { Validation } from "../../core/util/Validation";
+import { CmsSettingsService } from "./cms-settings.service";
+
+@Component({
+    //moduleId: module.id,
+    selector: "cms-settings-panel",
+    template: require("./cms-settings-panel.component.html"),
+    styles: [require("./cms-settings-panel.component.scss")]
+})
+
 export class CmsSettingsPanelComponent implements OnInit {
     private i18n: any;
     // to show or hide loading process
@@ -149,14 +150,14 @@ export class CmsSettingsPanelComponent implements OnInit {
      * This method will provide model for color picker
      * @method getColorPickerModel
      * @param {string} value
-     * @return {any} returns the model to be assigned to the color picker's model.
+     * @return {any} returns the model to be assigned to the color picker"s model.
      */
-    private getColorPickerModel(value: string): any {
+    private getColorPickerModel(color: string): any {
         return {
             data: {
-                value: value
+                value: color
             },
-            value: value,
+            value: color,
             key: "value",
             defaultTabLabel: this.i18n.defaultColorPickerTabLabel,
             cancelText: this.i18n.cancel,
@@ -221,11 +222,10 @@ export class CmsSettingsPanelComponent implements OnInit {
             .subscribe(
             (displays: Display[]) => {
                 if (displays.length) {
-
                     // filter display by name
-                    for (let displayIndex: number = 0; displayIndex < displays.length; displayIndex++) {
-                        if (displays[displayIndex].name === displayName) {
-                            display = displays[displayIndex];
+                    for (const displayItem of displays) {
+                        if (displayItem.name === displayName) {
+                            display = displayItem;
                             break;
                         }
                     }
@@ -266,17 +266,17 @@ export class CmsSettingsPanelComponent implements OnInit {
             (displays: Display[]) => {
                 if (displays.length) {
                     // filter display by name
-                    for (let displayIndex: number = 0; displayIndex < displays.length; displayIndex++) {
-                        if (displays[displayIndex].name === displayName) {
-                            display = displays[displayIndex];
+                    for (const dislayItem of displays) {
+                        if (dislayItem.name === displayName) {
+                            display = dislayItem;
                             break;
                         }
                     }
 
                     if (display) {
-                        this.recentDisplayId = display["id"].toString();
+                        this.recentDisplayId = display.id.toString();
                     } else {
-                        this.recentDisplayId = null;
+                        this.recentDisplayId = undefined;
                     }
                 }
             },
@@ -294,7 +294,7 @@ export class CmsSettingsPanelComponent implements OnInit {
     private updateUserSettingsByAction(event: any): void {
         // prevent function execution when event source is null
         // md-radio-change event fired itself when value is change by model-binding
-        if (event.source !== null) {
+        if (!Validation.IS_NULL_OR_UNDEFINED(event.source)) {
             this.cmsSettingsService.updateUserProfileData(this.userSettings);
         }
     }
@@ -468,7 +468,7 @@ export class CmsSettingsPanelComponent implements OnInit {
     }
 
     /**
-     * This method update logoff time to 'never' on UI
+     * This method update logoff time to "never" on UI
      * @method updateAutoLogOffValueBinding
      * @return void
      */

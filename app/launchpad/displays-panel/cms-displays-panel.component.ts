@@ -1,14 +1,3 @@
-import { Component, OnInit, AfterViewInit } from "@angular/core";
-import { CMS_SESSION_STORAGE_ITEM } from "../../cms/models/cms-session-storage-item";
-import { StorageManager } from "../../cms/api/cms-storagemanager.service";
-import { Display } from "../../cms/models/cms-display";
-import { Observable } from "rxjs/Rx";
-import { AppConfig } from "../../config";
-import { Validation } from "../../core/util/Validation";
-import { ActivatedRoute, Params } from "@angular/router";
-import { CMSConstants } from "../../cms/models/cms-constants";
-import { CmsApiService } from "../../cms/api/cms-api.service";
-
 /**
  * This class will hold the logic of cms displays panel and hold layout of a displays page which includes toolbar and display list
  * @class CmsDisplaysPanelComponent
@@ -19,6 +8,15 @@ import { CmsApiService } from "../../cms/api/cms-api.service";
  * @property {number} selectedDisplayId
  * @property {object} viewState
  */
+import { AfterViewInit, Component, OnInit } from "@angular/core";
+import { ActivatedRoute, Params } from "@angular/router";
+import { Observable } from "rxjs/Rx";
+
+import { CmsApiService } from "../../cms/api/cms-api.service";
+import { StorageManager } from "../../cms/api/cms-storagemanager.service";
+import { CmsSessionStorageItem } from "../../cms/models/cms-session-storage-item";
+import { AppConfig } from "../../config";
+import { Validation } from "../../core/util/Validation";
 
 @Component({
     //moduleId: module.id,
@@ -31,6 +29,7 @@ export class CmsDisplaysPanelComponent implements OnInit, AfterViewInit {
     private searchFilter: string;
     private searchKey: string;
     private isSelectDisplayView: boolean = false;
+
     // all boolean states for the template
     private viewState: any = {
         reload: false,
@@ -42,18 +41,19 @@ export class CmsDisplaysPanelComponent implements OnInit, AfterViewInit {
         private appConfig: AppConfig,
         private route: ActivatedRoute,
         private cmsServerApi: CmsApiService) {
-        this.isFavoriteFilter = this.storageManager.get(CMS_SESSION_STORAGE_ITEM.DISPLAYS_FAVORITE_FILTER) === String(true);
-        this.searchFilter = this.storageManager.get(CMS_SESSION_STORAGE_ITEM.DISPLAYS_SEARCH_FILTER) || "";
+        this.isFavoriteFilter = this.storageManager.getItem(CmsSessionStorageItem.DISPLAYS_FAVORITE_FILTER) === String(true);
+        this.searchFilter = this.storageManager.getItem(CmsSessionStorageItem.DISPLAYS_SEARCH_FILTER) || "";
         this.searchKey = this.searchFilter;
     }
 
     public ngOnInit(): void {
         this.route.params.forEach((params: Params) => {
-            const actionParam: string = params["action"];
+            const actionParam: string = params.action;
         });
     }
 
     public ngAfterViewInit(): void {
+        const debounceTime: number = 500;
         /**
          * Making an Observable to get the string token from
          * HTML search input control and update the searchFilter by
@@ -62,10 +62,10 @@ export class CmsDisplaysPanelComponent implements OnInit, AfterViewInit {
         const searchInput: HTMLElement = document.getElementById("display-list-search-input");
         Observable.fromEvent(searchInput, "keyup")
             .map((e: any) => e.target.value.trim())
-            .debounceTime(500)
+            .debounceTime(debounceTime)
             .subscribe((searchString: string) => {
                 this.searchFilter = searchString;
-                this.storageManager.set(CMS_SESSION_STORAGE_ITEM.DISPLAYS_SEARCH_FILTER, searchString);
+                this.storageManager.setItem(CmsSessionStorageItem.DISPLAYS_SEARCH_FILTER, searchString);
             });
     }
 
@@ -76,7 +76,7 @@ export class CmsDisplaysPanelComponent implements OnInit, AfterViewInit {
      */
     private setFavourite(): void {
         this.isFavoriteFilter = !this.isFavoriteFilter;
-        this.storageManager.set(CMS_SESSION_STORAGE_ITEM.DISPLAYS_FAVORITE_FILTER, this.isFavoriteFilter);
+        this.storageManager.setItem(CmsSessionStorageItem.DISPLAYS_FAVORITE_FILTER, this.isFavoriteFilter);
     }
 
     /**
@@ -107,7 +107,7 @@ export class CmsDisplaysPanelComponent implements OnInit, AfterViewInit {
      * @return {boolean}
      */
     private isDisplaySelected(): boolean {
-        return !Validation.IsNull(this.storageManager.get(CMS_SESSION_STORAGE_ITEM.DISPLAY));
+        return !Validation.IS_NULL(this.storageManager.getItem(CmsSessionStorageItem.DISPLAY));
     }
 
     /**

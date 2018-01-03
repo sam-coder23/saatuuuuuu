@@ -131,7 +131,7 @@ class MockCmsApiService {
     }
 
     updateContentGeormetryOnDisplay(displayId: number, contentId: number, body: any) {
-        if (displayId > 0 && contentId > 0 && !Validation.IsNullOrUndefined(body)) {
+        if (displayId > 0 && contentId > 0 && !Validation.IS_NULL_OR_UNDEFINED(body)) {
             return Observable.of(null);
         } else {
             return Observable.throw("Invalid input for the API call");

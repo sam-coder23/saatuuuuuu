@@ -9,7 +9,7 @@ import { CmsApiService } from "../../../../app/cms/api/cms-api.service";
 import { AppConfig } from "../../../../app/config";
 import { StorageManager } from "../../../../app/cms/api/cms-storagemanager.service";
 import { IUserProfileSettings } from "../../../../app/cms/models/cms-user-profile-settings";
-import { CMS_SESSION_STORAGE_ITEM } from "../../../../app/cms/models/cms-session-storage-item";
+import { CmsSessionStorageItem } from "../../../../app/cms/models/cms-session-storage-item";
 import { CMSConstants } from "../../../../app/cms/models/cms-constants";
 
 describe("Service: CmsSettingsService", () => {
@@ -210,8 +210,8 @@ describe("Service: CmsSettingsService", () => {
         cmsSettingsService.connectToWallAtStartup();
         tick();
         mockCmsSettingsServiceData.userSettings.wallConnection.recentDisplay = mockDisplaysData.displays[0].name;
-        expect(storageManager.get(CMS_SESSION_STORAGE_ITEM.SETTINGS)).toEqual(JSON.stringify(mockCmsSettingsServiceData.userSettings));
-        expect(storageManager.get(CMS_SESSION_STORAGE_ITEM.DISPLAY)).toEqual(JSON.stringify(mockDisplaysData.displays[0]));
+        expect(storageManager.getItem(CmsSessionStorageItem.SETTINGS)).toEqual(JSON.stringify(mockCmsSettingsServiceData.userSettings));
+        expect(storageManager.getItem(CmsSessionStorageItem.DISPLAY)).toEqual(JSON.stringify(mockDisplaysData.displays[0]));
         expect(spyRouter.calls.count()).toEqual(1);
         expect(spyRouter.calls.argsFor(0)[0]).toEqual([`/displays/${mockDisplaysData.displays[0].id}/sources-panel`]);
     }));
@@ -250,7 +250,7 @@ describe("Service: CmsSettingsService", () => {
         tick();
         cmsSettingsService.connectToWallAtStartup();
         tick();
-        expect(storageManager.get(CMS_SESSION_STORAGE_ITEM.DISPLAY)).toEqual(JSON.stringify(mockDisplaysData.displays[0]));
+        expect(storageManager.getItem(CmsSessionStorageItem.DISPLAY)).toEqual(JSON.stringify(mockDisplaysData.displays[0]));
         expect(spyRouter.calls.count()).toEqual(1);
         expect(spyRouter.calls.argsFor(0)[0]).toEqual([`/displays/${mockDisplaysData.displays[0].id}/sources-panel`]);
     }));
@@ -320,7 +320,7 @@ describe("Service: CmsSettingsService", () => {
         tick();
         cmsSettingsService.connectToWallAtStartup();
         tick();
-        expect(storageManager.get(CMS_SESSION_STORAGE_ITEM.DISPLAY)).toEqual(JSON.stringify(mockDisplaysData.displays[0]));
+        expect(storageManager.getItem(CmsSessionStorageItem.DISPLAY)).toEqual(JSON.stringify(mockDisplaysData.displays[0]));
         expect(spyRouter.calls.count()).toEqual(1);
         expect(spyRouter.calls.argsFor(0)[0]).toEqual([`/displays/${mockDisplaysData.displays[0].id}/sources-panel`]);
         expect(spyOnUpdateWallConnectionRecentDisplay.calls.count()).toEqual(1);
@@ -386,17 +386,17 @@ describe("Service: CmsSettingsService", () => {
     });
 
     it("should return lanaguage value from key", () => {
-        expect(cmsSettingsService.getUserSelectedLanguageByKey("ar")).toBe("العربية");
+        expect(cmsSettingsService.getUserSelectedLanguageByKey("ar")).toBe("???????");
         expect(cmsSettingsService.getUserSelectedLanguageByKey("de")).toBe("German");
         expect(cmsSettingsService.getUserSelectedLanguageByKey("en")).toBe("English");
-        expect(cmsSettingsService.getUserSelectedLanguageByKey("es")).toBe("Español");
+        expect(cmsSettingsService.getUserSelectedLanguageByKey("es")).toBe("Espa�ol");
         expect(cmsSettingsService.getUserSelectedLanguageByKey("fr")).toBe("Francais");
-        expect(cmsSettingsService.getUserSelectedLanguageByKey("ja")).toBe("日本語");
+        expect(cmsSettingsService.getUserSelectedLanguageByKey("ja")).toBe("???");
         expect(cmsSettingsService.getUserSelectedLanguageByKey("pl")).toBe("Polski");
-        expect(cmsSettingsService.getUserSelectedLanguageByKey("pt")).toBe("Portuguěs");
-        expect(cmsSettingsService.getUserSelectedLanguageByKey("zh")).toBe("中文");
-        expect(cmsSettingsService.getUserSelectedLanguageByKey("tr")).toBe("Türk");
-        expect(cmsSettingsService.getUserSelectedLanguageByKey("ru")).toBe("русский");
+        expect(cmsSettingsService.getUserSelectedLanguageByKey("pt")).toBe("Portugues");
+        expect(cmsSettingsService.getUserSelectedLanguageByKey("zh")).toBe("??");
+        expect(cmsSettingsService.getUserSelectedLanguageByKey("tr")).toBe("T�rk");
+        expect(cmsSettingsService.getUserSelectedLanguageByKey("ru")).toBe("???????");
     });
 
     it("should increase count value as per it's index", () => {
@@ -481,7 +481,7 @@ describe("Service: CmsSettingsService", () => {
         spySetTextDirectionByLanguageKey = spyOn(cmsSettingsService, "setTextDirectionByLanguageKey").and.returnValue(null);
         mockCmsSettingsServiceData.userSettings.language = "";
         storageManager = new StorageManager();
-        storageManager.set(CMS_SESSION_STORAGE_ITEM.SETTINGS, JSON.stringify(mockCmsSettingsServiceData));
+        storageManager.setItem(CmsSessionStorageItem.SETTINGS, JSON.stringify(mockCmsSettingsServiceData));
         cmsSettingsService.setBrowserLanguage();
         expect(spySetTextDirectionByLanguageKey.calls.count()).toEqual(1);
         expect(spySetTextDirectionByLanguageKey).toHaveBeenCalledWith("pt");

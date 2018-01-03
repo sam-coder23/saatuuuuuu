@@ -1,10 +1,11 @@
-import { Const } from "../util/Const";
-
 /**
  * Holds logic related to how regex will be implemented in our app
  * Shouldn't hold anything except static.
  * @class Url
  */
+
+import { Const } from "../util/Const";
+
 export class RegExManager {
     /**
      * @method HasIP
@@ -12,7 +13,7 @@ export class RegExManager {
      * incase there is no match that means url doesn't have IP it will return back the same url
      * @return {string} return converted url
      */
-    public static IPToHost(url: string, hostName: string): string {
+    public static IPTOHOST (url: string, hostName: string): string {
         const matchedArray: RegExpMatchArray = url.match(Const.ipRegex);
         let value: string = url;
 

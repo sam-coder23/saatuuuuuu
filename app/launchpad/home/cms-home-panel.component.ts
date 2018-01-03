@@ -1,14 +1,3 @@
-import { Component, OnInit } from "@angular/core";
-import { Http } from "@angular/http";
-import { Observable } from "rxjs/Observable";
-import { Subject } from "rxjs/Subject";
-import { TranslateService } from "@ngx-translate/core";
-import { Router, ActivatedRoute, Params } from "@angular/router";
-import { CmsApiService } from "../../cms/api/cms-api.service";
-import { CmsSettingsService } from "../settings/cms-settings.service";
-import { CmsLanguages } from "../../i18n/cms-languages";
-import { Display } from "../../cms/models/cms-display";
-
 /**
  * This class contains the logic of cms home panel with multiple options, using these options
  * user will be able to navigate to specific panel directly.
@@ -19,6 +8,15 @@ import { Display } from "../../cms/models/cms-display";
  * @property {number} displayId //selected display id
  * @property {boolean} showHomePanel //contains boolean value
  */
+import { Component, OnInit } from "@angular/core";
+import { ActivatedRoute, Router } from "@angular/router";
+import { TranslateService } from "@ngx-translate/core";
+import { Observable } from "rxjs/Observable";
+
+import { CmsApiService } from "../../cms/api/cms-api.service";
+import { Display } from "../../cms/models/cms-display";
+import { AppConfig } from "../../config";
+import { CmsSettingsService } from "../settings/cms-settings.service";
 
 @Component({
     selector: "cms-home-panel",
@@ -34,6 +32,7 @@ export class CmsHomePanelComponent implements OnInit {
     private showClearWallPopup: boolean = false;
 
     constructor(
+        private appConfig: AppConfig,
         private translate: TranslateService,
         private cmsServerApi: CmsApiService,
         private activatedRoute: ActivatedRoute,
@@ -41,7 +40,9 @@ export class CmsHomePanelComponent implements OnInit {
         private router: Router) { }
 
     public ngOnInit(): void {
-        this.displayId = parseInt(this.activatedRoute.params["value"]["displayId"], 10);
+        const defaultDisplayId: number = 10;
+        // tslint:disable-next-line:no-string-literal
+        this.displayId = parseInt(this.activatedRoute.params["value"]["displayId"], defaultDisplayId);
         this.updateOptions();
     }
 
@@ -172,7 +173,7 @@ export class CmsHomePanelComponent implements OnInit {
                 }
             },
             (error: any) => {
-                console.log("ERROR: home panel", error);
+                this.appConfig.log("ERROR: home panel", error);
             });
     }
 }

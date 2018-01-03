@@ -2,14 +2,13 @@
  * This is a card component which uses md-card provided by ng2-material.
  * The card layout is customized as per the design provided for launchpad application cards.
  */
-import { Component, OnInit, OnDestroy, Input, Output, EventEmitter, OnChanges, SimpleChanges } from "@angular/core";
-import { CmsResource } from "./../../cms/models/cms-resource";
+import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from "@angular/core";
 import { AppConfig } from "../../config";
 import { RegExManager } from "../../core/util/RegEx";
 import { Url } from "../../core/util/URL";
 import { Validation } from "../../core/util/Validation";
 import { CmsFavoriteService } from "../cms-favorite.service";
-import { Source } from "../../cms/models/cms-source";
+import { CmsResource } from "./../../cms/models/cms-resource";
 
 @Component({
     selector: "cms-card",
@@ -55,9 +54,9 @@ export class CmsCardComponent implements OnInit, OnChanges {
         const snapshotPath: string = this.card.snapshotPath;
         this.isFavorite = this.card.favorite;
         if (snapshotPath && this.refreshSnapshot === true) {
-            if (Url.HasHostName() && !Validation.IsNullOrUndefined(snapshotPath)
-            && Url.HasIP(snapshotPath)) {
-                this.cardSnapshot = RegExManager.IPToHost(snapshotPath, this.appConfig.Host);
+            if (Url.HAS_HOST_NAME() && !Validation.IS_NULL_OR_UNDEFINED(snapshotPath)
+            && Url.HAS_IP(snapshotPath)) {
+                this.cardSnapshot = RegExManager.IPTOHOST(snapshotPath, this.appConfig.Host);
             } else {
                 this.cardSnapshot = snapshotPath;
             }

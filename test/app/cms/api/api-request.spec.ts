@@ -19,7 +19,7 @@ class MockAppConfigStub {
 }
 
 describe("Service: APIRequest", () => {
-    let mockbackend, router, appConfig, APIRequestService, 
+    let mockbackend, router, appConfig, APIRequestService,
     storageManager: StorageManager;
 
     beforeEach(async(() =>

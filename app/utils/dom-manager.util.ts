@@ -1,5 +1,3 @@
-import {ElementRef} from "@angular/core";
-
 /**
  * The responsibility of this class is to act as a replacement of jQuery
  * So we should write functions for all DOM queries, manipulation in this class.
@@ -8,10 +6,12 @@ import {ElementRef} from "@angular/core";
  * @constructor constructor This will inject the ElementRef dependency
  */
 
+import { ElementRef } from "@angular/core";
+
 export class DomManager {
     private nativeElement: any;
 
-    constructor(element: ElementRef) {
+    constructor (element: ElementRef) {
         this.nativeElement = element.nativeElement;
     }
 
@@ -20,7 +20,7 @@ export class DomManager {
      * @method FirstChild
      * @return {HTMLElement}
      */
-    public FirstChild() : HTMLElement {
+    public firstChild () : HTMLElement {
         return <HTMLElement>this.nativeElement.firstChild;
     }
 
@@ -29,7 +29,7 @@ export class DomManager {
      * @method FirstChild
      * @return {HTMLElement}
      */
-    public LastChild() : HTMLElement {
+    public lastChild () : HTMLElement {
         return <HTMLElement>this.nativeElement.lastChild;
     }
 
@@ -39,7 +39,7 @@ export class DomManager {
      * @param {number} Index of the child element which you are looking for
      * @return {HTMLElement}
      */
-    public NthChild(index: number) : HTMLElement {
+    public nthChild (index: number) : HTMLElement {
         return <HTMLElement>this.nativeElement.children[index];
     }
 
@@ -48,7 +48,7 @@ export class DomManager {
      * @param {string} class name of the dom element you are trying to find
      * @return {HTMLElement}
      */
-    public GetElementsByClassName(className: string) : HTMLElement[] {
+    public getElementsByClassName (className: string) : HTMLElement[] {
         return <HTMLElement[]>this.nativeElement.getElementsByClassName(className);
     }
 
@@ -57,7 +57,7 @@ export class DomManager {
      * @param {string} id attribute of the dom element eg. "source-list"
      * @return {HTMLElement}
      */
-    public getElementById(id: string) : HTMLElement {
+    public getElementById (id: string) : HTMLElement {
        return <HTMLElement>this.nativeElement.querySelector(`#${id}`);
     }
 }

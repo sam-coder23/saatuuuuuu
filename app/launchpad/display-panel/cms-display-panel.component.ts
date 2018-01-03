@@ -1,11 +1,3 @@
-import { Component, OnInit, OnDestroy } from "@angular/core";
-import { ActivatedRoute, Params } from "@angular/router";
-import { CmsResource } from "./../../cms/models/cms-resource";
-import { CMS_SESSION_STORAGE_ITEM } from "../../cms/models/cms-session-storage-item";
-import { StorageManager } from "../../cms/api/cms-storagemanager.service";
-import { AppConfig } from "../../config";
-import { Validation } from "../../core/util/Validation";
-
 /**
  * This class will hold the logic of cms display panel where it will display mini-display.
  * @class CmsDisplayPanelComponent
@@ -14,6 +6,14 @@ import { Validation } from "../../core/util/Validation";
  * @property {CmsResource} display
  * @property {number} displayId
  */
+import { Component, OnInit } from "@angular/core";
+import { ActivatedRoute, Params } from "@angular/router";
+
+import { StorageManager } from "../../cms/api/cms-storagemanager.service";
+import { CmsSessionStorageItem } from "../../cms/models/cms-session-storage-item";
+import { AppConfig } from "../../config";
+import { Validation } from "../../core/util/Validation";
+import { CmsResource } from "./../../cms/models/cms-resource";
 @Component({
     selector: "cms-display-panel",
     template: require("./cms-display-panel.component.html"),
@@ -36,14 +36,16 @@ export class CmsDisplayPanelComponent implements OnInit {
         private route: ActivatedRoute,
         private storageManager: StorageManager,
         private appConfig: AppConfig) {
-
-        this.zoomLevel = 100;
-        this.fitHeightCount = 0;
+        const defaultZoomLevel: number = 100;
+        const defaultHeightCount: number = 0;
+        this.zoomLevel = defaultZoomLevel;
+        this.fitHeightCount = defaultHeightCount;
     }
 
     public ngOnInit(): void {
+        const defaultDisplayId: number = 10;
         this.route.params.forEach((params: Params) => {
-            this.displayId = parseInt(params["id"], 10);
+            this.displayId = parseInt(params.id, defaultDisplayId);
         });
         if (!isNaN(this.displayId)) {
             this.loadDisplay();
@@ -56,11 +58,11 @@ export class CmsDisplayPanelComponent implements OnInit {
      * @return void
      */
     private loadDisplay(): void {
-        const display: any = this.storageManager.get(CMS_SESSION_STORAGE_ITEM.DISPLAY);
+        const display: any = this.storageManager.getItem(CmsSessionStorageItem.DISPLAY);
         // If selected display is not available, route to display list.
-        if (Validation.IsNullOrUndefined(display)) {
+        if (Validation.IS_NULL_OR_UNDEFINED(display)) {
             this.appConfig.error("Display not found!");
-            this.display = null;
+            this.display = undefined;
         } else {
             this.display = new CmsResource(JSON.parse(display));
         }
@@ -72,7 +74,8 @@ export class CmsDisplayPanelComponent implements OnInit {
      * @return {void}
      */
     private fitHeight(): void {
-        this.fitHeightCount++;
+        const increment: number = 1;
+        this.fitHeightCount = this.fitHeightCount + increment;
     }
 
     /**

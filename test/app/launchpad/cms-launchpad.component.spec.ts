@@ -16,7 +16,7 @@ import { CmsSettingsService } from "../../../app/launchpad/settings/cms-settings
 import { CmsApiService } from "../../../app/cms/api/cms-api.service";
 import { AppConfig } from "../../../app/config";
 import { APIRequest } from "../../../app/cms/api/api-request";
-import { CMS_SESSION_STORAGE_ITEM } from "../../../app/cms/models/cms-session-storage-item";
+import { CmsSessionStorageItem } from "../../../app/cms/models/cms-session-storage-item";
 import { CmsLanguages } from "../../../app/i18n/cms-languages";
 import { MockUserProfileSettings } from "../core/mock-stubs/login.mock";
 
@@ -151,8 +151,8 @@ describe("CmsLaunchpadComponent", () => {
             cmsSettingsService = fixture.debugElement.injector.get(CmsSettingsService);
             appConfig = fixture.debugElement.injector.get(AppConfig);
             spyOn(cmsApiService, "logoutUser").and.returnValue(Observable.of(null));
-            storageManager.set(CMS_SESSION_STORAGE_ITEM.USER, null);
-            storageManager.set(CMS_SESSION_STORAGE_ITEM.SETTINGS, null);
+            storageManager.setItem(CmsSessionStorageItem.USER, null);
+            storageManager.setItem(CmsSessionStorageItem.SETTINGS, null);
             // iconRegistry = fixture.debugElement.injector.get(MdIconRegistry);
             // spyOnAddSvgIcon = spyOn(iconRegistry, "addSvgIcon");
         });
@@ -213,7 +213,7 @@ describe("CmsLaunchpadComponent", () => {
     it("should route to login page if user session is empty", (done) => {
         fixture.detectChanges();
         fixture.whenStable().then(() => {
-            if (!storageManager.get(CMS_SESSION_STORAGE_ITEM.USER)) {
+            if (!storageManager.getItem(CmsSessionStorageItem.USER)) {
                 expect(router.navigate).toHaveBeenCalledWith(["/login"]);
             }
             done();
@@ -223,24 +223,24 @@ describe("CmsLaunchpadComponent", () => {
     it(`should reconnect session with server and have settings data into session and
         apply user selected language and test auto logout functionality
         and application events`, (done) => {
-            storageManager.set(CMS_SESSION_STORAGE_ITEM.USER, JSON.stringify(userData));
-            storageManager.set(CMS_SESSION_STORAGE_ITEM.SETTINGS, JSON.stringify(settingsData));
+            storageManager.setItem(CmsSessionStorageItem.USER, JSON.stringify(userData));
+            storageManager.setItem(CmsSessionStorageItem.SETTINGS, JSON.stringify(settingsData));
             spyOn(cmsApiService, "reconnectSessionWithServer");
             fixture.detectChanges();
             fixture.whenStable().then(() => {
                 expect(cmsApiService.reconnectSessionWithServer).toHaveBeenCalled();
 
-                expect(cmsSettingsService.userSettings).toEqual(JSON.parse(storageManager.get(CMS_SESSION_STORAGE_ITEM.SETTINGS)));
+                expect(cmsSettingsService.userSettings).toEqual(JSON.parse(storageManager.getItem(CmsSessionStorageItem.SETTINGS)));
                 expect(cmsSettingsService.userSettings.language).toEqual(appConfig.DefaultLanguage);
                 nativeElement.click();
                 delay(2000).then(() => {
                     expect(cmsApiService.logoutUser).toHaveBeenCalled();
 
                     cmsSettingsService.userSettings.logOffTime = 10;
-                    let userLastActionTime = storageManager.get(CMS_SESSION_STORAGE_ITEM.USER_LASTACTION_TIME);
+                    let userLastActionTime = storageManager.getItem(CmsSessionStorageItem.USER_LASTACTION_TIME);
                     nativeElement.click();
                     delay(1500).then(() => {
-                        expect(parseInt(userLastActionTime)).toBeLessThanOrEqual(parseInt(storageManager.get(CMS_SESSION_STORAGE_ITEM.USER_LASTACTION_TIME)));
+                        expect(parseInt(userLastActionTime)).toBeLessThanOrEqual(parseInt(storageManager.getItem(CmsSessionStorageItem.USER_LASTACTION_TIME)));
                         done();
                     });
                 });
@@ -304,7 +304,7 @@ describe("CmsLaunchpadComponent", () => {
                                     expect(cmsApiService.logoutUser).toHaveBeenCalled();
 
                                     debugInstance.applicationEventType = "";
-                                    storageManager.remove(CMS_SESSION_STORAGE_ITEM.USER);
+                                    storageManager.removeItem(CmsSessionStorageItem.USER);
 
                                     debugInstance.applicationLevelEvent.next(
                                         {
@@ -326,18 +326,18 @@ describe("CmsLaunchpadComponent", () => {
         });
 
     it(`should reset last action time`, (done) => {
-            storageManager.set(CMS_SESSION_STORAGE_ITEM.USER, JSON.stringify(userData));
-            storageManager.set(CMS_SESSION_STORAGE_ITEM.SETTINGS, JSON.stringify(settingsData));
+        storageManager.setItem(CmsSessionStorageItem.USER, JSON.stringify(userData));
+        storageManager.setItem(CmsSessionStorageItem.SETTINGS, JSON.stringify(settingsData));
             fixture.detectChanges();
             fixture.whenStable().then(() => {
-                storageManager.remove(CMS_SESSION_STORAGE_ITEM.USER_LASTACTION_TIME);
+                storageManager.removeItem(CmsSessionStorageItem.USER_LASTACTION_TIME);
                 cmsSettingsService.userSettings.logOffTime = 5;
                 nativeElement.click();
                 delay(2000).then(() => {
-                    expect(parseInt(debugInstance.userLastActionTime)).toBeLessThanOrEqual(parseInt(storageManager.get(CMS_SESSION_STORAGE_ITEM.USER_LASTACTION_TIME)));
+                    expect(parseInt(debugInstance.userLastActionTime)).toBeLessThanOrEqual(parseInt(storageManager.getItem(CmsSessionStorageItem.USER_LASTACTION_TIME)));
                     nativeElement.click();
                     delay(1500).then(() => {
-                        expect(parseInt(debugInstance.userLastActionTime)).toBeLessThanOrEqual(parseInt(storageManager.get(CMS_SESSION_STORAGE_ITEM.USER_LASTACTION_TIME)));
+                        expect(parseInt(debugInstance.userLastActionTime)).toBeLessThanOrEqual(parseInt(storageManager.getItem(CmsSessionStorageItem.USER_LASTACTION_TIME)));
                         done();
                     });
                 });
@@ -345,11 +345,11 @@ describe("CmsLaunchpadComponent", () => {
         });
 
     it("should set user last action time", async(() => {
-        storageManager.set(CMS_SESSION_STORAGE_ITEM.USER, JSON.stringify(userData));
-        storageManager.set(CMS_SESSION_STORAGE_ITEM.SETTINGS, JSON.stringify(settingsData));
+        storageManager.setItem(CmsSessionStorageItem.USER, JSON.stringify(userData));
+        storageManager.setItem(CmsSessionStorageItem.SETTINGS, JSON.stringify(settingsData));
         fixture.detectChanges();
         fixture.whenStable().then(() => {
-            expect(storageManager.get(CMS_SESSION_STORAGE_ITEM.USER_LASTACTION_TIME)).toBeDefined();
+            expect(storageManager.getItem(CmsSessionStorageItem.USER_LASTACTION_TIME)).toBeDefined();
         });
     }));
 
@@ -389,8 +389,8 @@ describe("CmsLaunchpadComponent", () => {
     }));
 
     it("should set user last action time", async(() => {
-        storageManager.set(CMS_SESSION_STORAGE_ITEM.USER, JSON.stringify(userData));
-        storageManager.remove(CMS_SESSION_STORAGE_ITEM.SETTINGS);
+        storageManager.setItem(CmsSessionStorageItem.USER, JSON.stringify(userData));
+        storageManager.removeItem(CmsSessionStorageItem.SETTINGS);
         component.ngOnInit();
         fixture.whenStable().then(() => {
             expect(cmsSettingsService.userSettings).toBeUndefined();

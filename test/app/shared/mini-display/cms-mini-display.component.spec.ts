@@ -12,7 +12,7 @@ import { AppConfig } from "../../../../app/config";
 import { CmsMiniDisplayService } from "../../../../app/shared/mini-display/cms-mini-display.service";
 import { EventManager } from "../../../../app/utils/event-manager.util";
 import { StorageManager } from "../../../../app/cms/api/cms-storagemanager.service";
-import { CMS_SESSION_STORAGE_ITEM } from "../../../../app/cms/models/cms-session-storage-item";
+import { CmsSessionStorageItem } from "../../../../app/cms/models/cms-session-storage-item";
 import { MockElementRef, CmsMiniDisplayServiceStub, RouterStub, mockDisplay, EventCases, reFactoredTile, reFactoredSource, reFactoredTileContent, miniDisplay, mockDisplayForService } from "../../core/mock-stubs/cms-mini-display.component.mock";
 
 describe("CmsMiniDisplayComponent", () => {
@@ -64,14 +64,14 @@ describe("CmsMiniDisplayComponent", () => {
             appConfig = fixture.debugElement.injector.get(AppConfig);
             router = fixture.debugElement.injector.get(Router);
             logSpy = spyOn(appConfig, "log").and.returnValue(Observable.of(null));
-            addEventSpy = spyOn(EventManager, "addEventOnElement").and.returnValue(Observable.of(null));
+            addEventSpy = spyOn(EventManager, "ADD_EVENT_ON_ELEMENT").and.returnValue(Observable.of(null));
             navigateSpy = spyOn(router, "navigate").and.returnValue(Observable.of(null));
-            sessionStorage.setItem(CMS_SESSION_STORAGE_ITEM.DISPLAY, JSON.stringify(mockDisplay));
+            sessionStorage.setItem(CmsSessionStorageItem.DISPLAY, JSON.stringify(mockDisplay));
         });
     }));
 
     beforeEach(() => {
-        sessionStorage.setItem(CMS_SESSION_STORAGE_ITEM.DISPLAY, JSON.stringify(mockDisplay));
+        sessionStorage.setItem(CmsSessionStorageItem.DISPLAY, JSON.stringify(mockDisplay));
         debugInstance.zoomlevel = 0;
         hammerOnSpy = spyOn(Hammer, "on").and.returnValue(Observable.of(null));
         component.fitHeight = 100;
@@ -118,7 +118,7 @@ describe("CmsMiniDisplayComponent", () => {
             }
         );
         expect(spyInitDisplayTileInfoWithContent.calls.count()).toEqual(1);
-        expect(JSON.parse(sessionStorage.getItem(CMS_SESSION_STORAGE_ITEM.DISPLAY))).toEqual(EventCases.DisplayUpdated);
+        expect(JSON.parse(sessionStorage.getItem(CmsSessionStorageItem.DISPLAY))).toEqual(EventCases.DisplayUpdated);
     });
 
     it("should handle DisplayDeleted event", () => {
@@ -133,7 +133,7 @@ describe("CmsMiniDisplayComponent", () => {
         let args = navigateSpy.calls.mostRecent().args;
         expect(args[0]).toEqual(["/displays-panel"]);
         expect(appConfig.log).toHaveBeenCalled();
-        expect(sessionStorage.getItem(CMS_SESSION_STORAGE_ITEM.DISPLAY)).toBeNull();
+        expect(sessionStorage.getItem(CmsSessionStorageItem.DISPLAY)).toBeNull();
     });
 
     it("should handle TilerAndContentUpdated event", () => {
@@ -215,7 +215,7 @@ describe("CmsMiniDisplayComponent", () => {
         expect(container.length).toEqual(1);
 
         debugInstance.addMiniDisplayEventListeners();
-        expect(EventManager.addEventOnElement).toHaveBeenCalled();
+        expect(EventManager.ADD_EVENT_ON_ELEMENT).toHaveBeenCalled();
         let args = addEventSpy.calls.mostRecent().args;
         expect(args[0]).toEqual(container[0]);
         expect(args[1]).toEqual("keydown");
@@ -247,7 +247,7 @@ describe("CmsMiniDisplayComponent", () => {
         debugInstance.subscribeWindowResize();
         expect(debugInstance.windowResizeSubscription).toBeDefined();
         debugInstance.windowResizeSubscription.next();
-        expect(JSON.stringify(component.display)).toEqual(sessionStorage.getItem(CMS_SESSION_STORAGE_ITEM.DISPLAY));
+        expect(JSON.stringify(component.display)).toEqual(sessionStorage.getItem(CmsSessionStorageItem.DISPLAY));
         expect(appConfig.log).toHaveBeenCalled();
         expect(debugInstance.miniDisplayStyle.height).toEqual(miniDisplay.miniDisplaySize.height + "px");
         expect(debugInstance.miniDisplayStyle.width).toEqual(miniDisplay.miniDisplaySize.width + "px");
@@ -261,7 +261,7 @@ describe("CmsMiniDisplayComponent", () => {
     });
 
     it("should throw error while invoking getMiniDisplayTilerInfoWithContent API", () => {
-        sessionStorage.setItem(CMS_SESSION_STORAGE_ITEM.DISPLAY, JSON.stringify({ "id": -1 }));
+        sessionStorage.setItem(CmsSessionStorageItem.DISPLAY, JSON.stringify({ "id": -1 }));
         debugInstance.initDisplayTileInfoWithContent();
         expect(debugInstance.showDisplayContent).toBeFalsy();
     });

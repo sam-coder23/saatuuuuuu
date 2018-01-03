@@ -8,7 +8,7 @@ import { TranslateHttpLoader } from "@ngx-translate/http-loader";
 import { MaterialModule, MdRippleModule } from "@angular/material";
 import { FormsModule } from "@angular/forms";
 import { Router, ActivatedRoute } from "@angular/router";
-import { UserConfig } from "../../../../app/launchpad/models/cms-user.model";
+import { IUserConfig } from "../../../../app/launchpad/models/cms-user.model";
 import { IUserProfileSettings } from "../../../../app/cms/models/cms-user-profile-settings";
 import { CmsLoginComponent } from "../../../../app/launchpad/login/cms-login.component";
 import { CmsSettingsService } from "../../../../app/launchpad/settings/cms-settings.service";
@@ -17,14 +17,14 @@ import { StorageManager } from "../../../../app/cms/api/cms-storagemanager.servi
 import { CmsMiniDisplayService } from "../../../../app/shared/mini-display/cms-mini-display.service";
 import { APIRequest } from "../../../../app/cms/api/api-request";
 import { AppConfig } from "../../../../app/config";
-import { CMS_SESSION_STORAGE_ITEM } from "../../../../app/cms/models/cms-session-storage-item";
+import { CmsSessionStorageItem } from "../../../../app/cms/models/cms-session-storage-item";
 import { MockUser, MockUserProfileSettings, MoclLicenseinfo } from "./../../core/mock-stubs/login.mock";
 
 /**
  * Fake CmsApiService Service
  */
 class MockCmsApiService {
-    login(mockUser): Observable<UserConfig> {
+    login(mockUser): Observable<IUserConfig> {
         if(mockUser.username === MockUser.username && mockUser.password === MockUser.password) {
             return Observable.of(MockUser);
         } else {
@@ -148,7 +148,7 @@ describe("CmsLoginComponent", () => {
         debugInstance.onLoginSubmit();
         fixture.detectChanges();
         fixture.whenStable().then(() => {
-            let userModel = JSON.parse(storageManager.get(CMS_SESSION_STORAGE_ITEM.USER));
+            let userModel = JSON.parse(storageManager.get(CmsSessionStorageItem.USER));
             if(userModel) {
                 expect(userModel.username).toEqual(MockUser.username);
                 expect(userModel.loggedIn).toEqual(true);

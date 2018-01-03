@@ -3,18 +3,21 @@
  * This component renders inside the TilesPanel component.
  */
 import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, SimpleChanges } from "@angular/core";
+import { ActivatedRoute } from "@angular/router";
+import { Subscription } from "rxjs/Rx";
+import { CMS_EVENTS } from "../../cms/api/cms-events.enum";
+import { Display } from "../../cms/models/cms-display";
+import { CmsSettingsService } from "../../launchpad/settings/cms-settings.service";
+
 import { CmsApiService } from "../../cms/api/cms-api.service";
 import { ITilePreset } from "../../cms/models/cms-tile-preset";
-import { ActivatedRoute } from "@angular/router";
 import { TilePresetManager } from "../../utils/tilepreset-manager.util";
-import { Subscription } from "rxjs/Rx";
 import { CmsEventEmitterService } from "./../../cms/api/cms-event-emitter.service";
-import { CMS_EVENTS } from "../../cms/api/cms-events.enum";
+
 import { ICmsEvent } from "../../cms/models/cms-event";
 import { Validation } from "../../core/util/Validation";
 import { CMSConstants } from "./../../cms/models/cms-constants";
-import { CmsSettingsService } from "../../launchpad/settings/cms-settings.service";
-import { Display } from "../../cms/models/cms-display";
+
 import { Source } from "../../cms/models/cms-source";
 
 @Component({
@@ -49,7 +52,8 @@ export class CmsTileListComponent implements OnInit, OnDestroy {
     private tileListEventSubscription: Subscription;
     private displayID: number;
     // it saves the
-    private miniDisplayEventSubscription: EventEmitter<any> = null;
+    private miniDisplayEventSubscription: EventEmitter<any>;
+    private parseIntBase: number = 10;
 
     constructor(
         private activatedRoute: ActivatedRoute,
@@ -57,7 +61,8 @@ export class CmsTileListComponent implements OnInit, OnDestroy {
         private cmsSettingService: CmsSettingsService
     ) {
         this.tilePresets = [];
-        this.displayID = parseInt(this.activatedRoute.params["value"]["id"], 10);
+        // tslint:disable-next-line:no-string-literal
+        this.displayID = parseInt(this.activatedRoute.params["value"].id, this.parseIntBase);
     }
 
     public ngOnInit(): void {
@@ -74,10 +79,10 @@ export class CmsTileListComponent implements OnInit, OnDestroy {
 
     public ngOnDestroy(): void {
         // Unsubscribe cms events for tile list component
-        if (!Validation.IsNullOrUndefined(this.miniDisplayEventSubscription)) {
+        if (!Validation.IS_NULL_OR_UNDEFINED(this.miniDisplayEventSubscription)) {
             this.miniDisplayEventSubscription.unsubscribe();
         }
-        if (!Validation.IsNullOrUndefined(this.tileListEventSubscription)) {
+        if (!Validation.IS_NULL_OR_UNDEFINED(this.tileListEventSubscription)) {
             this.tileListEventSubscription.unsubscribe();
         }
     }
@@ -130,7 +135,7 @@ export class CmsTileListComponent implements OnInit, OnDestroy {
         // get tile presets filtered by number of tiles
         this.cmsServerApi.getTilePresets(this.sourceCount).subscribe((tilePresets: ITilePreset[]) => {
             this.tilePresets = tilePresets;
-            this.defaultTilerID = TilePresetManager.GetTileId(
+            this.defaultTilerID = TilePresetManager.GET_TILE_ID(
                 this.tilePresets,
                 this.sourceCount,
                 this.displayID
@@ -138,15 +143,15 @@ export class CmsTileListComponent implements OnInit, OnDestroy {
             // mark tilePreset which is currently applied on the display wall
             this.markTileSelected();
             // subscribe for display change events
-            if (Validation.IsNullOrUndefined(this.miniDisplayEventSubscription)) {
-                this.miniDisplayEventSubscription = CmsEventEmitterService.get(CMS_EVENTS.MiniDisplay)
+            if (Validation.IS_NULL_OR_UNDEFINED(this.miniDisplayEventSubscription)) {
+                this.miniDisplayEventSubscription = CmsEventEmitterService.REGISTER(CMS_EVENTS.MiniDisplay)
                     .subscribe((event: ICmsEvent) => {
                         this.handleDisplayEvents(event);
                     });
             }
             // subscribe for TileList events
             if (!this.tileListEventSubscription) {
-                this.tileListEventSubscription = CmsEventEmitterService.get(CMS_EVENTS.TileList)
+                this.tileListEventSubscription = CmsEventEmitterService.REGISTER(CMS_EVENTS.TileList)
                     .subscribe((event: ICmsEvent) => this.handleTilePresetListEvents(event));
             }
         });
@@ -167,7 +172,8 @@ export class CmsTileListComponent implements OnInit, OnDestroy {
      * @return {void}
      */
     private markTileSelected(): void {
-        const displayId: number = parseInt(this.activatedRoute.params["value"]["id"], 10);
+        // tslint:disable-next-line:no-string-literal
+        const displayId: number = parseInt(this.activatedRoute.params["value"].id, this.parseIntBase);
         this.cmsServerApi.getSelectedDisplayContent(displayId).subscribe((display: Display) => {
             if (display) {
                 this.selectTileInPresets(display);
@@ -182,13 +188,13 @@ export class CmsTileListComponent implements OnInit, OnDestroy {
      * @return {void}
      */
     private selectTile(tilePreset: ITilePreset): void {
-        if (Validation.IsNullOrUndefined(tilePreset)) {
+        if (Validation.IS_NULL_OR_UNDEFINED(tilePreset)) {
             return;
         }
         // unmark previous selected tile
-        for (let tileIndex: number = 0; tileIndex < this.tilePresets.length; tileIndex++) {
-            if (this.tilePresets[tileIndex].isSelected) {
-                this.tilePresets[tileIndex].isSelected = false;
+        for (const tile of this.tilePresets){
+            if (tile.isSelected) {
+                tile.isSelected = false;
             }
         }
         // mark current tile as selected
@@ -204,18 +210,20 @@ export class CmsTileListComponent implements OnInit, OnDestroy {
     private handleDisplayEvents(event: any): void {
         if (!event && !event.body) { return; }
 
-        const displayId: number = parseInt(this.activatedRoute.params["value"]["id"], 10);
+        // tslint:disable-next-line:no-string-literal
+        const displayId: number = parseInt(this.activatedRoute.params["value"].id, this.parseIntBase);
         if (event.eventType === CMSConstants.DISPLAYUPDATED) {
             if (event.displayId === displayId) {
                 let tileAlreadySelected: boolean = false;
                 const displayTilerId: number = event.body.tilerId;
                 // looping through all tile-presets and find same selected tiler
-                for (let tilePresetIndex: number = 0; tilePresetIndex < this.tilePresets.length; tilePresetIndex++) {
-                    if ((this.tilePresets[tilePresetIndex].id === displayTilerId) && this.tilePresets[tilePresetIndex].isSelected) {
+                for (const tilePreset of this.tilePresets) {
+                    if ((tilePreset.id === displayTilerId) && tilePreset.isSelected) {
                         tileAlreadySelected = true;
                         break;
                     }
                 }
+
                 if (!tileAlreadySelected) {
                     this.changeEmitter.emit();
                 }
@@ -235,11 +243,11 @@ export class CmsTileListComponent implements OnInit, OnDestroy {
         }
         const tilerId: number = display.tilerId;
         if (tilerId > 0) {
-            for (let tileIndex: number = 0; tileIndex < this.tilePresets.length; tileIndex++) {
-                if (tilerId === this.tilePresets[tileIndex].id) {
-                    this.tilePresets[tileIndex].isSelected = true;
+            for (const tile of this.tilePresets) {
+                if (tilerId === tile.id) {
+                    tile.isSelected = true;
                 } else {
-                    this.tilePresets[tileIndex].isSelected = false;
+                    tile.isSelected = false;
                 }
             }
         }

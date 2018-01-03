@@ -1,12 +1,11 @@
-import { IUserToken } from "./cms-user-token";
-
 /**
  * This interface is reponsible for user model type checks
- * @interface UserConfig
+ * @interface IUserConfig
  * @property {string} username For username type check
  * @property {string} password For password type check
  */
-export interface UserConfig {
+import { IUserToken } from "./cms-user-token";
+export interface IUserConfig {
     username: string;
     password: string;
 }
@@ -24,7 +23,7 @@ export class User {
     public password: string;
     public loggedIn: boolean;
 
-    constructor(user: UserConfig) {
+    constructor(user: IUserConfig) {
         this.username = user.username;
         this.password = user.password;
     }
@@ -81,9 +80,9 @@ export class User {
     /**
      * With the help of this getter method, application can get the username and password
      * @method toJSON
-     * @return UserConfig
+     * @return IUserConfig
      */
-     public toJSON() : UserConfig {
+     public toJSON() : IUserConfig {
         return {
             username : this.username,
             password: this.password

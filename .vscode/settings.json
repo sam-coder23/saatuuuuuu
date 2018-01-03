@@ -1,0 +1,18 @@
+{
+  "workbench.startupEditor": "welcomePage",
+  "window.zoomLevel": 0,
+  "files.trimTrailingWhitespace": true,
+  "files.insertFinalNewline": true,
+  "files.trimFinalNewlines": true,
+  "editor.rulers": [
+    80
+  ],
+  "editor.tabSize": 2,
+  "editor.wordWrap": "on",
+  "editor.wordWrapColumn": 80,
+  "editor.formatOnType": true,
+  "editor.formatOnPaste": true,
+  "editor.autoIndent": true,
+  "editor.showFoldingControls": "always",
+  "tslint.exclude": "**/test/**/*.ts"
+}

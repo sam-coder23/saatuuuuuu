@@ -15,7 +15,7 @@ import { CmsFavoriteService } from "../../../../app/shared/cms-favorite.service"
 import { StorageManager } from "../../../../app/cms/api/cms-storagemanager.service";
 import { AppConfig } from "../../../../app/config";
 import { CMSConstants } from "../../../../app/cms/models/cms-constants";
-import { CMS_SESSION_STORAGE_ITEM } from "../../../../app/cms/models/cms-session-storage-item";
+import { CmsSessionStorageItem } from "../../../../app/cms/models/cms-session-storage-item";
 import { Display } from "../../../../app/cms/models/cms-display";
 import { MocksUerProfileSettingsData } from "./../../core/mock-stubs/api-service.mock";
 import { MockDisplay } from "../../core/mock-stubs/cms-mini-display.component.mock";
@@ -241,7 +241,7 @@ describe("CmsDisplayListComponent", () => {
             cmsFavoriteService = fixture.debugElement.injector.get(CmsFavoriteService);
             translateService = fixture.debugElement.injector.get(TranslateService);
             translateService.setDefaultLang("en");
-            spyRemove = spyOn(storageManager, "remove").and.returnValue(Observable.of(null));
+            spyRemove = spyOn(storageManager, "removeItem").and.returnValue(Observable.of(null));
             spyRouter = spyOn(routerService, "navigate").and.returnValue(Observable.of(null));
             spyMarkObjectAsFavorite = spyOn(cmsFavoriteService, "markObjectAsFavorite").and.returnValue(Observable.of(null));
             spyMarkObjectAsUnfavorite = spyOn(cmsFavoriteService, "markObjectAsUnfavorite").and.returnValue(Observable.of(null));
@@ -389,7 +389,7 @@ describe("CmsDisplayListComponent", () => {
         fixture.detectChanges();
         fixture.whenStable().then(() => {
             expect(debugInstance.showConfirmationPopup).toBeFalsy();
-            expect(JSON.parse(window.sessionStorage.getItem(CMS_SESSION_STORAGE_ITEM.DISPLAY))).not.toBeNull();
+            expect(JSON.parse(window.sessionStorage.getItem(CmsSessionStorageItem.DISPLAY))).not.toBeNull();
             // expect(storageManager.remove).toHaveBeenCalled();
         });
         debugInstance.eventSubscription.next(
@@ -406,7 +406,7 @@ describe("CmsDisplayListComponent", () => {
                 "verb": "deleted"
             }
         );
-        expect(JSON.parse(window.sessionStorage.getItem(CMS_SESSION_STORAGE_ITEM.DISPLAY))).not.toBeNull();
+        expect(JSON.parse(window.sessionStorage.getItem(CmsSessionStorageItem.DISPLAY))).not.toBeNull();
     });
 
 

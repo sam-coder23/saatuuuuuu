@@ -14,7 +14,7 @@ import { AppConfig } from "../../../../app/config";
 import { StorageManager } from "../../../../app/cms/api/cms-storagemanager.service";
 import { CmsSettingsService } from "../../../../app/launchpad/settings/cms-settings.service";
 import { CmsApiService } from "../../../../app/cms/api/cms-api.service";
-import { CMS_SESSION_STORAGE_ITEM } from "../../../../app/cms/models/cms-session-storage-item";
+import { CmsSessionStorageItem } from "../../../../app/cms/models/cms-session-storage-item";
 import { CmsResource } from "../../../../app/cms/models/cms-resource";
 import { By } from "@angular/platform-browser";
 import { Subject } from "rxjs/Subject";
@@ -158,10 +158,10 @@ describe("CmsDisplayPanelComponent - Test Suite", () => {
     });
 
     function removeDisplay() {
-        window.sessionStorage.removeItem(CMS_SESSION_STORAGE_ITEM.DISPLAY);
+        window.sessionStorage.removeItem(CmsSessionStorageItem.DISPLAY);
     }
 
     function setDisplay() {
-        window.sessionStorage.setItem(CMS_SESSION_STORAGE_ITEM.DISPLAY, JSON.stringify(display));
+        window.sessionStorage.setItem(CmsSessionStorageItem.DISPLAY, JSON.stringify(display));
     }
 });

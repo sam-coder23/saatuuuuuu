@@ -1,19 +1,19 @@
 /**
  * This is a grid component that creates a tiler on mini-display along with the content.
  */
-import { Component, OnInit, Input, Output, HostListener, ElementRef, AfterViewInit } from "@angular/core";
+import { AfterViewInit, Component, ElementRef, Input, OnInit } from "@angular/core";
+import { Observable } from "rxjs/Observable";
+
 import { Tile } from "../../../cms/models/cms-tile";
-import { Source } from "./../../../cms/models/cms-source";
-import { CmsSettingsService } from "./../../../launchpad/settings/cms-settings.service";
-import { CmsApiService } from "./../../../cms/api/cms-api.service";
+import { IUserProfileSettings } from "../../../cms/models/cms-user-profile-settings";
 import { AppConfig } from "../../../config";
-import { CmsMiniDisplayService } from "./../cms-mini-display.service";
-import { TileContent } from "./../../../cms/models/cms-tile-content";
 import { RegExManager } from "../../../core/util/RegEx";
 import { Url } from "../../../core/util/URL";
 import { Validation } from "../../../core/util/Validation";
-import { Observable } from "rxjs/Observable";
-import { IUserProfileSettings } from "../../../cms/models/cms-user-profile-settings";
+import { CmsApiService } from "./../../../cms/api/cms-api.service";
+import { TileContent } from "./../../../cms/models/cms-tile-content";
+import { CmsSettingsService } from "./../../../launchpad/settings/cms-settings.service";
+import { CmsMiniDisplayService } from "./../cms-mini-display.service";
 
 @Component({
     selector: "cms-grid",
@@ -37,14 +37,14 @@ import { IUserProfileSettings } from "../../../cms/models/cms-user-profile-setti
  */
 export class CmsGridComponent implements OnInit, AfterViewInit {
     // the input property will contain the array of tiles applied on the display
-    @Input() public miniTiles: Tile[] = null;
+    @Input() public miniTiles: Tile[];
     // the input property will contain the array of actual tiles of display wall
-    @Input() public tiles: Tile[] = null;
+    @Input() public tiles: Tile[];
     // the input property will contain the array of sources in each tile
-    @Input() public contents: TileContent[] = null;
+    @Input() public contents: TileContent[];
     // Collect swapping content when clicked
-    private selectedContent: TileContent = null;
-    private swappingContent: TileContent = null;
+    private selectedContent: TileContent;
+    private swappingContent: TileContent;
     // checking api call state
     private loading: boolean = false;
     // hold source-label multiline state
@@ -66,13 +66,15 @@ export class CmsGridComponent implements OnInit, AfterViewInit {
     }
 
     public ngAfterViewInit(): void {
+        const timeValue: number = 500;
         Observable.fromEvent(this.elementRef.nativeElement, "click")
-            .debounceTime(500)
+            .debounceTime(timeValue)
             .subscribe((event: any) => {
                 const contentId: string = event.target.getAttribute("data-content-id");
                 if (contentId) {
+                    const radixValue: number = 10;
                     const filteredContent: TileContent = this.contents.find((content: TileContent) => {
-                        return content.id === parseInt(contentId, 10);
+                        return content.id === parseInt(contentId, radixValue);
                     });
                     this.contentClick(filteredContent);
                 }
@@ -92,10 +94,10 @@ export class CmsGridComponent implements OnInit, AfterViewInit {
         let snapshotPath: string;
         if (rawStyle.snapshotPath) {
             snapshotPath = rawStyle.snapshotPath;
-            if (Url.HasHostName()
-                && !Validation.IsNullOrUndefined(snapshotPath)
-                && Url.HasIP(snapshotPath)) {
-                snapshotPath = RegExManager.IPToHost(snapshotPath, this.appConfig.Host);
+            if (Url.HAS_HOST_NAME()
+                && !Validation.IS_NULL_OR_UNDEFINED(snapshotPath)
+                && Url.HAS_IP(snapshotPath)) {
+                snapshotPath = RegExManager.IPTOHOST(snapshotPath, this.appConfig.Host);
             }
             if (snapshotPath) {
                 snapshotPath = `url(${snapshotPath}&_=${rawStyle.lastModified})`;
@@ -123,7 +125,7 @@ export class CmsGridComponent implements OnInit, AfterViewInit {
         if (this.loading) {
             return;
         }
-        if (Validation.IsNullOrUndefined(this.selectedContent)) {
+        if (Validation.IS_NULL_OR_UNDEFINED(this.selectedContent)) {
             // When no source selected at this moment and on first source content clicked\ selected for swapping
             this.selectedContent = content;
         } else if (content) {
@@ -144,9 +146,9 @@ export class CmsGridComponent implements OnInit, AfterViewInit {
      * @param {number} contentId
      */
     public showSelected(contentId: number): boolean {
-        if (!Validation.IsNullOrUndefined(this.selectedContent)) {
+        if (!Validation.IS_NULL_OR_UNDEFINED(this.selectedContent)) {
             if ((contentId === this.selectedContent.id)
-                || (!Validation.IsNullOrUndefined(this.swappingContent) &&
+                || (!Validation.IS_NULL_OR_UNDEFINED(this.swappingContent) &&
                     (this.swappingContent.id) === contentId)) {
                 return true;
             }
@@ -167,11 +169,12 @@ export class CmsGridComponent implements OnInit, AfterViewInit {
         const fontSize: number = userSettings.sourceLabel.fontSize;
         const fontColor: string = userSettings.sourceLabel.fontColor;
         const background: string = userSettings.sourceLabel.backgroundColor;
+        const percentvalue: number = 100;
         let transparency: number = userSettings.sourceLabel.transparency;
 
-        if (transparency < 100) {
-            transparency = (100 - transparency) / 100;
-        } else if (transparency === 100) {
+        if (transparency < percentvalue) {
+            transparency = (percentvalue - transparency) / percentvalue;
+        } else if (transparency === percentvalue) {
             transparency = 0;
         }
         const sourcelabelStyles: string = `font-size: ${fontSize}px; color: ${fontColor}; display: ${isSourceLableEnabled}`;
@@ -198,7 +201,8 @@ export class CmsGridComponent implements OnInit, AfterViewInit {
         styleTag.setAttribute("id", "sourceLabelStylesheet");
         head.appendChild(styleTag);
         if (styleTag) {
-            styleTag.innerHTML = `.source-label-container{ ${sourceStyle} } .source-label-container::before{ ${backgroundStyles} }`;
+            const styleText: any = document.createTextNode(`.source-label-container{ ${sourceStyle} } .source-label-container::before{ ${backgroundStyles} }`);
+            styleTag.appendChild(styleText);
         }
     }
 
@@ -294,8 +298,8 @@ export class CmsGridComponent implements OnInit, AfterViewInit {
      * @returns {void}.
      */
     private deselctedSource(): void {
-        this.selectedContent = null;
-        this.swappingContent = null;
+        this.selectedContent = undefined;
+        this.swappingContent = undefined;
     }
 
     /**

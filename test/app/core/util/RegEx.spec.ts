@@ -7,11 +7,11 @@ describe("RegExManager method", () => {
     let expectedValue = "localhost:3000";
 
     it("IPToHost should return the converted url where IP is replaced with hostname", () => {
-        expect(RegExManager.IPToHost(mockUrl1, "localhost")).toBe(expectedValue);
+        expect(RegExManager.IPTOHOST(mockUrl1, "localhost")).toBe(expectedValue);
     });
 
     it("IPToHost should return same url if IP is not matched", () => {
-        expect(RegExManager.IPToHost(mockUrl2, "localhost")).toBe(mockUrl2);
+        expect(RegExManager.IPTOHOST(mockUrl2, "localhost")).toBe(mockUrl2);
     });
 
 });

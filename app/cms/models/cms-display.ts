@@ -1,7 +1,3 @@
-import { Tile } from "./cms-tile";
-import { TileContent } from "./cms-tile-content";
-import { CmsResource } from "./cms-resource";
-
 /**
  * The class defines the model for the display object.
  * @class Display
@@ -13,7 +9,12 @@ import { CmsResource } from "./cms-resource";
  * @property {TileContent[]} content source content mapped on the tile of tiler.
  */
 
+import { CmsResource } from "./cms-resource";
+import { Tile } from "./cms-tile";
+import { TileContent } from "./cms-tile-content";
+
 export class Display extends CmsResource {
+    // tslint:disable-next-line:no-reserved-keywords
     public type: string;
     public online: boolean;
     public tilerId?: number;
@@ -32,7 +33,7 @@ export class Display extends CmsResource {
         return this.resolution.height;
     }
 
-    constructor(display: object) {
+    constructor (display: object) {
         let displayObject: Display;
         if (display) {
             displayObject = <Display>display;

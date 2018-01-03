@@ -4,6 +4,9 @@
  * @class CMSConstants
  * @class CMSConstants
  */
+
+// tslint:disable:no-magic-numbers
+
 export class CMSConstants {
     public static RTLLANGUAGES: string[] = ["ar"];
     public static DISPLAYUPDATED: string = "DisplayUpdated";

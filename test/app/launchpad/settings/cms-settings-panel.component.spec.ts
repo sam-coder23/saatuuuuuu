@@ -16,7 +16,7 @@ import { CmsApiService } from "../../../../app/cms/api/cms-api.service";
 import { AppConfig } from "../../../../app/config";
 import { StorageManager } from "../../../../app/cms/api/cms-storagemanager.service";
 import { APIRequest } from "../../../../app/cms/api/api-request";
-import { CMS_SESSION_STORAGE_ITEM } from "../../../../app/cms/models/cms-session-storage-item";
+import { CmsSessionStorageItem } from "../../../../app/cms/models/cms-session-storage-item";
 import { CMSConstants } from "../../../../app/cms/models/cms-constants";
 
 let spyRouter = {
@@ -227,7 +227,7 @@ describe("Component CmsSettingsPanelComponent", () => {
                 AppConfig,
                 APIRequest,
                 TranslateService,
-                CMS_SESSION_STORAGE_ITEM
+                CmsSessionStorageItem
             ],
             imports: [
                 HttpModule,
@@ -406,7 +406,7 @@ describe("Component CmsSettingsPanelComponent", () => {
                 debugInstance.updateUserSettingsByAction($event);
                 fixture.detectChanges();
                 fixture.whenStable().then(() => {
-                    let wallConnectionStatus = JSON.parse(storageManager.get(CMS_SESSION_STORAGE_ITEM.SETTINGS)).wallConnection.startUpAction;
+                    let wallConnectionStatus = JSON.parse(storageManager.get(CmsSessionStorageItem.SETTINGS)).wallConnection.startUpAction;
                     expect(wallConnectionStatus).toEqual($event.value);
                 });
             });
@@ -432,7 +432,7 @@ describe("Component CmsSettingsPanelComponent", () => {
                 debugInstance.updateUserSettingsByAction($event);
                 fixture.detectChanges();
                 fixture.whenStable().then(() => {
-                    let wallConnectionStatus = JSON.parse(storageManager.get(CMS_SESSION_STORAGE_ITEM.SETTINGS)).wallConnection.startUpAction;
+                    let wallConnectionStatus = JSON.parse(storageManager.get(CmsSessionStorageItem.SETTINGS)).wallConnection.startUpAction;
                     expect(wallConnectionStatus).toEqual($event.value);
                     expect(autoConnectToSpecificWallSelectButton.hasAttribute("disabled")).toBe(false);
                     debugInstance.goToSelectDisplayForAutoConnect($event);
@@ -576,7 +576,7 @@ describe("Component CmsSettingsPanelComponent", () => {
                     debugInstance.updateUserSettingsByAction($event);
                     fixture.detectChanges();
                     fixture.whenStable().then(() => {
-                        let displaySourceNameLabels = JSON.parse(storageManager.get(CMS_SESSION_STORAGE_ITEM.SETTINGS)).sourceLabel.displaySourceNameLabels;
+                        let displaySourceNameLabels = JSON.parse(storageManager.getItem(CmsSessionStorageItem.SETTINGS)).sourceLabel.displaySourceNameLabels;
                         expect(displaySourceNameLabels).toEqual($event.checked);
                     });
                 });
@@ -601,7 +601,7 @@ describe("Component CmsSettingsPanelComponent", () => {
                     debugInstance.updateUserSettingsByAction($event);
                     fixture.detectChanges();
                     fixture.whenStable().then(() => {
-                        let useMultipleLines = JSON.parse(storageManager.get(CMS_SESSION_STORAGE_ITEM.SETTINGS)).sourceLabel.useMultipleLines;
+                        let useMultipleLines = JSON.parse(storageManager.getItem(CmsSessionStorageItem.SETTINGS)).sourceLabel.useMultipleLines;
                         expect(useMultipleLines).toEqual($event.checked);
                     });
                 });
@@ -627,7 +627,7 @@ describe("Component CmsSettingsPanelComponent", () => {
                         debugInstance.updateFontColor($event);
                         fixture.detectChanges();
                         fixture.whenStable().then(() => {
-                            let fontColor = JSON.parse(storageManager.get(CMS_SESSION_STORAGE_ITEM.SETTINGS)).sourceLabel.fontColor;
+                            let fontColor = JSON.parse(storageManager.getItem(CmsSessionStorageItem.SETTINGS)).sourceLabel.fontColor;
                             expect(fontColor).toEqual($event.value);
                         });
                     });
@@ -654,7 +654,7 @@ describe("Component CmsSettingsPanelComponent", () => {
                         debugInstance.updateBackgroundColor($event);
                         fixture.detectChanges();
                         fixture.whenStable().then(() => {
-                            let BGColor = JSON.parse(storageManager.get(CMS_SESSION_STORAGE_ITEM.SETTINGS)).sourceLabel.backgroundColor;
+                            let BGColor = JSON.parse(storageManager.getItem(CmsSessionStorageItem.SETTINGS)).sourceLabel.backgroundColor;
                             expect(BGColor).toEqual($event.value);
                         });
                     });

@@ -2,12 +2,13 @@
  * Component serves as a shared component for displaying name of the selected display wall
  * across the application.
  */
-import { OnInit, Component, OnDestroy } from "@angular/core";
-import { StorageManager } from "../../cms/api/cms-storagemanager.service";
-import { CMS_SESSION_STORAGE_ITEM } from "../../cms/models/cms-session-storage-item";
+import { Component, OnDestroy, OnInit } from "@angular/core";
+import { Subscription } from "rxjs";
+
 import { CmsEventEmitterService } from "../../cms/api/cms-event-emitter.service";
 import { CMS_EVENTS } from "../../cms/api/cms-events.enum";
-import { Subscription } from "rxjs";
+import { StorageManager } from "../../cms/api/cms-storagemanager.service";
+import { CmsSessionStorageItem } from "../../cms/models/cms-session-storage-item";
 import { Validation } from "../../core/util/Validation";
 
 @Component({
@@ -45,13 +46,13 @@ export class CmsDisplayNameComponent implements OnInit, OnDestroy {
      * @return {void}.
      */
     public subscribeDisplayEvents(): void {
-        this.displayEventsSubscription = CmsEventEmitterService.get(CMS_EVENTS.DisplayList)
+        this.displayEventsSubscription = CmsEventEmitterService.REGISTER(CMS_EVENTS.DisplayList)
             .subscribe((response: { uri: string, body: any, verb: string }) => {
-                let display: any = this.storageManager.get(CMS_SESSION_STORAGE_ITEM.DISPLAY);
-                if (Validation.IsNullOrUndefined(response)
+                let display: any = this.storageManager.getItem(CmsSessionStorageItem.DISPLAY);
+                if (Validation.IS_NULL_OR_UNDEFINED(response)
                     || response.verb !== "PUT"
-                    || Validation.IsNullOrUndefined(response.body)
-                    || Validation.IsNullOrUndefined(display)) {
+                    || Validation.IS_NULL_OR_UNDEFINED(response.body)
+                    || Validation.IS_NULL_OR_UNDEFINED(display)) {
                     return;
                 }
                 display = JSON.parse(display);
@@ -67,7 +68,7 @@ export class CmsDisplayNameComponent implements OnInit, OnDestroy {
      * @return {void}.
      */
     private  unsubscribeDisplayEvents(): void {
-        if (!Validation.IsNullOrUndefined(this.displayEventsSubscription)) {
+        if (!Validation.IS_NULL_OR_UNDEFINED(this.displayEventsSubscription)) {
             this.displayEventsSubscription.unsubscribe();
         }
     }
@@ -78,8 +79,8 @@ export class CmsDisplayNameComponent implements OnInit, OnDestroy {
      * @return {void}.
      */
     private setDisplayName(): void {
-        let display: any = this.storageManager.get(CMS_SESSION_STORAGE_ITEM.DISPLAY);
-        if (!Validation.IsNull(display)) {
+        let display: any = this.storageManager.getItem(CmsSessionStorageItem.DISPLAY);
+        if (!Validation.IS_NULL(display)) {
             display = JSON.parse(display);
             if (display && display.name) {
                 this.displayName = display.name;
