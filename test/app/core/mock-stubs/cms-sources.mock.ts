@@ -67,13 +67,13 @@ export const MockTilersData = [
 
 export const MockDisplay = {
     "id": 1,
-    "name": "Crisis room wall XYZ",
+    "name": "Display [AutoTestDisplay1]",
     "type": "DisplayWall",
     "description": "",
     "snapshotPath": "display_snapshot.jpg",
     "resolution": {
-        "width": 1920,
-        "height": 1080
+        "width": 3200,
+        "height": 900
     },
     "online": true,
     "favorite": false,
@@ -83,27 +83,27 @@ export const MockDisplay = {
     "tiles": [],
     "content": [
         {
-            "id": 238,
-            "name": "DefaultProSource[AutoTestDisplay11]",
+            "id": 7,
+            "name": "ECU-100: NOIVUL-ECU01: Analog: Bus-11 : Input-0",
             "type": "Perspective",
-            "resourceId": 39,
+            "resourceId": 4,
             "x": 0,
             "y": 0,
-            "width": 640,
-            "height": 540,
-            "snapshotPath": "https://10.98.0.231//mediaconfiguration?action=get&path=images%2Fsnapshots%2Fperspectives%2F39.jpeg",
+            "width": 1600,
+            "height": 900,
+            "snapshotPath": "display_snapshot.jpg",
             "zOrder": 1
         },
         {
-            "id": 141,
-            "name": "Blue",
+            "id": 8,
+            "name": "ECU-100: NOIVUL-ECU01: Analog: Bus-11 : Input-1",
             "type": "Perspective",
-            "resourceId": 23,
-            "x": 640,
+            "resourceId": 5,
+            "x": 1600,
             "y": 0,
-            "width": 640,
-            "height": 540,
-            "snapshotPath": "https://10.98.0.231//mediaconfiguration?action=get&path=images%2Fsnapshots%2Fperspectives%2F34.jpeg",
+            "width": 1600,
+            "height": 900,
+            "snapshotPath": "display_snapshot.jpg",
             "zOrder": 2
         }
     ]

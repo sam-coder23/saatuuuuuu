@@ -21,6 +21,7 @@ import { Source } from "../../../../app/cms/models/cms-source";
 import { TilePresetManager } from "../../../../app/utils/tilepreset-manager.util";
 import { MockTilersData, MockDisplay, MockSources } from "./../../core/mock-stubs/cms-sources.mock";
 import { TilePresets } from "./../../core/mock-stubs/tile-grid.mock";
+// import { SourceRepositionUtility } from "./../../../../app/utils/source-reposition.util";
 
 /**
 * Created mock services to fake real services injected into the CmsSourcesPanelComponent
@@ -37,28 +38,54 @@ activatedRoute.params = Observable.of({
 class MockCmsSettingService {
     selectedSources = [
         {
-            "id": 83,
-            "name": "Airport Entrance View",
+            "id": 2,
+            "name": "ECU-100: NOIVUL-ECU01: Analog: Bus-11 : Input-0",
             "description": "",
             "type": "Perspective",
-            "width": 1920,
-            "height": 1200,
-            "snapshotPath": "https://10.98.0.231//mediaconfiguration?action=get&path=images%2Fsnapshots%2Fperspectives%2F47.jpeg",
+            "width": 1600,
+            "height": 900,
+            "snapshotPath": "display_snapshot.jpg",
             "favorite": false,
             "selected": true
         },
         {
-            "id": 88,
-            "name": "Airport Entrance",
+            "id": 3,
+            "name": "ECU-100: NOIVUL-ECU01: Analog: Bus-11 : Input-1",
             "description": "",
             "type": "Perspective",
-            "width": 1920,
-            "height": 1200,
-            "snapshotPath": "https://10.98.0.231//mediaconfiguration?action=get&path=images%2Fsnapshots%2Fperspectives%2F63.jpeg",
+            "width": 1600,
+            "height": 900,
+            "snapshotPath": "display_snapshot.jpg",
             "favorite": false,
             "selected": true
         }
-    ]
+    ];
+    sourcesOnDisplay = [
+        {
+            "id": 238,
+            "name": "DefaultProSource[AutoTestDisplay11]",
+            "type": "Perspective",
+            "resourceId": 39,
+            "x": 0,
+            "y": 0,
+            "width": 640,
+            "height": 540,
+            "snapshotPath": "display_snapshot.jpg",
+            "zOrder": 1
+        },
+        {
+            "id": 141,
+            "name": "Blue",
+            "type": "Perspective",
+            "resourceId": 23,
+            "x": 640,
+            "y": 0,
+            "width": 640,
+            "height": 540,
+            "snapshotPath": "display_snapshot.jpg",
+            "zOrder": 2
+        }
+    ];
 };
 
 
@@ -97,6 +124,7 @@ describe("CmsSourcesPanelComponent", () => {
     let tilePresetManager: TilePresetManager;
     let spyGetTileId;
     let appConfig: AppConfig;
+    // let sourceRepositionUtility: SourceRepositionUtility;
 
     beforeEach(async(() => {
         TestBed.configureTestingModule({
@@ -149,6 +177,7 @@ describe("CmsSourcesPanelComponent", () => {
             cmsApiService = injector.get(CmsApiService);
             translateService = injector.get(TranslateService);
             appConfig = injector.get(AppConfig);
+            router = injector.get(Router);
 
             translateService.setDefaultLang("en");
             translateService.get("sourceList.connectTo", { value: CMSConstants.MAXSELECTION }).subscribe((response: string) => {
@@ -222,7 +251,7 @@ describe("CmsSourcesPanelComponent", () => {
         fixture.detectChanges();
         let buttonBack = nativeElement.querySelector("#layouts-panel-back-button");
         expect(buttonBack).toBeTruthy();
-        let router = fixture.debugElement.injector.get(Router);
+        
         let spyNavigateByUrl = spyOn(router, "navigateByUrl").and.returnValue(null);
         buttonBack.dispatchEvent(new Event("ndClick"));
         expect(spyNavigateByUrl.calls.argsFor(0)[0]).toEqual(`/home/${debugInstance.displayId}`);
@@ -301,14 +330,44 @@ describe("CmsSourcesPanelComponent", () => {
         });
     });
 
-    // it("should call CmsApiService.putContentsOnDisplay when source is selected", (done) => {
-    //     fixture.detectChanges();
-    //     component.shareTheSources();
-    //     let args = spyPutContentsOnDisplay.calls.mostRecent().args;
-    //     expect(args[0]).toEqual(debugInstance.displayId);
-    //     expect(args[1]).toEqual(MockTilersData[1].id);
-    //     expect(args[2].resources[0].id).toEqual(debugInstance.cmsSettingService.selectedSources[0].id);
-    //     expect(args[2].resources[1].id).toEqual(debugInstance.cmsSettingService.selectedSources[1].id);
-    //     done();
-    // });
+    it("should set cancelClearWallPopup to False on list change", () => {
+        debugInstance.cancelClearWallPopup();
+        expect(debugInstance.showClearWallPopup).toBeFalsy();
+    });
+
+    it("should set closingClearWallPopup to False on list change", () => {
+        debugInstance.closingClearWallPopup();
+        expect(debugInstance.showClearWallPopup).toBeFalsy();
+    });
+
+    it("should showsource", () => {
+        let showSourcesButton = fixture.nativeElement.querySelector("#sources-panel-next-button");
+        expect(showSourcesButton).toBeTruthy();
+
+        let shareTheSources = spyOn(debugInstance, "shareTheSources").and.returnValue(null);
+        showSourcesButton.dispatchEvent(new Event("ndClick"));
+
+        expect(shareTheSources.calls.count()).toEqual(1);
+    });
+
+    it("should showsource called", () => {
+        let putContentsOnDisplay = spyOn(cmsApiService, "putContentsOnDisplay").and.returnValue(Observable.of(null));
+        debugInstance.shareTheSources();
+        expect(putContentsOnDisplay.calls.count()).toEqual(1);
+    });
+
+    it("should call putContentsOnDisplay when sourcesOnDisplay is empty called", () => {
+        let putContentsOnDisplay = spyOn(cmsApiService, "putContentsOnDisplay").and.returnValue(Observable.of(null));
+        cmsSettingService.sourcesOnDisplay = [];
+        //Need further enhancement to complete the coverage
+        // let SourceRepositionUtility = spyOn(SourceRepositionUtility, "stickySources");
+        debugInstance.shareTheSources();
+        expect(putContentsOnDisplay.calls.count()).toEqual(1);
+    });
+
+    it("clearMiniDisplayWall should set showClearWallPopup to FALSE and cmsSettingService.selectedSources to 0 ", () => {
+        debugInstance.clearMiniDisplayWall();
+        expect(debugInstance.showClearWallPopup).toBeFalsy();
+        expect(cmsSettingService.selectedSources.length).toBe(0);
+    });
 })
