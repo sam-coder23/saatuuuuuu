@@ -154,7 +154,7 @@ describe("CmsDisplayPanelComponent - Test Suite", () => {
         removeDisplay();
 
         debugInstance.loadDisplay();
-        expect(debugInstance.display).toBeNull();
+        expect(debugInstance.display).toBeUndefined();
     });
 
     function removeDisplay() {

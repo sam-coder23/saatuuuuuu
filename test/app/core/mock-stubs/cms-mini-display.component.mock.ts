@@ -42,10 +42,10 @@ class CmsMiniDisplayServiceStub {
     public display: MockDisplay = mockDisplay;
 
     public init() {
-        this.display = null;
+        this.display = undefined;
         this.zoomLevel = 0;
-        this.displaySize = null;
-        this.miniDisplaySize = null;
+        this.displaySize = undefined;
+        this.miniDisplaySize = undefined;
         this.scrollPosition = { Left: 0, Top: 0 };
         this.windowResizeEndEvent = Observable.fromEvent(window, "resize").debounce(() => Observable.timer(500));
         this.panend = false;

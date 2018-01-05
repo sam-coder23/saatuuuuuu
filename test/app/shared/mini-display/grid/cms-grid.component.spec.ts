@@ -201,8 +201,8 @@ describe("CmsGridComponent", () => {
 
     it("should be a defined component", async(() => {
         expect(component).toBeDefined();
-        expect(debugInstance.selectedContent).toBeNull();
-        expect(debugInstance.swappingContent).toBeNull();
+        expect(debugInstance.selectedContent).toBeUndefined();
+        expect(debugInstance.swappingContent).toBeUndefined();
         expect(debugInstance.loading).toBeFalsy();
     }));
 
@@ -210,11 +210,11 @@ describe("CmsGridComponent", () => {
         component.contentClick(content1);
         expect(debugInstance.selectedContent).toBeTruthy();
         component.contentClick(content1);
-        expect(debugInstance.selectedContent).toBeNull();
+        expect(debugInstance.selectedContent).toBeUndefined();
         component.contentClick(content1);
         component.contentClick(content2);
-        expect(debugInstance.selectedContent).toBeNull();
-        expect(debugInstance.swappingContent).toBeNull();
+        expect(debugInstance.selectedContent).toBeUndefined();
+        expect(debugInstance.swappingContent).toBeUndefined();
     }));
 
     it("should call updateContentGeormetryOnDisplay() 2 times to swap the geometery of the content", async(() => {

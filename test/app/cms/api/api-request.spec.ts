@@ -74,9 +74,9 @@ describe("Service: APIRequest", () => {
         let dateQuestionRegex = /\?_=\d{10,14}\w+/;
         let dateAmpersandRegex = /\&_=\d{10,14}\w+/;
 
-        let finalLoginUrl = APIRequestService.GetURL(loginUrl);
-        let finalSnapshotUrl = APIRequestService.GetURL(snapshotUrl);
-        let finalResourceRequestUrl = APIRequestService.GetURL(resourceRequestUrl);
+        let finalLoginUrl = APIRequestService.getUrl(loginUrl);
+        let finalSnapshotUrl = APIRequestService.getUrl(snapshotUrl);
+        let finalResourceRequestUrl = APIRequestService.getUrl(resourceRequestUrl);
 
         expect(serverUrlRegex.test(finalLoginUrl)).toBeTruthy();
         expect(dateQuestionRegex.test(finalLoginUrl)).toBeTruthy();
@@ -101,7 +101,7 @@ describe("Service: APIRequest", () => {
             ));
         });
 
-        APIRequestService.post(url, requestBody).subscribe(data => {
+        APIRequestService.postRequest(url, requestBody).subscribe(data => {
             expect(responseBody).toEqual(data);
         });
     }));
@@ -118,7 +118,7 @@ describe("Service: APIRequest", () => {
             ));
         });
 
-        APIRequestService.get(url).subscribe(data => {
+        APIRequestService.getRequest(url).subscribe(data => {
             expect(responseBody).toEqual(data);
         });
     }));
@@ -136,7 +136,7 @@ describe("Service: APIRequest", () => {
             ));
         });
 
-        APIRequestService.put(url, requestBody).subscribe(data => {
+        APIRequestService.putRequest(url, requestBody).subscribe(data => {
             expect(responseBody).toEqual(data);
         });
     }));
@@ -153,7 +153,7 @@ describe("Service: APIRequest", () => {
             ));
         });
 
-        APIRequestService.delete(url).subscribe(data => {
+        APIRequestService.deleteRequest(url).subscribe(data => {
             expect(responseBody).toEqual(data);
         });
     }));

@@ -110,12 +110,12 @@ describe("Service: StorageManager", () => {
     });
 
     it("Service should be able to set key-value data", () => {
-        storageManager.set(storageValues.userKey, JSON.stringify(storageValues.userValue));
-        storageManager.set(storageValues.settingKey, JSON.stringify(storageValues.settingValue));
-        storageManager.set(storageValues.displayKey, JSON.stringify(storageValues.displayValue));
-        storageManager.set(storageValues.userLastActionTimeKey, JSON.stringify(storageValues.userLastActionTimeValue));
-        storageManager.set(storageValues.sourcesSearchFilterKey, storageValues.sourcesSearchFilterValue);
-        storageManager.set(storageValues.sourcesFavoriteFilterKey, JSON.stringify(storageValues.sourcesFavoriteFilterValue));
+        storageManager.setItem(storageValues.userKey, JSON.stringify(storageValues.userValue));
+        storageManager.setItem(storageValues.settingKey, JSON.stringify(storageValues.settingValue));
+        storageManager.setItem(storageValues.displayKey, JSON.stringify(storageValues.displayValue));
+        storageManager.setItem(storageValues.userLastActionTimeKey, JSON.stringify(storageValues.userLastActionTimeValue));
+        storageManager.setItem(storageValues.sourcesSearchFilterKey, storageValues.sourcesSearchFilterValue);
+        storageManager.setItem(storageValues.sourcesFavoriteFilterKey, JSON.stringify(storageValues.sourcesFavoriteFilterValue));
 
         let userValue = window.sessionStorage.getItem(storageValues.userKey);
         let settingValue = window.sessionStorage.getItem(storageValues.settingKey);
@@ -133,12 +133,12 @@ describe("Service: StorageManager", () => {
     });
 
     it("Service should be able to get stored value", () => {
-        let userValue = storageManager.get(storageValues.userKey);
-        let settingValue = storageManager.get(storageValues.settingKey);
-        let displayValue = storageManager.get(storageValues.displayKey);
-        let userLastActionTimeValue = storageManager.get(storageValues.userLastActionTimeKey);
-        let sourcesSearchFilterValue = storageManager.get(storageValues.sourcesSearchFilterKey);
-        let sourcesFavoriteFilterValue = storageManager.get(storageValues.sourcesFavoriteFilterKey);
+        let userValue = storageManager.getItem(storageValues.userKey);
+        let settingValue = storageManager.getItem(storageValues.settingKey);
+        let displayValue = storageManager.getItem(storageValues.displayKey);
+        let userLastActionTimeValue = storageManager.getItem(storageValues.userLastActionTimeKey);
+        let sourcesSearchFilterValue = storageManager.getItem(storageValues.sourcesSearchFilterKey);
+        let sourcesFavoriteFilterValue = storageManager.getItem(storageValues.sourcesFavoriteFilterKey);
 
         expect(userValue).toBe(JSON.stringify(storageValues.userValue));
         expect(settingValue).toBe(JSON.stringify(storageValues.settingValue));
@@ -149,19 +149,19 @@ describe("Service: StorageManager", () => {
     });
 
     it("Service should be able to remove stored value", () => {
-        storageManager.remove(storageValues.userKey);
-        storageManager.remove(storageValues.settingKey);
-        storageManager.remove(storageValues.displayKey);
-        storageManager.remove(storageValues.userLastActionTimeKey);
-        storageManager.remove(storageValues.sourcesSearchFilterKey);
-        storageManager.remove(storageValues.sourcesFavoriteFilterKey);
+        storageManager.removeItem(storageValues.userKey);
+        storageManager.removeItem(storageValues.settingKey);
+        storageManager.removeItem(storageValues.displayKey);
+        storageManager.removeItem(storageValues.userLastActionTimeKey);
+        storageManager.removeItem(storageValues.sourcesSearchFilterKey);
+        storageManager.removeItem(storageValues.sourcesFavoriteFilterKey);
 
-        let userValue = storageManager.get(storageValues.userKey);
-        let settingValue = storageManager.get(storageValues.settingKey);
-        let displayValue = storageManager.get(storageValues.displayKey);
-        let userLastActionTimeValue = storageManager.get(storageValues.userLastActionTimeKey);
-        let sourcesSearchFilterValue = storageManager.get(storageValues.sourcesSearchFilterKey);
-        let sourcesFavoriteFilterValue = storageManager.get(storageValues.sourcesFavoriteFilterKey);
+        let userValue = storageManager.getItem(storageValues.userKey);
+        let settingValue = storageManager.getItem(storageValues.settingKey);
+        let displayValue = storageManager.getItem(storageValues.displayKey);
+        let userLastActionTimeValue = storageManager.getItem(storageValues.userLastActionTimeKey);
+        let sourcesSearchFilterValue = storageManager.getItem(storageValues.sourcesSearchFilterKey);
+        let sourcesFavoriteFilterValue = storageManager.getItem(storageValues.sourcesFavoriteFilterKey);
 
         expect(userValue).toBeNull();
         expect(settingValue).toBeNull();
@@ -173,7 +173,7 @@ describe("Service: StorageManager", () => {
 
     it("Service should be able to clear storage data", () => {
         // storing data in storage
-        storageManager.set(storageValues.userKey, JSON.stringify(storageValues.userValue));
+        storageManager.setItem(storageValues.userKey, JSON.stringify(storageValues.userValue));
 
         storageManager.removeStorage();
         let storageLength = window.sessionStorage.length;

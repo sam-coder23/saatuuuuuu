@@ -86,7 +86,7 @@ describe("CmsLoginComponent", () => {
     let component: CmsLoginComponent;
     let fixture: ComponentFixture<CmsLoginComponent>;
     let debugInstance, nativeElement, storageManager;
-    let debugInstanceOptions, cmsApiService;
+    let cmsApiService;
 
     beforeEach(async(() => {
         TestBed.configureTestingModule({
@@ -139,16 +139,13 @@ describe("CmsLoginComponent", () => {
         expect(component).toBeDefined();
         expect(debugInstance.isLoginInProgress).toBeFalsy();
         expect(debugInstance.hasError).toBeFalsy();
-
-        expect(debugInstanceOptions.disableOptionOnDisplayUnavailable).toBeFalsy();
     });
 
     it("User Login: Success", (done) => {
         debugInstance.user = MockUser;
         debugInstance.onLoginSubmit();
-        fixture.detectChanges();
         fixture.whenStable().then(() => {
-            let userModel = JSON.parse(storageManager.get(CmsSessionStorageItem.USER));
+            let userModel = JSON.parse(storageManager.getItem(CmsSessionStorageItem.USER));
             if(userModel) {
                 expect(userModel.username).toEqual(MockUser.username);
                 expect(userModel.loggedIn).toEqual(true);

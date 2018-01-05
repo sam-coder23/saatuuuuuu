@@ -135,7 +135,7 @@ describe("Component: CmsDisplaysPanelComponent", () => {
         fixture.whenStable().then(() => {
             delay(500).then(() => {
                 expect(debugInstance.searchFilter).toBe(searchString);
-                expect(storageManager.get(CmsSessionStorageItem.DISPLAYS_SEARCH_FILTER)).toBe(searchString);
+                expect(storageManager.getItem(CmsSessionStorageItem.DISPLAYS_SEARCH_FILTER)).toBe(searchString);
             });
         });
     });
@@ -151,7 +151,7 @@ describe("Component: CmsDisplaysPanelComponent", () => {
         fixture.detectChanges();
         fixture.whenStable().then(() => {
             expect(debugInstance.isFavoriteFilter).toBe(!favState);
-            expect(storageManager.get(CmsSessionStorageItem.DISPLAYS_FAVORITE_FILTER)).toBe((!favState).toString());
+            expect(storageManager.getItem(CmsSessionStorageItem.DISPLAYS_FAVORITE_FILTER)).toBe((!favState).toString());
         });
     });
 });

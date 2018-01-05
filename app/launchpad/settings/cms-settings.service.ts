@@ -458,7 +458,8 @@ export class CmsSettingsService {
      * @return {number}
      */
     private getNearestLowValue(count: number, data: number[]): number {
-        const dataOrder: number[] = data.reverse();
+        const dataOrder: number[] = Object.assign([], data);
+        dataOrder.reverse();
         for (const dataItem of dataOrder) {
             if (count > dataItem) {
                 return dataItem;

@@ -253,18 +253,18 @@ describe("CmsSourceListComponent", () => {
         fixture.detectChanges();
         expect(debugInstance["scroller"].dataCount).toBe(0);
         debugInstance.scroller.count = sources.length + 1;
-        expect(debugInstance.sourceListCmsEvent).toBeNull();
+        expect(debugInstance.sourceListCmsEvent).toBeUndefined();
         component.ngOnChanges(null);
         fixture.whenStable().then(() => {
             expect(debugInstance.scroller.max).toEqual(debugInstance.sources.length);
             expect(debugInstance.sources.length).toEqual(sources.length);
             expect(debugInstance.scroller.dataCount).toBe(sources.length);
-            expect(debugInstance.scroller.max).not.toBeNull();
+            expect(debugInstance.scroller.max).not.toBeUndefined();
             expect(debugInstance.scroller.count).toEqual(cmsSettingsService.userSettings.pageSize);
             expect(debugInstance.scrollTarget.id).toEqual("source-list-card-container");
             debugInstance.cmsSettingsService.selectedSources = [];
             debugInstance.cmsSettingsService.selectedSources.push(sources[0]);
-            expect(debugInstance.sourceListCmsEvent).not.toBeNull();
+            expect(debugInstance.sourceListCmsEvent).not.toBeUndefined();
             expect(debugInstance.cmsSettingsService.selectedSources[0].disabled).toBeFalsy()
             let sourceUpdated = Object.assign({}, sources[0]);
             debugInstance.sourceListCmsEvent.next(

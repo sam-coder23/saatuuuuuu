@@ -11,6 +11,7 @@ import { StorageManager } from "../../../../app/cms/api/cms-storagemanager.servi
 import { IUserProfileSettings } from "../../../../app/cms/models/cms-user-profile-settings";
 import { CmsSessionStorageItem } from "../../../../app/cms/models/cms-session-storage-item";
 import { CMSConstants } from "../../../../app/cms/models/cms-constants";
+import { CmsLanguages } from "../../../../app/i18n/cms-languages";
 
 describe("Service: CmsSettingsService", () => {
 
@@ -386,17 +387,9 @@ describe("Service: CmsSettingsService", () => {
     });
 
     it("should return lanaguage value from key", () => {
-        expect(cmsSettingsService.getUserSelectedLanguageByKey("ar")).toBe("???????");
-        expect(cmsSettingsService.getUserSelectedLanguageByKey("de")).toBe("German");
-        expect(cmsSettingsService.getUserSelectedLanguageByKey("en")).toBe("English");
-        expect(cmsSettingsService.getUserSelectedLanguageByKey("es")).toBe("Espa�ol");
-        expect(cmsSettingsService.getUserSelectedLanguageByKey("fr")).toBe("Francais");
-        expect(cmsSettingsService.getUserSelectedLanguageByKey("ja")).toBe("???");
-        expect(cmsSettingsService.getUserSelectedLanguageByKey("pl")).toBe("Polski");
-        expect(cmsSettingsService.getUserSelectedLanguageByKey("pt")).toBe("Portugues");
-        expect(cmsSettingsService.getUserSelectedLanguageByKey("zh")).toBe("??");
-        expect(cmsSettingsService.getUserSelectedLanguageByKey("tr")).toBe("T�rk");
-        expect(cmsSettingsService.getUserSelectedLanguageByKey("ru")).toBe("???????");
+        for (const language of CmsLanguages.languages) {
+            expect(cmsSettingsService.getUserSelectedLanguageByKey(language.key)).toEqual(language.value);
+        }
     });
 
     it("should increase count value as per it's index", () => {

@@ -406,7 +406,7 @@ describe("Component CmsSettingsPanelComponent", () => {
                 debugInstance.updateUserSettingsByAction($event);
                 fixture.detectChanges();
                 fixture.whenStable().then(() => {
-                    let wallConnectionStatus = JSON.parse(storageManager.get(CmsSessionStorageItem.SETTINGS)).wallConnection.startUpAction;
+                    let wallConnectionStatus = JSON.parse(storageManager.getItem(CmsSessionStorageItem.SETTINGS)).wallConnection.startUpAction;
                     expect(wallConnectionStatus).toEqual($event.value);
                 });
             });
@@ -432,7 +432,7 @@ describe("Component CmsSettingsPanelComponent", () => {
                 debugInstance.updateUserSettingsByAction($event);
                 fixture.detectChanges();
                 fixture.whenStable().then(() => {
-                    let wallConnectionStatus = JSON.parse(storageManager.get(CmsSessionStorageItem.SETTINGS)).wallConnection.startUpAction;
+                    let wallConnectionStatus = JSON.parse(storageManager.getItem(CmsSessionStorageItem.SETTINGS)).wallConnection.startUpAction;
                     expect(wallConnectionStatus).toEqual($event.value);
                     expect(autoConnectToSpecificWallSelectButton.hasAttribute("disabled")).toBe(false);
                     debugInstance.goToSelectDisplayForAutoConnect($event);

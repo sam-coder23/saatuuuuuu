@@ -1,4 +1,4 @@
-import {TestBed, inject, async } from "@angular/core/testing";
+import { TestBed, inject, async } from "@angular/core/testing";
 import { CmsVirtualScrollService } from "../../../app/shared/cms-virtual-scroll.service";
 import { CmsSettingsService } from "../../../app/launchpad/settings/cms-settings.service";
 
@@ -38,7 +38,7 @@ describe("Service: CmsVirtualScrollService", () => {
         cmsVirtualScrollService = new CmsVirtualScrollService(cmsSettingsService);
     });
 
-    it("service should be able to attach scroll event listener and able to call scroll function", (done) => {
+    it("service should be able to attach scroll event listener and able to call scroll function", () => {
         let scrollContainer = document.createElement("div");
         scrollContainer.setAttribute("id", "cms-scroller");
         scrollContainer.style.width = "1050px";
@@ -62,18 +62,14 @@ describe("Service: CmsVirtualScrollService", () => {
         // add scroll event listener
         cmsVirtualScrollService.addScrollListener(scrollElement, () => {
             getCmsData();
+            expect(dataStatus).toBe("recordsFetched");
         });
 
         // scroll to bottom
         document.getElementById("cms-scroller").scrollBy(0, 1800);
-
-        window.setTimeout(() => {
-            expect(dataStatus).toBe("recordsFetched");
-            done();
-        }, 0)
     });
 
-    it("service should be able to attach scroll event listener and able to call scroll ", (done) => {
+    it("service should be able to attach scroll event listener and able to call scroll ", () => {
         let scrollContainer = document.createElement("div");
         scrollContainer.setAttribute("id", "cms-scroller");
         scrollContainer.style.width = "1050px";
@@ -97,16 +93,12 @@ describe("Service: CmsVirtualScrollService", () => {
         // add scroll event listener
         cmsVirtualScrollService.addScrollListener(scrollElement, () => {
             getCmsData();
+            expect(dataStatus).toBe("recordsFetched");
+            dataStatus = "";
         });
 
         // scroll to bottom
         document.getElementById("cms-scroller").scrollBy(0, 1950);
-
-        window.setTimeout(() => {
-            expect(dataStatus).toBe("recordsFetched");
-            dataStatus = "";
-            done();
-        }, 0);
     });
 
     it("service should be able to remove attached scroll event listener", () => {
@@ -116,9 +108,9 @@ describe("Service: CmsVirtualScrollService", () => {
         // scroll to bottom
         document.getElementById("cms-scroller").scrollBy(0, 1980);
 
-        window.setTimeout(() => {
+        delay(1000).then(() => {
             expect(dataStatus).toBe("");
-        }, 0);
+        });
     });
 
 });

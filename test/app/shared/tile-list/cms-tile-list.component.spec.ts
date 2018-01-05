@@ -106,12 +106,12 @@ describe("CmsTileListComponent", () => {
     it("component should be a defined and data should be loaded OnInit", async(() => {
         expect(component).toBeDefined();
         expect(component.tilePresets.length).toEqual(0);
-        expect(debugInstance.miniDisplayEventSubscription).toBeNull();
+        expect(debugInstance.miniDisplayEventSubscription).toBeUndefined();
         component.sourceCount = cmsSettingService.selectedSources.length;
         fixture.detectChanges();
         fixture.whenStable().then(() => {
             // check for event subscription
-            expect(debugInstance.miniDisplayEventSubscription).not.toBeNull();
+            expect(debugInstance.miniDisplayEventSubscription).not.toBeUndefined();
 
             if (component.sourceCount === 0) {
                 expect(component.tilePresets.length).toEqual(TilePresets.length);
@@ -147,10 +147,10 @@ describe("CmsTileListComponent", () => {
 
     it("component should listen 'Display Updated' event and should trigger change event emitter", async(() => {
         component.sourceCount = cmsSettingService.selectedSources.length;
-        expect(debugInstance.miniDisplayEventSubscription).toBeNull();
+        expect(debugInstance.miniDisplayEventSubscription).toBeUndefined();
         fixture.detectChanges();
         // check for event subscription
-        expect(debugInstance.miniDisplayEventSubscription).not.toBeNull();
+        expect(debugInstance.miniDisplayEventSubscription).not.toBeUndefined();
         // current tile must be selected
         expect(component.tilePresets[0].isSelected).toBeTruthy();
         // provide same display with not existing tilerId
@@ -159,7 +159,7 @@ describe("CmsTileListComponent", () => {
 
         let spyOnChangeEmitter = spyOn(component.changeEmitter, "emit").and.returnValue(Observable.of(null));
 
-        // trigger "DiplayUpdated" event  with not existing tilerId   
+        // trigger "DiplayUpdated" event  with not existing tilerId
         debugInstance.miniDisplayEventSubscription.next({
             "eventType": "DisplayUpdated",
             "body": displayUpdated,
@@ -183,7 +183,7 @@ describe("CmsTileListComponent", () => {
 
         fixture.detectChanges();
 
-        // trigger "DiplayUpdated" event  with not existing tilerId   
+        // trigger "DiplayUpdated" event  with not existing tilerId
         debugInstance.miniDisplayEventSubscription.next({
             "eventType": "DisplayUpdated",
             "body": displayUpdated,

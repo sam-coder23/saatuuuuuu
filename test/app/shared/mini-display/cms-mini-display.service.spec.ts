@@ -76,7 +76,7 @@ describe("Service: CmsMiniDisplayService", () => {
     });
 
     it("should initialize mini-display service properties", () => {
-        expect(cmsMiniDisplayService.display).toBeNull();
+        expect(cmsMiniDisplayService.display).toBeUndefined();
         expect(cmsMiniDisplayService.zoomLevel).toBe(0);
         expect(cmsMiniDisplayService.scrollPosition.Left).toBe(0);
         expect(cmsMiniDisplayService.scrollPosition.Top).toBe(0);
@@ -98,7 +98,7 @@ describe("Service: CmsMiniDisplayService", () => {
             }) => {
                 /**
                  * Compare lastModified property in miniDisplayResponse with the lastModified property in expectedMiniDisplayResponse.
-                 * Also, since timestamp cannot be compared for equality, that is why GreaterThan is used. 
+                 * Also, since timestamp cannot be compared for equality, that is why GreaterThan is used.
                  */
                 expect(parseInt(miniDisplayResponse.miniDisplayContentList[0].lastModified)).toBeGreaterThan(parseInt(expectedMiniDisplayResponse1.miniDisplayContentList[0].lastModified));
                 expect(parseInt(miniDisplayResponse.miniDisplayContentList[1].lastModified)).toBeGreaterThan(parseInt(expectedMiniDisplayResponse1.miniDisplayContentList[1].lastModified));
@@ -128,7 +128,7 @@ describe("Service: CmsMiniDisplayService", () => {
             }) => {
                 /**
                  * Compare lastModified property in miniDisplayResponse with the lastModified property in expectedMiniDisplayResponse.
-                 * Also, since timestamp cannot be compared for equality, that is why GreaterThan is used. 
+                 * Also, since timestamp cannot be compared for equality, that is why GreaterThan is used.
                  */
                 expect(parseInt(miniDisplayResponse.miniDisplayContentList[0].lastModified)).toBeGreaterThan(parseInt(expectedMiniDisplayResponse2.miniDisplayContentList[0].lastModified));
                 expect(parseInt(miniDisplayResponse.miniDisplayContentList[1].lastModified)).toBeGreaterThan(parseInt(expectedMiniDisplayResponse2.miniDisplayContentList[1].lastModified));
@@ -153,4 +153,4 @@ describe("Service: CmsMiniDisplayService", () => {
         expect(cmsMiniDisplayService.calculateAdjustedViewSourceRectangles(undefined, [])).toBeUndefined();
     });
 
-}); 
+});
