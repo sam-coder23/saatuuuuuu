@@ -38,38 +38,7 @@ describe("Service: CmsVirtualScrollService", () => {
         cmsVirtualScrollService = new CmsVirtualScrollService(cmsSettingsService);
     });
 
-    it("service should be able to attach scroll event listener and able to call scroll function", () => {
-        let scrollContainer = document.createElement("div");
-        scrollContainer.setAttribute("id", "cms-scroller");
-        scrollContainer.style.width = "1050px";
-        scrollContainer.style.height = "550px";
-        scrollContainer.style.overflow = "auto";
-        scrollContainer.style.backgroundColor = "#bababa";
-
-        let scrollDiv = document.createElement("div");
-        scrollDiv.setAttribute("id", "scroll-element");
-        scrollDiv.style.width = "1000px";
-        scrollDiv.style.height = "2000px";
-
-        scrollContainer.appendChild(scrollDiv);
-        document.body.appendChild(scrollContainer);
-
-        scrollElement = document.getElementById("cms-scroller");
-
-        // set total number of records
-        cmsVirtualScrollService.dataCount = 100;
-
-        // add scroll event listener
-        cmsVirtualScrollService.addScrollListener(scrollElement, () => {
-            getCmsData();
-            expect(dataStatus).toBe("recordsFetched");
-        });
-
-        // scroll to bottom
-        document.getElementById("cms-scroller").scrollBy(0, 1800);
-    });
-
-    it("service should be able to attach scroll event listener and able to call scroll ", () => {
+    it("service should be able to attach scroll event listener and able to call scroll function", (done) => {
         let scrollContainer = document.createElement("div");
         scrollContainer.setAttribute("id", "cms-scroller");
         scrollContainer.style.width = "1050px";
@@ -95,6 +64,43 @@ describe("Service: CmsVirtualScrollService", () => {
             getCmsData();
             expect(dataStatus).toBe("recordsFetched");
             dataStatus = "";
+            done();
+        });
+
+        // scroll to bottom
+        document.getElementById("cms-scroller").scrollBy(0, 1800);
+    });
+
+    it("service should be able to attach scroll event listener and able to call scroll ", (done) => {
+        if (document.getElementById("cms-scroller")) {
+            document.body.removeChild(document.getElementById("cms-scroller"));
+        }
+        let scrollContainer = document.createElement("div");
+        scrollContainer.setAttribute("id", "cms-scroller");
+        scrollContainer.style.width = "1050px";
+        scrollContainer.style.height = "550px";
+        scrollContainer.style.overflow = "auto";
+        scrollContainer.style.backgroundColor = "#bababa";
+
+        let scrollDiv = document.createElement("div");
+        scrollDiv.setAttribute("id", "scroll-element");
+        scrollDiv.style.width = "1000px";
+        scrollDiv.style.height = "2000px";
+
+        scrollContainer.appendChild(scrollDiv);
+        document.body.appendChild(scrollContainer);
+
+        scrollElement = document.getElementById("cms-scroller");
+
+        // set total number of records
+        cmsVirtualScrollService.dataCount = 100;
+
+        // add scroll event listener
+        cmsVirtualScrollService.addScrollListener(scrollElement, () => {
+            getCmsData();
+            expect(dataStatus).toBe("recordsFetched");
+            dataStatus = "";
+            done();
         });
 
         // scroll to bottom
@@ -103,6 +109,10 @@ describe("Service: CmsVirtualScrollService", () => {
 
     it("service should be able to remove attached scroll event listener", () => {
         // remove scroll event listener
+        cmsVirtualScrollService.addScrollListener(null);
+        cmsVirtualScrollService.removeScrollListener();
+
+        cmsVirtualScrollService.addScrollListener(scrollElement);
         cmsVirtualScrollService.removeScrollListener();
 
         // scroll to bottom
@@ -112,5 +122,4 @@ describe("Service: CmsVirtualScrollService", () => {
             expect(dataStatus).toBe("");
         });
     });
-
 });

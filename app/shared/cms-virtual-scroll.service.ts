@@ -75,10 +75,7 @@ export class CmsVirtualScrollService {
     private onScroll(): void {
         const defaultScrollPercent: number = 0.8;
         let scrollPercent: number;
-        if (this.loading) {
-            return;
-        }
-        if (!this.scrollTarget) {
+        if (this.loading || !this.scrollTarget) {
             return;
         }
         scrollPercent = (this.scrollTarget.scrollTop + this.scrollTarget.offsetHeight)
