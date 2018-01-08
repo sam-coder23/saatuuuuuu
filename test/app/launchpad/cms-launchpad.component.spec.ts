@@ -19,6 +19,7 @@ import { APIRequest } from "../../../app/cms/api/api-request";
 import { CmsSessionStorageItem } from "../../../app/cms/models/cms-session-storage-item";
 import { CmsLanguages } from "../../../app/i18n/cms-languages";
 import { MockUserProfileSettings } from "../core/mock-stubs/login.mock";
+import { ParsingManager } from "./../../../app/utils/parsing-manager-util";
 
 /**
  * Fake CmsApiService Service
@@ -240,7 +241,7 @@ describe("CmsLaunchpadComponent", () => {
                     let userLastActionTime = storageManager.getItem(CmsSessionStorageItem.USER_LASTACTION_TIME);
                     nativeElement.click();
                     delay(1500).then(() => {
-                        expect(parseInt(userLastActionTime)).toBeLessThanOrEqual(parseInt(storageManager.getItem(CmsSessionStorageItem.USER_LASTACTION_TIME)));
+                        expect(ParsingManager.TO_INTEGER(userLastActionTime)).toBeLessThanOrEqual(ParsingManager.TO_INTEGER(storageManager.getItem(CmsSessionStorageItem.USER_LASTACTION_TIME)));
                         done();
                     });
                 });
@@ -334,10 +335,10 @@ describe("CmsLaunchpadComponent", () => {
                 cmsSettingsService.userSettings.logOffTime = 5;
                 nativeElement.click();
                 delay(2000).then(() => {
-                    expect(parseInt(debugInstance.userLastActionTime)).toBeLessThanOrEqual(parseInt(storageManager.getItem(CmsSessionStorageItem.USER_LASTACTION_TIME)));
+                    expect(ParsingManager.TO_INTEGER(debugInstance.userLastActionTime)).toBeLessThanOrEqual(ParsingManager.TO_INTEGER(storageManager.getItem(CmsSessionStorageItem.USER_LASTACTION_TIME)));
                     nativeElement.click();
                     delay(1500).then(() => {
-                        expect(parseInt(debugInstance.userLastActionTime)).toBeLessThanOrEqual(parseInt(storageManager.getItem(CmsSessionStorageItem.USER_LASTACTION_TIME)));
+                        expect(ParsingManager.TO_INTEGER(debugInstance.userLastActionTime)).toBeLessThanOrEqual(ParsingManager.TO_INTEGER(storageManager.getItem(CmsSessionStorageItem.USER_LASTACTION_TIME)));
                         done();
                     });
                 });

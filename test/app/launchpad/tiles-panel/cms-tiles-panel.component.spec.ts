@@ -74,8 +74,8 @@ describe("CmsTilesPanelComponent - Test Suite", () => {
         fixture.detectChanges();
         expect(component["displayId"]).toEqual(1);
         expect(component["sourceCount"]).toEqual(1);
-        expect(component.viewState.list).toBeTruthy();
-        expect(component.viewState.reload).toBeFalsy();
+        expect(debugInstance.listState).toBeTruthy();
+        expect(debugInstance.reloadState).toBeFalsy();
         let reloadButton: DebugElement = fixture.debugElement.query(By.css("#tiles-panel-reload-button"));
         expect(reloadButton).toBeFalsy();
     });
@@ -93,12 +93,12 @@ describe("CmsTilesPanelComponent - Test Suite", () => {
 
     it("should set reload to TRUE on list change", () => {
         component.onListChanged();
-        expect(component.viewState.reload).toBeTruthy();
+        expect(debugInstance.reloadState).toBeTruthy();
     });
 
     it("should set reload and list to FALSE on reload list", () => {
         component.reloadList();
-        expect(component.viewState.reload).toBeFalsy();
-        expect(component.viewState.list).toBeFalsy();
+        expect(debugInstance.reloadState).toBeFalsy();
+        expect(debugInstance.listState).toBeFalsy();
     });
 });

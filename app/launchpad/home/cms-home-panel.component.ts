@@ -17,6 +17,7 @@ import { CmsApiService } from "../../cms/api/cms-api.service";
 import { Display } from "../../cms/models/cms-display";
 import { AppConfig } from "../../config";
 import { CmsSettingsService } from "../settings/cms-settings.service";
+import { ParsingManager } from "./../../utils/parsing-manager-util";
 
 @Component({
     selector: "cms-home-panel",
@@ -40,9 +41,8 @@ export class CmsHomePanelComponent implements OnInit {
         private router: Router) { }
 
     public ngOnInit(): void {
-        const defaultDisplayId: number = 10;
         // tslint:disable-next-line:no-string-literal
-        this.displayId = parseInt(this.activatedRoute.params["value"]["displayId"], defaultDisplayId);
+        this.displayId = ParsingManager.TO_INTEGER(this.activatedRoute.params["value"]["displayId"]);
         this.updateOptions();
     }
 

@@ -14,6 +14,8 @@ import { CmsSessionStorageItem } from "../../cms/models/cms-session-storage-item
 import { AppConfig } from "../../config";
 import { Validation } from "../../core/util/Validation";
 import { CmsResource } from "./../../cms/models/cms-resource";
+import { ParsingManager } from "./../../utils/parsing-manager-util";
+
 @Component({
     selector: "cms-display-panel",
     template: require("./cms-display-panel.component.html"),
@@ -43,9 +45,8 @@ export class CmsDisplayPanelComponent implements OnInit {
     }
 
     public ngOnInit(): void {
-        const defaultDisplayId: number = 10;
         this.route.params.forEach((params: Params) => {
-            this.displayId = parseInt(params.id, defaultDisplayId);
+            this.displayId = ParsingManager.TO_INTEGER(params.id);
         });
         if (!isNaN(this.displayId)) {
             this.loadDisplay();

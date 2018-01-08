@@ -10,6 +10,7 @@ import { AppConfig } from "../../../config";
 import { RegExManager } from "../../../core/util/RegEx";
 import { Url } from "../../../core/util/URL";
 import { Validation } from "../../../core/util/Validation";
+import { ParsingManager } from "../../../utils/parsing-manager-util";
 import { CmsApiService } from "./../../../cms/api/cms-api.service";
 import { TileContent } from "./../../../cms/models/cms-tile-content";
 import { CmsSettingsService } from "./../../../launchpad/settings/cms-settings.service";
@@ -72,9 +73,8 @@ export class CmsGridComponent implements OnInit, AfterViewInit {
             .subscribe((event: any) => {
                 const contentId: string = event.target.getAttribute("data-content-id");
                 if (contentId) {
-                    const radixValue: number = 10;
                     const filteredContent: TileContent = this.contents.find((content: TileContent) => {
-                        return content.id === parseInt(contentId, radixValue);
+                        return content.id === ParsingManager.TO_INTEGER(contentId);
                     });
                     this.contentClick(filteredContent);
                 }

@@ -7,7 +7,6 @@
  * @property {boolean} firstDisconnection Flag for first-disconnection
  * @property {boolean} databaseResetStarted Flag for database reset start
  */
-
 import "rxjs/add/operator/catch";
 import "rxjs/add/operator/map";
 import "rxjs/add/operator/toPromise";
@@ -26,6 +25,7 @@ import { CmsSessionStorageItem } from "../models/cms-session-storage-item";
 import { Source } from "../models/cms-source";
 import { ITilePreset } from "../models/cms-tile-preset";
 import { IUserProfileSettings } from "../models/cms-user-profile-settings";
+import { ParsingManager } from "./../../utils/parsing-manager-util";
 import { CMSConstants } from "./../models/cms-constants";
 import { Tile } from "./../models/cms-tile";
 import { APIRequest } from "./api-request";
@@ -645,8 +645,7 @@ export class CmsApiService {
      * @return void
      */
     private updateDisplayContent(verb: string, uri: string, eventObject: ICmsEvent): void {
-        const radix: number = 10;
-        const id: number = parseInt(uri.match(/(\d+)/g)[0], radix);
+        const id: number = ParsingManager.TO_INTEGER(uri.match(/(\d+)/g)[0]);
 
         switch (verb) {
             case "put":
@@ -675,8 +674,7 @@ export class CmsApiService {
      * @return void
      */
     private updateSingleDisplay(verb: string, uri: string, eventObject: ICmsEvent): void {
-        const radix: number = 10;
-        const id: number = parseInt(uri.match(/(\d+)/g)[0], radix);
+        const id: number = ParsingManager.TO_INTEGER(uri.match(/(\d+)/g)[0]);
         let response: any;
 
         switch (verb) {
@@ -725,8 +723,7 @@ export class CmsApiService {
      * @return void
      */
     private updateDisplayContentElement(verb: string, uri: string, eventObject: ICmsEvent): void {
-        const radix: number = 10;
-        const id: number = parseInt(uri.match(/(\d+)/g)[0], radix);
+        const id: number = ParsingManager.TO_INTEGER(uri.match(/(\d+)/g)[0]);
 
         switch (verb) {
             case "put":
@@ -755,8 +752,7 @@ export class CmsApiService {
      * @return void
      */
     private updateDisplaySingleApplication(verb: string, uri: string, eventObject: ICmsEvent): void {
-        const radix: number = 10;
-        const id: number = parseInt(uri.match(/(\d+)/g)[0], radix);
+        const id: number = ParsingManager.TO_INTEGER(uri.match(/(\d+)/g)[0]);
 
         switch (verb) {
             case "put":

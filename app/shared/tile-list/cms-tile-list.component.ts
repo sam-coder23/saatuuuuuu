@@ -19,6 +19,7 @@ import { Validation } from "../../core/util/Validation";
 import { CMSConstants } from "./../../cms/models/cms-constants";
 
 import { Source } from "../../cms/models/cms-source";
+import { ParsingManager } from "../../utils/parsing-manager-util";
 
 @Component({
     selector: "cms-tile-list",
@@ -53,7 +54,6 @@ export class CmsTileListComponent implements OnInit, OnDestroy {
     private displayID: number;
     // it saves the
     private miniDisplayEventSubscription: EventEmitter<any>;
-    private parseIntBase: number = 10;
 
     constructor(
         private activatedRoute: ActivatedRoute,
@@ -62,7 +62,7 @@ export class CmsTileListComponent implements OnInit, OnDestroy {
     ) {
         this.tilePresets = [];
         // tslint:disable-next-line:no-string-literal
-        this.displayID = parseInt(this.activatedRoute.params["value"].id, this.parseIntBase);
+        this.displayID = ParsingManager.TO_INTEGER(this.activatedRoute.params["value"].id);
     }
 
     public ngOnInit(): void {
@@ -173,7 +173,7 @@ export class CmsTileListComponent implements OnInit, OnDestroy {
      */
     private markTileSelected(): void {
         // tslint:disable-next-line:no-string-literal
-        const displayId: number = parseInt(this.activatedRoute.params["value"].id, this.parseIntBase);
+        const displayId: number = ParsingManager.TO_INTEGER(this.activatedRoute.params["value"].id);
         this.cmsServerApi.getSelectedDisplayContent(displayId).subscribe((display: Display) => {
             if (display) {
                 this.selectTileInPresets(display);
@@ -211,7 +211,7 @@ export class CmsTileListComponent implements OnInit, OnDestroy {
         if (!event && !event.body) { return; }
 
         // tslint:disable-next-line:no-string-literal
-        const displayId: number = parseInt(this.activatedRoute.params["value"].id, this.parseIntBase);
+        const displayId: number = ParsingManager.TO_INTEGER(this.activatedRoute.params["value"].id);
         if (event.eventType === CMSConstants.DISPLAYUPDATED) {
             if (event.displayId === displayId) {
                 let tileAlreadySelected: boolean = false;

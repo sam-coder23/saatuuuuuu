@@ -31,6 +31,7 @@ import { SourceRepositionUtility } from "../../utils/source-reposition.util";
 import { TilePresetManager } from "../../utils/tilepreset-manager.util";
 import { CmsSettingsService } from "../settings/cms-settings.service";
 import { Display } from "./../../cms/models/cms-display";
+import { ParsingManager } from "./../../utils/parsing-manager-util";
 
 @Component({
     //moduleId: module.id,
@@ -70,7 +71,7 @@ export class CmsSourcesPanelComponent implements OnInit {
     public ngOnInit(): void {
         this.route.params.forEach(
             (params: Params) => {
-                this.displayId = +params.id;
+                this.displayId = ParsingManager.TO_INTEGER(params.id);
             });
 
         this.translate.get("sourceList.connectTo", { value: CMSConstants.MAXSELECTION }).subscribe((response: string) => {

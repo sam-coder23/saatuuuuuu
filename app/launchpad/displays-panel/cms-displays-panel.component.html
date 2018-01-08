@@ -3,7 +3,7 @@
         <span id="displays-panel-back-button-text">{{ 'displayList.connectTo' | translate }}</span>
         <span class="fill-remaining-space"></span>
 
-        <button id="display-panel-reload-button" md-icon-button *ngIf="viewState.reload" nd-click-debounce (ndClick)="reloadList()">
+        <button id="display-panel-reload-button" md-icon-button *ngIf="reloadState" nd-click-debounce (ndClick)="reloadList()">
             <i class="material-icons">refresh</i>
         </button>
         <button id="display-list-favorite-button" md-icon-button nd-click-debounce (ndClick)="setFavourite()">
@@ -19,5 +19,5 @@
 </div>
 
 <div class="displays-panel-main">
-    <cms-display-list (change)="onListChanged()" *ngIf="viewState.list" [searchFilter]= "searchFilter" [favoriteFilter]="isFavoriteFilter"></cms-display-list>
+    <cms-display-list (change)="onListChanged()" *ngIf="listState" [searchFilter]= "searchFilter" [favoriteFilter]="isFavoriteFilter"></cms-display-list>
 </div>

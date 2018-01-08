@@ -6,7 +6,8 @@
  * @property {string} searchFilter Filter property which will filter the display list
  * @property {string} searchKey
  * @property {number} selectedDisplayId
- * @property {object} viewState
+ * @property {boolean} reloadState
+ * @property {boolean} listState
  */
 import { AfterViewInit, Component, OnInit } from "@angular/core";
 import { ActivatedRoute, Params } from "@angular/router";
@@ -29,12 +30,9 @@ export class CmsDisplaysPanelComponent implements OnInit, AfterViewInit {
     private searchFilter: string;
     private searchKey: string;
     private isSelectDisplayView: boolean = false;
-
     // all boolean states for the template
-    private viewState: any = {
-        reload: false,
-        list: true
-    };
+    private reloadState: boolean = false;
+    private listState: boolean = true;
 
     constructor(
         private storageManager: StorageManager,
@@ -85,7 +83,7 @@ export class CmsDisplaysPanelComponent implements OnInit, AfterViewInit {
      * @return void
      */
     private onListChanged(): void {
-        this.viewState.reload = true;
+        this.reloadState = true;
     }
 
     /**
@@ -94,10 +92,10 @@ export class CmsDisplaysPanelComponent implements OnInit, AfterViewInit {
      * @return void
      */
     private reloadList(): void {
-        this.viewState.reload = false;
-        this.viewState.list = false;
+        this.reloadState = false;
+        this.listState = false;
         window.setTimeout(() => {
-            this.viewState.list = true;
+            this.listState = true;
         }, 0);
     }
 

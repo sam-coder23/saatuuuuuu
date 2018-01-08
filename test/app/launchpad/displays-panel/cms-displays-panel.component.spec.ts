@@ -86,7 +86,7 @@ describe("Component: CmsDisplaysPanelComponent", () => {
 
     it("should call onListChanged: ", async(() => {
         debugInstance.onListChanged();
-        expect(debugInstance.viewState.reload).toBe(true);
+        expect(debugInstance.reloadState).toBe(true);
         fixture.detectChanges();
 
         let reloadButton = document.getElementById("display-panel-reload-button");
@@ -95,7 +95,7 @@ describe("Component: CmsDisplaysPanelComponent", () => {
 
     it("should call reloadList: ", async(() => {
         debugInstance.reloadList();
-        expect(debugInstance.viewState.reload).toBe(false);
+        expect(debugInstance.reloadState).toBe(false);
 
         let reloadButton = document.getElementById("display-panel-reload-button");
         expect(reloadButton).toBeNull();
@@ -103,7 +103,7 @@ describe("Component: CmsDisplaysPanelComponent", () => {
         fixture.detectChanges();
         fixture.whenStable().then(() => {
             setTimeout(() => {
-                expect(debugInstance.viewState.list).toBe(true);
+                expect(debugInstance.listState).toBe(true);
             }, 0);
         });
     }));

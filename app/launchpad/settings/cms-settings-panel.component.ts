@@ -35,6 +35,7 @@ import { Display } from "../../cms/models/cms-display";
 import { IUserProfileSettings } from "../../cms/models/cms-user-profile-settings";
 import { AppConfig } from "../../config";
 import { Validation } from "../../core/util/Validation";
+import { ParsingManager } from "../../utils/parsing-manager-util";
 import { CmsSettingsService } from "./cms-settings.service";
 
 @Component({
@@ -431,7 +432,7 @@ export class CmsSettingsPanelComponent implements OnInit {
      * @return void
      */
     private updateLogOffTime(): void {
-        const autoLogOffTime: number = Number(this.autoLogOffTime);
+        const autoLogOffTime: number = ParsingManager.TO_INTEGER(this.autoLogOffTime);
         this.autoLogOffTime = this.cmsSettingsService.validateCountData(autoLogOffTime, this.logOffTimeSteps, this.logOffTimeDefault);
         if (this.autoLogOffTime === 0 || isNaN(this.autoLogOffTime)) {
             // update time as 0 for NaN and "never" on UI
@@ -451,7 +452,7 @@ export class CmsSettingsPanelComponent implements OnInit {
      * @return void
      */
     private increaseLogOffTime(): void {
-        const autoLogOffTime: number = Number(this.autoLogOffTime);
+        const autoLogOffTime: number = ParsingManager.TO_INTEGER(this.autoLogOffTime);
         this.autoLogOffTime = this.cmsSettingsService.increaseCount(autoLogOffTime, this.logOffTimeSteps) || this.logOffTimeSteps[1];
         this.updateLogOffTime();
     }
@@ -462,7 +463,7 @@ export class CmsSettingsPanelComponent implements OnInit {
      * @return void
      */
     private decreaseLogOffTime(): void {
-        const autoLogOffTime: number = Number(this.autoLogOffTime);
+        const autoLogOffTime: number = ParsingManager.TO_INTEGER(this.autoLogOffTime);
         this.autoLogOffTime = this.cmsSettingsService.decreaseCount(autoLogOffTime, this.logOffTimeSteps) || this.logOffTimeSteps[0];
         this.updateLogOffTime();
     }

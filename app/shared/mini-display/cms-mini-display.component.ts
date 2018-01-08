@@ -2,15 +2,15 @@
  * This is a mini-display component that will load the selected display from the display list.
  */
 import {
-    Component,
-    ElementRef,
-    EventEmitter,
-    Input,
-    OnChanges,
-    OnDestroy,
-    OnInit,
-    Output,
-    SimpleChanges
+  Component,
+  ElementRef,
+  EventEmitter,
+  Input,
+  OnChanges,
+  OnDestroy,
+  OnInit,
+  Output,
+  SimpleChanges
 } from "@angular/core";
 import { Router } from "@angular/router";
 import { Observable, Subscription } from "rxjs/Rx";
@@ -26,6 +26,7 @@ import { AppConfig } from "../../config";
 import { Validation } from "../../core/util/Validation";
 import { DomManager } from "../../utils/dom-manager.util";
 import { EventManager } from "../../utils/event-manager.util";
+import { ParsingManager } from "../../utils/parsing-manager-util";
 import { Display } from "./../../cms/models/cms-display";
 import { CmsMiniDisplayService } from "./cms-mini-display.service";
 
@@ -526,9 +527,8 @@ export class CmsMiniDisplayComponent implements OnInit, OnChanges, OnDestroy {
      * @returns {void}
      */
     private zoom(deltaY: number): void {
-        const radixValue: number = 10;
-        const currentWidth: number = parseInt(this.miniDisplayStyle.width, radixValue);
-        const currentHeight: number = parseInt(this.miniDisplayStyle.height, radixValue);
+        const currentWidth: number = ParsingManager.TO_INTEGER(this.miniDisplayStyle.width);
+        const currentHeight: number = ParsingManager.TO_INTEGER(this.miniDisplayStyle.height);
         // container is the first div of component template
         const container: HTMLElement = document.getElementById("mini-display-container");
         const containerWidth: number = container.getBoundingClientRect().width;

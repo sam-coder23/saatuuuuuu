@@ -8,6 +8,7 @@ import { ISize } from "../../../../app/cms/models/cms-size";
 import { TileContent } from "../../../../app/cms/models/cms-tile-content";
 import { Tile } from "../../../../app/cms/models/cms-tile";
 import { mockDisplay1, expectedMiniDisplayResponse1, mockDisplay2, expectedMiniDisplayResponse2 } from "../../core/mock-stubs/cms-mini-display.service.mock";
+import { ParsingManager } from "./../../../../app/utils/parsing-manager-util";
 
 
 describe("Service: CmsMiniDisplayService", () => {
@@ -100,8 +101,8 @@ describe("Service: CmsMiniDisplayService", () => {
                  * Compare lastModified property in miniDisplayResponse with the lastModified property in expectedMiniDisplayResponse.
                  * Also, since timestamp cannot be compared for equality, that is why GreaterThan is used.
                  */
-                expect(parseInt(miniDisplayResponse.miniDisplayContentList[0].lastModified)).toBeGreaterThan(parseInt(expectedMiniDisplayResponse1.miniDisplayContentList[0].lastModified));
-                expect(parseInt(miniDisplayResponse.miniDisplayContentList[1].lastModified)).toBeGreaterThan(parseInt(expectedMiniDisplayResponse1.miniDisplayContentList[1].lastModified));
+                expect(ParsingManager.TO_INTEGER(miniDisplayResponse.miniDisplayContentList[0].lastModified)).toBeGreaterThan(ParsingManager.TO_INTEGER(expectedMiniDisplayResponse1.miniDisplayContentList[0].lastModified));
+                expect(ParsingManager.TO_INTEGER(miniDisplayResponse.miniDisplayContentList[1].lastModified)).toBeGreaterThan(ParsingManager.TO_INTEGER(expectedMiniDisplayResponse1.miniDisplayContentList[1].lastModified));
                 miniDisplayResponse.miniDisplayContentList[0].lastModified = expectedMiniDisplayResponse1.miniDisplayContentList[0].lastModified;
                 miniDisplayResponse.miniDisplayContentList[1].lastModified = expectedMiniDisplayResponse1.miniDisplayContentList[1].lastModified;
 
@@ -130,8 +131,8 @@ describe("Service: CmsMiniDisplayService", () => {
                  * Compare lastModified property in miniDisplayResponse with the lastModified property in expectedMiniDisplayResponse.
                  * Also, since timestamp cannot be compared for equality, that is why GreaterThan is used.
                  */
-                expect(parseInt(miniDisplayResponse.miniDisplayContentList[0].lastModified)).toBeGreaterThan(parseInt(expectedMiniDisplayResponse2.miniDisplayContentList[0].lastModified));
-                expect(parseInt(miniDisplayResponse.miniDisplayContentList[1].lastModified)).toBeGreaterThan(parseInt(expectedMiniDisplayResponse2.miniDisplayContentList[1].lastModified));
+                expect(ParsingManager.TO_INTEGER(miniDisplayResponse.miniDisplayContentList[0].lastModified)).toBeGreaterThan(ParsingManager.TO_INTEGER(expectedMiniDisplayResponse2.miniDisplayContentList[0].lastModified));
+                expect(ParsingManager.TO_INTEGER(miniDisplayResponse.miniDisplayContentList[1].lastModified)).toBeGreaterThan(ParsingManager.TO_INTEGER(expectedMiniDisplayResponse2.miniDisplayContentList[1].lastModified));
                 miniDisplayResponse.miniDisplayContentList[0].lastModified = expectedMiniDisplayResponse2.miniDisplayContentList[0].lastModified;
                 miniDisplayResponse.miniDisplayContentList[1].lastModified = expectedMiniDisplayResponse2.miniDisplayContentList[1].lastModified;
 

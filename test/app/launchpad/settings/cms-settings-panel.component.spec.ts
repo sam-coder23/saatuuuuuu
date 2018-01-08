@@ -18,6 +18,7 @@ import { StorageManager } from "../../../../app/cms/api/cms-storagemanager.servi
 import { APIRequest } from "../../../../app/cms/api/api-request";
 import { CmsSessionStorageItem } from "../../../../app/cms/models/cms-session-storage-item";
 import { CMSConstants } from "../../../../app/cms/models/cms-constants";
+import { ParsingManager } from "./../../../../app/utils/parsing-manager-util";
 
 let spyRouter = {
     navigate: jasmine.createSpy("settings")
@@ -361,7 +362,7 @@ describe("Component CmsSettingsPanelComponent", () => {
                 fixture.detectChanges();
                 fixture.whenStable().then(() => {
                     let settingSquareInputElement = fixture.nativeElement.querySelector(".setting-square-input input").value;
-                    expect(Number(settingSquareInputElement)).toEqual(debugInstance.logOffTimeSteps[1]);
+                    expect(ParsingManager.TO_INTEGER(settingSquareInputElement)).toEqual(debugInstance.logOffTimeSteps[1]);
                 });
             });
         });
@@ -459,7 +460,7 @@ describe("Component CmsSettingsPanelComponent", () => {
                 fixture.whenStable().then(() => {
                     let fontSizeInput = fixture.nativeElement.querySelector("#font-size-input");
                     expect(fontSizeInput).not.toBeNull();
-                    expect(Number(fontSizeInput.value)).toEqual(debugInstance.fontSizeSteps[10]);
+                    expect(ParsingManager.TO_INTEGER(fontSizeInput.value)).toEqual(debugInstance.fontSizeSteps[10]);
                 });
             });
         });
@@ -481,7 +482,7 @@ describe("Component CmsSettingsPanelComponent", () => {
                 fixture.whenStable().then(() => {
                     let fontSizeInput = fixture.nativeElement.querySelector("#font-size-input");
                     expect(fontSizeInput).not.toBeNull();
-                    expect(Number(fontSizeInput.value)).toEqual(debugInstance.fontSizeSteps[11]);
+                    expect(ParsingManager.TO_INTEGER(fontSizeInput.value)).toEqual(debugInstance.fontSizeSteps[11]);
 
                 });
             });
@@ -504,7 +505,7 @@ describe("Component CmsSettingsPanelComponent", () => {
                 fixture.whenStable().then(() => {
                     let transparencyInput = fixture.nativeElement.querySelector("#transparency-input");
                     expect(transparencyInput).not.toBeNull();
-                    expect(Number(transparencyInput.value)).toEqual(debugInstance.transparencySteps[4]);
+                    expect(ParsingManager.TO_INTEGER(transparencyInput.value)).toEqual(debugInstance.transparencySteps[4]);
                 });
             });
         });
@@ -526,7 +527,7 @@ describe("Component CmsSettingsPanelComponent", () => {
                 fixture.whenStable().then(() => {
                     let transparencyInput = fixture.nativeElement.querySelector("#transparency-input");
                     expect(transparencyInput).not.toBeNull();
-                    expect(Number(transparencyInput.value)).toEqual(debugInstance.transparencySteps[5]);
+                    expect(ParsingManager.TO_INTEGER(transparencyInput.value)).toEqual(debugInstance.transparencySteps[5]);
                 });
             });
         });
@@ -545,13 +546,13 @@ describe("Component CmsSettingsPanelComponent", () => {
                     let defaultPageSize = fixture.nativeElement.querySelector("md-select[name=" + "pageSize" + "]");
                     fixture.detectChanges();
                     fixture.whenStable().then(() => {
-                        expect(Number(defaultPageSize.getAttribute("ng-reflect-ng-model"))).toEqual(mockCmsSettingsData.userSettings.pageSize);
+                        expect(ParsingManager.TO_INTEGER(defaultPageSize.getAttribute("ng-reflect-ng-model"))).toEqual(mockCmsSettingsData.userSettings.pageSize);
                         let $event = { source: "MdRadioButton", value: "auto-connect-to-most-recent-wall" };
                         mockCmsSettingsData.userSettings.pageSize = debugInstance.pageSizes[1];
                         debugInstance.updateUserSettingsByAction($event);
                         fixture.detectChanges();
                         fixture.whenStable().then(() => {
-                            expect(Number(defaultPageSize.getAttribute("ng-reflect-ng-model"))).toEqual(mockCmsSettingsData.userSettings.pageSize);
+                            expect(ParsingManager.TO_INTEGER(defaultPageSize.getAttribute("ng-reflect-ng-model"))).toEqual(mockCmsSettingsData.userSettings.pageSize);
                         });
                     });
                 });

@@ -5,12 +5,14 @@
  * @property {number} displayId
  * @property {object} displayResolution
  * @property {number} sourceCount
- * @property {object} viewState
+ * @property {boolean} reloadState
+ * @property {boolean} listState
  */
 import { Component, OnInit } from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
 import { CmsApiService } from "../../cms/api/cms-api.service";
 import { AppConfig } from "../../config";
+import { ParsingManager } from "./../../utils/parsing-manager-util";
 
 @Component({
     selector: "cms-tiles-panel",
@@ -19,10 +21,8 @@ import { AppConfig } from "../../config";
 })
 
 export class CmsTilesPanelComponent implements OnInit {
-    public viewState: any = {
-        reload: false,
-        list: true
-    };
+    private reloadState: boolean = false;
+    private listState: boolean = true;
     private displayId: number;
     private displayResolution: { "width": number, "height": number };
     private sourceCount: number;
@@ -39,12 +39,10 @@ export class CmsTilesPanelComponent implements OnInit {
     }
 
     public ngOnInit(): void {
-        const defaultDisplayId: number = 10;
-        const defaultSourceCount: number = 10;
         // tslint:disable-next-line:no-string-literal
-        this.displayId = parseInt(this.activatedRoute.params["value"]["id"], defaultDisplayId);
+        this.displayId = ParsingManager.TO_INTEGER(this.activatedRoute.params["value"]["id"]);
         // tslint:disable-next-line:no-string-literal
-        this.sourceCount = parseInt(this.activatedRoute.queryParams["value"]["sourceCount"], defaultSourceCount);
+        this.sourceCount = ParsingManager.TO_INTEGER(this.activatedRoute.queryParams["value"]["sourceCount"]);
     }
 
     /**
@@ -62,11 +60,11 @@ export class CmsTilesPanelComponent implements OnInit {
      * @return void
      */
     public reloadList(): void {
-        this.viewState.reload = false;
-        this.viewState.list = false;
+        this.reloadState = false;
+        this.listState = false;
         window.setTimeout(() => {
-            this.viewState.list = true;
-                       }, 0);
+            this.listState = true;
+        }, 0);
     }
 
     /**
@@ -75,7 +73,7 @@ export class CmsTilesPanelComponent implements OnInit {
      * @return void
      */
     public onListChanged(): void {
-        this.viewState.reload = true;
+        this.reloadState = true;
     }
 
 }
