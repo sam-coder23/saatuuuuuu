@@ -14,8 +14,8 @@ import { CmsApiService } from "../../cms/api/cms-api.service";
 import { StorageManager } from "../../cms/api/cms-storagemanager.service";
 import { CmsSessionStorageItem } from "../../cms/models/cms-session-storage-item";
 import { AppConfig } from "../../config";
-import { IUserConfig, User } from "../models/cms-user.model";
 import { CmsSettingsService } from "../settings/cms-settings.service";
+import { IUserConfig, User } from "./../../../app/cms/models/cms-user.model";
 import { CmsMiniDisplayService } from "./../../shared/mini-display/cms-mini-display.service";
 
 @Component({

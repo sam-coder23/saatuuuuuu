@@ -8,7 +8,7 @@ import { TranslateHttpLoader } from "@ngx-translate/http-loader";
 import { MaterialModule, MdRippleModule } from "@angular/material";
 import { FormsModule } from "@angular/forms";
 import { Router, ActivatedRoute } from "@angular/router";
-import { IUserConfig } from "../../../../app/launchpad/models/cms-user.model";
+import { IUserConfig } from "../../../../app/cms/models/cms-user.model";
 import { IUserProfileSettings } from "../../../../app/cms/models/cms-user-profile-settings";
 import { CmsLoginComponent } from "../../../../app/launchpad/login/cms-login.component";
 import { CmsSettingsService } from "../../../../app/launchpad/settings/cms-settings.service";

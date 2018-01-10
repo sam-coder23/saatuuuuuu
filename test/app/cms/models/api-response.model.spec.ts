@@ -1,5 +1,5 @@
 import { TestBed, async } from "@angular/core/testing";
-import { APIResponse } from "../../../../app/launchpad/models/api-response.model";
+import { APIResponse } from "../../../../app/cms/models/api-response.model";
 
 describe("API-Response Model: ", () => {
 

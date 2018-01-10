@@ -1,5 +1,5 @@
 import { TestBed, async } from "@angular/core/testing";
-import { IUserConfig, User } from "../../../../app/launchpad/models/cms-user.model";
+import { IUserConfig, User } from "../../../../app/cms/models/cms-user.model";
 
 describe("User Model: ", () => {
 

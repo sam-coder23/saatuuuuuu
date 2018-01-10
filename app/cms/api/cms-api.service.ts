@@ -18,13 +18,13 @@ import { Observable, Subscription, TimeoutError } from "rxjs/Rx";
 
 import { AppConfig } from "../../config";
 import { Validation } from "../../core/util/Validation";
-import { User } from "../../launchpad/models/cms-user.model";
 import { Display } from "../models/cms-display";
 import { ICmsEvent } from "../models/cms-event";
 import { CmsSessionStorageItem } from "../models/cms-session-storage-item";
 import { Source } from "../models/cms-source";
 import { ITilePreset } from "../models/cms-tile-preset";
 import { IUserProfileSettings } from "../models/cms-user-profile-settings";
+import { User } from "../models/cms-user.model";
 import { ParsingManager } from "./../../utils/parsing-manager-util";
 import { CMSConstants } from "./../models/cms-constants";
 import { Tile } from "./../models/cms-tile";

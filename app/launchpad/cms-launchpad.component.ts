@@ -27,11 +27,11 @@ import { CMS_EVENTS } from "../cms/api/cms-events.enum";
 import { StorageManager } from "../cms/api/cms-storagemanager.service";
 import { CmsSessionStorageItem } from "../cms/models/cms-session-storage-item";
 import { IUserProfileSettings } from "../cms/models/cms-user-profile-settings";
+import { IUserToken } from "../cms/models/cms-user-token";
 import { AppConfig } from "../config";
 import { Validation } from "../core/util/Validation";
 import { CmsLanguages } from "../i18n/cms-languages";
 import { EventManager } from "../utils/event-manager.util";
-import { IUserToken } from "./models/cms-user-token";
 import { CmsSettingsService } from "./settings/cms-settings.service";
 
 @Component({

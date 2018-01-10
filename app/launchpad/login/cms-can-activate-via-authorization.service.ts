@@ -7,7 +7,7 @@ import { Injectable } from "@angular/core";
 import { ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot } from "@angular/router";
 import { StorageManager } from "../../cms/api/cms-storagemanager.service";
 import { CmsSessionStorageItem } from "../../cms/models/cms-session-storage-item";
-import { User } from "../models/cms-user.model";
+import { User } from "../../cms/models/cms-user.model";
 
 @Injectable()
 export class CmsCanActivateViaAuthorizationService implements CanActivate {

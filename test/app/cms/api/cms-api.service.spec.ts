@@ -16,7 +16,7 @@ import { CmsApiService } from "../../../../app/cms/api/cms-api.service";
 import { APIRequest } from "../../../../app/cms/api/api-request";
 import { AppConfig } from "../../../../app/config";
 import { StorageManager } from "../../../../app/cms/api/cms-storagemanager.service";
-import { User } from "../../../../app/launchpad/models/cms-user.model";
+import { User } from "../../../../app/cms/models/cms-user.model";
 import { Display } from "../../../../app/cms/models/cms-display";
 
 import {
