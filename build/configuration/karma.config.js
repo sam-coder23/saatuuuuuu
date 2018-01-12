@@ -1,5 +1,6 @@
 module.exports = function (config) {
     config.set({
+        basePath: "../..",
         proxies: {
             "/settings/language/resources/": "/base/app/resources/",
             "/settings/language/icon_barco.png": "/base/app/icon_barco.png",
@@ -8,7 +9,7 @@ module.exports = function (config) {
             "/resources/": "/base/app/resources/",
             "/icon_barco.png": "/base/app/icon_barco.png",
             "/home/resources/": "/base/app/resources/",
-            "/home/icon_barco.png": "/base/app/icon_barco.png",       
+            "/home/icon_barco.png": "/base/app/icon_barco.png",
  			"/display_snapshot.jpg": "/base/app/resources/images/display_snapshot.jpg",
              "/home/display_snapshot.jpg": "/base/app/resources/images/display_snapshot.jpg"
         },
@@ -21,6 +22,12 @@ module.exports = function (config) {
             "karma-typescript",
             "html"
         ],
+        htmlReporter: {
+            outputDir: "build/reports",
+            reportName: "karma-test-report",
+            preserveDescribeNesting: false,
+            foldAll: false,
+        },
         preprocessors: {
             '**/*.ts': [
                 'karma-typescript'
@@ -57,18 +64,18 @@ module.exports = function (config) {
                 served: true,
                 included: false
             },
-            { 
+            {
                 pattern: 'app/*.*scss',
                 watched: true,
                 included: true,
                 served: true
-            },        
-            { 
+            },
+            {
                 pattern: 'app/main.ts',
                 watched: false,
                 included: false,
                 served: false
-            }        
+            }
         ],
         karmaTypescriptConfig: {
             exclude: ["broken"],
@@ -81,7 +88,14 @@ module.exports = function (config) {
                 warn: function(message){
                     console.warn(message);
                 }
-            },            
+            },
+            reports: {
+                "html": {
+                    "directory": "build/reports",
+                    "subdirectory": "coverage-report",
+                    "filename": "coverage"
+                }
+            },
             bundlerOptions: {
                 entrypoints: /base\.ts|\.spec\.ts$/,
                 resolve: {

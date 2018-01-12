@@ -1,8 +1,7 @@
 node_modules/**
 tslint/
 test-report/
-dist/
+build/dist/**
 npm-debug.log
-coverage/
-karma_html/
+build/reports/**
 .vscode/**

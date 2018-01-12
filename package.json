@@ -3,11 +3,11 @@
   "version": "1.0.0",
   "scripts": {
     "build:dev": "webpack --progress --colors",
-    "server:dev": "webpack-dev-server --hot --progress --colors --host 127.0.0.1 --port 3000 --content-base app/",
+    "server:dev": "webpack-dev-server --config ./build/configuration/webpack.config.js --hot --progress --colors --host 127.0.0.1 --port 3000 --content-base ./app/",
     "start": "npm run server:dev",
-    "build:production": "webpack -p --config ./webpack.production.js",
-    "test": "karma start ./karma.config.js",
-    "compile": "tslint app/**/*.ts"
+    "build:production": "webpack -p --config ./build/configuration/webpack.production.js",
+    "test": "karma start ./build/configuration/karma.config.js",
+    "compile": "tslint app/**/*.ts > build/reports/lint-result.log"
   },
   "repository": {
     "type": "git",

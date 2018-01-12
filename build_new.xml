@@ -1,37 +1,37 @@
-<project name="CWM" default="build">
- 
+<project name="collaboration-wall-manager-build-script" default="build">
+
  <property environment="env" />
  <property name="build.sandbox" value="../../../../CMS" />
  <property file="${build.sandbox}/build.properties" />
- 
+
  <!--======================================================
-  This project is used to compile CWM code in CMS. 
+  This project is used to compile CWM code in CMS.
   ========================================================-->
-    
- <target name="build" depends="delete.CollaborationWallManager.war, installDependencies, compileCollaborationWallManager, create.CollaborationWallManager.war" />
- 
+
+ <target name="build" depends="delete-war, npm-install, npm-build-production, create-war" />
+
    <!-- create CollaborationWallManager.war -->
-   <target name="create.CollaborationWallManager.war">
+   <target name="create-war">
 		<jar destfile="CollaborationWallManager.war" update="true" >
-			<zipfileset dir="./dist" includes="**/**" excludes="build_new.xml, .svn, .js.map, .git"/>
+			<zipfileset dir="./build/dist" includes="**/**" excludes="build_new.xml, .svn, .js.map, .git"/>
 		</jar>
    </target>
-      
+
 	<!-- Install NPM Dependencies -->
-   	<target name="installDependencies">
-		<exec dir="${build.temp}/collaborationwallmgr-git-src" executable="cmd.exe">
+   	<target name="npm-install">
+		<exec dir="${build.temp}/launchpad-cr-git-src" executable="cmd.exe">
 			<arg value="/C npm install"/></exec>
 	</target>
-	
+
 	<!-- Compile code -->
-	<target name="compileCollaborationWallManager">
-		<exec dir="${build.temp}/collaborationwallmgr-git-src" executable="cmd.exe">
+	<target name="npm-build-production">
+		<exec dir="${build.temp}/launchpad-cr-git-src" executable="cmd.exe">
 			<arg value="/C npm run build:production"/></exec>
 	</target>
 
   <!-- Delete CrisisRoomUI.war if it exists -->
-  <target name="delete.CollaborationWallManager.war">
+  <target name="delete-war">
 	     <delete file="CollaborationWallManager.war" failonerror="false" />
-  </target> 
-   
+  </target>
+
 </project>
