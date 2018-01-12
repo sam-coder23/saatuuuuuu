@@ -122,20 +122,19 @@ export class CmsGridComponent implements OnInit, AfterViewInit {
      */
     public contentClick(content: TileContent): void {
         // return if swap source api call is in progress
-        if (this.loading) {
-            return;
-        }
-        if (Validation.IS_NULL_OR_UNDEFINED(this.selectedContent)) {
-            // When no source selected at this moment and on first source content clicked\ selected for swapping
-            this.selectedContent = content;
-        } else if (content) {
-            // Same source clicked again so no more swapping, deselect selected source
-            if (this.selectedContent.id === content.id) {
-                this.deselctedSource();
-            } else {
-                // second source selected which need to be swapped, start swapping
-                this.swappingContent = content;
-                this.swapSource();
+        if (!this.loading) {
+            if (Validation.IS_NULL_OR_UNDEFINED(this.selectedContent)) {
+                // When no source selected at this moment and on first source content clicked\ selected for swapping
+                this.selectedContent = content;
+            } else if (content) {
+                // Same source clicked again so no more swapping, deselect selected source
+                if (this.selectedContent.id === content.id) {
+                    this.deselctedSource();
+                } else {
+                    // second source selected which need to be swapped, start swapping
+                    this.swappingContent = content;
+                    this.swapSource();
+                }
             }
         }
     }
