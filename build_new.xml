@@ -19,13 +19,13 @@
 
 	<!-- Install NPM Dependencies -->
    	<target name="npm-install">
-		<exec dir="${build.temp}/launchpad-cr-git-src" executable="cmd.exe">
+		<exec dir="${build.temp}/collaborationwallmgr-git-src" executable="cmd.exe">
 			<arg value="/C npm install"/></exec>
 	</target>
 
 	<!-- Compile code -->
 	<target name="npm-build-production">
-		<exec dir="${build.temp}/launchpad-cr-git-src" executable="cmd.exe">
+		<exec dir="${build.temp}/collaborationwallmgr-git-src" executable="cmd.exe">
 			<arg value="/C npm run build:production"/></exec>
 	</target>
 
