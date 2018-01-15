@@ -1,9 +1,9 @@
 {
     "login": {
         "welcome": "Collaboration Wall Manager",
-        "username": "User name",
+        "username": "UserName",
         "password": "Password",
-        "button": "Login",
+        "button": "Login CWM",
         "error": "User name or password is incorrect",
         "licenceError": "Unable to acquire licence.",
         "serverNotReadyError": "Server is not yet ready. Please wait!",
@@ -128,7 +128,7 @@
         "sources": "Sources",
         "displays": "Displays",
         "display": "Preview",
-        "of": "of", 
+        "of": "of",
         "source": "sources",
         "clearWallMessage": "Do you wish to clear the wall?",
         "clearWallTitle": "Clear the wall"
