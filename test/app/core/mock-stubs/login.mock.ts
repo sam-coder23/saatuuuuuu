@@ -4,10 +4,10 @@ import { IUserProfileSettings } from "../../../../app/cms/models/cms-user-profil
 export const MockUser: IUserConfig = {
     username: "bcd-se-test",
     password: "bcdsetest"
-}
+};
 
 export const MockUserProfileSettings: IUserProfileSettings = {
-     "language": "en",
+    "language": "en",
     "wallConnection": {
         "startUpAction": "show-available-walls-list",
         "specificDisplay": "Board Meeting Room",
@@ -23,10 +23,10 @@ export const MockUserProfileSettings: IUserProfileSettings = {
     },
     "logOffTime": 0,
     "pageSize": 50
-}
+};
 
-export const MoclLicenseinfo = {
+export const MockLicenseInfo = {
     licenseinfo: {
         localization: false
     }
-}
+};

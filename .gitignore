@@ -5,3 +5,4 @@ build/dist/**
 npm-debug.log
 build/reports/**
 .vscode/**
+.scannerwork/**

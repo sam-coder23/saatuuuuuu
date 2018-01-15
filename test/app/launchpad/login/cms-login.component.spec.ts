@@ -1,4 +1,4 @@
-import { ComponentFixture, TestBed, async, inject } from "@angular/core/testing";
+import { ComponentFixture, TestBed, async, inject, tick, getTestBed } from "@angular/core/testing";
 import { By } from "@angular/platform-browser";
 import { DebugElement, NO_ERRORS_SCHEMA } from "@angular/core";
 import { Observable } from "rxjs/Observable";
@@ -18,18 +18,45 @@ import { CmsMiniDisplayService } from "../../../../app/shared/mini-display/cms-m
 import { APIRequest } from "../../../../app/cms/api/api-request";
 import { AppConfig } from "../../../../app/config";
 import { CmsSessionStorageItem } from "../../../../app/cms/models/cms-session-storage-item";
-import { MockUser, MockUserProfileSettings, MoclLicenseinfo } from "./../../core/mock-stubs/login.mock";
+import { MockUser, MockUserProfileSettings, MockLicenseInfo } from "./../../core/mock-stubs/login.mock";
 
 /**
  * Fake CmsApiService Service
  */
 class MockCmsApiService {
-    login(mockUser): Observable<IUserConfig> {
-        if(mockUser.username === MockUser.username && mockUser.password === MockUser.password) {
+    login(mockUser): Observable<any> {
+        const response: any = {
+            error: {
+                status: 0
+            }
+        };
+
+        if (mockUser.username === MockUser.username && mockUser.password === MockUser.password) {
             return Observable.of(MockUser);
-        } else {
-            return Observable.throw("Invalid credentials");
         }
+        else if (mockUser.username === "license-error") {
+            response.error.status = 403;
+        }
+        else if (mockUser.username === "settings-error") {
+            response.error.status = 406;
+        }
+        else if (mockUser.username === "user-disabled-error") {
+            response.error.status = 409;
+        }
+        else if (mockUser.username === "server-unavailable-error") {
+            response.error.status = 0;
+        }
+        else if (mockUser.username === "not-found-error") {
+            response.error.status = 404;
+        }
+        else if (mockUser.username === "server-not-ready-error") {
+            response.error.status = 503;
+        }
+        else if (mockUser.username === "other-error") {
+            response.error.status = -1;
+        }
+
+        return Observable.throw(response.error);
     }
 
     keepSessionAlive() {
@@ -45,7 +72,7 @@ class MockCmsApiService {
     }
 
     getSystemInfo(): Observable<any> {
-        return Observable.of(MoclLicenseinfo);
+        return Observable.of(MockLicenseInfo);
     }
 
     logout(): Observable<any> {
@@ -63,7 +90,7 @@ class MockCmsApiService {
 }
 
 let router = {
-  navigate: jasmine.createSpy("login")
+    navigate: jasmine.createSpy("login")
 }
 
 /**
@@ -86,7 +113,7 @@ describe("CmsLoginComponent", () => {
     let component: CmsLoginComponent;
     let fixture: ComponentFixture<CmsLoginComponent>;
     let debugInstance, nativeElement, storageManager;
-    let cmsApiService;
+    let translateService: TranslateService;
 
     beforeEach(async(() => {
         TestBed.configureTestingModule({
@@ -113,7 +140,8 @@ describe("CmsLoginComponent", () => {
             ],
             imports: [
                 FormsModule,
-                HttpModule, MaterialModule.forRoot(),
+                HttpModule,
+                MaterialModule.forRoot(),
                 TranslateModule.forRoot({
                     loader: {
                         provide: TranslateLoader,
@@ -124,10 +152,12 @@ describe("CmsLoginComponent", () => {
             ],
             schemas: [NO_ERRORS_SCHEMA]
         }).compileComponents().then(() => {
+            const injector = getTestBed();
             fixture = TestBed.createComponent(CmsLoginComponent);
             component = fixture.componentInstance;
             nativeElement = fixture.nativeElement;
             debugInstance = fixture.debugElement.componentInstance;
+            translateService = injector.get(TranslateService);
         });
     }));
 
@@ -146,7 +176,7 @@ describe("CmsLoginComponent", () => {
         debugInstance.onLoginSubmit();
         fixture.whenStable().then(() => {
             let userModel = JSON.parse(storageManager.getItem(CmsSessionStorageItem.USER));
-            if(userModel) {
+            if (userModel) {
                 expect(userModel.username).toEqual(MockUser.username);
                 expect(userModel.loggedIn).toEqual(true);
             } else {
@@ -157,11 +187,205 @@ describe("CmsLoginComponent", () => {
     });
 
     it("User Login: Failure", () => {
-        debugInstance.user = {username: "test", password: "password"};
+        debugInstance.user = { username: "test", password: "password" };
         debugInstance.onLoginSubmit();
         fixture.detectChanges();
         fixture.whenStable().then(() => {
             expect(debugInstance.hasError).toEqual(true);
+        });
+    });
+
+    it("Triggering the user name change event", () => {
+        fixture.detectChanges();
+        const nameBox = nativeElement.querySelector("#user-name-box");
+        expect(nameBox).toBeTruthy();
+        nameBox.value = "username";
+        nameBox.dispatchEvent(new Event("input"));
+        fixture.detectChanges();
+        expect(debugInstance.hasError).toBe(false);
+        fixture.whenStable().then(() => {
+            expect(debugInstance.user.username).toBe(nameBox.value);
+        });
+    });
+
+    it("Triggering the password change event", () => {
+        fixture.detectChanges();
+        const passwordBox = nativeElement.querySelector("#password-box");
+        expect(passwordBox).toBeTruthy();
+        passwordBox.value = "password";
+        passwordBox.dispatchEvent(new Event("input"));
+        fixture.detectChanges();
+        expect(debugInstance.hasError).toBe(false);
+        fixture.whenStable().then(() => {
+            expect(debugInstance.user.password).toBe(passwordBox.value);
+        });
+    });
+
+    it("Can handle license error", () => {
+        fixture.detectChanges();
+        const nameBox = nativeElement.querySelector("#user-name-box");
+        const passwordBox = nativeElement.querySelector("#password-box");
+        const loginButton = nativeElement.querySelector("#login-submit-button");
+        expect(nameBox).toBeTruthy();
+        expect(passwordBox).toBeTruthy();
+        expect(loginButton).toBeTruthy();
+
+        nameBox.value = "license-error";
+        passwordBox.value = "password";
+        passwordBox.dispatchEvent(new Event("input"));
+        debugInstance.user = {
+            username: nameBox.value,
+            password: passwordBox.value
+        };
+        fixture.detectChanges();
+        expect(debugInstance.hasError).toBe(false);
+        fixture.whenStable().then(() => {
+            debugInstance.login(debugInstance.user);
+            expect(debugInstance.hasError).toBe(true);
+        });
+    });
+
+    it("Can handle settings error", () => {
+        fixture.detectChanges();
+        const nameBox = nativeElement.querySelector("#user-name-box");
+        const passwordBox = nativeElement.querySelector("#password-box");
+        const loginButton = nativeElement.querySelector("#login-submit-button");
+        expect(nameBox).toBeTruthy();
+        expect(passwordBox).toBeTruthy();
+        expect(loginButton).toBeTruthy();
+
+        nameBox.value = "settings-error";
+        passwordBox.value = "password";
+        passwordBox.dispatchEvent(new Event("input"));
+        debugInstance.user = {
+            username: nameBox.value,
+            password: passwordBox.value
+        };
+        fixture.detectChanges();
+        expect(debugInstance.hasError).toBe(false);
+        fixture.whenStable().then(() => {
+            debugInstance.login(debugInstance.user);
+            expect(debugInstance.hasError).toBe(true);
+        });
+    });
+
+    it("Can handle user disabled error", () => {
+        fixture.detectChanges();
+        const nameBox = nativeElement.querySelector("#user-name-box");
+        const passwordBox = nativeElement.querySelector("#password-box");
+        const loginButton = nativeElement.querySelector("#login-submit-button");
+        expect(nameBox).toBeTruthy();
+        expect(passwordBox).toBeTruthy();
+        expect(loginButton).toBeTruthy();
+
+        nameBox.value = "user-disabled-error";
+        passwordBox.value = "password";
+        passwordBox.dispatchEvent(new Event("input"));
+        debugInstance.user = {
+            username: nameBox.value,
+            password: passwordBox.value
+        };
+        fixture.detectChanges();
+        expect(debugInstance.hasError).toBe(false);
+        fixture.whenStable().then(() => {
+            debugInstance.login(debugInstance.user);
+            expect(debugInstance.hasError).toBe(true);
+        });
+    });
+
+    it("Can handle server unavailable error", () => {
+        fixture.detectChanges();
+        const nameBox = nativeElement.querySelector("#user-name-box");
+        const passwordBox = nativeElement.querySelector("#password-box");
+        const loginButton = nativeElement.querySelector("#login-submit-button");
+        expect(nameBox).toBeTruthy();
+        expect(passwordBox).toBeTruthy();
+        expect(loginButton).toBeTruthy();
+
+        nameBox.value = "server-unavailable-error";
+        passwordBox.value = "password";
+        passwordBox.dispatchEvent(new Event("input"));
+        debugInstance.user = {
+            username: nameBox.value,
+            password: passwordBox.value
+        };
+        fixture.detectChanges();
+        expect(debugInstance.hasError).toBe(false);
+        fixture.whenStable().then(() => {
+            debugInstance.login(debugInstance.user);
+            expect(debugInstance.hasError).toBe(true);
+        });
+    });
+
+    it("Can handle not found error", () => {
+        fixture.detectChanges();
+        const nameBox = nativeElement.querySelector("#user-name-box");
+        const passwordBox = nativeElement.querySelector("#password-box");
+        const loginButton = nativeElement.querySelector("#login-submit-button");
+        expect(nameBox).toBeTruthy();
+        expect(passwordBox).toBeTruthy();
+        expect(loginButton).toBeTruthy();
+
+        nameBox.value = "not-found-error";
+        passwordBox.value = "password";
+        passwordBox.dispatchEvent(new Event("input"));
+        debugInstance.user = {
+            username: nameBox.value,
+            password: passwordBox.value
+        };
+        fixture.detectChanges();
+        expect(debugInstance.hasError).toBe(false);
+        fixture.whenStable().then(() => {
+            debugInstance.login(debugInstance.user);
+            expect(debugInstance.hasError).toBe(true);
+        });
+    });
+
+    it("Can handle server not ready error", () => {
+        fixture.detectChanges();
+        const nameBox = nativeElement.querySelector("#user-name-box");
+        const passwordBox = nativeElement.querySelector("#password-box");
+        const loginButton = nativeElement.querySelector("#login-submit-button");
+        expect(nameBox).toBeTruthy();
+        expect(passwordBox).toBeTruthy();
+        expect(loginButton).toBeTruthy();
+
+        nameBox.value = "server-not-ready-error";
+        passwordBox.value = "password";
+        passwordBox.dispatchEvent(new Event("input"));
+        debugInstance.user = {
+            username: nameBox.value,
+            password: passwordBox.value
+        };
+        fixture.detectChanges();
+        expect(debugInstance.hasError).toBe(false);
+        fixture.whenStable().then(() => {
+            debugInstance.login(debugInstance.user);
+            expect(debugInstance.hasError).toBe(true);
+        });
+    });
+
+    it("Can handle server other error", () => {
+        fixture.detectChanges();
+        const nameBox = nativeElement.querySelector("#user-name-box");
+        const passwordBox = nativeElement.querySelector("#password-box");
+        const loginButton = nativeElement.querySelector("#login-submit-button");
+        expect(nameBox).toBeTruthy();
+        expect(passwordBox).toBeTruthy();
+        expect(loginButton).toBeTruthy();
+
+        nameBox.value = "other-error";
+        passwordBox.value = "password";
+        passwordBox.dispatchEvent(new Event("input"));
+        debugInstance.user = {
+            username: nameBox.value,
+            password: passwordBox.value
+        };
+        fixture.detectChanges();
+        expect(debugInstance.hasError).toBe(false);
+        fixture.whenStable().then(() => {
+            debugInstance.login(debugInstance.user);
+            expect(debugInstance.hasError).toBe(true);
         });
     });
 });
