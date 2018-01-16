@@ -14,23 +14,6 @@ import { CmsSettingsService } from "../../../../app/launchpad/settings/cms-setti
 import { MockDisplays } from "./../../core/mock-stubs/tile.mock";
 import { TilePresets } from "./../../core/mock-stubs/tile-grid.mock";
 
-// Fake ActivatedRoute Service
-class MockActivatedRoute {
-    params: {
-        value: {
-            id: number;
-        };
-    };
-
-    constructor() {
-        this.params = {
-            value: {
-                id: 1
-            }
-        };
-    }
-}
-
 // Fake CmsApiService Service with the below stub
 class MockCmsApiService {
     getTilePresets(tilesCount: number = 0): Observable<ITilePreset[]> {
@@ -62,16 +45,13 @@ describe("CmsTileListComponent", () => {
     let component: CmsTileListComponent;
     let fixture: ComponentFixture<CmsTileListComponent>;
     let debugInstance;
-    let cmsSettingService: MockCmsSettingService, activatedRoute: MockActivatedRoute;
+    let cmsSettingService: MockCmsSettingService, activatedRoute: ActivatedRoute;
     let spyPutContentsOnDisplay: jasmine.Spy;
     beforeEach(async(() => {
         TestBed.configureTestingModule({
             declarations: [CmsTileListComponent],
             providers: [
-                {
-                    provide: ActivatedRoute,
-                    useClass: MockActivatedRoute
-                },
+                { provide: ActivatedRoute, useValue: { 'params': Observable.from([{ 'id': 1 }]) } },
                 {
                     provide: CmsApiService,
                     useClass: MockCmsApiService
@@ -140,7 +120,11 @@ describe("CmsTileListComponent", () => {
         let cardElement: DebugElement = fixture.debugElement.query(By.css(".card-select"));
         expect(cardElement).toBeDefined();
         expect(component.tilePresets[0].isSelected).toBeTruthy();
-        expect(args[0]).toEqual(activatedRoute.params.value.id);
+        let id: number;
+        activatedRoute.params.subscribe((value) => {
+            id = value.id;
+        });
+        expect(args[0]).toEqual(id);
         expect(args[1]).toEqual(component.tilePresets[0].id);
         expect(args[2].resources).toEqual(cmsSettingService.selectedSources);
     });

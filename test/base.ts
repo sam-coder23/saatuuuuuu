@@ -1,3 +1,8 @@
+/**
+ * This class initialize testing environment
+ */
+
+// tslint:disable:ordered-imports
 import "core-js";
 import "zone.js/dist/zone";
 import "zone.js/dist/long-stack-trace-zone";

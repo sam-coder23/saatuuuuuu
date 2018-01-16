@@ -41,9 +41,11 @@ export class CmsHomePanelComponent implements OnInit {
         private router: Router) { }
 
     public ngOnInit(): void {
-        // tslint:disable-next-line:no-string-literal
-        this.displayId = ParsingManager.TO_INTEGER(this.activatedRoute.params["value"]["displayId"]);
-        this.updateOptions();
+        this.activatedRoute.params.subscribe((value: any) => {
+            this.displayId = ParsingManager.TO_INTEGER(value.displayId);
+
+            this.updateOptions();
+        });
     }
 
     /**

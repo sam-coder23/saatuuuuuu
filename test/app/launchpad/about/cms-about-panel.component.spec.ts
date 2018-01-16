@@ -1,44 +1,46 @@
-import { ComponentFixture, TestBed, async } from "@angular/core/testing";
+/**
+ * This class is responsible to handle unit test case of CmsAboutPanelComponent component
+ */
+import { DebugElement, Injector, NO_ERRORS_SCHEMA } from "@angular/core";
+import { async, ComponentFixture, TestBed } from "@angular/core/testing";
+import { Http, HttpModule } from "@angular/http";
 import { By } from "@angular/platform-browser";
-import { DebugElement, NO_ERRORS_SCHEMA, Injector } from "@angular/core";
-import { Observable } from "rxjs/Observable";
-import { HttpModule, Http } from "@angular/http";
-import { TranslateModule, TranslateLoader, TranslateService } from "@ngx-translate/core";
+import { TranslateLoader, TranslateModule, TranslateService } from "@ngx-translate/core";
 import { TranslateHttpLoader } from "@ngx-translate/http-loader";
-import { CmsAboutPanelComponent } from "../../../../app/launchpad/about/cms-about-panel.component";
+import { Observable } from "rxjs/Observable";
 import { CmsApiService } from "../../../../app/cms/api/cms-api.service";
-import { AppConfig } from "../../../../app/config";
 import { CMSConstants } from "../../../../app/cms/models/cms-constants";
+import { AppConfig } from "../../../../app/config";
+import { CmsAboutPanelComponent } from "../../../../app/launchpad/about/cms-about-panel.component";
 
 //Fake CmsApiService Service
 class MockCmsApiService {
-
-    getSystemInfo(): Observable<any> {
+    public getSystemInfo(): Observable<any> {
         return Observable.of(mockSystemInfo);
     }
 
-    getAppVersion(): Promise<string> {
+    public getAppVersion(): Promise<string> {
         return Promise.resolve(appVersion);
     }
-};
+}
 
-let mockSystemInfo = {
-    "ServerInfo": {
-        "ip": "10.98.0.231",
-        "version": "0.70.37 Build 0125"
+const mockSystemInfo : any  = {
+    ServerInfo: {
+        ip: "10.98.0.231",
+        version: "0.70.37 Build 0125"
     },
-    "LicenseInfo": {
-        "customerName": "CMS Evaluation",
-        "projectName": "CMS Evaluation",
-        "licenseStatus": "EvaluationLicense",
-        "daysRemaining": 8,
-        "localization": 1
+    LicenseInfo: {
+        customerName: "CMS Evaluation",
+        projectName: "CMS Evaluation",
+        licenseStatus: "EvaluationLicense",
+        daysRemaining: 8,
+        localization: 1
     }
 };
 
-let appVersion = "1.0.1";
+const appVersion : string = "1.0.1";
 
-let systemInfo = {
+const systemInfo: any = {
     licensedTo: "",
     projectName: "",
     licenseStatus: "",
@@ -53,10 +55,11 @@ let copyright: string = "";
 describe("Cms About Panel Component", () => {
     let component: CmsAboutPanelComponent;
     let fixture: ComponentFixture<CmsAboutPanelComponent>;
-    let debugInstance, nativeElement,
-        translate: TranslateService,
-        cmsApiService: CmsApiService,
-        appConfig: AppConfig;
+    let debugInstance: any ;
+    let nativeElement: any ;
+    let translate: TranslateService;
+    let cmsApiService: CmsApiService;
+    let appConfig: AppConfig;
 
     beforeEach(async(() => {
         TestBed.configureTestingModule({
@@ -74,7 +77,7 @@ describe("Cms About Panel Component", () => {
                 TranslateModule.forRoot({
                     loader: {
                         provide: TranslateLoader,
-                        useFactory: (http: Http) => new TranslateHttpLoader(http, "/base/app/i18n/", ".json"),
+                        useFactory: (http: Http): TranslateHttpLoader => new TranslateHttpLoader(http, "/base/app/i18n/", ".json"),
                         deps: [Http]
                     }
                 })
@@ -108,14 +111,16 @@ describe("Cms About Panel Component", () => {
     });
 
     it("should assign value to system info on ngOnInit() call", async(() => {
-        let updateCopyrightTextCall = spyOn(debugInstance, "updateCopyrightText").and.returnValue(null);
+        const updateCopyrightTextCall : jasmine.Spy = spyOn(debugInstance, "updateCopyrightText");
         component.ngOnInit();
 
         expect(debugInstance.systemInfo.licensedTo).toEqual(mockSystemInfo.LicenseInfo.customerName);
         expect(debugInstance.systemInfo.projectName).toEqual(mockSystemInfo.LicenseInfo.projectName);
         expect(debugInstance.systemInfo.server).toEqual(mockSystemInfo.ServerInfo.ip);
         expect(debugInstance.systemInfo.serverVersion).toEqual(mockSystemInfo.ServerInfo.version);
-        delay(100).then(() => {
+        const delayTime: number = 100;
+
+        delay(delayTime).then(() => {
             expect(debugInstance.systemInfo.version).toEqual(appVersion);
         });
 
@@ -127,24 +132,24 @@ describe("Cms About Panel Component", () => {
     }));
 
     it("should show about information", () => {
-        let loadingContent = nativeElement.querySelector(".loading-content");
+        const loadingContent: jasmine.Spy = nativeElement.querySelector(".loading-content");
         expect(loadingContent).toBeNull();
-        let aboutContent = nativeElement.querySelector(".about-content-wrapper");
+        const aboutContent: jasmine.Spy = nativeElement.querySelector(".about-content-wrapper");
         expect(aboutContent).toBeDefined();
     });
 
     it("should have navigate back button and should call goBack() on click of arrow", () => {
-        let buttonBack: DebugElement = fixture.debugElement.query(By.css("#about-panel-back-button"));
+        const buttonBack: DebugElement = fixture.debugElement.query(By.css("#about-panel-back-button"));
         expect(buttonBack).toBeTruthy();
 
-        let goBackCall = spyOn(debugInstance, "goBack").and.returnValue(null);
+        const goBackCall: jasmine.Spy = spyOn(debugInstance, "goBack");
 
-        buttonBack.triggerEventHandler("click", null);
+        buttonBack.triggerEventHandler("click", undefined);
         expect(goBackCall.calls.count()).toEqual(1);
     });
 
     it("should have remaining days in License status", () => {
-        let remainingDays: any = mockSystemInfo.LicenseInfo.daysRemaining;
+        const remainingDays: any = mockSystemInfo.LicenseInfo.daysRemaining;
         expect(systemInfo.licenseStatus).toContain(remainingDays);
     });
 

@@ -2,6 +2,7 @@
  * The responsibility of this class is to handle calculation related to Integer
  * @class ParsingManager
  */
+import { CMSConstants } from "./../cms/models/cms-constants";
 
 export class ParsingManager {
     /**
@@ -12,9 +13,7 @@ export class ParsingManager {
      */
 
     public static TO_INTEGER(value: any): number {
-        const radix: number = 10;
-
-        return parseInt(value, radix);
+        return parseInt(value, CMSConstants.DECIMAL_SYSTEM);
     }
 
 }

@@ -73,8 +73,8 @@ export class AppConfig {
         const today: Date = new Date();
         const dateTime: string = today.toLocaleString();
         if (args && args.length > 0) {
-            // tslint:disable-next-line:no-console
-            console.log(dateTime, " - info ", args);
+            const infoLog: Function = console.log;
+            infoLog(dateTime, " - info ", args);
         }
     }
 
@@ -88,8 +88,8 @@ export class AppConfig {
         const today: Date = new Date();
         const dateTime: string = today.toLocaleString();
         if (args && args.length > 0) {
-            // tslint:disable-next-line:no-console
-            console.log(dateTime, " - warn ", args);
+            const warnLog: Function = console.log;
+            warnLog(dateTime, " - warn ", args);
         }
     }
 
@@ -103,8 +103,8 @@ export class AppConfig {
         const today: Date = new Date();
         const dateTime: string = today.toLocaleString();
         if (args && args.length > 0) {
-            // tslint:disable-next-line:no-console
-            console.log(dateTime, " - error ", args);
+            const errorLog: Function = console.log;
+            errorLog(dateTime, " - error ", args);
         }
     }
 }

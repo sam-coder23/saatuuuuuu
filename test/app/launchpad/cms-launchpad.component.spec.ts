@@ -1,110 +1,118 @@
-import { ComponentFixture, TestBed, async, inject } from "@angular/core/testing";
-import { By } from "@angular/platform-browser";
-import { NO_ERRORS_SCHEMA, ElementRef } from "@angular/core";
-import { Observable } from "rxjs/Observable";
-import { HttpModule, Http } from "@angular/http";
-import { MaterialModule, MdIconRegistry } from "@angular/material";
+/**
+ * This class is responsible to handle unit test case of CmsLaunchpadComponent
+ */
+import { NO_ERRORS_SCHEMA } from "@angular/core";
+import { async, ComponentFixture, TestBed } from "@angular/core/testing";
 import { FormsModule } from "@angular/forms";
+import { Http, HttpModule } from "@angular/http";
+import { MaterialModule, MdIconRegistry } from "@angular/material";
 import { Router } from "@angular/router";
-import { TranslateService, TranslateModule, TranslateLoader } from "@ngx-translate/core";
+import { TranslateLoader, TranslateModule, TranslateService } from "@ngx-translate/core";
 import { TranslateHttpLoader } from "@ngx-translate/http-loader";
-import { MockRouterStub } from "../core/mock-stubs/mock-router.stub";
-import { IUserProfileSettings } from "../../../app/cms/models/cms-user-profile-settings";
-import { CmsLaunchpadComponent } from "../../../app/launchpad/cms-launchpad.component";
-import { StorageManager } from "../../../app/cms/api/cms-storagemanager.service";
-import { CmsSettingsService } from "../../../app/launchpad/settings/cms-settings.service";
-import { CmsApiService } from "../../../app/cms/api/cms-api.service";
-import { AppConfig } from "../../../app/config";
+import { Observable } from "rxjs/Observable";
+
 import { APIRequest } from "../../../app/cms/api/api-request";
+import { CmsApiService } from "../../../app/cms/api/cms-api.service";
+import { StorageManager } from "../../../app/cms/api/cms-storagemanager.service";
 import { CmsSessionStorageItem } from "../../../app/cms/models/cms-session-storage-item";
+import { IUserProfileSettings } from "../../../app/cms/models/cms-user-profile-settings";
+import { IUserConfig } from "../../../app/cms/models/cms-user.model";
+import { AppConfig } from "../../../app/config";
 import { CmsLanguages } from "../../../app/i18n/cms-languages";
+import { CmsLaunchpadComponent } from "../../../app/launchpad/cms-launchpad.component";
+import { CmsSettingsService } from "../../../app/launchpad/settings/cms-settings.service";
 import { MockUserProfileSettings } from "../core/mock-stubs/login.mock";
 import { ParsingManager } from "./../../../app/utils/parsing-manager-util";
+import { CMSConstants } from "../../../app/cms/models/cms-constants";
 
 /**
  * Fake CmsApiService Service
  */
 class MockCmsApiService {
-    reconnectSessionWithServer() {
-
+    public reconnectSessionWithServer(): void {
+        //no code required here.
     }
 
-    getSystemInfo(): Observable<any> {
+    public getSystemInfo(): Observable<any> {
         return Observable.of(systemInfoData);
     }
 
-    updateUserProfileSettings(): Promise<IUserProfileSettings> {
+    public updateUserProfileSettings(): Promise<IUserProfileSettings> {
         return Promise.resolve(MockUserProfileSettings);
     }
 
-    logout() {
+    public logout() : Observable<string>  {
         return Observable.of("LOGOUT");
     }
 
-    performOnlogout() {
-
+    public performOnlogout(): void {
+        //no code required here.
     }
 
-    makeSessionExpire() {
-
+    public makeSessionExpire(): void {
+        //no code required here.
     }
 }
+let  router: any;
 
-let router = {
-    navigate: jasmine.createSpy("login")
+const userData: any = {
+    username: "bcd-se-test",
+    loggedIn: true
 };
 
-let userData = {
-    "username": "bcd-se-test",
-    "loggedIn": true
+const settingsData : any = {
+    language: "ar",
+    wallConnection: {
+        startUpAction: "show-available-walls-list",
+        specificDisplay: "Auditorium",
+        recentDisplay: "Auditorium"
+    },
+    sourceLabel: {
+        displaySourceNameLabels: true,
+        useMultipleLines: false,
+        fontColor: "#E57373",
+        fontSize: 16,
+        backgroundColor: "#4FC3F7",
+        transparency: 50
+    },
+    wallContent: {
+        requireConfirmationForLoadingLayouts: false,
+        allowChangingSources: false,
+        clipboardEnabled: false,
+        clipboardSize: "large"
+    },
+    logOffTime: 0.0001,
+    pageSize: 20
 };
 
-let settingsData = {
-    "language": "ar",
-    "wallConnection": {
-        "startUpAction": "show-available-walls-list",
-        "specificDisplay": "Auditorium",
-        "recentDisplay": "Auditorium"
+const systemInfoData : any = {
+    ServerInfo: {
+        ip: "10.98.0.231",
+        version: "70.34 Build 0258"
     },
-    "sourceLabel": {
-        "displaySourceNameLabels": true,
-        "useMultipleLines": false,
-        "fontColor": "#E57373",
-        "fontSize": 16,
-        "backgroundColor": "#4FC3F7",
-        "transparency": 50
-    },
-    "wallContent": {
-        "requireConfirmationForLoadingLayouts": false,
-        "allowChangingSources": false,
-        "clipboardEnabled": false,
-        "clipboardSize": "large"
-    },
-    "logOffTime": 0.0001,
-    "pageSize": 20
-};
-
-let systemInfoData = {
-    "ServerInfo": {
-        "ip": "10.98.0.231",
-        "version": "70.34 Build 0258"
-    },
-    "LicenseInfo": {
-        "customerName": "Barco",
-        "projectName": "CMS Demo",
-        "licenseStatus": "DemoLicense",
-        "daysRemaining": 1153,
-        "localization": 0
+    LicenseInfo: {
+        customerName: "Barco",
+        projectName: "CMS Demo",
+        licenseStatus: "DemoLicense",
+        daysRemaining: 1153,
+        localization: 0
     }
 };
 
 describe("CmsLaunchpadComponent", () => {
     let component: CmsLaunchpadComponent;
     let fixture: ComponentFixture<CmsLaunchpadComponent>;
-    let debugInstance, nativeElement, iconRegistry, spyOnAddSvgIcon,
-        translate: TranslateService, storageManager: StorageManager,
-        cmsApiService: CmsApiService, cmsSettingsService: CmsSettingsService,
-        appConfig: AppConfig;
+    let debugInstance: any;
+    let nativeElement: any;
+        // iconRegistry,
+        // spyOnAddSvgIcon,
+    let translate: TranslateService;
+    let storageManager: StorageManager;
+    let cmsApiService: CmsApiService;
+    let cmsSettingsService: CmsSettingsService;
+    let appConfig: AppConfig;
+    const delayTime1500: number = 1500;
+    const delayTime2000: number = 2000;
 
     beforeEach(async(() => {
         TestBed.configureTestingModule({
@@ -112,7 +120,7 @@ describe("CmsLaunchpadComponent", () => {
             providers: [
                 {
                     provide: Router,
-                    useValue: router,
+                    useValue: router
                 },
                 CmsSettingsService,
                 {
@@ -131,7 +139,7 @@ describe("CmsLaunchpadComponent", () => {
                 TranslateModule.forRoot({
                     loader: {
                         provide: TranslateLoader,
-                        useFactory: (http: Http) => new TranslateHttpLoader(http, "/base/app/i18n/", ".json"),
+                        useFactory: (http: Http) : TranslateHttpLoader => new TranslateHttpLoader(http, "/base/app/i18n/", ".json"),
                         deps: [Http]
                     }
                 })
@@ -147,11 +155,15 @@ describe("CmsLaunchpadComponent", () => {
             cmsApiService = fixture.debugElement.injector.get(CmsApiService);
             cmsSettingsService = fixture.debugElement.injector.get(CmsSettingsService);
             appConfig = fixture.debugElement.injector.get(AppConfig);
-            spyOn(cmsApiService, "logout").and.returnValue(Observable.of(null));
-            storageManager.setItem(CmsSessionStorageItem.USER, null);
-            storageManager.setItem(CmsSessionStorageItem.SETTINGS, null);
+            spyOn(cmsApiService, "logout");
+            storageManager.setItem(CmsSessionStorageItem.USER, CMSConstants.NULL_VALUE);
+            storageManager.setItem(CmsSessionStorageItem.SETTINGS, CMSConstants.NULL_VALUE);
             // iconRegistry = fixture.debugElement.injector.get(MdIconRegistry);
             // spyOnAddSvgIcon = spyOn(iconRegistry, "addSvgIcon");
+
+            router = {
+                navigate: jasmine.createSpy("login")
+            };
         });
     }));
 
@@ -164,6 +176,8 @@ describe("CmsLaunchpadComponent", () => {
         expect(debugInstance.showSystemDialog).toBeFalsy();
         expect(debugInstance.showProgressDialog).toBeFalsy();
     });
+
+    // tslint:disable-next-line:no-suspicious-comment
     //TODO:commented for icon registry cases
     // it("should add icons to the registry", () => {
     //     fixture.whenStable().then(() => {
@@ -174,22 +188,24 @@ describe("CmsLaunchpadComponent", () => {
     it("Check prevent browser defaults", () => {
         fixture.detectChanges();
         fixture.whenStable().then(() => {
-            let evtWheel = new MouseEvent("wheel", { "ctrlKey": true });
+            const evtWheel: MouseEvent = new MouseEvent("wheel", { ctrlKey: true });
             spyOn(evtWheel, "preventDefault");
             window.document.dispatchEvent(evtWheel);
             expect(evtWheel.preventDefault).toHaveBeenCalled();
-            let whichList = [61, 173, 107, 109, 187, 189, 116, 82];
-            for (let whichListIndex = 0; whichListIndex < whichList.length; whichListIndex++) {
-                let evtKeyDown = new KeyboardEvent("keydown", { ctrlKey: true });
+            // tslint:disable-next-line:no-magic-numbers
+            const whichList: [number] = [61, 173, 107, 109, 187, 189, 116, 82];
+            for (const data of whichList) {
+                const evtKeyDown: KeyboardEvent = new KeyboardEvent("keydown", { ctrlKey: true });
                 spyOn(evtKeyDown, "preventDefault");
-                Object.defineProperty(evtKeyDown, "which", { get: function () { return whichList[whichListIndex]; } });
+                Object.defineProperty(evtKeyDown, "which", { get: (): number => { return data; } });
                 window.document.dispatchEvent(evtKeyDown);
                 expect(evtKeyDown.preventDefault).toHaveBeenCalled();
             }
 
-            let evtTouchStart = new Event("touchstart");
+            const evtTouchStart: Event = new Event("touchstart");
             spyOn(evtTouchStart, "preventDefault");
-            Object.defineProperty(evtTouchStart, "touches", { get: function () { return [1, 2]; } });
+            // tslint:disable-next-line:no-magic-numbers
+            Object.defineProperty(evtTouchStart, "touches", { get: (): number[] => { return [1, 2]; } });
             window.document.dispatchEvent(evtTouchStart);
             expect(evtTouchStart.preventDefault).toHaveBeenCalled();
 
@@ -202,12 +218,12 @@ describe("CmsLaunchpadComponent", () => {
     it("should add all supported languages to the app", () => {
         fixture.detectChanges();
         fixture.whenStable().then(() => {
-            let languageKeys = CmsLanguages.languagesKeys;
+            const languageKeys : string[] = CmsLanguages.languagesKeys;
             expect(translate.getLangs()).toEqual(languageKeys);
         });
     });
 
-    it("should route to login page if user session is empty", (done) => {
+    it("should route to login page if user session is empty", (done: DoneFn) => {
         fixture.detectChanges();
         fixture.whenStable().then(() => {
             if (!storageManager.getItem(CmsSessionStorageItem.USER)) {
@@ -217,26 +233,25 @@ describe("CmsLaunchpadComponent", () => {
         });
     });
 
-    it(`should reconnect session with server and have settings data into session and
-        apply user selected language and test auto logout functionality
-        and application events`, (done) => {
+    // tslint:disable-next-line:max-func-body-length
+    it("should reconnect session with server and have settings data into session and apply user selected language and test auto logout functionality and application events", (done : DoneFn) : void => {
             storageManager.setItem(CmsSessionStorageItem.USER, JSON.stringify(userData));
             storageManager.setItem(CmsSessionStorageItem.SETTINGS, JSON.stringify(settingsData));
             spyOn(cmsApiService, "reconnectSessionWithServer");
             fixture.detectChanges();
+            // tslint:disable-next-line:max-func-body-length
             fixture.whenStable().then(() => {
                 expect(cmsApiService.reconnectSessionWithServer).toHaveBeenCalled();
-
                 expect(cmsSettingsService.userSettings).toEqual(JSON.parse(storageManager.getItem(CmsSessionStorageItem.SETTINGS)));
                 expect(cmsSettingsService.userSettings.language).toEqual(appConfig.DefaultLanguage);
                 nativeElement.click();
-                delay(2000).then(() => {
+                delay(delayTime2000).then(() => {
                     expect(cmsApiService.logout).toHaveBeenCalled();
-
-                    cmsSettingsService.userSettings.logOffTime = 10;
-                    let userLastActionTime = storageManager.getItem(CmsSessionStorageItem.USER_LASTACTION_TIME);
+                    const logoffTime : number = 10;
+                    cmsSettingsService.userSettings.logOffTime = logoffTime;
+                    const userLastActionTime : any = storageManager.getItem(CmsSessionStorageItem.USER_LASTACTION_TIME);
                     nativeElement.click();
-                    delay(1500).then(() => {
+                    delay(delayTime1500).then(() => {
                         expect(ParsingManager.TO_INTEGER(userLastActionTime)).toBeLessThanOrEqual(ParsingManager.TO_INTEGER(storageManager.getItem(CmsSessionStorageItem.USER_LASTACTION_TIME)));
                         done();
                     });
@@ -244,8 +259,8 @@ describe("CmsLaunchpadComponent", () => {
 
                 debugInstance.applicationLevelEvent.next(
                     {
-                        "eventType": "permission",
-                        "eventName": "userModified"
+                        eventType: "permission",
+                        eventName: "userModified"
                     }
                 );
                 fixture.whenStable().then(() => {
@@ -253,46 +268,46 @@ describe("CmsLaunchpadComponent", () => {
                     expect(debugInstance.showProgressDialog).toBeFalsy();
                     debugInstance.applicationLevelEvent.next(
                         {
-                            "eventType": "not permission",
-                            "eventName": "EventReconnectionSuccess"
+                            eventType: "not permission",
+                            eventName: "EventReconnectionSuccess"
                         }
                     );
                     fixture.whenStable().then(() => {
                         expect(debugInstance.showProgressDialog).toBeFalsy();
                         debugInstance.applicationLevelEvent.next(
                             {
-                                "eventType": "not permission",
-                                "eventName": "ServerDisconnected"
+                                eventType: "not permission",
+                                eventName: "ServerDisconnected"
                             }
                         );
                         fixture.whenStable().then(() => {
                             expect(debugInstance.showProgressDialog).toBeTruthy();
                             expect(debugInstance.showSystemDialog).toBeFalsy();
                             fixture.detectChanges();
-                            let progressCircle = nativeElement.querySelector("md-progress-circle");
-                            expect(progressCircle).toBeDefined()
-                            let messageContainer = nativeElement.querySelector(".message");
+                            const progressCircle : any = nativeElement.querySelector("md-progress-circle");
+                            expect(progressCircle).toBeDefined();
+                            const messageContainer : any = nativeElement.querySelector(".message");
                             expect(messageContainer.innerText).toEqual("Trying to connect to the server...");
 
                             debugInstance.applicationLevelEvent.next(
                                 {
-                                    "eventType": "not permission",
-                                    "eventName": "ServerConnected"
+                                    eventType: "not permission",
+                                    eventName: "ServerConnected"
                                 }
                             );
                             fixture.whenStable().then(() => {
                                 expect(debugInstance.showProgressDialog).toBeFalsy();
                                 expect(debugInstance.showSystemDialog).toBeTruthy();
                                 fixture.detectChanges();
-                                let popup = nativeElement.querySelector("nd-popup");
-                                let popupBody = nativeElement.querySelector("nd-popup popup-body");
+                                const popup : any = nativeElement.querySelector("nd-popup");
+                                const popupBody: any = nativeElement.querySelector("nd-popup popup-body");
                                 expect(popupBody.innerText).toEqual("Connection with the server is now established! Perform login again.");
                                 popup.dispatchEvent(new Event("done"));
                                 expect(debugInstance.showSystemDialog).toBeFalsy();
                                 debugInstance.applicationLevelEvent.next(
                                     {
-                                        "eventType": "system",
-                                        "eventName": "system"
+                                        eventType: "system",
+                                        eventName: "system"
                                     }
                                 );
 
@@ -305,8 +320,8 @@ describe("CmsLaunchpadComponent", () => {
 
                                     debugInstance.applicationLevelEvent.next(
                                         {
-                                            "eventType": "not permission",
-                                            "eventName": "ServerConnected"
+                                            eventType: "not permission",
+                                            eventName: "ServerConnected"
                                         }
                                     );
 
@@ -322,18 +337,19 @@ describe("CmsLaunchpadComponent", () => {
             });
         });
 
-    it(`should reset last action time`, (done) => {
+    it("should reset last action time", (done: DoneFn) => {
         storageManager.setItem(CmsSessionStorageItem.USER, JSON.stringify(userData));
         storageManager.setItem(CmsSessionStorageItem.SETTINGS, JSON.stringify(settingsData));
-            fixture.detectChanges();
-            fixture.whenStable().then(() => {
-                storageManager.removeItem(CmsSessionStorageItem.USER_LASTACTION_TIME);
-                cmsSettingsService.userSettings.logOffTime = 5;
-                nativeElement.click();
-                delay(2000).then(() => {
+        fixture.detectChanges();
+        fixture.whenStable().then(() => {
+            storageManager.removeItem(CmsSessionStorageItem.USER_LASTACTION_TIME);
+            const logOffTime: number = 5;
+            cmsSettingsService.userSettings.logOffTime = logOffTime;
+            nativeElement.click();
+            delay(delayTime2000).then(() => {
                     expect(ParsingManager.TO_INTEGER(debugInstance.userLastActionTime)).toBeLessThanOrEqual(ParsingManager.TO_INTEGER(storageManager.getItem(CmsSessionStorageItem.USER_LASTACTION_TIME)));
                     nativeElement.click();
-                    delay(1500).then(() => {
+                    delay(delayTime1500).then(() => {
                         expect(ParsingManager.TO_INTEGER(debugInstance.userLastActionTime)).toBeLessThanOrEqual(ParsingManager.TO_INTEGER(storageManager.getItem(CmsSessionStorageItem.USER_LASTACTION_TIME)));
                         done();
                     });

@@ -3,6 +3,7 @@
  * Shouldn't hold anything except static.
  * @class Validation
  */
+import { CMSConstants } from "../../cms/models/cms-constants";
 
 export class Validation {
     /**
@@ -11,8 +12,7 @@ export class Validation {
      * @return {boolean}
      */
     public static IS_NULL (value: any) : boolean {
-        // tslint:disable-next-line:no-null-keyword
-        return value === null;
+        return value === CMSConstants.NULL_VALUE;
     }
 
     /**

@@ -61,8 +61,9 @@ export class CmsTileListComponent implements OnInit, OnDestroy {
         private cmsSettingService: CmsSettingsService
     ) {
         this.tilePresets = [];
-        // tslint:disable-next-line:no-string-literal
-        this.displayID = ParsingManager.TO_INTEGER(this.activatedRoute.params["value"].id);
+        this.activatedRoute.params.subscribe((value: any) => {
+            this.displayID = ParsingManager.TO_INTEGER(value.id);
+        });
     }
 
     public ngOnInit(): void {
@@ -172,13 +173,17 @@ export class CmsTileListComponent implements OnInit, OnDestroy {
      * @return {void}
      */
     private markTileSelected(): void {
-        // tslint:disable-next-line:no-string-literal
-        const displayId: number = ParsingManager.TO_INTEGER(this.activatedRoute.params["value"].id);
-        this.cmsServerApi.getSelectedDisplayContent(displayId).subscribe((display: Display) => {
-            if (display) {
-                this.selectTileInPresets(display);
-            }
+        let displayId: number;
+        this.activatedRoute.params.subscribe((value: any) => {
+            displayId = ParsingManager.TO_INTEGER(value.id);
+
+            this.cmsServerApi.getSelectedDisplayContent(displayId).subscribe((display: Display) => {
+                if (display) {
+                    this.selectTileInPresets(display);
+                }
+            });
         });
+
     }
 
     /**
@@ -209,26 +214,28 @@ export class CmsTileListComponent implements OnInit, OnDestroy {
      */
     private handleDisplayEvents(event: any): void {
         if (!event && !event.body) { return; }
+        let displayId: number;
+        this.activatedRoute.params.subscribe((value: any) => {
+            displayId = ParsingManager.TO_INTEGER(value.id);
 
-        // tslint:disable-next-line:no-string-literal
-        const displayId: number = ParsingManager.TO_INTEGER(this.activatedRoute.params["value"].id);
-        if (event.eventType === CMSConstants.DISPLAYUPDATED) {
-            if (event.displayId === displayId) {
-                let tileAlreadySelected: boolean = false;
-                const displayTilerId: number = event.body.tilerId;
-                // looping through all tile-presets and find same selected tiler
-                for (const tilePreset of this.tilePresets) {
-                    if ((tilePreset.id === displayTilerId) && tilePreset.isSelected) {
-                        tileAlreadySelected = true;
-                        break;
+            if (event.eventType === CMSConstants.DISPLAYUPDATED) {
+                if (event.displayId === displayId) {
+                    let tileAlreadySelected: boolean = false;
+                    const displayTilerId: number = event.body.tilerId;
+                    // looping through all tile-presets and find same selected tiler
+                    for (const tilePreset of this.tilePresets) {
+                        if ((tilePreset.id === displayTilerId) && tilePreset.isSelected) {
+                            tileAlreadySelected = true;
+                            break;
+                        }
+                    }
+
+                    if (!tileAlreadySelected) {
+                        this.changeEmitter.emit();
                     }
                 }
-
-                if (!tileAlreadySelected) {
-                    this.changeEmitter.emit();
-                }
             }
-        }
+        });
     }
 
     /**

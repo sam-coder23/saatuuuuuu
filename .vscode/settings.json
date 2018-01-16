@@ -14,5 +14,5 @@
   "editor.formatOnPaste": true,
   "editor.autoIndent": true,
   "editor.showFoldingControls": "always",
-  "tslint.exclude": "**/test/**/*.ts"
+  "tslint.exclude": "**/test/app/**/*.ts"
 }

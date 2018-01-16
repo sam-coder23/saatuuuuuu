@@ -36,4 +36,7 @@ export class CMSConstants {
     public static NO_DISPLAY_FOUND: string = "nodisplayfound";
     public static APP_VERSION: string = "1.0.1";
     public static BUILD_VERSION: string = "1.1 Build";
+    public static DECIMAL_SYSTEM: number = 10;
+    // tslint:disable-next-line:no-null-keyword
+    public static NULL_VALUE: object = null;
 }

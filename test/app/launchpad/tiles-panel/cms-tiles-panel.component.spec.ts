@@ -1,15 +1,19 @@
-import { ComponentFixture, TestBed, async } from "@angular/core/testing";
+/**
+ * This class is responsible to handle unit test case of CmsTilesPanelComponent
+ */
+import { CUSTOM_ELEMENTS_SCHEMA, DebugElement, NO_ERRORS_SCHEMA } from "@angular/core";
+import { async, ComponentFixture, TestBed } from "@angular/core/testing";
+import { Http, HttpModule } from "@angular/http";
 import { By } from "@angular/platform-browser";
-import { DebugElement, CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA } from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
-import { Observable } from "rxjs/Observable";
-import { HttpModule, Http } from "@angular/http";
-import { TranslateModule, TranslateLoader } from "@ngx-translate/core";
+import { TranslateLoader, TranslateModule } from "@ngx-translate/core";
 import { TranslateHttpLoader } from "@ngx-translate/http-loader";
-import { MockRouterStub } from "../../core/mock-stubs/mock-router.stub";
-import { CmsTilesPanelComponent } from "../../../../app/launchpad/tiles-panel/cms-tiles-panel.component";
-import { AppConfig } from "../../../../app/config";
+import { Observable } from "rxjs/Observable";
+
 import { CmsApiService } from "../../../../app/cms/api/cms-api.service";
+import { AppConfig } from "../../../../app/config";
+import { CmsTilesPanelComponent } from "../../../../app/launchpad/tiles-panel/cms-tiles-panel.component";
+import { MockRouterStub } from "../../core/mock-stubs/mock-router.stub";
 
 class MockCmsApiServiceStub {
 }
@@ -17,18 +21,11 @@ class MockCmsApiServiceStub {
 describe("CmsTilesPanelComponent - Test Suite", () => {
     let component: CmsTilesPanelComponent;
     let fixture: ComponentFixture<CmsTilesPanelComponent>;
-    let debugInstance, nativeElement;
-    let activatedRoute = new ActivatedRoute();
-    activatedRoute.params = Observable.of({
-        id: 1
-    });
-
-    activatedRoute.queryParams = Observable.of({
-        sourceCount: 1
-    });
-
+    let debugInstance: any;
+    let nativeElement : any;
 
     beforeEach(async(() => {
+        const activatedRoute: ActivatedRoute = new ActivatedRoute();
         TestBed.configureTestingModule({
             declarations: [CmsTilesPanelComponent],
             providers: [
@@ -52,7 +49,7 @@ describe("CmsTilesPanelComponent - Test Suite", () => {
                 TranslateModule.forRoot({
                     loader: {
                         provide: TranslateLoader,
-                        useFactory: (http: Http) => new TranslateHttpLoader(http, "/base/app/i18n/", ".json"),
+                        useFactory: (http: Http): TranslateHttpLoader => new TranslateHttpLoader(http, "/base/app/i18n/", ".json"),
                         deps: [Http]
                     }
                 })
@@ -63,30 +60,39 @@ describe("CmsTilesPanelComponent - Test Suite", () => {
             component = fixture.componentInstance;
             nativeElement = fixture.nativeElement;
             debugInstance = fixture.debugElement.componentInstance;
+            activatedRoute.params = Observable.of({
+                id: 1
+            });
+
+            activatedRoute.queryParams = Observable.of({
+                sourceCount: 1
+            });
+
         });
     }));
 
-
     it("Component should be instantiated", () => {
         expect(component instanceof CmsTilesPanelComponent).toBeTruthy();
-        expect(component["displayResolution"].height).toEqual(130);
-        expect(component["displayResolution"].width).toEqual(230);
+        const height: number = 130;
+        const width: number = 230;
+        expect(debugInstance.displayResolution.height).toEqual(height);
+        expect(debugInstance.displayResolution.width).toEqual(width);
         fixture.detectChanges();
-        expect(component["displayId"]).toEqual(1);
-        expect(component["sourceCount"]).toEqual(1);
+        expect(debugInstance.displayId).toEqual(1);
+        expect(debugInstance.sourceCount).toEqual(1);
         expect(debugInstance.listState).toBeTruthy();
         expect(debugInstance.reloadState).toBeFalsy();
-        let reloadButton: DebugElement = fixture.debugElement.query(By.css("#tiles-panel-reload-button"));
+        const reloadButton: DebugElement = fixture.debugElement.query(By.css("#tiles-panel-reload-button"));
         expect(reloadButton).toBeFalsy();
     });
 
 
     it("should have back button and onclick it navigates to back history", () => {
         fixture.detectChanges();
-        let buttonBack = fixture.nativeElement.querySelector("#layouts-panel-back-button");
+        const buttonBack : any = fixture.nativeElement.querySelector("#layouts-panel-back-button");
         expect(buttonBack).toBeDefined();
-        let router = fixture.debugElement.injector.get(Router);
-        let spyNavigateByUrl = spyOn(router, "navigateByUrl").and.returnValue(null);
+        const router : any = fixture.debugElement.injector.get(Router);
+        const spyNavigateByUrl : jasmine.Spy = spyOn(router, "navigateByUrl");
         buttonBack.dispatchEvent(new Event("ndClick"));
         expect(spyNavigateByUrl.calls.argsFor(0)[0]).toEqual(`/home/${debugInstance.displayId}`);
     });

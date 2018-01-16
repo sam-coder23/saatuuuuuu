@@ -1,137 +1,111 @@
-import { TestBed, async, fakeAsync, ComponentFixture, inject, tick, getTestBed } from "@angular/core/testing";
+/**
+ * This class is responsible to handle unit test case of CmsSourcesPanelComponent
+ */
+import { CUSTOM_ELEMENTS_SCHEMA, DebugElement, Injector, NO_ERRORS_SCHEMA } from "@angular/core";
+import { async, ComponentFixture, getTestBed, TestBed } from "@angular/core/testing";
+import { FormsModule } from "@angular/forms";
+import { Http, HttpModule } from "@angular/http";
+import { MaterialModule } from "@angular/material";
 import { By } from "@angular/platform-browser";
-import { DebugElement, NO_ERRORS_SCHEMA, CUSTOM_ELEMENTS_SCHEMA, Component, Injector } from "@angular/core";
-import { ActivatedRoute, Params, Router } from "@angular/router";
-import { BaseRequestOptions, ConnectionBackend, Http, HttpModule, RequestOptions, Response, ResponseOptions, XHRBackend } from "@angular/http";
-import { Observable } from "rxjs/Rx";
+import { ActivatedRoute, Router } from "@angular/router";
 import { TranslateLoader, TranslateModule, TranslateService } from "@ngx-translate/core";
 import { TranslateHttpLoader } from "@ngx-translate/http-loader";
-import { MaterialModule } from "@angular/material";
-import { FormsModule } from "@angular/forms";
-import { MockRouterStub } from "../../core/mock-stubs/mock-router.stub";
-import { ITilePreset } from "../../../../app/cms/models/cms-tile-preset";
-import { CmsSourcesPanelComponent } from "../../../../app/launchpad/sources-panel/cms-sources-panel.component";
-import { StorageManager } from "../../../../app/cms/api/cms-storagemanager.service";
-import { CmsSettingsService } from "../../../../app/launchpad/settings/cms-settings.service";
+import { Observable } from "rxjs/Rx";
+
 import { CmsApiService } from "../../../../app/cms/api/cms-api.service";
-import { AppConfig } from "../../../../app/config";
+import { StorageManager } from "../../../../app/cms/api/cms-storagemanager.service";
 import { CMSConstants } from "../../../../app/cms/models/cms-constants";
 import { CmsSessionStorageItem } from "../../../../app/cms/models/cms-session-storage-item";
-import { Source } from "../../../../app/cms/models/cms-source";
+import { ITilePreset } from "../../../../app/cms/models/cms-tile-preset";
+import { AppConfig } from "../../../../app/config";
+import { CmsSettingsService } from "../../../../app/launchpad/settings/cms-settings.service";
+import { CmsSourcesPanelComponent } from "../../../../app/launchpad/sources-panel/cms-sources-panel.component";
 import { TilePresetManager } from "../../../../app/utils/tilepreset-manager.util";
-import { MockTilersData, MockDisplay, MockSources } from "./../../core/mock-stubs/cms-sources.mock";
+import { MockRouterStub } from "../../core/mock-stubs/mock-router.stub";
+import { MockDisplay, MockSources, MockTilersData } from "./../../core/mock-stubs/cms-sources.mock";
 import { TilePresets } from "./../../core/mock-stubs/tile-grid.mock";
-// import { SourceRepositionUtility } from "./../../../../app/utils/source-reposition.util";
+import { MockCmsApiService } from "./mock-cms-api-service";
 
-/**
-* Created mock services to fake real services injected into the CmsSourcesPanelComponent
-*/
-
-let activatedRoute = new ActivatedRoute();
-activatedRoute.params = Observable.of({
-    id: 1
-});
+let activatedRoute: ActivatedRoute;
 
 /**
  * Fake MockCmsSettingService with the below stub
  */
 class MockCmsSettingService {
-    selectedSources = [
+    public selectedSources: any[] = [
         {
-            "id": 2,
-            "name": "ECU-100: NOIVUL-ECU01: Analog: Bus-11 : Input-0",
-            "description": "",
-            "type": "Perspective",
-            "width": 1600,
-            "height": 900,
-            "snapshotPath": "display_snapshot.jpg",
-            "favorite": false,
-            "selected": true
+            id: 2,
+            name: "ECU-100: NOIVUL-ECU01: Analog: Bus-11 : Input-0",
+            description: "",
+            type: "Perspective",
+            width: 1600,
+            height: 900,
+            snapshotPath: "display_snapshot.jpg",
+            favorite: false,
+            selected: true
         },
         {
-            "id": 3,
-            "name": "ECU-100: NOIVUL-ECU01: Analog: Bus-11 : Input-1",
-            "description": "",
-            "type": "Perspective",
-            "width": 1600,
-            "height": 900,
-            "snapshotPath": "display_snapshot.jpg",
-            "favorite": false,
-            "selected": true
+            id: 3,
+            name: "ECU-100: NOIVUL-ECU01: Analog: Bus-11 : Input-1",
+            description: "",
+            type: "Perspective",
+            width: 1600,
+            height: 900,
+            snapshotPath: "display_snapshot.jpg",
+            favorite: false,
+            selected: true
         }
     ];
-    sourcesOnDisplay = [
+    public sourcesOnDisplay: any[]= [
         {
-            "id": 238,
-            "name": "DefaultProSource[AutoTestDisplay11]",
-            "type": "Perspective",
-            "resourceId": 39,
-            "x": 0,
-            "y": 0,
-            "width": 640,
-            "height": 540,
-            "snapshotPath": "display_snapshot.jpg",
-            "zOrder": 1
+            id: 238,
+            name: "DefaultProSource[AutoTestDisplay11]",
+            type: "Perspective",
+            resourceId: 39,
+            x: 0,
+            y: 0,
+            width: 640,
+            height: 540,
+            snapshotPath: "display_snapshot.jpg",
+            zOrder: 1
         },
         {
-            "id": 141,
-            "name": "Blue",
-            "type": "Perspective",
-            "resourceId": 23,
-            "x": 640,
-            "y": 0,
-            "width": 640,
-            "height": 540,
-            "snapshotPath": "display_snapshot.jpg",
-            "zOrder": 2
+            id: 141,
+            name: "Blue",
+            type: "Perspective",
+            resourceId: 23,
+            x: 640,
+            y: 0,
+            width: 640,
+            height: 540,
+            snapshotPath: "display_snapshot.jpg",
+            zOrder: 2
         }
     ];
-};
-
-
-class MockCmsApiService {
-    getTilers(): Observable<ITilePreset[]> {
-        return Observable.of(TilePresets);
-    }
-
-    putContentsOnDisplay(displayId: number, tilerId: number, body: any) {
-        return Observable.of(null);
-    }
-    getTilePresets(): Observable<ITilePreset[]> {
-        return Observable.of(MockTilersData);
-    }
-    getSelectedDisplayContent(displayId) {
-        return Observable.of(MockDisplay);
-    }
-
-    logoutUser() {
-        return;
-    }
-};
+}
 
 describe("CmsSourcesPanelComponent", () => {
     let component: CmsSourcesPanelComponent;
     let fixture: ComponentFixture<CmsSourcesPanelComponent>;
     let router: Router;
-    let debugInstance, nativeElement;
+    let debugInstance: any;
+    let nativeElement: any;
     let injector: Injector;
     let translateService: TranslateService;
-    let storageManager: StorageManager;
+    // const storageManager: StorageManager;
     let cmsSettingService: CmsSettingsService;
-    let route: ActivatedRoute;
     let panelTitle: string;
     let cmsApiService: CmsApiService;
-    let tilePresetManager: TilePresetManager;
-    let spyGetTileId;
     let appConfig: AppConfig;
     // let sourceRepositionUtility: SourceRepositionUtility;
+    const delayTime500: number = 500;
+    activatedRoute = new ActivatedRoute();
 
     beforeEach(async(() => {
         TestBed.configureTestingModule({
             declarations: [CmsSourcesPanelComponent],
             providers: [
                 AppConfig,
-                StorageManager,
                 TranslateService,
                 StorageManager,
                 {
@@ -150,7 +124,7 @@ describe("CmsSourcesPanelComponent", () => {
                     provide: CmsSettingsService,
                     useClass: MockCmsSettingService
                 },
-                TilePresetManager,
+                TilePresetManager
 
             ],
             imports: [
@@ -160,7 +134,7 @@ describe("CmsSourcesPanelComponent", () => {
                 TranslateModule.forRoot({
                     loader: {
                         provide: TranslateLoader,
-                        useFactory: (http: Http) => new TranslateHttpLoader(http, "/base/app/i18n/", ".json"),
+                        useFactory: (http: Http): TranslateHttpLoader => new TranslateHttpLoader(http, "/base/app/i18n/", ".json"),
                         deps: [Http]
                     }
                 })
@@ -183,8 +157,9 @@ describe("CmsSourcesPanelComponent", () => {
             translateService.get("sourceList.connectTo", { value: CMSConstants.MAXSELECTION }).subscribe((response: string) => {
                 panelTitle = response;
             });
-
-
+            activatedRoute.params = Observable.of({
+                id: 1
+            });
         });
     }));
 
@@ -194,14 +169,14 @@ describe("CmsSourcesPanelComponent", () => {
         expect(debugInstance.listState).toBeTruthy();
         expect(debugInstance.reloadState).toBeFalsy();
 
-        let reLoadButton: DebugElement = fixture.debugElement.query(By.css(".sources-panel-reload-button"));
+        const reLoadButton: DebugElement = fixture.debugElement.query(By.css(".sources-panel-reload-button"));
         expect(reLoadButton).toBeFalsy();
 
-        let storageManager = fixture.debugElement.injector.get(StorageManager);
+        const storageManager: any = fixture.debugElement.injector.get(StorageManager);
         fixture.detectChanges();
 
-        let expectedSourcesFavoriteFilter = (storageManager.getItem(CmsSessionStorageItem.SOURCES_FAVORITE_FILTER) === "true") || false;
-        let expectedSourcesSearchFilter = storageManager.getItem(CmsSessionStorageItem.SOURCES_SEARCH_FILTER) || "";
+        const expectedSourcesFavoriteFilter: boolean = (storageManager.getItem(CmsSessionStorageItem.SOURCES_FAVORITE_FILTER) === "true") || false;
+        const expectedSourcesSearchFilter: string = storageManager.getItem(CmsSessionStorageItem.SOURCES_SEARCH_FILTER) || "";
 
         expect(expectedSourcesFavoriteFilter).toBe(debugInstance.isFavoriteFilter);
         expect(expectedSourcesSearchFilter).toBe(debugInstance.searchFilter);
@@ -219,7 +194,7 @@ describe("CmsSourcesPanelComponent", () => {
 
     it("should show bottom toolbar in case selected source is > 0", () => {
         fixture.detectChanges();
-        let bottomToolbar: DebugElement = fixture.debugElement.query(By.css(".page-toolbar.bottom"));
+        const bottomToolbar: DebugElement = fixture.debugElement.query(By.css(".page-toolbar.bottom"));
         expect(bottomToolbar).toBeTruthy();
 
         cmsSettingService.selectedSources = MockSources;
@@ -228,20 +203,20 @@ describe("CmsSourcesPanelComponent", () => {
 
     it("should show selected source count/maxsource in bottom toolbar", () => {
         fixture.detectChanges();
-        let bottomToolbar: DebugElement = fixture.debugElement.query(By.css("#sources-panel-bottom-toolbar span:nth-child(1)"));
-        let selectedSource = cmsSettingService.selectedSources.length + "/" + CMSConstants.MAXSELECTION
+        const bottomToolbar: DebugElement = fixture.debugElement.query(By.css("#sources-panel-bottom-toolbar span:nth-child(1)"));
+        const selectedSource: string = (cmsSettingService.selectedSources.length.toString()).concat("/").concat(CMSConstants.MAXSELECTION.toString());
         expect(bottomToolbar.nativeElement.innerText).toBeTruthy(selectedSource);
     });
 
     it("should have next button appeared to share the sources", async(() => {
         fixture.detectChanges();
-        let buttonShare: DebugElement = fixture.debugElement.query(By.css("#sources-panel-next-button"));
+        const buttonShare: DebugElement = fixture.debugElement.query(By.css("#sources-panel-next-button"));
         expect(buttonShare).toBeTruthy();
     }));
 
     it("should have raised clear wall popup", () => {
         fixture.detectChanges();
-        let buttonBack = nativeElement.querySelector("#sources-panel-back-button");
+        const buttonBack: any = nativeElement.querySelector("#sources-panel-back-button");
         expect(buttonBack).toBeTruthy();
         buttonBack.dispatchEvent(new Event("ndClick"));
         expect(debugInstance.showClearWallPopup).toBeTruthy();
@@ -249,10 +224,9 @@ describe("CmsSourcesPanelComponent", () => {
 
     it("should have back button and onclick should navigate back", () => {
         fixture.detectChanges();
-        let buttonBack = nativeElement.querySelector("#layouts-panel-back-button");
+        const buttonBack: any = nativeElement.querySelector("#layouts-panel-back-button");
         expect(buttonBack).toBeTruthy();
-        
-        let spyNavigateByUrl = spyOn(router, "navigateByUrl").and.returnValue(null);
+        const spyNavigateByUrl: jasmine.Spy = spyOn(router, "navigateByUrl");
         buttonBack.dispatchEvent(new Event("ndClick"));
         expect(spyNavigateByUrl.calls.argsFor(0)[0]).toEqual(`/home/${debugInstance.displayId}`);
     });
@@ -271,18 +245,18 @@ describe("CmsSourcesPanelComponent", () => {
     it("should set searchkey as set to session storage", () => {
         fixture.detectChanges();
 
-        let storageManager = fixture.debugElement.injector.get(StorageManager);
-        let searchBox = fixture.nativeElement.querySelector("#sources-panel-search-input");
+        const storageManager: any = fixture.debugElement.injector.get(StorageManager);
+        const searchBox: any = fixture.nativeElement.querySelector("#sources-panel-search-input");
         expect(searchBox).toBeTruthy();
 
-        let searchString = "testSearchString";
+        const searchString: string = "testSearchString";
         searchBox.value = searchString;
         fixture.detectChanges();
         searchBox.dispatchEvent(new Event("keyup"));
 
         fixture.detectChanges();
         fixture.whenStable().then(() => {
-            delay(500).then(() => {
+            delay(delayTime500).then(() => {
                 expect(debugInstance.searchFilter).toBe(searchString);
                 expect(storageManager.getItem(CmsSessionStorageItem.SOURCES_SEARCH_FILTER)).toBe(searchString);
             });
@@ -290,17 +264,17 @@ describe("CmsSourcesPanelComponent", () => {
     });
 
     it("should have filter button available with ID === sources-panel-favorite-button ", () => {
-        let storageManager = fixture.debugElement.injector.get(StorageManager);
-        let favoriteIcon = fixture.nativeElement.querySelector("#sources-panel-favorite-button");
+        const storageManager: any = fixture.debugElement.injector.get(StorageManager);
+        const favoriteIcon: any = fixture.nativeElement.querySelector("#sources-panel-favorite-button");
         expect(favoriteIcon).toBeTruthy();
 
-        let favState = debugInstance.isFavoriteFilter;
+        const favState: boolean = debugInstance.isFavoriteFilter;
         fixture.detectChanges();
         favoriteIcon.dispatchEvent(new Event("ndClick"));
 
         fixture.detectChanges();
         fixture.whenStable().then(() => {
-            delay(500).then(() => {
+            delay(delayTime500).then(() => {
                 expect(debugInstance.isFavoriteFilter).toBe(!favState);
                 expect(storageManager.getItem(CmsSessionStorageItem.SOURCES_FAVORITE_FILTER)).toBe((!favState).toString());
             });
@@ -312,16 +286,16 @@ describe("CmsSourcesPanelComponent", () => {
         debugInstance.errorMessage = "No tile found to share content.";
         fixture.detectChanges();
         fixture.whenStable().then(() => {
-            let errorSpan: DebugElement = fixture.debugElement.query(By.css(".error"));
+            const errorSpan: DebugElement = fixture.debugElement.query(By.css(".error"));
             expect(errorSpan).toBeDefined();
         });
     });
 
     it("should initialize search and search element should have ID === sources-panel-search-input", () => {
-        let searchBox = fixture.nativeElement.querySelector("#sources-panel-search-input input");
+        const searchBox: any = fixture.nativeElement.querySelector("#sources-panel-search-input input");
         expect(searchBox).toBeTruthy();
 
-        spyOn(searchBox, "focus").and.returnValue(Observable.of(null));
+        spyOn(searchBox, "focus").and.returnValue(Observable.of(undefined));
         debugInstance.initializeSearch();
 
         fixture.detectChanges();
@@ -341,23 +315,23 @@ describe("CmsSourcesPanelComponent", () => {
     });
 
     it("should showsource", () => {
-        let showSourcesButton = fixture.nativeElement.querySelector("#sources-panel-next-button");
+        const showSourcesButton: any = fixture.nativeElement.querySelector("#sources-panel-next-button");
         expect(showSourcesButton).toBeTruthy();
 
-        let shareTheSources = spyOn(debugInstance, "shareTheSources").and.returnValue(null);
+        const shareTheSources: jasmine.Spy = spyOn(debugInstance, "shareTheSources");
         showSourcesButton.dispatchEvent(new Event("ndClick"));
 
         expect(shareTheSources.calls.count()).toEqual(1);
     });
 
     it("should showsource called", () => {
-        let putContentsOnDisplay = spyOn(cmsApiService, "putContentsOnDisplay").and.returnValue(Observable.of(null));
+        const putContentsOnDisplay: jasmine.Spy = spyOn(cmsApiService, "putContentsOnDisplay").and.returnValue(Observable.of(undefined));
         debugInstance.shareTheSources();
         expect(putContentsOnDisplay.calls.count()).toEqual(1);
     });
 
     it("should call putContentsOnDisplay when sourcesOnDisplay is empty called", () => {
-        let putContentsOnDisplay = spyOn(cmsApiService, "putContentsOnDisplay").and.returnValue(Observable.of(null));
+        const putContentsOnDisplay: jasmine.Spy = spyOn(cmsApiService, "putContentsOnDisplay").and.returnValue(Observable.of(undefined));
         cmsSettingService.sourcesOnDisplay = [];
         //Need further enhancement to complete the coverage
         // let SourceRepositionUtility = spyOn(SourceRepositionUtility, "stickySources");
@@ -370,4 +344,4 @@ describe("CmsSourcesPanelComponent", () => {
         expect(debugInstance.showClearWallPopup).toBeFalsy();
         expect(cmsSettingService.selectedSources.length).toBe(0);
     });
-})
+});

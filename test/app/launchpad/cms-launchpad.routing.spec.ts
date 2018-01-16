@@ -1,54 +1,60 @@
-import { Location, APP_BASE_HREF } from "@angular/common";
-import { TestBed, async } from "@angular/core/testing";
-import { RouterTestingModule } from "@angular/router/testing";
-import { Router, ActivatedRoute } from "@angular/router";
-import { launchpadRouter } from "../../../app/launchpad/cms-launchpad.routing";
-import { CmsLoginComponent } from "../../../app/launchpad/login/cms-login.component";
-import { CmsDisplayPanelComponent } from "../../../app/launchpad/display-panel/cms-display-panel.component";
-import { CmsLaunchpadComponent } from "../../../app/launchpad/cms-launchpad.component";
-import { CmsDisplaysPanelComponent } from "../../../app/launchpad/displays-panel/cms-displays-panel.component";
-import { CmsSettingsPanelComponent } from "../../../app/launchpad/settings/cms-settings-panel.component";
-import { CmsSettingsLanguagePanelComponent } from "../../../app/launchpad/settings/language/cms-settings-language-panel.component";
-import { CmsAboutPanelComponent } from "../../../app/launchpad/about/cms-about-panel.component";
-import { CmsSourcesPanelComponent } from "../../../app/launchpad/sources-panel/cms-sources-panel.component";
+/**
+ * This class is responsible to handle unit test case of cms-launchpad.routing
+ */
+import { APP_BASE_HREF, Location } from "@angular/common";
 import { NO_ERRORS_SCHEMA } from "@angular/core";
-import { CmsSettingsService } from "../../../app/launchpad/settings/cms-settings.service";
+import { async, ComponentFixture, TestBed } from "@angular/core/testing";
+import { FormsModule } from "@angular/forms";
+import { Http, HttpModule } from "@angular/http";
+import { MaterialModule } from "@angular/material";
+import { Router } from "@angular/router";
+import { TranslateLoader, TranslateModule, TranslateService } from "@ngx-translate/core";
+import { TranslateHttpLoader } from "@ngx-translate/http-loader";
+import { Observable } from "rxjs/Observable";
+
+import { APIRequest } from "../../../app/cms/api/api-request";
 import { CmsApiService } from "../../../app/cms/api/cms-api.service";
 import { StorageManager } from "../../../app/cms/api/cms-storagemanager.service";
-import { TranslateService, TranslateModule, TranslateLoader } from "@ngx-translate/core";
-import { CmsMiniDisplayService } from "../../../app/shared/mini-display/cms-mini-display.service";
-import { APIRequest } from "../../../app/cms/api/api-request";
 import { AppConfig } from "../../../app/config";
-import { FormsModule } from "@angular/forms";
-import { HttpModule, Http } from "@angular/http";
-import { MaterialModule } from "@angular/material";
-import { TranslateHttpLoader } from "@ngx-translate/http-loader";
-import { CmsCanActivateViaAuthorizationService } from "../../../app/launchpad/login/cms-can-activate-via-authorization.service";
-import { Observable } from "rxjs/Observable";
-import { CmsTilesPanelComponent } from "../../../app/launchpad/tiles-panel/cms-tiles-panel.component";
+import { CmsAboutPanelComponent } from "../../../app/launchpad/about/cms-about-panel.component";
+import { CmsLaunchpadComponent } from "../../../app/launchpad/cms-launchpad.component";
+import { launchpadRouter } from "../../../app/launchpad/cms-launchpad.routing";
+import { CmsDisplayPanelComponent } from "../../../app/launchpad/display-panel/cms-display-panel.component";
+import { CmsDisplaysPanelComponent } from "../../../app/launchpad/displays-panel/cms-displays-panel.component";
 import { CmsHomePanelComponent } from "../../../app/launchpad/home/cms-home-panel.component";
+import {
+  CmsCanActivateViaAuthorizationService
+} from "../../../app/launchpad/login/cms-can-activate-via-authorization.service";
+import { CmsLoginComponent } from "../../../app/launchpad/login/cms-login.component";
+import { CmsSettingsPanelComponent } from "../../../app/launchpad/settings/cms-settings-panel.component";
+import { CmsSettingsService } from "../../../app/launchpad/settings/cms-settings.service";
+import {
+  CmsSettingsLanguagePanelComponent
+} from "../../../app/launchpad/settings/language/cms-settings-language-panel.component";
+import { CmsSourcesPanelComponent } from "../../../app/launchpad/sources-panel/cms-sources-panel.component";
+import { CmsTilesPanelComponent } from "../../../app/launchpad/tiles-panel/cms-tiles-panel.component";
+import { CmsMiniDisplayService } from "../../../app/shared/mini-display/cms-mini-display.service";
 
 class MockServerApi {
-    getSystemInfo(): Observable<any> {
-        return Observable.of(null);
+    public getSystemInfo(): Observable<any> {
+        return Observable.of(undefined);
     }
 
-    getUserProfileSettings(): Promise<any> {
+    public getUserProfileSettings(): Promise<any> {
         return new Promise((resolve, reject) => {
             resolve(null);
         });
     }
 
-    getSelectedDisplayContent(): Observable<any> {
-        return Observable.of(null);
+    public getSelectedDisplayContent(): Observable<any> {
+        return Observable.of(undefined);
     }
 }
 describe("Router: App", () => {
-
     let location: Location;
     let router: Router;
-    let fixture;
-    let canActiveViaAuthorizationService;
+    let fixture: ComponentFixture<CmsLaunchpadComponent>;
+    let canActiveViaAuthorizationService: CmsCanActivateViaAuthorizationService;
     beforeEach(async(() => {
         TestBed.configureTestingModule({
             imports: [launchpadRouter,
@@ -57,7 +63,7 @@ describe("Router: App", () => {
                 TranslateModule.forRoot({
                     loader: {
                         provide: TranslateLoader,
-                        useFactory: (http: Http) => new TranslateHttpLoader(http, "/base/app/i18n/", ".json"),
+                        useFactory: (http: Http): TranslateHttpLoader => new TranslateHttpLoader(http, "/base/app/i18n/", ".json"),
                         deps: [Http]
                     }
                 })
@@ -98,7 +104,7 @@ describe("Router: App", () => {
         });
     }));
 
-    it("navigate to \"\" redirects you to /login", ((done) => {
+    it("navigate to \"\" redirects you to /login", ((done : DoneFn) : void => {
         router.navigate([""]).then(() => {
             expect(location.path()).toEqual("/login");
             done();
@@ -118,7 +124,7 @@ describe("Router: App", () => {
         });
     });
 
-    it("navigate to \"displays-panel\" redirects you to /login without login", ((done) => {
+    it("navigate to \"displays-panel\" redirects you to /login without login", ((done: DoneFn): void => {
         router.navigate(["/displays-panel"]).then(() => {
             expect(location.path()).toEqual("/login");
             done();

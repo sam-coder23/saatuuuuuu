@@ -39,10 +39,13 @@ export class CmsTilesPanelComponent implements OnInit {
     }
 
     public ngOnInit(): void {
-        // tslint:disable-next-line:no-string-literal
-        this.displayId = ParsingManager.TO_INTEGER(this.activatedRoute.params["value"]["id"]);
-        // tslint:disable-next-line:no-string-literal
-        this.sourceCount = ParsingManager.TO_INTEGER(this.activatedRoute.queryParams["value"]["sourceCount"]);
+        this.activatedRoute.params.subscribe((value: any) => {
+            this.displayId = ParsingManager.TO_INTEGER(value.id);
+        });
+
+        this.activatedRoute.queryParams.subscribe((value: any) => {
+            this.sourceCount = ParsingManager.TO_INTEGER(value.sourceCount);
+        });
     }
 
     /**
@@ -75,5 +78,4 @@ export class CmsTilesPanelComponent implements OnInit {
     public onListChanged(): void {
         this.reloadState = true;
     }
-
 }

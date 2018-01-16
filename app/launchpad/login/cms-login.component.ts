@@ -148,15 +148,11 @@ export class CmsLoginComponent implements OnInit, OnDestroy {
      */
     private blurInputs(): void {
         const inputs: NodeListOf<HTMLInputElement> = document.getElementsByTagName("input");
-        let nodeValue: string;
-        // tslint:disable-next-line:prefer-for-of
-        for (let index: number = 0; index < inputs.length; index = index + 1) {
-            // tslint:disable-next-line:no-string-literal
-            nodeValue = inputs[index].attributes["type"].nodeValue;
-            if (nodeValue === "text" || nodeValue === "password") {
-                inputs[index].blur();
+        Array.prototype.forEach.call(inputs, (node: HTMLInputElement): void => {
+            if (node.type === "text" || node.type === "password") {
+                node.blur();
             }
-        }
+        });
     }
 
     /**
