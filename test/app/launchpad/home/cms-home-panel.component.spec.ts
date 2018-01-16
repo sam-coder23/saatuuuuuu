@@ -95,7 +95,7 @@ class MockRouter {
 
 class MockCmsApiService {
 
-    logoutUser() { }
+    logout() { }
 
     putContentsOnDisplay(displayId: number, tilerId: number, body: any): Observable<any> {
         if (displayId === null) {
@@ -173,8 +173,8 @@ describe("Component: CmsHomePanelComponent", () => {
     }));
 
     /**
-     * Fix for bug in mdMenu lifecycle(ngOnDestroy) 
-     * For detailed description, 
+     * Fix for bug in mdMenu lifecycle(ngOnDestroy)
+     * For detailed description,
      * Refer: https://github.com/angular/material2/issues/1913
      */
     afterEach(() => {
@@ -191,7 +191,7 @@ describe("Component: CmsHomePanelComponent", () => {
             expect(debugInstance.displayId).toEqual(selectedDisplayId);
             expect(debugInstance.isDisabled).toBeFalsy();
 
-            // Store mock data, so that we do not lose our mock data and it can be set again later  
+            // Store mock data, so that we do not lose our mock data and it can be set again later
             let displayData = Object.assign([], mockDisplayData.content);
             // Modifying mock data to generate the test condition
             mockDisplayData.content.length = 0;
@@ -276,7 +276,7 @@ describe("Component: CmsHomePanelComponent", () => {
     }));
 
     it("should navigate to login page", async(() => {
-        let spyNavigateToLogin: jasmine.Spy = spyOn(cmsApiService, "logoutUser").and.returnValue(Observable.of(null));
+        let spyNavigateToLogin: jasmine.Spy = spyOn(cmsApiService, "logout").and.returnValue(Observable.of(null));
         debugInstance.navigateToLogin();
         expect(spyNavigateToLogin.calls.count()).toEqual(1);
     }));

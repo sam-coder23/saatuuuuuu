@@ -45,10 +45,6 @@ class MockCmsApiService {
 
     }
 
-    logoutUser() {
-
-    }
-
     makeSessionExpire() {
 
     }
@@ -151,7 +147,7 @@ describe("CmsLaunchpadComponent", () => {
             cmsApiService = fixture.debugElement.injector.get(CmsApiService);
             cmsSettingsService = fixture.debugElement.injector.get(CmsSettingsService);
             appConfig = fixture.debugElement.injector.get(AppConfig);
-            spyOn(cmsApiService, "logoutUser").and.returnValue(Observable.of(null));
+            spyOn(cmsApiService, "logout").and.returnValue(Observable.of(null));
             storageManager.setItem(CmsSessionStorageItem.USER, null);
             storageManager.setItem(CmsSessionStorageItem.SETTINGS, null);
             // iconRegistry = fixture.debugElement.injector.get(MdIconRegistry);
@@ -235,7 +231,7 @@ describe("CmsLaunchpadComponent", () => {
                 expect(cmsSettingsService.userSettings.language).toEqual(appConfig.DefaultLanguage);
                 nativeElement.click();
                 delay(2000).then(() => {
-                    expect(cmsApiService.logoutUser).toHaveBeenCalled();
+                    expect(cmsApiService.logout).toHaveBeenCalled();
 
                     cmsSettingsService.userSettings.logOffTime = 10;
                     let userLastActionTime = storageManager.getItem(CmsSessionStorageItem.USER_LASTACTION_TIME);
@@ -302,7 +298,7 @@ describe("CmsLaunchpadComponent", () => {
 
                                 fixture.whenStable().then(() => {
                                     popup.dispatchEvent(new Event("done"));
-                                    expect(cmsApiService.logoutUser).toHaveBeenCalled();
+                                    expect(cmsApiService.logout).toHaveBeenCalled();
 
                                     debugInstance.applicationEventType = "";
                                     storageManager.removeItem(CmsSessionStorageItem.USER);

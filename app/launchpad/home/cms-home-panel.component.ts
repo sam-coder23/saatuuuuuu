@@ -154,7 +154,7 @@ export class CmsHomePanelComponent implements OnInit {
      * @return {void}
      */
     private navigateToLogin(): void {
-        this.cmsServerApi.logoutUser();
+        this.cmsServerApi.logout().subscribe();
     }
 
     /**

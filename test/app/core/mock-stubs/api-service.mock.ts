@@ -143,30 +143,30 @@ export const MockServerInfoData = {
     }
 };
 
-export const MockTilerData = {
+export const MockTilerData = [{
     "id": 23,
     "name": "TCR-01S",
     "description": "",
     "tags": "",
     "base": {
-      "rowBound": 1,
-      "colBound": 1
+        "rowBound": 1,
+        "colBound": 1
     },
     "tiles": [
-      {
-        "left": 0,
-        "top": 0,
-        "width": 1,
-        "height": 1
-      }
+        {
+            "left": 0,
+            "top": 0,
+            "width": 1,
+            "height": 1
+        }
     ],
     "isDefaultForAllDisplays": true,
     "noOfTiles": 1,
     "isGrid": false,
     "defaultForDisplays": []
-  };
+}];
 
-  export const MockGeometryContentForDisplay = {
+export const MockGeometryContentForDisplay = {
     "id": 35,
     "name": "2 Ragu Perspective",
     "type": "Perspective",
@@ -177,6 +177,168 @@ export const MockTilerData = {
     "y": 0,
     "width": 1024,
     "height": 1080
-  };
+};
 
-  
+export const MockPerspectivesPostedData = [
+    {
+        "verb": "posted",
+        "uri": "/perspectives",
+        "body": {
+        }
+    }
+];
+
+export const MockPerspectivesDeletedData = [
+    {
+        "verb": "deleted",
+        "uri": "/perspectives",
+        "body": {
+        }
+    }
+];
+
+export const MockPerspectivesPutData = [
+    {
+        "verb": "put",
+        "uri": "/perspectives/25",
+        "body": {
+            type: "Perspective"
+        }
+    }
+];
+export const MockDisplaysPostData = [
+    {
+        "verb": "posted",
+        "uri": "/displays"
+    }
+];
+export const MockDisplaysDeleteData = [
+    {
+        "verb": "deleted",
+        "uri": "/displays"
+    }
+];
+export const MockUpdateSingleDisplayData = [
+    {
+        "verb": "PUT",
+        "uri": "/displays/1"
+    }
+];
+export const MockupdateDisplayContentData = [
+    {
+        "verb": "PUT",
+        "uri": "/displays/1/content"
+    }
+];
+export const MockupdateDisplayContentElement = [
+    {
+        "verb": "PUT",
+        "uri": "/displays/1/content/1"
+    }
+];
+
+export const MockAddSingleAppData = [
+    {
+        "verb": "posted",
+        "uri": "/displays/1/applications"
+    }
+];
+
+export const MockDeletedSingleAppData = [
+    {
+        "verb": "deleted",
+        "uri": "/displays/1/applications"
+    }
+];
+export const MockUpdateDisplaySingleAppData = [
+    {
+        "verb": "put",
+        "uri": "/displays/1/applications/1",
+        "body": {
+            type: "Application"
+        }
+    }
+];
+
+export const MockAddSourceData = [
+    {
+        "verb": "posted",
+        "uri": "/sources",
+        "body": {
+
+        }
+    }
+];
+export const MockDeleteSourceData = [
+    {
+        "verb": "deleted",
+        "uri": "/sources",
+        "body": {
+
+        }
+    }
+];
+export const MockUpdateSingleSourceData = [
+    {
+        "verb": "put",
+        "uri": "/sources/1",
+        "body": {
+
+        }
+    }
+];
+
+export const MockSystemEventData = [
+    {
+        "verb": "posted",
+        "uri": "/system",
+        "body": {
+            eventName: "DatabaseResetStarted"
+        }
+    }
+];
+
+export const MockUpdateHandleUserEventsData = [
+    {
+        "verb": "put",
+        "uri": "/users/current",
+        "body": [{
+            name: "bcd-se-test"
+        }]
+    }
+];
+export const MockDeleteHandleUserEventsData = [
+    {
+        "verb": "deleted",
+        "uri": "/users/current",
+        "body": {
+            name: "bcd-se-test"
+        }
+    }
+];
+
+export const MockAddTilerEventData = [
+    {
+        "verb": "posted",
+        "uri": "/tilers",
+        "body": {
+        }
+    }
+];
+
+export const MockDeleteTilerEventData = [
+    {
+        "verb": "deleted",
+        "uri": "/tilers",
+        "body": {
+        }
+    }
+];
+export const MockUpdateTilerEventData = [
+    {
+        "verb": "put",
+        "uri": "/tilers/1",
+        "body": {
+        }
+    }
+];

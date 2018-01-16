@@ -69,7 +69,9 @@ export class CmsApiService {
      * @return Observable<Response>
      */
     public logout(): Observable<Response> {
-        return this.apiRequest.getRequest("logout");
+        return this.apiRequest.getRequest("logout").finally(
+            () => this.performOnlogout()
+        );
     }
 
     /**
@@ -77,28 +79,11 @@ export class CmsApiService {
      * @method performOnlogout
      * @return void
      */
+    // this is a util method. move
     public performOnlogout(): void {
         this.storageManager.removeStorage();
         this.makeSessionExpire();
         this.router.navigate(["/login"]);
-    }
-
-    /**
-     * This method call the logout api and also performs clean up.
-     * @method logoutUser
-     * @return void
-     */
-    public logoutUser(): void {
-        this.logout()
-            .finally(() => this.performOnlogout())
-            .subscribe(
-            (response: Response) => {
-                this.appConfig.log("Logout success");
-            },
-            (error: Error) => {
-                this.appConfig.log("Logout failed");
-            }
-            );
     }
 
     /**
@@ -326,61 +311,6 @@ export class CmsApiService {
     }
 
     /**
-     * this method load  content on cms-tile of mini display with `post` http method.
-     * @method loadContentOnTile
-     * @param {number} displayId To load content on tile of this display Id
-     * @param {ITile} tile Contains info on which content is pushed
-     * @param {Source} content It is the source info to be pushed on tile
-     */
-    public loadContentOnTile(displayId: number, tile: Tile, content: Source): Promise<Response> {
-        this.appConfig.log("CmsApiService: loadContentOnTile...");
-        tile = new Tile(tile);
-
-        try {
-            const url: string = `displays/${displayId}/content`;
-            const body: object = {
-                name: content.name,
-                type: content.type,
-                resourceId: content.id,
-                x: tile.x,
-                y: tile.y,
-                width: tile.width,
-                height: tile.height,
-                snapshotPath: content.snapshotPath
-            };
-
-            return this.http
-                .post(this.apiRequest.getUrl(url), body, this.apiRequest.requestOption)
-                .toPromise()
-                .then((response: Response) => response)
-                .catch(this.promiseApiHandleError.bind(this));
-        } catch (error) {
-            this.appConfig.error("CmsApiService: API failed for loading content on display tile. Error:", error);
-
-            return this.promiseApiHandleError(error);
-        }
-    }
-
-    /**
-     * This method unload content from display
-     * @method unloadContentFromDisplay
-     * @param {number} displayId Display ID to which specified content belong to.
-     * @param {number} contentId  Content ID which need to be removed
-     * @return {Response} Observable
-     */
-    public unloadContentFromDisplay(displayId: number, contentId: number): Observable<Response> {
-        this.appConfig.log("CmsApiService: unloadContentFromDisplay...");
-
-        try {
-            return this.apiRequest.deleteRequest(`displays/${displayId}/content/${contentId}`);
-        } catch (error) {
-            this.appConfig.error("CmsApiService: unloadContentFromDisplay", error);
-
-            return this.apiRequest.handleError.bind(error);
-        }
-    }
-
-    /**
      * This method maintains the session with CMS Server on login until user logout.
      * @method keepSessionAlive
      * @return void
@@ -422,20 +352,6 @@ export class CmsApiService {
     public reconnectSessionWithServer(): void {
         this.makeSessionExpire();
         this.keepSessionAlive();
-    }
-
-    /**
-     * This method sends an event at application level to show dialog in case of exception due to no permission while calling an API.
-     * @method noPermissionErrorHandler
-     * @param {any} error
-     * @param {string} permissionName
-     */
-    public noPermissionErrorHandler(error: any, permissionName: string): void {
-        this.appConfig.log("CmsApiService: noPermissionErrorHandler::", error);
-        CmsEventEmitterService.REGISTER(CMS_EVENTS.Application).emit({
-            eventName: permissionName,
-            eventType: "permission"
-        });
     }
 
     /**
@@ -1056,7 +972,7 @@ export class CmsApiService {
 
         // unauthorized
         if (error.status === unauthorizedError) {
-            this.logoutUser();
+            this.logout().subscribe();
         }
 
         return Promise.reject(error);

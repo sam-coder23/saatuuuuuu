@@ -21,8 +21,9 @@ import { Display } from "../../../../app/cms/models/cms-display";
 
 import {
     MockDisplayData, MockSourceListData, MockPutContentsOnDisplayData, MockSelectedDisplayData,
-    MocksUerProfileSettingsData, MockServerInfoData, MockTilerData, MockGeometryContentForDisplay
+    MocksUerProfileSettingsData, MockServerInfoData, MockTilerData, MockGeometryContentForDisplay, MockSystemEventData, MockPerspectivesPostedData, MockPerspectivesDeletedData, MockPerspectivesPutData, MockUpdateSingleDisplayData, MockDisplaysPostData, MockDisplaysDeleteData, MockupdateDisplayContentData, MockAddSingleAppData, MockDeletedSingleAppData, MockUpdateDisplaySingleAppData, MockAddSourceData, MockDeleteSourceData, MockUpdateSingleSourceData, MockUpdateHandleUserEventsData, MockDeleteHandleUserEventsData, MockAddTilerEventData, MockDeleteTilerEventData, MockUpdateTilerEventData, MockupdateDisplayContentElement
 } from "./../../core/mock-stubs/api-service.mock";
+import { CmsSessionStorageItem } from "../../../../app/cms/models/cms-session-storage-item";
 
 let spyRouter = {
     navigate: jasmine.createSpy("APIService")
@@ -30,7 +31,7 @@ let spyRouter = {
 
 describe("Service: CmsApiService", () => {
     let cmsApiService: CmsApiService;
-    let apiRequest: APIRequest
+    let apiRequestHandler: APIRequest
     let appConfig: AppConfig;
     let translate: TranslateService;
     let storageManager: StorageManager;
@@ -70,8 +71,8 @@ describe("Service: CmsApiService", () => {
         router = router;
         apiRequest = APIRequest;
         mockbackend = mb;
-        apiRequest = new APIRequest(http, router, appConfig, storageManager);
-        cmsApiService = new CmsApiService(http, router, apiRequest, storageManager, appConfig);
+        apiRequestHandler = new APIRequest(http, router, appConfig, storageManager);
+        cmsApiService = new CmsApiService(http, router, apiRequestHandler, storageManager, appConfig);
     }));
 
     //SERVICE DEFINED
@@ -109,6 +110,23 @@ describe("Service: CmsApiService", () => {
         cmsApiService.logout().subscribe(data => {
             expect(responseBody).toEqual(data);
         });
+    }));
+
+    //USER LOGOUT API AND ALSO PERFORM CLEANUP
+    it("Should be able to logoutuser to CMS Server", async(() => {
+        let responseBody: any = { "Message": "Logout Sucessfull" };
+        mockbackend.connections.subscribe((connection: MockConnection) => {
+            connection.mockRespond(new Response(
+                new ResponseOptions({
+                    body: responseBody
+                })
+            ));
+        });
+
+        cmsApiService.logout().subscribe(data => {
+            expect(responseBody).toEqual(data);
+        });
+
     }));
 
     //CLEAR SESSION AND NAVIGATE TO LOGIN ON LOGOUT CALL.
@@ -209,6 +227,25 @@ describe("Service: CmsApiService", () => {
 
     });
 
+    //MARK AN OBJECT DISPLAY/SOURCE AS FAVRORITE => CHECK CATCH
+    it("Should execute catch block while mark object as favorite ", () => {
+        let objectId: number = 1;
+        let objectType: string = "DIS"
+        mockbackend.connections.subscribe((connection: MockConnection) => {
+            connection.mockError(new ErrorResponse(
+                new ResponseOptions({
+                    body: {},
+                    status: 404
+                })
+            ));
+        });
+        cmsApiService.markAsFavorite(objectId, objectType).then(data => {
+            // do nothing
+        }, err => {
+            expect(err.status).toBe(404);
+        });
+    });
+
     //MARK AN OBJECT DISPLAY/SOURCE AS UNFAVRORITE
     it("Should mark an object as unfavorite ", () => {
         let responseBody = { "Message": "Favorite has been deleted successfully." };
@@ -282,6 +319,22 @@ describe("Service: CmsApiService", () => {
         });
     });
 
+    //APP BUID VERSION => CATCH BLOCK
+    it("Should execute catch for app build version ", () => {
+        mockbackend.connections.subscribe((connection: MockConnection) => {
+            connection.mockError(new ErrorResponse(
+                new ResponseOptions({
+                    body: {},
+                    status: 404
+                })
+            ));
+        });
+        cmsApiService.getAppVersion().then(data => {
+        }, err => {
+            expect(err.status).toBe(404);
+        });
+    });
+
     //SERVER INFO DATA
     it("Should return server info data ", () => {
         let responseBody: any = MockServerInfoData;
@@ -297,8 +350,9 @@ describe("Service: CmsApiService", () => {
         });
     });
 
-    //GET TILER INFO DATA
-    it("Should return tiler info data ", () => {
+    //GET TILER INFO DATA TILE COUNT 1
+    it("Should return tiler info for tilesCount 1 ", () => {
+        let tilesCount: number = 1;
         let responseBody: any = MockTilerData;
         mockbackend.connections.subscribe((connection: MockConnection) => {
             connection.mockRespond(new Response(
@@ -307,7 +361,23 @@ describe("Service: CmsApiService", () => {
                 })
             ));
         });
-        cmsApiService.getTilePresets().subscribe(data => {
+        cmsApiService.getTilePresets(tilesCount).subscribe(data => {
+            expect(data).toEqual(responseBody);
+        });
+    });
+
+    //GET TILER INFO DATA TILE COUNT 0
+    it("Should return tiler info for tilesCount 0 ", () => {
+        let tilesCount: number = 0;
+        let responseBody: any = MockTilerData;
+        mockbackend.connections.subscribe((connection: MockConnection) => {
+            connection.mockRespond(new Response(
+                new ResponseOptions({
+                    body: responseBody
+                })
+            ));
+        });
+        cmsApiService.getTilePresets(tilesCount).subscribe(data => {
             expect(data).toEqual(responseBody);
         });
     });
@@ -343,4 +413,327 @@ describe("Service: CmsApiService", () => {
             expect(data.json()).toEqual(responseBody);
         });
     });
+    //GET EVENTS FOR CATCH
+    it("Should execute catch for getEvents ", () => {
+        mockbackend.connections.subscribe((connection: MockConnection) => {
+            connection.mockError(new ErrorResponse(
+                new ResponseOptions({
+                    body: {},
+                    status: 404
+                })
+            ));
+        });
+        cmsApiService.getEvents().subscribe(data => {
+        }, err => {
+            expect(err.status).toBe(404);
+        });
+    });
+
+    //GET EVENT HANDLE PERSPECTIVES => /perspectives => POSTED
+    it("Should fetch events using getEvents and handle /perspectives POSTED ", () => {
+        let responseBody = MockPerspectivesPostedData;
+        mockbackend.connections.subscribe((connection: MockConnection) => {
+            connection.mockRespond(new Response(
+                new ResponseOptions({
+                    body: responseBody
+                })
+            ));
+        });
+        cmsApiService.getEvents().subscribe(data => {
+            expect(data.json()).toEqual(responseBody);
+        });
+    });
+
+    //GET EVENT HANDLE PERSPECTIVES => /perspectives => DELETED
+    it("Should fetch events using getEvents and handle /perspectives DELETED ", () => {
+        let responseBody = MockPerspectivesDeletedData;
+        mockbackend.connections.subscribe((connection: MockConnection) => {
+            connection.mockRespond(new Response(
+                new ResponseOptions({
+                    body: responseBody
+                })
+            ));
+        });
+        cmsApiService.getEvents().subscribe(data => {
+            expect(data.json()).toEqual(responseBody);
+        });
+    });
+
+    //GET EVENT HANDLE PERSPECTIVES => /perspectives/{id} => PUT
+    it("Should fetch events using getEvents and handle /perspectives/{id} PUT ", () => {
+        let responseBody = MockPerspectivesPutData;
+        mockbackend.connections.subscribe((connection: MockConnection) => {
+            connection.mockRespond(new Response(
+                new ResponseOptions({
+                    body: responseBody
+                })
+            ));
+        });
+        cmsApiService.getEvents().subscribe(data => {
+            expect(data.json()).toEqual(responseBody);
+        });
+    });
+
+    //GET EVENT FOR DISPLAYS => /displays/{id} => PUT
+    it("Should fetch events using getEvents and handle /displays/{id} PUT ", () => {
+        let responseBody = MockUpdateSingleDisplayData;
+        mockbackend.connections.subscribe((connection: MockConnection) => {
+            connection.mockRespond(new Response(
+                new ResponseOptions({
+                    body: responseBody
+                })
+            ));
+        });
+        cmsApiService.getEvents().subscribe(data => {
+            expect(data.json()).toEqual(responseBody);
+        });
+    });
+
+    //GET EVENT FOR DISPLAYS => /displays => POSTED
+    it("Should fetch events using getEvents and handle /displays POSTED ", () => {
+        let responseBody = MockDisplaysPostData;
+        mockbackend.connections.subscribe((connection: MockConnection) => {
+            connection.mockRespond(new Response(
+                new ResponseOptions({
+                    body: responseBody
+                })
+            ));
+        });
+        cmsApiService.getEvents().subscribe(data => {
+            expect(data.json()).toEqual(responseBody);
+        });
+    });
+
+    //GET EVENT FOR DISPLAYS => /displays => DELETED
+    it("Should fetch events using getEvents and handle /displays DELETED ", () => {
+        let responseBody = MockDisplaysDeleteData;
+        mockbackend.connections.subscribe((connection: MockConnection) => {
+            connection.mockRespond(new Response(
+                new ResponseOptions({
+                    body: responseBody
+                })
+            ));
+        });
+        cmsApiService.getEvents().subscribe(data => {
+            expect(data.json()).toEqual(responseBody);
+        });
+    });
+
+    //GET EVENT FOR DISPLAYS => /displays/{id}/content => PUT
+    it("Should fetch events using getEvents and handle /displays/{id}/content PUT ", () => {
+        let responseBody = MockupdateDisplayContentData;
+        mockbackend.connections.subscribe((connection: MockConnection) => {
+            connection.mockRespond(new Response(
+                new ResponseOptions({
+                    body: responseBody
+                })
+            ));
+        });
+        cmsApiService.getEvents().subscribe(data => {
+            expect(data.json()).toEqual(responseBody);
+        });
+    });
+
+    //GET EVENT FOR DISPLAYS => /displays/{id}/content/{id} => PUT
+    it("Should fetch events using getEvents and handle /displays/{id}/content/{id} PUT ", () => {
+        let responseBody = MockupdateDisplayContentElement;
+        mockbackend.connections.subscribe((connection: MockConnection) => {
+            connection.mockRespond(new Response(
+                new ResponseOptions({
+                    body: responseBody
+                })
+            ));
+        });
+        cmsApiService.getEvents().subscribe(data => {
+            expect(data.json()).toEqual(responseBody);
+        });
+    });
+
+    //GET EVENT FOR DISPLAYS /displays/{id}/applications => POSTED
+    it("Should fetch events using getEvents and handle /displays/{id}/applications POSTED ", () => {
+        let responseBody = MockAddSingleAppData;
+        mockbackend.connections.subscribe((connection: MockConnection) => {
+            connection.mockRespond(new Response(
+                new ResponseOptions({
+                    body: responseBody
+                })
+            ));
+        });
+        cmsApiService.getEvents().subscribe(data => {
+            expect(data.json()).toEqual(responseBody);
+        });
+    });
+
+    //GET EVENT FOR DISPLAYS /displays/{id}/applications => DELETED
+    it("Should fetch events using getEvents and handle /displays/{id}/applications DELETED ", () => {
+        let responseBody = MockDeletedSingleAppData;
+        mockbackend.connections.subscribe((connection: MockConnection) => {
+            connection.mockRespond(new Response(
+                new ResponseOptions({
+                    body: responseBody
+                })
+            ));
+        });
+        cmsApiService.getEvents().subscribe(data => {
+            expect(data.json()).toEqual(responseBody);
+        });
+    });
+
+    //GET EVENT FOR DISPLAYS /displays/{id}/applications/{id} => PUT
+    it("Should fetch events using getEvents and handle /displays/{id}/applications{id} PUT ", () => {
+        let responseBody = MockUpdateDisplaySingleAppData;
+        mockbackend.connections.subscribe((connection: MockConnection) => {
+            connection.mockRespond(new Response(
+                new ResponseOptions({
+                    body: responseBody
+                })
+            ));
+        });
+        cmsApiService.getEvents().subscribe(data => {
+            expect(data.json()).toEqual(responseBody);
+        });
+    });
+
+    //GET EVENT FOR SOURCES ADD SOURCE TO LIST /sources => PUT
+    it("Should fetch events using getEvents and handle /sources PUT ", () => {
+        let responseBody = MockAddSourceData;
+        mockbackend.connections.subscribe((connection: MockConnection) => {
+            connection.mockRespond(new Response(
+                new ResponseOptions({
+                    body: responseBody
+                })
+            ));
+        });
+        cmsApiService.getEvents().subscribe(data => {
+            expect(data.json()).toEqual(responseBody);
+        });
+    });
+
+    //GET EVENT FOR SOURCES DELETE SOURCE /sources => DELETE
+    it("Should fetch events using getEvents and handle /sources DELETE ", () => {
+        let responseBody = MockDeleteSourceData;
+        mockbackend.connections.subscribe((connection: MockConnection) => {
+            connection.mockRespond(new Response(
+                new ResponseOptions({
+                    body: responseBody
+                })
+            ));
+        });
+        cmsApiService.getEvents().subscribe(data => {
+            expect(data.json()).toEqual(responseBody);
+        });
+    });
+    //GET EVENT FOR SOURCES UPDATE SOURCE /sources/{ id } => PUT
+    it("Should fetch events using getEvents and handle /sources/1 PUT ", () => {
+        let responseBody = MockUpdateSingleSourceData;
+        mockbackend.connections.subscribe((connection: MockConnection) => {
+            connection.mockRespond(new Response(
+                new ResponseOptions({
+                    body: responseBody
+                })
+            ));
+        });
+        cmsApiService.getEvents().subscribe(data => {
+            expect(data.json()).toEqual(responseBody);
+        });
+    });
+
+    //GET EVENT FOR SYSTEM /system
+    it("Should fetch events using getEvents and handle /system ", () => {
+        let responseBody = MockSystemEventData;
+        mockbackend.connections.subscribe((connection: MockConnection) => {
+            connection.mockRespond(new Response(
+                new ResponseOptions({
+                    body: responseBody
+                })
+            ));
+        });
+        cmsApiService.getEvents().subscribe(data => {
+            expect(data.json()).toEqual(responseBody);
+        });
+    });
+
+    //GET EVENT FOR USER /users/current => DELETED
+    it("Should fetch events using getEvents and handle /users/current DELETED ", () => {
+        let userInfo = { "username": "bcd-se-test", "loggedIn": true };
+        storageManager = new StorageManager();
+        storageManager.setItem(CmsSessionStorageItem.USER, JSON.stringify(userInfo));
+        let responseBody = MockDeleteHandleUserEventsData;
+        mockbackend.connections.subscribe((connection: MockConnection) => {
+            connection.mockRespond(new Response(
+                new ResponseOptions({
+                    body: responseBody
+                })
+            ));
+        });
+        cmsApiService.getEvents().subscribe(data => {
+            expect(data.json()).toEqual(responseBody);
+        });
+    });
+
+    //GET EVENT FOR USER /users/current => UPDATE
+    it("Should fetch events using getEvents and handle /users/current PUT ", () => {
+        let responseBody = MockUpdateHandleUserEventsData;
+        mockbackend.connections.subscribe((connection: MockConnection) => {
+            connection.mockRespond(new Response(
+                new ResponseOptions({
+                    body: responseBody
+                })
+            ));
+        });
+        cmsApiService.getEvents().subscribe(data => {
+            expect(data.json()).toEqual(responseBody);
+        });
+    });
+
+    //GET EVENT FOR TILERS /tilers => POST
+    it("Should fetch events using getEvents and handle /tilers POST ", () => {
+        let responseBody = MockAddTilerEventData;
+        mockbackend.connections.subscribe((connection: MockConnection) => {
+            connection.mockRespond(new Response(
+                new ResponseOptions({
+                    body: responseBody
+                })
+            ));
+        });
+        cmsApiService.getEvents().subscribe(data => {
+            expect(data.json()).toEqual(responseBody);
+        });
+    });
+
+    //GET EVENT FOR TILERS /tilers => DELETE
+    it("Should fetch events using getEvents and handle /tilers DELETE ", () => {
+        let responseBody = MockDeleteTilerEventData;
+        mockbackend.connections.subscribe((connection: MockConnection) => {
+            connection.mockRespond(new Response(
+                new ResponseOptions({
+                    body: responseBody
+                })
+            ));
+        });
+        cmsApiService.getEvents().subscribe(data => {
+            expect(data.json()).toEqual(responseBody);
+        });
+    });
+
+    //GET EVENT FOR TILERS /tilers/{id} => PUT
+    it("Should fetch events using getEvents and handle /tilers/{id} PUT ", () => {
+        let responseBody = MockUpdateTilerEventData;
+        mockbackend.connections.subscribe((connection: MockConnection) => {
+            connection.mockRespond(new Response(
+                new ResponseOptions({
+                    body: responseBody
+                })
+            ));
+        });
+        cmsApiService.getEvents().subscribe(data => {
+            expect(data.json()).toEqual(responseBody);
+        });
+    });
+
 });
+
+class ErrorResponse extends Response implements Error {
+    name: any;
+    message: any;
+}

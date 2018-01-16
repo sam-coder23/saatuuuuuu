@@ -160,7 +160,7 @@ export class CmsLaunchpadComponent implements OnInit, OnDestroy {
     if (this.applicationEventType === "system") {
       // perform logout
       this.appConfig.log("CmsLaunchpadComponent: Performing logoff for the user...");
-      this.logoutUser();
+      this.cmsServerApi.logout().subscribe();
     } else if (this.applicationEventType === "user") {
       // refresh application
       window.location.reload(true);
@@ -308,7 +308,7 @@ export class CmsLaunchpadComponent implements OnInit, OnDestroy {
           if (minDiff > userAutoLogOffTime) {
             //logoff user
             this.appConfig.log("CmsLaunchpadComponent: Performing auto logoff for the user due to inactivity...");
-            this.logoutUser();
+            this.cmsServerApi.logout().subscribe();
           } else {
             //update user time in session
             this.userLastActionTime = Date.now();
@@ -317,15 +317,6 @@ export class CmsLaunchpadComponent implements OnInit, OnDestroy {
         }
       }
     }
-  }
-
-  /**
-   * This method log-off the user.
-   * @method logoutUser
-   * @return void
-   */
-  private logoutUser(): void {
-    this.cmsServerApi.logoutUser();
   }
 
   /**
