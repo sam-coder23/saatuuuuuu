@@ -137,4 +137,33 @@ export const TilePresets: ITilePreset[] = [
         "noOfTiles": 2,
         "isGrid": false
     },
+    // DO NOT DELETE OR MODIFY
+    {
+        "id": 5,
+        "name": "2*1-specific",
+        "description": "",
+        "tags": "",
+        "base": {
+            "rowBound": 1,
+            "colBound": 2
+        },
+        "tiles": [
+            {
+                "left": 0,
+                "top": 0,
+                "width": 1,
+                "height": 1
+            },
+            {
+                "left": 1,
+                "top": 0,
+                "width": 1,
+                "height": 1
+            }
+        ],
+        "isDefaultForAllDisplays": false,
+        "defaultForDisplays": [1],
+        "noOfTiles": 2,
+        "isGrid": false
+    },
 ]

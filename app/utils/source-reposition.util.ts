@@ -49,6 +49,7 @@ export class SourceRepositionUtility {
         sortedSources = selectedArray.sort((curr: any, next: any) => {
             return curr.x - next.x;
         });
+
         reArranged = this.GROUP_BY(sortedSources,
             (resource: any) => resource.x);
         sortedSources = reArranged.map(
