@@ -1,9 +1,9 @@
 {
     "login": {
         "welcome": "Collaboration Wall Manager",
-        "username": "UserName",
+        "username": "User name",
         "password": "Password",
-        "button": "Login CWM",
+        "button": "Login",
         "error": "User name or password is incorrect",
         "licenceError": "Unable to acquire licence.",
         "serverNotReadyError": "Server is not yet ready. Please wait!",
