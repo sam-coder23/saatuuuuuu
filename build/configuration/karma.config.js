@@ -20,8 +20,7 @@ module.exports = function (config) {
     reporters: [
       "progress",
       "karma-typescript",
-      "coverage",
-      "dots"
+      "html"
     ],
     htmlReporter: {
       outputDir: "build/reports",
