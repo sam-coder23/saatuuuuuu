@@ -10,9 +10,10 @@
         "outDir": "built",
         "rootDir": ".",
         "typeRoots": ["node_modules/@types"],
-        "types": ["node", "core-js", "hammerjs", "jasmine"]        
+        "types": ["node", "core-js", "hammerjs", "jasmine"]
     },
     "exclude": [
-        "node_modules/*"
+        "node_modules/*",
+        ".scannerwork/**"
     ]
 }

@@ -1,8 +1,8 @@
-node_modules/**
-tslint/
-test-report/
-build/dist/**
-npm-debug.log
-build/reports/**
 .vscode/**
 .scannerwork/**
+tslint/**
+node_modules/**
+test-report/**
+build/dist/**
+build/reports/**
+npm-debug.log
