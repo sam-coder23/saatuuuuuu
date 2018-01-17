@@ -39,4 +39,13 @@ export class CMSConstants {
     public static DECIMAL_SYSTEM: number = 10;
     // tslint:disable-next-line:no-null-keyword
     public static NULL_VALUE: object = null;
+    public static ERRORCODE: any = {
+        LICENSE_ERROR: 403,
+        SERVER_ERROR: 503,
+        SETTING_ERROR: 406,
+        USER_DISABLED: 409,
+        NOT_FOUND: 404,
+        SERVER_UNAVAILABLE: 0,
+        OTHER_ERROR : -1
+    };
 }

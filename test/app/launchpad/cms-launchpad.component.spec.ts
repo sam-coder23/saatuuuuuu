@@ -155,7 +155,7 @@ describe("CmsLaunchpadComponent", () => {
             cmsApiService = fixture.debugElement.injector.get(CmsApiService);
             cmsSettingsService = fixture.debugElement.injector.get(CmsSettingsService);
             appConfig = fixture.debugElement.injector.get(AppConfig);
-            spyOn(cmsApiService, "logout");
+            spyOn(cmsApiService, "logout").and.returnValue(Observable.of(""));
             storageManager.setItem(CmsSessionStorageItem.USER, CMSConstants.NULL_VALUE);
             storageManager.setItem(CmsSessionStorageItem.SETTINGS, CMSConstants.NULL_VALUE);
             // iconRegistry = fixture.debugElement.injector.get(MdIconRegistry);

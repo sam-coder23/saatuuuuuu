@@ -1,52 +1,53 @@
-import { ComponentFixture, TestBed, async, inject } from "@angular/core/testing";
+/**
+ * This class is responsible to handle unit test case of CmsSettingsPanelComponent
+ */
 import { Location } from "@angular/common";
-import { DebugElement, CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA, ElementRef } from "@angular/core";
-import { HttpModule, Http } from "@angular/http";
-import { TranslateModule, TranslateLoader, TranslateService } from "@ngx-translate/core";
+import { CUSTOM_ELEMENTS_SCHEMA, ElementRef, NO_ERRORS_SCHEMA } from "@angular/core";
+import { async, ComponentFixture, inject, TestBed } from "@angular/core/testing";
+import { Http, HttpModule } from "@angular/http";
+import { ActivatedRoute, Router } from "@angular/router";
+import { TranslateLoader, TranslateModule, TranslateService } from "@ngx-translate/core";
 import { TranslateHttpLoader } from "@ngx-translate/http-loader";
-import { Router, ActivatedRoute, Params } from "@angular/router";
 import { Observable } from "rxjs/Observable";
-import { Subject } from "rxjs/Subject";
-import { CmsSettingsLanguagePanelComponent } from "../../../../../app/launchpad/settings/language/cms-settings-language-panel.component";
-import { CmsSettingsService } from "../../../../../app/launchpad/settings/cms-settings.service";
+
+import { APIRequest } from "../../../../../app/cms/api/api-request";
 import { CmsApiService } from "../../../../../app/cms/api/cms-api.service";
+import { StorageManager } from "../../../../../app/cms/api/cms-storagemanager.service";
+import { CmsSessionStorageItem } from "../../../../../app/cms/models/cms-session-storage-item";
 import { AppConfig } from "../../../../../app/config";
 import { CmsLanguages } from "../../../../../app/i18n/cms-languages";
-import { StorageManager } from "../../../../../app/cms/api/cms-storagemanager.service";
-import { APIRequest } from "../../../../../app/cms/api/api-request";
-import { CmsSessionStorageItem } from "../../../../../app/cms/models/cms-session-storage-item";
+import { CmsSettingsService } from "../../../../../app/launchpad/settings/cms-settings.service";
+import { CmsSettingsLanguagePanelComponent } from "../../../../../app/launchpad/settings/language/cms-settings-language-panel.component";
 
-let routerSpy = {
-    navigate: jasmine.createSpy("settings")
-};
+let routerSpy: any;
 
-let mockCmsSettingsData = {
-    "userSettings": {
-        "language": "en",
-        "wallConnection": {
-            "startUpAction": "show-available-walls-list",
-            "specificDisplay": "Board Meeting Room",
-            "recentDisplay": "Board Meeting Room"
+const mockCmsSettingsData : any = {
+    userSettings: {
+        language: "en",
+        wallConnection: {
+            startUpAction: "show-available-walls-list",
+            specificDisplay: "Board Meeting Room",
+            recentDisplay: "Board Meeting Room"
         },
-        "sourceLabel": {
-            "displaySourceNameLabels": true,
-            "useMultipleLines": false,
-            "fontColor": "#FFFFFF",
-            "fontSize": 14,
-            "backgroundColor": "#BDBDBD",
-            "transparency": 50
+        sourceLabel: {
+            displaySourceNameLabels: true,
+            useMultipleLines: false,
+            fontColor: "#FFFFFF",
+            fontSize: 14,
+            backgroundColor: "#BDBDBD",
+            transparency: 50
         },
-        "logOffTime": 0,
-        "pageSize": 50
+        logOffTime: 0,
+        pageSize: 50
     }
 };
 
 // Fake CmsApiService Service
 class MockCmsApiService {
-    getUserProfileSettings(): Promise<any> {
+    public getUserProfileSettings(): Promise<any> {
         return Promise.resolve(mockCmsSettingsData.userSettings);
     }
-    updateUserProfileSettings(): Promise<any> {
+    public updateUserProfileSettings(): Promise<any> {
         return Promise.resolve(mockCmsSettingsData.userSettings);
     }
 }
@@ -54,30 +55,28 @@ class MockCmsApiService {
 describe("Component CmsSettingsLanguagePanelComponent", () => {
     let component: CmsSettingsLanguagePanelComponent;
     let fixture: ComponentFixture<CmsSettingsLanguagePanelComponent>;
-    let cmsSettingsLanguagePanelComponent;
     let cmsSettingsService: CmsSettingsService;
     let cmsApiService: CmsApiService;
-    let router: Router;
-    let location: Location;
-    let translate: TranslateService;
-    let appConfig: AppConfig;
-    let cmsLanguages: CmsLanguages;
-    let storageManager;
-    let i18n: any;
-    let debugInstance, nativeElement;
-    let activatedRoute = new ActivatedRoute();
-    activatedRoute.params = Observable.of({
-        key: "en"
-    });
+    let storageManager : any;
+    let debugInstance: any;
+    let nativeElement: any;
+    let activatedRoute: ActivatedRoute;
 
     beforeEach(async(() => {
-        TestBed.configureTestingModule({
+       routerSpy = {
+            navigate: jasmine.createSpy("settings")
+        };
+       activatedRoute = new ActivatedRoute();
+       activatedRoute.params = Observable.of({
+            key: "en"
+        });
+       TestBed.configureTestingModule({
             declarations: [CmsSettingsLanguagePanelComponent],
             providers: [
                 CmsSettingsService,
                 {
                     provide: Router,
-                    useValue: routerSpy,
+                    useValue: routerSpy
                 },
                 {
                     provide: ActivatedRoute,
@@ -98,15 +97,14 @@ describe("Component CmsSettingsLanguagePanelComponent", () => {
                 AppConfig,
                 APIRequest,
                 TranslateService,
-                CmsSessionStorageItem,
-
+                CmsSessionStorageItem
             ],
             imports: [
                 HttpModule,
                 TranslateModule.forRoot({
                     loader: {
                         provide: TranslateLoader,
-                        useFactory: (http: Http) => new TranslateHttpLoader(http, "/base/app/i18n/", ".json"),
+                        useFactory: (http: Http): TranslateHttpLoader => new TranslateHttpLoader(http, "/base/app/i18n/", ".json"),
                         deps: [Http]
                     }
                 })
@@ -122,7 +120,7 @@ describe("Component CmsSettingsLanguagePanelComponent", () => {
         });
     }));
 
-    beforeEach(inject([StorageManager], (response) => {
+    beforeEach(inject([StorageManager], (response : any) => {
         storageManager = response;
     }));
 
@@ -132,23 +130,22 @@ describe("Component CmsSettingsLanguagePanelComponent", () => {
     }));
 
     // Check private variables
-    it("should check route params and cmsLanguages : ", (done) => {
+    it("should check route params and cmsLanguages : ", () => {
         expect(debugInstance.route.params).not.toBeNull();
         expect(debugInstance.route.params).not.toBeUndefined();
         expect(debugInstance.route.params.value.key).not.toBeNull();
         expect(debugInstance.route.params.value.key).not.toBeUndefined();
         expect(debugInstance.cmsLanguages.length).toBeGreaterThan(0);
-        done();
     });
 
     // Check back button and title text elements
     it("should check settingLanguagePanelBackButton and settingLanguagePanelTitleText ", () => {
         fixture.detectChanges();
         fixture.whenStable().then(() => {
-            let settingLanguagePanelTitleText = fixture.nativeElement.querySelector("#setting-language-panel-title-text");
+            const settingLanguagePanelTitleText : any = fixture.nativeElement.querySelector("#setting-language-panel-title-text");
             expect(settingLanguagePanelTitleText).toBeTruthy();
             expect(settingLanguagePanelTitleText).not.toBeNull();
-            let settingLanguagePanelBackButton = fixture.nativeElement.querySelector("#setting-language-panel-back-button");
+            const settingLanguagePanelBackButton : any = fixture.nativeElement.querySelector("#setting-language-panel-back-button");
             expect(settingLanguagePanelBackButton).toBeTruthy();
         });
     });
@@ -157,22 +154,21 @@ describe("Component CmsSettingsLanguagePanelComponent", () => {
      * userprofilesettings with selected language, session storage settings
      * and route to settings page
      */
-    it("should check setLanguage method and update userprofileSettings and navigate back to settings ", (done) => {
+    it("should check setLanguage method and update userprofileSettings and navigate back to settings ", () => {
         cmsSettingsService.userSettings = mockCmsSettingsData.userSettings;
-        let languageKey = debugInstance.cmsLanguages[0].key;
+        const languageKey : any = debugInstance.cmsLanguages[0].key;
         expect(languageKey).not.toBeUndefined();
         expect(languageKey).not.toBeNull();
         fixture.detectChanges();
         fixture.whenStable().then(() => {
-            let spyWindowHistoryBack = spyOn(window.history, "back").and.returnValue(null);
+            const spyWindowHistoryBack : jasmine.Spy = spyOn(window.history, "back");
             debugInstance.setLanguage(languageKey);
             fixture.detectChanges();
             fixture.whenStable().then(() => {
-                let settings = JSON.parse(storageManager.appStorage.Settings);
+                const settings : any = JSON.parse(storageManager.appStorage.Settings);
                 expect(settings.language).toBe(languageKey);
                 expect(spyWindowHistoryBack).toHaveBeenCalled();
             });
-            done();
         });
     });
 });

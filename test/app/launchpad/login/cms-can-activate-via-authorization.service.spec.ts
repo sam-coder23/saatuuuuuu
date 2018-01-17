@@ -1,22 +1,29 @@
-import { ActivatedRouteSnapshot, RouterStateSnapshot, Router } from "@angular/router";
-import { TestBed, inject } from "@angular/core/testing";
+/**
+ * This class is responsible to handle unit test case of CmsCanActivateViaAuthorizationService
+ */
+import { inject, TestBed } from "@angular/core/testing";
+import { ActivatedRouteSnapshot, Router, RouterStateSnapshot  } from "@angular/router";
 import { CmsCanActivateViaAuthorizationService } from "../../../../app/launchpad/login/cms-can-activate-via-authorization.service";
+
 import { StorageManager } from "../../../../app/cms/api/cms-storagemanager.service";
 import { CmsSessionStorageItem } from "../../../../app/cms/models/cms-session-storage-item";
 
 describe("CmsCanActivateViaAuthorizationService should", () => {
     let cmsCanActivateViaAuthorizationService: CmsCanActivateViaAuthorizationService;
+    // tslint:disable-next-line:prefer-const
     let next: ActivatedRouteSnapshot;
+    // tslint:disable-next-line:prefer-const
     let state: RouterStateSnapshot;
     let storageManager: StorageManager;
-    let router = {
-        navigate: jasmine.createSpy("login")
-    };
-    let user = {
-        "loggedIn": true
+    let router: any;
+    const user : any = {
+        loggedIn: true
     };
 
-    beforeEach(async () =>
+    beforeEach(async () => {
+        router = {
+            navigate: jasmine.createSpy("login")
+        };
         TestBed.configureTestingModule({
             providers: [
                 StorageManager,
@@ -25,11 +32,12 @@ describe("CmsCanActivateViaAuthorizationService should", () => {
                     useValue: router
                 }
             ]
-        }));
+        });
+    });
 
-    beforeEach(inject([Router, StorageManager], (router, sm) => {
+    beforeEach(inject([Router, StorageManager], (routerService: Router, sm: StorageManager) => {
         storageManager = sm;
-        cmsCanActivateViaAuthorizationService = new CmsCanActivateViaAuthorizationService(router, storageManager);
+        cmsCanActivateViaAuthorizationService = new CmsCanActivateViaAuthorizationService(routerService, storageManager);
     }));
 
     it("be defined", () => {

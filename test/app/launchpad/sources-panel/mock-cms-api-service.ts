@@ -24,4 +24,4 @@ export class MockCmsApiService {
   public logoutUser() : void {
     return;
   }
-};
+}

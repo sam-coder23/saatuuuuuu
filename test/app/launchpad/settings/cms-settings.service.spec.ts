@@ -18,8 +18,6 @@ import { AppConfig } from "../../../../app/config";
 import { CmsLanguages } from "../../../../app/i18n/cms-languages";
 import { CmsSettingsService } from "../../../../app/launchpad/settings/cms-settings.service";
 
-
-
 /**
  * This class is responsible to handle unit test case of CmsSourcesPanelComponent
  */
@@ -87,7 +85,7 @@ describe("Service: CmsSettingsService", () => {
     };
 
     // Mock Data for CmsSettings
-    const mockCmsSettingsServiceData = {
+    const mockCmsSettingsServiceData : any = {
         userSettings: {
             language: "de",
             wallConnection: {
@@ -208,7 +206,6 @@ describe("Service: CmsSettingsService", () => {
         cmsSettingsService = new CmsSettingsService(translate, cmsServerApi, router, storageManager, appConfig);
     }));
 
-
     it("should be defined", () => {
         expect(cmsSettingsService).toBeDefined();
     });
@@ -284,7 +281,7 @@ describe("Service: CmsSettingsService", () => {
         spyRouter = spyOn(router, "navigate");
         mockCmsSettingsServiceData.userSettings.wallConnection.startUpAction = CMSConstants.WALL_CONNECTION.RECENT_WALL;
         mockCmsSettingsServiceData.userSettings.wallConnection.recentDisplay = mockDisplaysData.displays[0].name;
-        const copyOfMockDisplay = Object.assign([], mockDisplaysData.displays);
+        const copyOfMockDisplay : Object = Object.assign([], mockDisplaysData.displays);
         mockDisplaysData.displays.length = 0;
         testForSingleDisplay = false;
         cmsSettingsService.setUserProfileSettings();
@@ -356,7 +353,7 @@ describe("Service: CmsSettingsService", () => {
         spyRouter = spyOn(router, "navigate");
         mockCmsSettingsServiceData.userSettings.wallConnection.startUpAction = CMSConstants.WALL_CONNECTION.SPECIFIC_WALL;
         mockCmsSettingsServiceData.userSettings.wallConnection.specificDisplay = mockDisplaysData.displays[0].name;
-        const copyOfMockDisplay = Object.assign([], mockDisplaysData.displays);
+        const copyOfMockDisplay : object = Object.assign([], mockDisplaysData.displays);
         mockDisplaysData.displays.length = 0;
         testForSingleDisplay = false;
         cmsSettingsService.setUserProfileSettings();
@@ -404,46 +401,57 @@ describe("Service: CmsSettingsService", () => {
     });
 
     it("should increase count value as per it's index", () => {
-        const expectedFontSize : number = cmsSettingsService.increaseCount(16, CMSConstants.FONT_SIZES);
-        expect(expectedFontSize).toEqual(18);
+        const value : number = 16;
+        const expectedFontSize: number = cmsSettingsService.increaseCount(value, CMSConstants.FONT_SIZES);
+        const fontSize: number = 18;
+        expect(expectedFontSize).toEqual(fontSize);
     });
 
     it("should increase count value as per it's nearest high value", () => {
-        const expectedFontSize: number = cmsSettingsService.increaseCount(17, CMSConstants.FONT_SIZES);
-        expect(expectedFontSize).toEqual(18);
+        const value: number = 17;
+        const expectedFontSize: number = cmsSettingsService.increaseCount(value, CMSConstants.FONT_SIZES);
+        const fontSize: number = 18;
+        expect(expectedFontSize).toEqual(fontSize);
     });
 
     it("should decrease count value as per it's index", () => {
-        const expectedFontSize: number = cmsSettingsService.decreaseCount(16, CMSConstants.FONT_SIZES);
-        expect(expectedFontSize).toEqual(14);
+        const value: number = 16;
+        const expectedFontSize: number = cmsSettingsService.decreaseCount(value, CMSConstants.FONT_SIZES);
+        const fontSize: number = 14;
+        expect(expectedFontSize).toEqual(fontSize);
     });
 
     it("should decrease count value as per it's nearest low value", () => {
-        const expectedFontSize: number = cmsSettingsService.decreaseCount(15, CMSConstants.FONT_SIZES);
-        expect(expectedFontSize).toEqual(14);
+        const value: number = 15;
+        const expectedFontSize: number = cmsSettingsService.decreaseCount(value, CMSConstants.FONT_SIZES);
+        const fontSize: number = 14;
+        expect(expectedFontSize).toEqual(fontSize);
     });
 
     it("should not increase/decrease count value for maximum and minimum count", () => {
-        let expectedFontSize: number = cmsSettingsService.increaseCount(72, CMSConstants.FONT_SIZES);
-        expect(expectedFontSize).toEqual(72);
+        const value: number = 72;
+        let expectedFontSize: number = cmsSettingsService.increaseCount(value, CMSConstants.FONT_SIZES);
+        expect(expectedFontSize).toEqual(value);
 
         expectedFontSize = cmsSettingsService.decreaseCount(1, CMSConstants.FONT_SIZES);
         expect(expectedFontSize).toEqual(1);
     });
 
     it("should validate Count Data", () => {
-        const expectedFontSize: number = cmsSettingsService.validateCountData(-8, CMSConstants.FONT_SIZES, CMSConstants.DEFAULT_FONT_SIZE);
+        const value: number = -8;
+        const expectedFontSize: number = cmsSettingsService.validateCountData(value, CMSConstants.FONT_SIZES, CMSConstants.DEFAULT_FONT_SIZE);
         expect(expectedFontSize).toEqual(1);
+        const autoLofOffvalue: number = 78;
+        const expectedAutoLogOffTime: number = cmsSettingsService.validateCountData(autoLofOffvalue, CMSConstants.LOGOFF_TIME_STEPS, CMSConstants.DEFAULT_LOGOFF_TIME);
+        const autoLofOffTime: number = 60;
+        expect(expectedAutoLogOffTime).toEqual(autoLofOffTime);
 
-        const expectedAutoLogOffTime: number = cmsSettingsService.validateCountData(78, CMSConstants.LOGOFF_TIME_STEPS, CMSConstants.DEFAULT_LOGOFF_TIME);
-        expect(expectedAutoLogOffTime).toEqual(60);
-
-        const expectedTranspareny: number = cmsSettingsService.validateCountData(78, CMSConstants.TRANSPARENCY_STEPS, CMSConstants.DEFAULT_TRANSPARENCY);
-        expect(expectedTranspareny).toEqual(78);
+        const expectedTranspareny: number = cmsSettingsService.validateCountData(autoLofOffvalue, CMSConstants.TRANSPARENCY_STEPS, CMSConstants.DEFAULT_TRANSPARENCY);
+        expect(expectedTranspareny).toEqual(autoLofOffvalue);
     });
 
     it("should update displayName for specific display in the userSettings and should perfom browser back button action", fakeAsync(() => {
-        const spyHistoryBack = spyOn(history, "back");
+        const spyHistoryBack : jasmine.Spy = spyOn(history, "back");
         cmsSettingsService.setUserProfileSettings();
         tick();
         cmsSettingsService.updateWallConnectionSpecificDisplay(mockDisplaysData.displays[0]);
@@ -453,7 +461,7 @@ describe("Service: CmsSettingsService", () => {
     }));
 
     it("should set user selected language on the basis of localization license", fakeAsync(() => {
-        spySetTextDirectionByLanguageKey = spyOn(cmsSettingsService, "setTextDirectionByLanguageKey").and.returnValue(null);
+        spySetTextDirectionByLanguageKey = spyOn(cmsSettingsService, "setTextDirectionByLanguageKey");
         cmsSettingsService.setUserProfileSettings();
         tick();
         cmsSettingsService.applyUserSelectedLanguage();

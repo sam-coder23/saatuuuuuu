@@ -1,37 +1,41 @@
-import { ComponentFixture, TestBed, async, inject } from "@angular/core/testing";
+/**
+ * This class is responsible to handle unit test case of CmsDisplaysPanelComponent
+ */
+import { CUSTOM_ELEMENTS_SCHEMA, DebugElement, NO_ERRORS_SCHEMA } from "@angular/core";
+import { async, ComponentFixture, inject, TestBed } from "@angular/core/testing";
+import { Http, HttpModule } from "@angular/http";
 import { By } from "@angular/platform-browser";
-import { DebugElement, CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA, ElementRef } from "@angular/core";
-import { HttpModule, Http } from "@angular/http";
-import { TranslateModule, TranslateLoader, TranslateService } from "@ngx-translate/core";
+import { ActivatedRoute } from "@angular/router";
+import { TranslateLoader, TranslateModule, TranslateService } from "@ngx-translate/core";
 import { TranslateHttpLoader } from "@ngx-translate/http-loader";
-
 import { Observable } from "rxjs/Rx";
-import { Router, ActivatedRoute, Params } from "@angular/router";
-import { CmsDisplaysPanelComponent } from "../../../../app/launchpad/displays-panel/cms-displays-panel.component";
-import { StorageManager } from "../../../../app/cms/api/cms-storagemanager.service";
-import { AppConfig } from "../../../../app/config";
+
 import { CmsApiService } from "../../../../app/cms/api/cms-api.service";
+import { StorageManager } from "../../../../app/cms/api/cms-storagemanager.service";
+import { CMSConstants } from "../../../../app/cms/models/cms-constants";
 import { CmsSessionStorageItem } from "../../../../app/cms/models/cms-session-storage-item";
-import { Validation } from "../../../../app/core/util/Validation";
+import { AppConfig } from "../../../../app/config";
+import { CmsDisplaysPanelComponent } from "../../../../app/launchpad/displays-panel/cms-displays-panel.component";
 
 class MockCmsApiServiceStub {
-    logoutUser() { }
+    public logoutUser(): void {
+        // no code required
+     }
 }
 
 describe("Component: CmsDisplaysPanelComponent", () => {
     let component: CmsDisplaysPanelComponent;
     let fixture: ComponentFixture<CmsDisplaysPanelComponent>;
-    let debugInstance, nativeElement, inputElement, translateService;
-    let cmsDisplaysPanelComponentInstance;
-    let spyPutContentsOnDisplays: jasmine.Spy;
-
+    let debugInstance: any;
+    let nativeElement: any;
+    let inputElement: any;
     let storageManager: StorageManager;
-    let appConfig: AppConfig;
     let cmsServerApi: CmsApiService;
-    let activatedRoute = new ActivatedRoute();
-    activatedRoute.params = Observable.of({});
+    let activatedRoute: ActivatedRoute;
 
     beforeEach(async(() => {
+        activatedRoute = new ActivatedRoute();
+        activatedRoute.params = Observable.of({});
         TestBed.configureTestingModule({
             declarations: [CmsDisplaysPanelComponent],
             providers: [
@@ -54,7 +58,7 @@ describe("Component: CmsDisplaysPanelComponent", () => {
                 TranslateModule.forRoot({
                     loader: {
                         provide: TranslateLoader,
-                        useFactory: (http: Http) => new TranslateHttpLoader(http, "/base/app/i18n/", ".json"),
+                        useFactory: (http: Http): TranslateHttpLoader => new TranslateHttpLoader(http, "/base/app/i18n/", ".json"),
                         deps: [Http]
                     }
                 })
@@ -67,20 +71,20 @@ describe("Component: CmsDisplaysPanelComponent", () => {
             debugInstance = fixture.debugElement.componentInstance;
 
             inputElement = nativeElement.querySelector("#display-list-search-input input");
-            spyOn(inputElement, "focus").and.returnValue(Observable.of(null));
+            spyOn(inputElement, "focus").and.returnValue(Observable.of(CMSConstants.NULL_VALUE));
 
         });
     }));
 
-    beforeEach(inject([StorageManager, CmsApiService], (response, cmsServerApi) => {
+    beforeEach(inject([StorageManager, CmsApiService], (response : any, cmsServerApiService : CmsApiService) => {
         storageManager = response;
-        cmsServerApi = cmsServerApi;
+        cmsServerApi = cmsServerApiService;
     }));
 
     it("should be a defined component: ", async(() => {
         expect(component).toBeDefined();
         fixture.detectChanges();
-        let backButton: DebugElement = fixture.debugElement.query(By.css("#displays-panel-back-button"));
+        const backButton: DebugElement = fixture.debugElement.query(By.css("#displays-panel-back-button"));
         expect(backButton).toBeFalsy();
     }));
 
@@ -89,7 +93,7 @@ describe("Component: CmsDisplaysPanelComponent", () => {
         expect(debugInstance.reloadState).toBe(true);
         fixture.detectChanges();
 
-        let reloadButton = document.getElementById("display-panel-reload-button");
+        const reloadButton : any = document.getElementById("display-panel-reload-button");
         expect(reloadButton).toBeTruthy();
     }));
 
@@ -97,7 +101,7 @@ describe("Component: CmsDisplaysPanelComponent", () => {
         debugInstance.reloadList();
         expect(debugInstance.reloadState).toBe(false);
 
-        let reloadButton = document.getElementById("display-panel-reload-button");
+        const reloadButton : any = document.getElementById("display-panel-reload-button");
         expect(reloadButton).toBeNull();
 
         fixture.detectChanges();
@@ -106,11 +110,6 @@ describe("Component: CmsDisplaysPanelComponent", () => {
                 expect(debugInstance.listState).toBe(true);
             }, 0);
         });
-    }));
-
-    it("should call isDisplaySelected: ", async(() => {
-        let isDispSelected = debugInstance.isDisplaySelected();
-        expect(isDispSelected).toBe(!Validation.IS_NULL(storageManager.getItem(CmsSessionStorageItem.DISPLAY)));
     }));
 
     it("should initialize search", async(() => {
@@ -122,18 +121,18 @@ describe("Component: CmsDisplaysPanelComponent", () => {
     }));
 
     it("should set searchkey as set to session storage", () => {
-
-        let storageManager = fixture.debugElement.injector.get(StorageManager);
-        let searchBox = fixture.nativeElement.querySelector("#display-list-search-input");
+        // let storageManager = fixture.debugElement.injector.get(StorageManager);
+        const searchBox : any = fixture.nativeElement.querySelector("#display-list-search-input");
         expect(searchBox).toBeTruthy();
 
-        let searchString = "Display Room";
+        const searchString : string = "Display Room";
         searchBox.value = searchString;
         fixture.detectChanges();
         searchBox.dispatchEvent(new Event("keyup"));
 
         fixture.whenStable().then(() => {
-            delay(500).then(() => {
+            const delayTime500 : number = 500;
+            delay(delayTime500).then(() => {
                 expect(debugInstance.searchFilter).toBe(searchString);
                 expect(storageManager.getItem(CmsSessionStorageItem.DISPLAYS_SEARCH_FILTER)).toBe(searchString);
             });
@@ -141,11 +140,11 @@ describe("Component: CmsDisplaysPanelComponent", () => {
     });
 
     it("should have filter button available with ID === display-panel-favorite-button ", () => {
-        let storageManager = fixture.debugElement.injector.get(StorageManager);
-        let favoriteIcon = fixture.nativeElement.querySelector("#display-list-favorite-button");
+        // const sm : any = fixture.debugElement.injector.get(StorageManager);
+        const favoriteIcon: any = fixture.nativeElement.querySelector("#display-list-favorite-button");
         expect(favoriteIcon).toBeTruthy();
 
-        let favState = debugInstance.isFavoriteFilter;
+        const favState : boolean = debugInstance.isFavoriteFilter;
         fixture.detectChanges();
         favoriteIcon.dispatchEvent(new Event("ndClick"));
         fixture.detectChanges();

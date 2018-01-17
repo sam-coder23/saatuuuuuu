@@ -1,111 +1,110 @@
-import { Router, ActivatedRoute, Params } from "@angular/router";
-import { CmsApiService } from "../../../../app/cms/api/cms-api.service";
-import { CmsSettingsService } from "../../../../app/launchpad/settings/cms-settings.service";
-import { CmsHomePanelComponent } from "../../../../app/launchpad/home/cms-home-panel.component";
-import { ComponentFixture, TestBed, async, inject } from "@angular/core/testing";
-import { DebugElement, CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA, ElementRef } from "@angular/core";
-import { HttpModule, Http } from "@angular/http";
-import { TranslateModule, TranslateLoader, TranslateService } from "@ngx-translate/core";
+/**
+ * This class is responsible to handle unit test case of CmsHomePanelComponent
+ */
+import { CUSTOM_ELEMENTS_SCHEMA, DebugElement, ElementRef, NO_ERRORS_SCHEMA } from "@angular/core";
+import { async, ComponentFixture, inject, TestBed } from "@angular/core/testing";
+import { Http, HttpModule } from "@angular/http";
+import { MdMenuModule, OVERLAY_PROVIDERS } from "@angular/material";
+import { ActivatedRoute, Params, Router } from "@angular/router";
+import { TranslateLoader, TranslateModule, TranslateService } from "@ngx-translate/core";
 import { TranslateHttpLoader } from "@ngx-translate/http-loader";
 import { Observable } from "rxjs/Observable";
+
 import { APIRequest } from "../../../../app/cms/api/api-request";
-import { AppConfig } from "../../../../app/config";
+import { CmsApiService } from "../../../../app/cms/api/cms-api.service";
 import { StorageManager } from "../../../../app/cms/api/cms-storagemanager.service";
+import { CMSConstants } from "../../../../app/cms/models/cms-constants";
 import { Display } from "../../../../app/cms/models/cms-display";
 import { Source } from "../../../../app/cms/models/cms-source";
-import { MdMenuModule, OVERLAY_PROVIDERS } from "@angular/material";
+import { AppConfig } from "../../../../app/config";
+import { CmsHomePanelComponent } from "../../../../app/launchpad/home/cms-home-panel.component";
+import { CmsSettingsService } from "../../../../app/launchpad/settings/cms-settings.service";
+import { MockRouter } from "./mock-router-home";
 
-let mockDisplayData: Display = {
-    "favorite": true,
-    "id": 1,
-    "name": "Crisis room wall",
-    "description": "",
-    "snapshotPath": "https://10.98.0.231//mediaconfiguration?action=get&path=images%2Fsnapshots%2Fdisplays%2F1.jpeg",
-    "type": "DisplayWall",
-    "online": false,
-    "resolution": {
-        "width": 1600,
-        "height": 1200
+const mockDisplayData: Display = {
+    favorite: true,
+    id: 1,
+    name: "Crisis room wall",
+    description: "",
+    snapshotPath: "https://10.98.0.231//mediaconfiguration?action=get&path=images%2Fsnapshots%2Fdisplays%2F1.jpeg",
+    type: "DisplayWall",
+    online: false,
+    resolution: {
+        width: 1600,
+        height: 1200
     },
-    "tiles": [
+    tiles: [
         {
-            "left": 0,
-            "top": 0,
-            "width": 1600,
-            "height": 1200,
-            "x": 0,
-            "y": 0
+            left: 0,
+            top: 0,
+            width: 1600,
+            height: 1200,
+            x: 0,
+            y: 0
         }
     ],
-    "content": [
+    content: [
         {
-            "id": 9,
-            "name": "Auto_edited_src11",
-            "type": "Perspective",
-            "description": "",
-            "lastModified": "",
-            "absoluteSize": {
-                "left": 0,
-                "top": 0,
-                "width": 1600,
-                "height": 1200,
-                "x": 0,
-                "y": 0
+            id: 9,
+            name: "Auto_edited_src11",
+            type: "Perspective",
+            description: "",
+            lastModified: "",
+            absoluteSize: {
+                left: 0,
+                top: 0,
+                width: 1600,
+                height: 1200,
+                x: 0,
+                y: 0
             },
-            "disabled": false,
-            "favorite": false,
-            "resourceId": 17,
-            "x": 0,
-            "y": 0,
-            "width": 1600,
-            "height": 1200,
-            "snapshotPath": "https://10.98.0.231//mediaconfiguration?action=get&path=images%2Fsnapshots%2Fperspectives%2F17.jpeg",
-            "zOrder": 1
+            disabled: false,
+            favorite: false,
+            resourceId: 17,
+            x: 0,
+            y: 0,
+            width: 1600,
+            height: 1200,
+            snapshotPath: "https://10.98.0.231//mediaconfiguration?action=get&path=images%2Fsnapshots%2Fperspectives%2F17.jpeg",
+            zOrder: 1
         }
     ],
-    "width": 0,
-    "height": 0,
-    "disabled": false
+    width: 0,
+    height: 0,
+    disabled: false
 };
 
-let mockSelectedSources: Source[] = [{
-    "description": "",
-    "favorite": false,
-    "height": 450,
-    "id": 17,
-    "name": "ECU-100: NOIVUL-ECU01: Analog: Bus-11 : Input-1",
-    "selected": true,
-    "snapshotPath": "",
-    "type": "perspective",
-    "width": 600,
-    "x": 0,
-    "y": 0,
-    "zOrder": 1,
-    "disabled": false
+const mockSelectedSources: Source[] = [{
+    description: "",
+    favorite: false,
+    height: 450,
+    id: 17,
+    name: "ECU-100: NOIVUL-ECU01: Analog: Bus-11 : Input-1",
+    selected: true,
+    snapshotPath: "",
+    type: "perspective",
+    width: 600,
+    x: 0,
+    y: 0,
+    zOrder: 1,
+    disabled: false
 }];
 
-class MockRouter {
-    navigate(string: string) {
-        return string;
-    }
-    navigateByUrl(string: string) {
-        return string;
-    }
-}
-
 class MockCmsApiService {
+    public logout(): Observable<string> {
+        return Observable.of("LOGOUT");
+    }
 
-    logout() { }
-
-    putContentsOnDisplay(displayId: number, tilerId: number, body: any): Observable<any> {
+    public putContentsOnDisplay(displayId: number, tilerId: number, body: any): Observable<any> {
+        // tslint:disable-next-line:no-null-keyword
         if (displayId === null) {
-            return Observable.throw(null);
+            return Observable.throw(CMSConstants.NULL_VALUE);
         } else {
-            return Observable.of(null);
+            return Observable.of(CMSConstants.NULL_VALUE);
         }
     }
 
-    getSelectedDisplayContent(displayId: number): Observable<Display> {
+    public getSelectedDisplayContent(displayId: number): Observable<Display> {
         return Observable.of(mockDisplayData);
     }
 }
@@ -113,19 +112,20 @@ class MockCmsApiService {
 describe("Component: CmsHomePanelComponent", () => {
     let component: CmsHomePanelComponent;
     let fixture: ComponentFixture<CmsHomePanelComponent>;
-    let debugInstance, translateService;
+    let debugInstance: any;
     let cmsApiService: CmsApiService;
     let cmsSettingsService: CmsSettingsService;
     let routerService: Router;
     let spyNavigateRouter: jasmine.Spy;
     let spyNavigateByUrlRouter: jasmine.Spy;
-    let selectedDisplayId: number = 4;
-    let activatedRoute = new ActivatedRoute();
-    activatedRoute.params = Observable.of({
-        displayId: selectedDisplayId
-    });
+    const selectedDisplayId: number = 4;
+    let activatedRoute: ActivatedRoute;
 
     beforeEach(async(() => {
+        activatedRoute = new ActivatedRoute();
+        activatedRoute.params = Observable.of({
+            displayId: selectedDisplayId
+        });
         TestBed.configureTestingModule({
             declarations: [CmsHomePanelComponent],
             providers: [
@@ -154,7 +154,7 @@ describe("Component: CmsHomePanelComponent", () => {
                 TranslateModule.forRoot({
                     loader: {
                         provide: TranslateLoader,
-                        useFactory: (http: Http) => new TranslateHttpLoader(http, "/base/app/i18n/", ".json"),
+                        useFactory: (http: Http): TranslateHttpLoader => new TranslateHttpLoader(http, "/base/app/i18n/", ".json"),
                         deps: [Http]
                     }
                 })
@@ -167,8 +167,8 @@ describe("Component: CmsHomePanelComponent", () => {
             cmsApiService = fixture.debugElement.injector.get(CmsApiService);
             cmsSettingsService = fixture.debugElement.injector.get(CmsSettingsService);
             routerService = fixture.debugElement.injector.get(Router);
-            spyNavigateRouter = spyOn(routerService, "navigate").and.returnValue(Observable.of(null));
-            spyNavigateByUrlRouter = spyOn(routerService, "navigateByUrl").and.returnValue(Observable.of(null));
+            spyNavigateRouter = spyOn(routerService, "navigate");
+            spyNavigateByUrlRouter = spyOn(routerService, "navigateByUrl");
         });
     }));
 
@@ -192,7 +192,7 @@ describe("Component: CmsHomePanelComponent", () => {
             expect(debugInstance.isDisabled).toBeFalsy();
 
             // Store mock data, so that we do not lose our mock data and it can be set again later
-            let displayData = Object.assign([], mockDisplayData.content);
+            const displayData : object = Object.assign([], mockDisplayData.content);
             // Modifying mock data to generate the test condition
             mockDisplayData.content.length = 0;
             debugInstance.ngOnInit();
@@ -203,7 +203,7 @@ describe("Component: CmsHomePanelComponent", () => {
     }));
 
     it("should be able to clear Mini Display", async(() => {
-        let spyNavigateToLogin: jasmine.Spy = spyOn(debugInstance, "navigateToLogin").and.returnValue(Observable.of(null));
+        const spyNavigateToLogin: jasmine.Spy = spyOn(debugInstance, "navigateToLogin");
         cmsSettingsService.selectedSources = Object.assign([], mockSelectedSources);
         debugInstance.clearMiniDisplayWall();
         expect(cmsSettingsService.selectedSources.length).toEqual(0);
@@ -213,7 +213,7 @@ describe("Component: CmsHomePanelComponent", () => {
 
     it("should throw error while invoking putContentsOnDisplay API", async(() => {
         cmsSettingsService.selectedSources = Object.assign([], mockSelectedSources);
-        debugInstance.displayId = null;
+        debugInstance.displayId = CMSConstants.NULL_VALUE;
         debugInstance.clearMiniDisplayWall();
         expect(cmsSettingsService.selectedSources.length).not.toEqual(0);
         expect(debugInstance.showClearWallPopup).toEqual(false);
@@ -254,7 +254,7 @@ describe("Component: CmsHomePanelComponent", () => {
     }));
 
     it("should directly log off if no source is selected", async(() => {
-        let spyNavigateToLogin: jasmine.Spy = spyOn(debugInstance, "navigateToLogin").and.returnValue(Observable.of(null));
+        const spyNavigateToLogin: jasmine.Spy = spyOn(debugInstance, "navigateToLogin");
         debugInstance.selectedSourcesLength = 0;
         debugInstance.userLogoff();
         expect(debugInstance.showClearWallPopup).toBeFalsy();
@@ -262,7 +262,7 @@ describe("Component: CmsHomePanelComponent", () => {
     }));
 
     it("should hide clearWall popup and navigate to login page when cancel button is clicked in clearWall popup", async(() => {
-        let spyNavigateToLogin: jasmine.Spy = spyOn(debugInstance, "navigateToLogin").and.returnValue(Observable.of(null));
+        const spyNavigateToLogin: jasmine.Spy = spyOn(debugInstance, "navigateToLogin");
         debugInstance.showClearWallPopup = true;
         debugInstance.cancelClearWallPopup();
         expect(debugInstance.showClearWallPopup).toBeFalsy();
@@ -276,7 +276,7 @@ describe("Component: CmsHomePanelComponent", () => {
     }));
 
     it("should navigate to login page", async(() => {
-        let spyNavigateToLogin: jasmine.Spy = spyOn(cmsApiService, "logout").and.returnValue(Observable.of(null));
+        const spyNavigateToLogin: jasmine.Spy = spyOn(cmsApiService, "logout").and.returnValue(Observable.of(""));
         debugInstance.navigateToLogin();
         expect(spyNavigateToLogin.calls.count()).toEqual(1);
     }));

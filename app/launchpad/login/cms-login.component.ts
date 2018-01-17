@@ -12,6 +12,7 @@ import { TranslateService } from "@ngx-translate/core";
 
 import { CmsApiService } from "../../cms/api/cms-api.service";
 import { StorageManager } from "../../cms/api/cms-storagemanager.service";
+import { CMSConstants } from "../../cms/models/cms-constants";
 import { CmsSessionStorageItem } from "../../cms/models/cms-session-storage-item";
 import { AppConfig } from "../../config";
 import { CmsSettingsService } from "../settings/cms-settings.service";
@@ -174,15 +175,15 @@ export class CmsLoginComponent implements OnInit, OnDestroy {
 
         let messageKey: string = "";
 
-        if (errorStatus === errorCode.licenseError) {
+        if (errorStatus === CMSConstants.ERRORCODE.LICENSE_ERROR) {
             messageKey = "login.licenceError";
-        } else if (errorStatus === errorCode.serverError) {
+        } else if (errorStatus === CMSConstants.ERRORCODE.SERVER_ERROR) {
             messageKey = "login.serverNotReadyError";
-        } else if (errorStatus === errorCode.settingsError) {
+        } else if (errorStatus === CMSConstants.ERRORCODE.SETTING_ERROR) {
             messageKey = "login.settingsReadyError";
-        } else if (errorStatus === errorCode.userDisabled) {
+        } else if (errorStatus === CMSConstants.ERRORCODE.USER_DISABLED) {
             messageKey = "login.userDisabledError";
-        } else if (errorStatus === errorCode.serverUnavailable || errorStatus === errorCode.notFound) {
+        } else if (errorStatus === CMSConstants.ERRORCODE.SERVER_UNAVAILABLE || errorStatus === CMSConstants.ERRORCODE.NOT_FOUND) {
             messageKey = "login.serverUnavailableError";
         } else {
             messageKey = "login.error";

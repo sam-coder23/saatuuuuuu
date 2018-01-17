@@ -1,61 +1,63 @@
-import { ComponentFixture, TestBed, async, fakeAsync, tick } from "@angular/core/testing";
-import { DebugElement, CUSTOM_ELEMENTS_SCHEMA, Injector } from "@angular/core";
-import { ActivatedRoute, Router, RouterModule, Params } from "@angular/router";
-import { Observable } from "rxjs/Observable";
-import { HttpModule, Http } from "@angular/http";
-import { TranslateModule, TranslateLoader, TranslateService } from "@ngx-translate/core";
-import { TranslateHttpLoader } from "@ngx-translate/http-loader";
-import { MockRouterStub } from "../../core/mock-stubs/mock-router.stub";
-import { MockLogger } from "../../core/mock-stubs/logger.mock";
-import { MockCmsSettingsServiceStub } from "../../core/mock-stubs/cms-settings-service.stub";
-import { Subscriber } from "rxjs";
-import { CmsDisplayPanelComponent } from "../../../../app/launchpad/display-panel/cms-display-panel.component";
-import { AppConfig } from "../../../../app/config";
-import { StorageManager } from "../../../../app/cms/api/cms-storagemanager.service";
-import { CmsSettingsService } from "../../../../app/launchpad/settings/cms-settings.service";
-import { CmsApiService } from "../../../../app/cms/api/cms-api.service";
-import { CmsSessionStorageItem } from "../../../../app/cms/models/cms-session-storage-item";
-import { CmsResource } from "../../../../app/cms/models/cms-resource";
+/**
+ * This class is responsible to handle unit test case of CmsDisplayPanelComponent
+ */
+import { CUSTOM_ELEMENTS_SCHEMA, DebugElement, Injector } from "@angular/core";
+import { async, ComponentFixture, fakeAsync, TestBed, tick } from "@angular/core/testing";
+import { Http, HttpModule } from "@angular/http";
 import { By } from "@angular/platform-browser";
+import { ActivatedRoute, Params, RouterModule } from "@angular/router";
+import { TranslateLoader, TranslateModule, TranslateService } from "@ngx-translate/core";
+import { TranslateHttpLoader } from "@ngx-translate/http-loader";
+import { Observable } from "rxjs/Observable";
 import { Subject } from "rxjs/Subject";
+
+import { StorageManager } from "../../../../app/cms/api/cms-storagemanager.service";
+import { CmsResource } from "../../../../app/cms/models/cms-resource";
+import { CmsSessionStorageItem } from "../../../../app/cms/models/cms-session-storage-item";
+import { AppConfig } from "../../../../app/config";
+import { CmsDisplayPanelComponent } from "../../../../app/launchpad/display-panel/cms-display-panel.component";
+import { MockCmsSettingsServiceStub } from "../../core/mock-stubs/cms-settings-service.stub";
+import { MockLogger } from "../../core/mock-stubs/logger.mock";
 
 // Fake CmsApiService Service with the below stub
 class MockCmsApiServiceStub {
-    putContentsOnDisplay(displayId: number, tilerId: number, body: any) {
-
+    public putContentsOnDisplay(displayId: number, tilerId: number, body: any): Observable<any> {
         if (isNaN(displayId)) {
             return Observable.throw("Invalid displayId");
         } else {
-            return Observable.of(null);
+            return Observable.of(undefined);
         }
     }
 
-    logoutUser() {
-        return Observable.of(null);
+    public logout(): Observable<Response>   {
+        return Observable.of(undefined);
     }
-};
+}
 
 describe("CmsDisplayPanelComponent - Test Suite", () => {
     let component: CmsDisplayPanelComponent;
     let fixture: ComponentFixture<CmsDisplayPanelComponent>;
-    let debugInstance, nativeElement;
+    let debugInstance: any;
+    let nativeElement : any;
     let injector: Injector;
-    let activatedRoute = new ActivatedRoute();
-    let display = {
+    let activatedRoute : ActivatedRoute;
+    const display : any = {
         name: "My display",
         id: 1
     };
-    let mockSettings = new MockCmsSettingsServiceStub();
+    let mockSettings: MockCmsSettingsServiceStub;
     let params: Subject<Params>;
 
     beforeEach(async(() => {
         params = new Subject<Params>();
+        mockSettings = new MockCmsSettingsServiceStub();
+        activatedRoute = new ActivatedRoute();
         TestBed.configureTestingModule({
             declarations: [CmsDisplayPanelComponent],
             providers: [
                 {
                     provide: ActivatedRoute,
-                    useValue: { params: params }
+                    useValue: { params }
                 },
                 StorageManager,
                 {
@@ -68,7 +70,7 @@ describe("CmsDisplayPanelComponent - Test Suite", () => {
                 TranslateModule.forRoot({
                     loader: {
                         provide: TranslateLoader,
-                        useFactory: (http: Http) => new TranslateHttpLoader(http, "/base/app/i18n/", ".json"),
+                        useFactory: (http: Http): TranslateHttpLoader => new TranslateHttpLoader(http, "/base/app/i18n/", ".json"),
                         deps: [Http]
                     }
                 }),
@@ -86,7 +88,7 @@ describe("CmsDisplayPanelComponent - Test Suite", () => {
                 id: 1
             });
 
-            let translate: TranslateService = injector.get(TranslateService);
+            const translate: TranslateService = injector.get(TranslateService);
             translate.use("en");
 
             setDisplay();
@@ -99,11 +101,10 @@ describe("CmsDisplayPanelComponent - Test Suite", () => {
 
     it("Component should be instantiated", () => {
         expect(component instanceof CmsDisplayPanelComponent).toBeTruthy();
-
-        expect(debugInstance.zoomLevel).toEqual(100);
+        const zoomLevel: number = 100;
+        expect(debugInstance.zoomLevel).toEqual(zoomLevel);
         expect(debugInstance.fitHeightCount).toEqual(0);
     });
-
 
     it("should load a saved display", () => {
         // Display should be successfully loaded from the storage manager
@@ -120,12 +121,15 @@ describe("CmsDisplayPanelComponent - Test Suite", () => {
         setDisplay();
 
         fixture.detectChanges();
-        params.next({ "id": 1 });
+        params.next({ id: 1 });
         tick();
+        let id : number;
+        activatedRoute.params.subscribe((value: any) => {
+            id = value.id;
+            expect(debugInstance.displayId).toEqual(id);
+        });
 
-        expect(debugInstance.displayId).toEqual(activatedRoute.params["value"]["id"]);
-
-        let spyLoadDisplay = spyOn(debugInstance, "loadDisplay").and.returnValue(null);
+        const spyLoadDisplay : jasmine.Spy = spyOn(debugInstance, "loadDisplay");
         component.ngOnInit();
 
         expect(spyLoadDisplay.calls.count()).toEqual(1);
@@ -136,19 +140,19 @@ describe("CmsDisplayPanelComponent - Test Suite", () => {
         debugInstance.fitHeight();
         expect(debugInstance.fitHeightCount).toEqual(1);
         debugInstance.fitHeight();
-        expect(debugInstance.fitHeightCount).toEqual(2);
+        const fitHeightCount: number = 2;
+        expect(debugInstance.fitHeightCount).toEqual(fitHeightCount);
     });
 
     it("should have back button and onclick should navigate back", () => {
-        let buttonBack = fixture.debugElement.query(By.css("#display-panel-back-button"));
+        const buttonBack : any = fixture.debugElement.query(By.css("#display-panel-back-button"));
         expect(buttonBack instanceof DebugElement).toBeTruthy();
 
-        let spyNavigateBack = spyOn(window.history, "back").and.returnValue(null);
+        const spyNavigateBack : jasmine.Spy = spyOn(window.history, "back");
         buttonBack.nativeElement.dispatchEvent(new Event("ndClick"));
 
         expect(spyNavigateBack.calls.count()).toEqual(1);
     });
-
 
     it("should give display null if no display in session storage", () => {
         removeDisplay();
@@ -157,11 +161,11 @@ describe("CmsDisplayPanelComponent - Test Suite", () => {
         expect(debugInstance.display).toBeUndefined();
     });
 
-    function removeDisplay() {
+    const removeDisplay: any = (): void => {
         window.sessionStorage.removeItem(CmsSessionStorageItem.DISPLAY);
-    }
+    };
 
-    function setDisplay() {
+    const setDisplay: any = (): void => {
         window.sessionStorage.setItem(CmsSessionStorageItem.DISPLAY, JSON.stringify(display));
-    }
+    };
 });
