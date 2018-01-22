@@ -7,6 +7,7 @@
     "start": "npm run server:dev",
     "build:production": "webpack -p --config ./build/configuration/webpack.production.js",
     "test": "karma start ./build/configuration/karma.config.js",
+    "test:headless": "karma start ./build/configuration/karma.config.js --browsers ChromeHeadless",
     "lint": "tslint app/**/*.ts",
     "sonar:publish": "node ./build/analysis/sonar/scanner.js"
   },

@@ -20,13 +20,20 @@ module.exports = function (config) {
     reporters: [
       "progress",
       "karma-typescript",
-      "html"
+      "html",
+      "coverage"
     ],
     htmlReporter: {
       outputDir: "build/reports",
       reportName: "karma-test-report",
       preserveDescribeNesting: false,
       foldAll: false,
+    },
+    coverageReporter: {
+      type: "lcov",
+      dir: "build",
+      subdir: "coverage",
+      file: "lcov.info"
     },
     preprocessors: {
       '**/*.ts': [
@@ -84,13 +91,6 @@ module.exports = function (config) {
         instrumentation: true,
         exclude: [/\.(spec|mock|stub).ts$/i, /deps.ts/, /main.ts/, /base.ts/]
       },
-      reports: {
-        lcovonly: {
-          "directory": "build",
-          "subdirectory": "coverage",
-          "filename": "lcov.info",
-        }
-      },
       remapOptions: {
         warn: function (message) {
           console.warn(message);
@@ -102,6 +102,7 @@ module.exports = function (config) {
           extensions: [".js", ".json"],
           directories: ["node_modules"]
         },
+        sourceMap: false,
         transforms: [
           require('karma-typescript-es6-transform')({
             presets: ['es2015', 'stage-0'],

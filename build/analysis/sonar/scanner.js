@@ -12,7 +12,7 @@ const configuration = {
   serverUrl: "http://sonar-noi.barco.com:9000/",
   options: {
     "sonar.projectName": "collaboration-wall-manager",
-    "sonar.projectVersion": "1.0.1",
+    "sonar.projectVersion": "1.0.0",
     "sonar.sources": "app",
     "sonar.tests": "test",
     "sonar.typescript.lcov.reportPaths": "build/coverage/lcov.info"
