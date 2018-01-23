@@ -37,7 +37,8 @@ import { CmsTileListComponent } from "./tile-list/cms-tile-list.component";
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,
-        useFactory: (http: Http): TranslateHttpLoader => new TranslateHttpLoader(http, "./i18n/", ".json"),
+        useFactory: (http: Http): TranslateHttpLoader => new TranslateHttpLoader(http, "./i18n/",
+          `.json?${new Date().toLocaleDateString().replace(/\//g, "")}`),
         deps: [Http]
       }
     })

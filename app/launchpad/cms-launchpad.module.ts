@@ -42,7 +42,8 @@ import { CmsTilesPanelComponent } from "./tiles-panel/cms-tiles-panel.component"
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,
-        useFactory: (http: Http): TranslateHttpLoader => new TranslateHttpLoader(http, "./i18n/", ".json"),
+        useFactory: (http: Http): TranslateHttpLoader => new TranslateHttpLoader(http, "./i18n/",
+          `.json?${new Date().toLocaleDateString().replace(/\//g, "")}`),
         deps: [Http]
       }
     })
