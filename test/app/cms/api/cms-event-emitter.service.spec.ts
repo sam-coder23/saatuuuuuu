@@ -3,6 +3,16 @@ import { CmsEventEmitterService } from "../../../../app/cms/api/cms-event-emitte
 import { CMS_EVENTS } from "../../../../app/cms/api/cms-events.enum";
 
 describe("Service: cms-event-emitter", () => {
+    beforeEach(() => {
+        /**
+         * Clearing emitter for running dry test cases
+         */
+        if (CmsEventEmitterService && (<any>CmsEventEmitterService).emitters) {
+            for (let emitter in (<any>CmsEventEmitterService).emitters) {
+                delete (<any>CmsEventEmitterService).emitters[emitter];
+            }
+        }
+    });
 
     it("Registered for MiniDisplay events", () => {
         CmsEventEmitterService.REGISTER(CMS_EVENTS.MiniDisplay);
@@ -15,6 +25,6 @@ describe("Service: cms-event-emitter", () => {
     });
 
     it("Not registered for Display events", () => {
-        expect((<any>CmsEventEmitterService).emitters[1]).toBeFalsy();
+        expect((<any>CmsEventEmitterService).emitters[1]).toBeUndefined();
     });
 });

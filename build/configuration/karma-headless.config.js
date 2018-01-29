@@ -1,4 +1,3 @@
-
 module.exports = function (config) {
   config.set({
     basePath: "../..",
@@ -12,11 +11,7 @@ module.exports = function (config) {
       "/home/resources/": "/base/app/resources/",
       "/home/icon_barco.png": "/base/app/icon_barco.png",
       "/display_snapshot.jpg": "/base/app/resources/images/display_snapshot.jpg",
-      "/home/display_snapshot.jpg": "/base/app/resources/images/display_snapshot.jpg",
-      "/display-panel/favicon.ico": "/base/app/icon_barco.png",
-      "/displays/1/favicon.ico": "/base/app/icon_barco.png",
-      "/settings/language/favicon.ico": "/base/app/icon_barco.png",
-      "/home/favicon.ico": "/base/app/icon_barco.png"
+      "/home/display_snapshot.jpg": "/base/app/resources/images/display_snapshot.jpg"
     },
     frameworks: [
       'jasmine',
@@ -25,7 +20,8 @@ module.exports = function (config) {
     reporters: [
       "progress",
       "karma-typescript",
-      "html"
+      "html",
+      "coverage"
     ],
     htmlReporter: {
       outputDir: "build/reports",
@@ -33,9 +29,15 @@ module.exports = function (config) {
       preserveDescribeNesting: false,
       foldAll: false,
     },
+    coverageReporter: {
+      type: "lcov",
+      dir: "build",
+      subdir: "coverage",
+      file: "lcov.info"
+    },
     preprocessors: {
       '**/*.ts': [
-        'karma-typescript'
+        'karma-typescript', "coverage"
       ]
       , 'app/*.*scss': ['scss']
       , 'app/**/*.*scss': ['scss']
@@ -94,19 +96,13 @@ module.exports = function (config) {
           console.warn(message);
         }
       },
-      reports: {
-        "html": {
-          "directory": "build/reports",
-          "subdirectory": "coverage-report",
-          "filename": "coverage"
-        }
-      },
       bundlerOptions: {
         entrypoints: /base\.ts|\.spec\.ts$/,
         resolve: {
           extensions: [".js", ".json"],
           directories: ["node_modules"]
         },
+        sourceMap: false,
         transforms: [
           require('karma-typescript-es6-transform')({
             presets: ['es2015', 'stage-0'],
@@ -138,6 +134,11 @@ module.exports = function (config) {
     logLevel: config.LOG_INFO,
     browsers: [
       'Chrome'
-    ]
+    ],
+    /**
+     * @TARJU - Discuss
+     * You would never turn this off and commit
+     */
+    singleRun: true
   });
 };

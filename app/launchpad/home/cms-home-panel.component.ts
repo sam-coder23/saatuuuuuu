@@ -127,7 +127,7 @@ export class CmsHomePanelComponent implements OnInit {
                 this.navigateToLogin();
             },
             (error: any) => {
-                console.error(error);
+                this.appConfig.log("ERROR: home panel", error);
             });
     }
 

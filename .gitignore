@@ -5,4 +5,6 @@ node_modules/**
 test-report/**
 build/dist/**
 build/reports/**
+coverage/**
+build/coverage/**
 npm-debug.log
