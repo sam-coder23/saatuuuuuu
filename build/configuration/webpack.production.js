@@ -78,7 +78,7 @@ module.exports = {
     }),
     new CopyWebpackPlugin([
       {
-        context: ".",
+        context: "./build/jboss",
         from: "WEB-INF/*.xml"
       },
 	    {
