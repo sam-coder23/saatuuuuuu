@@ -9,6 +9,7 @@ import { ISize } from "../../../../app/cms/models/cms-size";
 import { Tile } from "../../../../app/cms/models/cms-tile";
 import { TileContent } from "../../../../app/cms/models/cms-tile-content";
 
+// tslint:disable:max-classes-per-file
 const subscribeDelay: number = 500;
 class MockDisplay extends CmsResource {
     // tslint:disable-next-line:no-reserved-keywords

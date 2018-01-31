@@ -16,6 +16,7 @@ import { AppConfig } from "../../../../app/config";
 import { CmsCardComponent } from "../../../../app/shared/card/cms-card.component";
 import { CmsFavoriteService } from "../../../../app/shared/cms-favorite.service";
 
+// tslint:disable:max-classes-per-file
 const mockDisplay: Display = {
     id: 2,
     name: "Crisis room wall",

@@ -21,6 +21,7 @@ import { CmsSourceListComponent } from "../../../../app/shared/source-list/cms-s
 import { mockDisplay, sources } from "../../core/mock-stubs/cms-sourcelist.mock";
 
 // tslint:disable:no-magic-numbers
+// tslint:disable:max-classes-per-file
 
 class MockCmsVirtualScrollService {
     public loading: boolean = true;

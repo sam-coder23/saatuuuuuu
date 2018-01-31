@@ -17,6 +17,7 @@ class MockRouterStub {
     }
 }
 
+// tslint:disable-next-line:max-classes-per-file
 class MockAppConfigStub {
     public serverURL: string = "https://0.0.0.0/cms-rest/v1";
 
@@ -80,7 +81,6 @@ describe("Service: APIRequest", () => {
     });
 
     it("Should return specific url as per request - GetURL()", () => {
-        debugger;
         const loginUrl: string = "login";
         const snapshotUrl: string = "display_snapshot.jpg";
         const resourceRequestUrl: string = "displays/11/resources?start=1&count=20&filter=&onlyfavorite=false";

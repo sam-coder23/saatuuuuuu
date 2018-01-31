@@ -12,6 +12,7 @@ import { AppConfig } from "../../../app/config";
 import { CmsFavoriteService } from "../../../app/shared/cms-favorite.service";
 import { mockDisplays } from "./../core/mock-stubs/tile.mock";
 
+// tslint:disable:max-classes-per-file
 describe("Service: CmsFavoriteService", () => {
     const displays: Display[] = mockDisplays;
     const sources: any[] = [

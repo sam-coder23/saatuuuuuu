@@ -24,6 +24,7 @@ import { MockRouterStub } from "../../core/mock-stubs/mock-router.stub";
 import { mocksUerProfileSettingsData } from "./../../core/mock-stubs/api-service.mock";
 
 // tslint:disable:no-magic-numbers
+// tslint:disable:max-classes-per-file
 let displays: MockDisplay[] = [
     {
         id: 1,

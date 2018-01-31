@@ -19,6 +19,7 @@ import { tilePresets } from "./../../core/mock-stubs/tile-grid.mock";
 import { mockDisplays } from "./../../core/mock-stubs/tile.mock";
 
 // tslint:disable:no-magic-numbers
+// tslint:disable:max-classes-per-file
 class MockCmsApiService {
     public getTilePresets(tilesCount: number = 0): Observable<ITilePreset[]> {
         if (tilesCount === 0) {

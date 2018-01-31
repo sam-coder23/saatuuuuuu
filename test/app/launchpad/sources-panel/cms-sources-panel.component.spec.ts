@@ -43,6 +43,7 @@ class MockSourceListComponent {
         return undefined;
     }
 }
+// tslint:disable:max-classes-per-file
 class MockCmsSettingService {
     public selectedSources: any[] = [
         {

@@ -13,5 +13,8 @@
   "editor.formatOnType": true,
   "editor.formatOnPaste": true,
   "editor.autoIndent": true,
-  "editor.showFoldingControls": "always"
+  "editor.showFoldingControls": "always",
+  "tslint.exclude": [
+    "**/test/app/cms/api/cms-event-emitter.service.spec.ts"
+  ]
 }
