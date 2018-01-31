@@ -1,9 +1,13 @@
-import { TestBed } from '@angular/core/testing';
+/**
+ * Test specification for KeyManager utility.
+ */
+import { TestBed } from "@angular/core/testing";
 import { GenericCollection } from "./../../../app/core/type/extended/GenericCollection";
 import { KeyManager } from "./../../../app/utils/key-manager.util";
 
 describe("Key-Manager", () => {
   let keyManager: KeyManager;
+  const escapeKey: number = 27;
 
   beforeEach(() => {
     keyManager = new KeyManager();
@@ -18,11 +22,11 @@ describe("Key-Manager", () => {
   });
 
   it("should check for keyCode in the collection", () => {
-    expect(keyManager.keyCode("Escape")).toEqual(27);
+    expect(keyManager.keyCode("Escape")).toEqual(escapeKey);
   });
 
   it("should check for ESC key press by user or not", () => {
-    let keyboardEvent: KeyboardEvent = new KeyboardEvent("keypress");
+    const keyboardEvent: KeyboardEvent = new KeyboardEvent("keypress");
     Object.defineProperty(keyboardEvent, "which", { value: 27 });
     expect(keyManager.isEscapeKey(keyboardEvent)).toBeTruthy();
   });

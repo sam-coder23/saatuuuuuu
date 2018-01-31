@@ -13,7 +13,7 @@ body{
 }
 
 cms-launchpad{
-    
+
     input:-webkit-autofill {
         box-shadow: 0 0 0px 1000px $white inset;
         -webkit-box-shadow: 0 0 0px 1000px $white inset;
@@ -21,7 +21,7 @@ cms-launchpad{
     }
 
     // HTML LAYOUTS (used since angular material2 layouts are not yet available)
-    
+
     .layout-row{
         display: -webkit-flex;
         display: flex;
@@ -67,7 +67,7 @@ cms-launchpad{
         font-size: 16px !important;
         .popup-header {
             height: 25px !important;
-            
+
             button {
                 padding: 0;
                 min-width: 0;
@@ -81,7 +81,7 @@ cms-launchpad{
             justify-content: space-evenly !important;
         }
     }
-    
+
    .action-button-clear{
         color: rgb(0, 0, 0) !important;
         background-color: $grey_300 !important;
@@ -101,21 +101,13 @@ cms-launchpad{
         background-color:$grey_300 !important;
     }
 
-    .disabled {
-        opacity: 0.3;
-        cursor: no-drop !important; 
-        box-shadow: 0px 0px 0px transparent; 
-    }
-    .disabled:hover{
-        box-shadow: 0px 0px 0px transparent;
-        .card-title{
-            color: #333333;
-        } 
-        .material-icons{
-            color: #333333;
-        } 
-    }
-    .disabled * {
-        cursor: no-drop !important;       
-    }
+}
+
+md-card.disabled {
+    background-color: $grey_200 !important;
+    cursor: no-drop !important;
+}
+
+md-card.disabled * {
+    cursor: no-drop !important;
 }

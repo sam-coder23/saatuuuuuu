@@ -38,7 +38,8 @@ describe("CmsDisplayPanelComponent - Test Suite", () => {
     let component: CmsDisplayPanelComponent;
     let fixture: ComponentFixture<CmsDisplayPanelComponent>;
     let debugInstance: any;
-    let nativeElement : any;
+    let nativeElement: any;
+    let storagemanager: StorageManager;
     let injector: Injector;
     let activatedRoute : ActivatedRoute;
     const display : any = {
@@ -89,6 +90,7 @@ describe("CmsDisplayPanelComponent - Test Suite", () => {
             });
 
             const translate: TranslateService = injector.get(TranslateService);
+            storagemanager = injector.get(StorageManager);
             translate.use("en");
 
             setDisplay();
@@ -162,10 +164,10 @@ describe("CmsDisplayPanelComponent - Test Suite", () => {
     });
 
     const removeDisplay: any = (): void => {
-        window.sessionStorage.removeItem(CmsSessionStorageItem.DISPLAY);
+        storagemanager.removeItem(CmsSessionStorageItem.DISPLAY);
     };
 
     const setDisplay: any = (): void => {
-        window.sessionStorage.setItem(CmsSessionStorageItem.DISPLAY, JSON.stringify(display));
+        storagemanager.setItem(CmsSessionStorageItem.DISPLAY, JSON.stringify(display));
     };
 });

@@ -41,8 +41,8 @@ class MockServerApi {
     }
 
     public getUserProfileSettings(): Promise<any> {
-        return new Promise((resolve, reject) => {
-            resolve(null);
+        return new Promise((resolve: Function, reject: Function): void => {
+            resolve(undefined);
         });
     }
 

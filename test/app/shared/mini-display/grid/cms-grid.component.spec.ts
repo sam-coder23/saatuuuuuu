@@ -1,179 +1,68 @@
-import { Tile } from "./../../../../../app/cms/models/cms-tile";
-import { ComponentFixture, TestBed, async, inject } from "@angular/core/testing";
-import { By } from "@angular/platform-browser";
-import { DebugElement, CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA, ElementRef, style } from "@angular/core";
-import { HttpModule, Http } from "@angular/http";
-import { TranslateModule, TranslateLoader } from "@ngx-translate/core";
-import { TranslateHttpLoader } from "@ngx-translate/http-loader";
+/**
+ * Test Specification for CMS Grid component.
+ */
+import { CUSTOM_ELEMENTS_SCHEMA, ElementRef, NO_ERRORS_SCHEMA } from "@angular/core";
+import { async, ComponentFixture, inject, TestBed } from "@angular/core/testing";
+import { Http, HttpModule } from "@angular/http";
 import { Router } from "@angular/router";
-import { Subject } from "rxjs/Subject";
+import { TranslateLoader, TranslateModule } from "@ngx-translate/core";
+import { TranslateHttpLoader } from "@ngx-translate/http-loader";
 import { Observable } from "rxjs/Observable";
-import { TileContent } from "../../../../../app/cms/models/cms-tile-content";
-import { IUserProfileSettings } from "../../../../../app/cms/models/cms-user-profile-settings";
-import { Validation } from "../../../../../app/core/util/Validation";
-import { CmsGridComponent } from "../../../../../app/shared/mini-display/grid/cms-grid.component";
-import { CmsSettingsService } from "../../../../../app/launchpad/settings/cms-settings.service";
-import { CmsApiService } from "../../../../../app/cms/api/cms-api.service";
-import { AppConfig } from "../../../../../app/config";
-import { CmsMiniDisplayService } from "../../../../../app/shared/mini-display/cms-mini-display.service";
+
 import { APIRequest } from "../../../../../app/cms/api/api-request";
+import { CmsApiService } from "../../../../../app/cms/api/cms-api.service";
 import { StorageManager } from "../../../../../app/cms/api/cms-storagemanager.service";
+import { IUserProfileSettings } from "../../../../../app/cms/models/cms-user-profile-settings";
+import { AppConfig } from "../../../../../app/config";
+import { Validation } from "../../../../../app/core/util/Validation";
+import { CmsSettingsService } from "../../../../../app/launchpad/settings/cms-settings.service";
+import { CmsMiniDisplayService } from "../../../../../app/shared/mini-display/cms-mini-display.service";
+import { CmsGridComponent } from "../../../../../app/shared/mini-display/grid/cms-grid.component";
+import { contents, miniTiles, swappedGeometeryContent, userSettings } from "../../../core/mock-stubs/cms-grid.mock";
 import { MockCmsSettingsServiceStub } from "../../../core/mock-stubs/cms-settings-service.stub";
 
-let contents: TileContent[] = [
-    {
-        absoluteSize: {
-            height: 2280,
-            left: 0,
-            top: 0,
-            width: 3840,
-            x: 0,
-            y: 600
-        },
-        height: 49.01234567901235,
-        id: 160,
-        lastModified: "1507553259660",
-        name: "DefaultProSource[NOICLT28523]",
-        resourceId: 21,
-        snapshotPath: "http://0.0.0.0/display_snapshot.jpg?",
-        type: "Perspective",
-        width: 49.382716049382715,
-        x: 0.30864197530864196,
-        y: 50.49382716049383,
-        zOrder: 3,
-        description: "",
-        disabled: false,
-        favorite: false
-    },
-    {
-        absoluteSize: {
-            height: 2280,
-            left: 3840,
-            top: 0,
-            width: 3840,
-            x: 3840,
-            y: 0
-        },
-        height: 49.01234567901235,
-        id: 170,
-        lastModified: "1507553259660",
-        name: "DefaultProSource[NOICLT28523]",
-        resourceId: 21,
-        snapshotPath: "http://0.0.0.0/display_snapshot.jpg?",
-        type: "Perspective",
-        width: 49.382716049382715,
-        x: 0.30864197530864196,
-        y: 50.49382716049383,
-        zOrder: 4,
-        description: "",
-        disabled: false,
-        favorite: false
-    }
-];
-
-let miniTiles: any[] = [
-    {
-        height: 49.01234567901235,
-        left: 0.30864197530864196,
-        top: 50.49382716049383,
-        width: 49.382716049382715,
-        x: 0.30864197530864196,
-        y: 50.49382716049383,
-        snapshotPath: "http://0.0.0.0/display_snapshot.jpg?",
-        lastModified: "1507553259660"
-    }
-]
-
-let swappedGeometeryContent: any[] = [{
-    id: 160,
-    name: "DefaultProSource[NOICLT28523]",
-    type: "Perspective",
-    resourceId: 21,
-    snapshotPath: "http://0.0.0.0/display_snapshot.jpg?",
-    zOrder: 3,
-    height: 2280,
-    width: 3840,
-    x: 3840,
-    y: 0,
-    lastModified: "1507553259660"
-},
-{
-    id: 170,
-    name: "DefaultProSource[NOICLT28523]",
-    type: "Perspective",
-    resourceId: 21,
-    snapshotPath: "http://0.0.0.0/display_snapshot.jpg?",
-    zOrder: 4,
-    height: 2280,
-    width: 3840,
-    x: 0,
-    y: 0,
-    lastModified: "1507553259660"
-}];
-
-let spyContentClickHandler: jasmine.Spy;
-let updateContentGeormetryOnDisplay: jasmine.Spy;
-
-let userSettings: IUserProfileSettings = {
-    "language": "en",
-    "wallConnection": {
-        "startUpAction": "show-available-walls-list",
-        "specificDisplay": "Board Meeting Room",
-        "recentDisplay": "Board Meeting Room"
-    },
-    "sourceLabel": {
-        "displaySourceNameLabels": true,
-        "useMultipleLines": false,
-        "fontColor": "#FFFFFF",
-        "fontSize": 14,
-        "backgroundColor": "#BDBDBD",
-        "transparency": 50
-    },
-    "logOffTime": 0,
-    "pageSize": 50
-};
-
-let mockSettings = new MockCmsSettingsServiceStub();
-mockSettings.userSettings = userSettings;
 export class MockElementRef extends ElementRef { }
 
 class RouterStub {
-    navigateByUrl(url: string) { return url; }
+    public navigateByUrl(url: string): string {
+        return url;
+    }
 }
 
 class MockCmsApiService {
-    unloadContentFromDisplay(displayId: number, contentId: number): Observable<any> {
-        return Observable.of(null);
+    public unloadContentFromDisplay(displayId: number, contentId: number): Observable<any> {
+        return Observable.of(undefined);
     }
 
-    getUserProfileSettings(): Promise<IUserProfileSettings> {
+    public getUserProfileSettings(): Promise<IUserProfileSettings> {
         return Promise.resolve(userSettings);
     }
 
-    updateContentGeormetryOnDisplay(displayId: number, contentId: number, body: any) {
+    public updateContentGeormetryOnDisplay(displayId: number, contentId: number, body: any): Observable<any> {
         if (displayId > 0 && contentId > 0 && !Validation.IS_NULL_OR_UNDEFINED(body)) {
-            return Observable.of(null);
+            return Observable.of(undefined);
         } else {
             return Observable.throw("Invalid input for the API call");
         }
     }
 }
 class MockCmsMiniDisplayService {
-    display = {
+    public display: any = {
         id: 3
-    }
-    panend: boolean = false;
+    };
+    public panend: boolean = false;
 }
+
+// tslint:disable-next-line:mocha-no-side-effect-code
+const mockSettings: any = new MockCmsSettingsServiceStub();
+mockSettings.userSettings = userSettings;
 
 describe("CmsGridComponent", () => {
     let component: CmsGridComponent;
     let fixture: ComponentFixture<CmsGridComponent>;
-    let debugInstance, nativeElement;
-    let cmsSettingsService: CmsSettingsService;
-    let element: ElementRef;
-    let cmsApiService: CmsApiService;
-    let appConfig: AppConfig;
-    let cmsMiniDisplayService: CmsMiniDisplayService;
+    let debugInstance: any;
+    let nativeElement: HTMLElement;
+    let updateContentGeormetryOnDisplay: jasmine.Spy;
 
     beforeEach(async(() => {
         TestBed.configureTestingModule({
@@ -193,7 +82,7 @@ describe("CmsGridComponent", () => {
                 TranslateModule.forRoot({
                     loader: {
                         provide: TranslateLoader,
-                        useFactory: (http: Http) => new TranslateHttpLoader(http, "/base/app/i18n/", ".json"),
+                        useFactory: (http: Http): TranslateHttpLoader => new TranslateHttpLoader(http, "/base/app/i18n/", ".json"),
                         deps: [Http]
                     }
                 })
@@ -204,13 +93,13 @@ describe("CmsGridComponent", () => {
             component = fixture.componentInstance;
             nativeElement = fixture.nativeElement;
             debugInstance = fixture.debugElement.componentInstance;
-            cmsSettingsService = fixture.debugElement.injector.get(CmsSettingsService);
-            cmsMiniDisplayService = fixture.debugElement.injector.get(CmsMiniDisplayService);
         });
     }));
 
-    beforeEach(inject([AppConfig, CmsApiService], (appConfig: AppConfig,
-        cmsApiService: CmsApiService, cmsMiniDisplayService: CmsMiniDisplayService, cmsSettingsService: CmsSettingsService) => {
+    beforeEach(inject([AppConfig, CmsApiService], (
+        appConfig: AppConfig,
+        cmsApiService: CmsApiService,
+        cmsMiniDisplayService: CmsMiniDisplayService, cmsSettingsService: CmsSettingsService) => {
         appConfig = appConfig;
         cmsApiService = cmsApiService;
         cmsMiniDisplayService = cmsMiniDisplayService;
@@ -244,7 +133,8 @@ describe("CmsGridComponent", () => {
     // Can not test actual stylesheet value
     // it test branch of code
     it("should set transparent background for source-label if transparency is 100", () => {
-        mockSettings.userSettings.sourceLabel.transparency = 100;
+        const transparency: number = 100;
+        mockSettings.userSettings.sourceLabel.transparency = transparency;
 
         fixture.detectChanges();
         fixture.whenStable().then(() => {
@@ -256,14 +146,14 @@ describe("CmsGridComponent", () => {
 
     // it test branch of code
     it("should not set formattedStyles when miniTiles is blank", () => {
-        const styles = debugInstance.formattedStyle();
+        const styles: any = debugInstance.formattedStyle();
         expect(JSON.stringify(styles)).toBe(JSON.stringify({}));
     });
 
     it("should show box-shadow if selected Content and contentId is same", () => {
         debugInstance.selectedContent = contents[0];
         debugInstance.swappingContent = contents[0];
-        const showSelected = debugInstance.showSelected(contents[0].id);
+        const showSelected: boolean = debugInstance.showSelected(contents[0].id);
         expect(showSelected).toBeTruthy();
     });
 
@@ -271,7 +161,7 @@ describe("CmsGridComponent", () => {
     it("should show box-shadow if selected Content and swapping content is same", () => {
         debugInstance.selectedContent = contents[0];
         debugInstance.swappingContent = contents[1];
-        const showSelected = debugInstance.showSelected(contents[1].id);
+        const showSelected: boolean = debugInstance.showSelected(contents[1].id);
         expect(showSelected).toBeTruthy();
     });
 
@@ -287,26 +177,27 @@ describe("CmsGridComponent", () => {
     }));
 
     it("should call updateContentGeormetryOnDisplay() 2 times to swap the geometery of the content", async(() => {
+        const numberOfCalls: number = 2;
         debugInstance.selectedContent = contents[0];
         debugInstance.swappingContent = contents[1];
         debugInstance.swapSource();
-        expect(updateContentGeormetryOnDisplay).toHaveBeenCalledTimes(2);
+        expect(updateContentGeormetryOnDisplay).toHaveBeenCalledTimes(numberOfCalls);
     }));
 
     it("should swap the geometery and prepare content once swapContentGeometeryandCreateContent() is called", async(() => {
         debugInstance.selectedContent = contents[0];
         debugInstance.swappingContent = contents[1];
-        let swappedContentGeometeryOutput: any[] = debugInstance.swapContentGeometeryandCreateContent();
-        for (let index = 0; index < swappedContentGeometeryOutput.length; index++) {
-            expect(swappedContentGeometeryOutput[index].x).toBe(swappedGeometeryContent[index].x);
-            expect(swappedContentGeometeryOutput[index].y).toBe(swappedGeometeryContent[index].y);
-            expect(swappedContentGeometeryOutput[index].width).toBe(swappedGeometeryContent[index].width);
-            expect(swappedContentGeometeryOutput[index].height).toBe(swappedGeometeryContent[index].height);
+        const swappedContentGeometeryOutput: any[] = debugInstance.swapContentGeometeryandCreateContent();
+        for (const output  of  swappedContentGeometeryOutput) {
+            expect(output.x).toBe(output.x);
+            expect(output.y).toBe(output.y);
+            expect(output.width).toBe(output.width);
+            expect(output.height).toBe(output.height);
         }
     }));
 
     it("should lost focus on click outside grid", () => {
-        nativeElement.click()
+        nativeElement.click();
         expect(debugInstance.selectedContent).toBeUndefined();
         expect(debugInstance.swappingContent).toBeUndefined();
     });

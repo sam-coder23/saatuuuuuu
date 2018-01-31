@@ -1,8 +1,12 @@
+/**
+ * Test specification for event emitter service.
+ */
 import { TestBed } from "@angular/core/testing";
 import { CmsEventEmitterService } from "../../../../app/cms/api/cms-event-emitter.service";
 import { CMS_EVENTS } from "../../../../app/cms/api/cms-events.enum";
 
 describe("Service: cms-event-emitter", () => {
+    const maxEmitters: number = 5;
     beforeEach(() => {
         /**
          * Clearing emitter for running dry test cases
@@ -21,7 +25,7 @@ describe("Service: cms-event-emitter", () => {
 
     it("Registered for TileList events", () => {
         CmsEventEmitterService.REGISTER(CMS_EVENTS.TileList);
-        expect((<any>CmsEventEmitterService).emitters[5]).toBeDefined();
+        expect((<any>CmsEventEmitterService).emitters[maxEmitters]).toBeDefined();
     });
 
     it("Not registered for Display events", () => {

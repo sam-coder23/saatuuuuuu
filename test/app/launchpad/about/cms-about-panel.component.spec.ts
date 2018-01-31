@@ -2,7 +2,7 @@
  * This class is responsible to handle unit test case of CmsAboutPanelComponent component
  */
 import { DebugElement, Injector, NO_ERRORS_SCHEMA } from "@angular/core";
-import { async, ComponentFixture, TestBed } from "@angular/core/testing";
+import { async, ComponentFixture, TestBed, tick } from "@angular/core/testing";
 import { Http, HttpModule } from "@angular/http";
 import { By } from "@angular/platform-browser";
 import { TranslateLoader, TranslateModule, TranslateService } from "@ngx-translate/core";
@@ -24,7 +24,7 @@ class MockCmsApiService {
     }
 }
 
-const mockSystemInfo : any  = {
+const mockSystemInfo: any = {
     ServerInfo: {
         ip: "10.98.0.231",
         version: "0.70.37 Build 0125"
@@ -38,7 +38,7 @@ const mockSystemInfo : any  = {
     }
 };
 
-const appVersion : string = "1.0.1";
+const appVersion: string = "1.0.1";
 
 const systemInfo: any = {
     licensedTo: "",
@@ -55,8 +55,8 @@ let copyright: string = "";
 describe("Cms About Panel Component", () => {
     let component: CmsAboutPanelComponent;
     let fixture: ComponentFixture<CmsAboutPanelComponent>;
-    let debugInstance: any ;
-    let nativeElement: any ;
+    let debugInstance: any;
+    let nativeElement: any;
     let translate: TranslateService;
     let cmsApiService: CmsApiService;
     let appConfig: AppConfig;
@@ -111,7 +111,7 @@ describe("Cms About Panel Component", () => {
     });
 
     it("should assign value to system info on ngOnInit() call", async(() => {
-        const updateCopyrightTextCall : jasmine.Spy = spyOn(debugInstance, "updateCopyrightText");
+        const updateCopyrightTextCall: jasmine.Spy = spyOn(debugInstance, "updateCopyrightText");
         component.ngOnInit();
 
         expect(debugInstance.systemInfo.licensedTo).toEqual(mockSystemInfo.LicenseInfo.customerName);
@@ -126,6 +126,12 @@ describe("Cms About Panel Component", () => {
 
         expect(updateCopyrightTextCall.calls.count()).toEqual(1);
     }));
+
+    it("should display status as valid if license info is set to Valid,", () => {
+        mockSystemInfo.LicenseInfo.licenseStatus = "LicenseAccepted";
+        component.ngOnInit();
+        expect(debugInstance.systemInfo.licenseStatus).toEqual("License valid");
+    });
 
     it("should show copyright year in copyright text ", async(() => {
         expect(copyright).toContain(CMSConstants.COPYRIGHTYEAR);
@@ -142,7 +148,7 @@ describe("Cms About Panel Component", () => {
         const buttonBack: DebugElement = fixture.debugElement.query(By.css("#about-panel-back-button"));
         expect(buttonBack).toBeTruthy();
 
-        const goBackCall: jasmine.Spy = spyOn(debugInstance, "goBack");
+        const goBackCall: jasmine.Spy = spyOn(window.history, "back");
 
         buttonBack.triggerEventHandler("click", undefined);
         expect(goBackCall.calls.count()).toEqual(1);

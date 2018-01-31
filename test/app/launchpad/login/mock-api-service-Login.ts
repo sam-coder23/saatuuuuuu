@@ -6,31 +6,31 @@ import { Observable } from "rxjs/Observable";
 import { CMSConstants } from "../../../../app/cms/models/cms-constants";
 import { IUserProfileSettings } from "../../../../app/cms/models/cms-user-profile-settings";
 import { User } from "../../../../app/cms/models/cms-user.model";
-import { MockLicenseInfo, MockUser, MockUserProfileSettings } from "./../../core/mock-stubs/login.mock";
+import { mockLicenseInfo, mockUser, mockUserProfileSettings } from "./../../core/mock-stubs/login.mock";
 
 export class MockCmsApiService {
-    public login(mockUser: User): Observable<any> {
+    public login(mockUserData: User): Observable<any> {
         const response: any = {
             error: {
                 status: 0
             }
         };
 
-        if (mockUser.username === MockUser.username && mockUser.password === MockUser.password) {
-            return Observable.of(MockUser);
-        } else if (mockUser.username === "license-error") {
+        if (mockUserData.username === mockUser.username && mockUserData.password === mockUser.password) {
+            return Observable.of(mockUser);
+        } else if (mockUserData.username === "license-error") {
             response.error.status = CMSConstants.ERRORCODE.LICENSE_ERROR;
-        } else if (mockUser.username === "settings-error") {
+        } else if (mockUserData.username === "settings-error") {
             response.error.status = CMSConstants.ERRORCODE.SETTING_ERROR;
-        } else if (mockUser.username === "user-disabled-error") {
+        } else if (mockUserData.username === "user-disabled-error") {
             response.error.status = CMSConstants.ERRORCODE.USER_DISABLED;
-        } else if (mockUser.username === "server-unavailable-error") {
+        } else if (mockUserData.username === "server-unavailable-error") {
             response.error.status = CMSConstants.ERRORCODE.SERVER_UNAVAILABLE;
-        } else if (mockUser.username === "not-found-error") {
+        } else if (mockUserData.username === "not-found-error") {
             response.error.status = CMSConstants.ERRORCODE.NOT_FOUND;
-        } else if (mockUser.username === "server-not-ready-error") {
+        } else if (mockUserData.username === "server-not-ready-error") {
             response.error.status = CMSConstants.ERRORCODE.SERVER_ERROR;
-        } else if (mockUser.username === "other-error") {
+        } else if (mockUserData.username === "other-error") {
             response.error.status = CMSConstants.ERRORCODE.OTHER_ERROR;
         }
 
@@ -42,15 +42,15 @@ export class MockCmsApiService {
     }
 
     public getUserProfileSettings(): Promise<IUserProfileSettings> {
-        return Promise.resolve(MockUserProfileSettings);
+        return Promise.resolve(mockUserProfileSettings);
     }
 
     public updateUserProfileSettings(): Promise<IUserProfileSettings> {
-        return Promise.resolve(MockUserProfileSettings);
+        return Promise.resolve(mockUserProfileSettings);
     }
 
     public getSystemInfo(): Observable<any> {
-        return Observable.of(MockLicenseInfo);
+        return Observable.of(mockLicenseInfo);
     }
 
     public logout(): Observable<any> {

@@ -1,27 +1,22 @@
-import { TestBed, inject, async } from "@angular/core/testing";
-import { AppConfig } from "../../app/config";
+/**
+ * Test specification for AppConfig service.
+ */
 import { CMSConstants } from "../../app/cms/models/cms-constants";
+import { AppConfig } from "../../app/config";
 
 describe("Service: App Config", () => {
-
-    let appConfig, spyOnConsole;
-    let serverURLExpectedValue = "";
-    let hostExpectedValue = window.document.location.host;
-    let defaultLanguageExpectedValue = CMSConstants.DEFAULTLANGUAGE;
-    let copyrightYearExpectedValue = CMSConstants.COPYRIGHTYEAR;
+    let appConfig: AppConfig;
+    let spyOnConsole: jasmine.Spy;
+    let serverURLExpectedValue: string = "";
+    const hostExpectedValue: string = window.document.location.host;
+    const defaultLanguageExpectedValue: string = CMSConstants.DEFAULTLANGUAGE;
+    const copyrightYearExpectedValue: string = CMSConstants.COPYRIGHTYEAR;
 
     serverURLExpectedValue = `${window.document.location.protocol}//${window.document.location.host}/cms-rest/v1`;
 
-    beforeEach(async () =>
-        TestBed.configureTestingModule({
-            providers: [
-                AppConfig
-            ]
-        }));
-
     beforeEach(() => {
         appConfig = new AppConfig();
-        spyOnConsole = spyOn(console, "log").and.returnValue(null);
+        spyOnConsole = spyOn(console, "log").and.returnValue(undefined);
     });
 
     it("should be defined", () => {
@@ -52,25 +47,25 @@ describe("Service: App Config", () => {
     });
 
     it("should execute console log for the function log when args are not null", () => {
-        let today = new Date();
-        let dateTime = today.toLocaleString();
-        let args = ["Some log message."];
+        const today: Date = new Date();
+        const dateTime: string = today.toLocaleString();
+        const args: string[] = ["Some log message."];
         appConfig.log(...args);
         expect(spyOnConsole).toHaveBeenCalledWith(dateTime, " - info ", args);
     });
 
     it("should execute console log for the function warn when args are not null", () => {
-        let today = new Date();
-        let dateTime = today.toLocaleString();
-        let args = ["Some warning message."];
+        const today: Date = new Date();
+        const dateTime: string = today.toLocaleString();
+        const args: string[] = ["Some warning message."];
         appConfig.warn(...args);
         expect(spyOnConsole).toHaveBeenCalledWith(dateTime, " - warn ", args);
     });
 
     it("should execute console log for the function error when args are not null", () => {
-        let today = new Date();
-        let dateTime = today.toLocaleString();
-        let args = ["Some error message."];
+        const today: Date = new Date();
+        const dateTime: string = today.toLocaleString();
+        const args: string[] = ["Some error message."];
         appConfig.error(...args);
         expect(spyOnConsole).toHaveBeenCalledWith(dateTime, " - error ", args);
     });

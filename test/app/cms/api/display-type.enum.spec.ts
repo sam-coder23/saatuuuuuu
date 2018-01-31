@@ -1,7 +1,8 @@
+/**
+ * Test specification for display-type enumeration
+ */
 import { DISPLAY_TYPE } from "../../../../app/cms/api/display-type.enum";
-
 describe("Display-Type - ", () => {
-
     it("should expect enums not to be changed", () => {
         expect(DISPLAY_TYPE[DISPLAY_TYPE.DisplayWall]).toBe("DisplayWall");
         expect(DISPLAY_TYPE[DISPLAY_TYPE.NGPWall]).toBe("NGPWall");

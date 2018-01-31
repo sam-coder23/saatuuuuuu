@@ -1,179 +1,184 @@
-import { Subscription } from "rxjs/Rx";
-import { ComponentFixture, TestBed, async, inject } from "@angular/core/testing";
-import { By } from "@angular/platform-browser";
-import { DebugElement, CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA, ElementRef, EventEmitter } from "@angular/core";
-import { HttpModule, Http } from "@angular/http";
-import { TranslateModule, TranslateLoader, TranslateService } from "@ngx-translate/core";
+/**
+ * Test Specification for CMS Display List component.
+ */
+import { CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA } from "@angular/core";
+import { async, ComponentFixture, TestBed } from "@angular/core/testing";
+import { Http, HttpModule } from "@angular/http";
+import { ActivatedRoute, Router } from "@angular/router";
+import { TranslateLoader, TranslateModule, TranslateService } from "@ngx-translate/core";
 import { TranslateHttpLoader } from "@ngx-translate/http-loader";
-import { Router, ActivatedRoute } from "@angular/router";
 import { Observable } from "rxjs/Observable";
-import { CMS_EVENTS } from "../../../../app/cms/api/cms-events.enum";
-import { CmsDisplayListComponent } from "../../../../app/shared/display-list/cms-display-list.component";
-import { CmsSettingsService } from "../../../../app/launchpad/settings/cms-settings.service";
-import { CmsApiService } from "../../../../app/cms/api/cms-api.service";
-import { CmsFavoriteService } from "../../../../app/shared/cms-favorite.service";
-import { StorageManager } from "../../../../app/cms/api/cms-storagemanager.service";
-import { AppConfig } from "../../../../app/config";
-import { CMSConstants } from "../../../../app/cms/models/cms-constants";
-import { CmsSessionStorageItem } from "../../../../app/cms/models/cms-session-storage-item";
-import { Display } from "../../../../app/cms/models/cms-display";
-import { MocksUerProfileSettingsData } from "./../../core/mock-stubs/api-service.mock";
-import { MockDisplay } from "../../core/mock-stubs/cms-mini-display.component.mock";
 
+import { CmsApiService } from "../../../../app/cms/api/cms-api.service";
+import { CMS_EVENTS } from "../../../../app/cms/api/cms-events.enum";
+import { StorageManager } from "../../../../app/cms/api/cms-storagemanager.service";
+import { CMSConstants } from "../../../../app/cms/models/cms-constants";
+import { Display } from "../../../../app/cms/models/cms-display";
+import { CmsSessionStorageItem } from "../../../../app/cms/models/cms-session-storage-item";
+import { AppConfig } from "../../../../app/config";
+import { CmsSettingsService } from "../../../../app/launchpad/settings/cms-settings.service";
+import { CmsFavoriteService } from "../../../../app/shared/cms-favorite.service";
+import { CmsDisplayListComponent } from "../../../../app/shared/display-list/cms-display-list.component";
+import { MockDisplay } from "../../core/mock-stubs/cms-mini-display.component.mock";
+import { MockRouterStub } from "../../core/mock-stubs/mock-router.stub";
+import { mocksUerProfileSettingsData } from "./../../core/mock-stubs/api-service.mock";
+
+// tslint:disable:no-magic-numbers
 let displays: MockDisplay[] = [
     {
-        "id": 1,
-        "name": "Crisis room wall XYZ",
-        "type": "DisplayWall",
-        "description": "",
-        "snapshotPath": "",
-        "resolution": {
-            "width": 1920,
-            "height": 1080
+        id: 1,
+        name: "Crisis room wall XYZ",
+        type: "DisplayWall",
+        description: "",
+        snapshotPath: "",
+        resolution: {
+            width: 1920,
+            height: 1080
         },
-        "online": true,
-        "favorite": false,
-        "disabled": false,
-        "width": 1920,
-        "height": 1080,
-        "tiles": [],
-        "content": []
+        online: true,
+        favorite: false,
+        disabled: false,
+        width: 1920,
+        height: 1080,
+        tiles: [],
+        content: []
     },
     {
-        "id": 2,
-        "name": "Crisis room wall ABC",
-        "type": "DisplayWall",
-        "description": "",
-        "snapshotPath": "",
-        "resolution": {
-            "width": 1920,
-            "height": 1080
+        id: 2,
+        name: "Crisis room wall ABC",
+        type: "DisplayWall",
+        description: "",
+        snapshotPath: "",
+        resolution: {
+            width: 1920,
+            height: 1080
         },
-        "online": true,
-        "favorite": false,
-        "disabled": true,
-        "width": 1920,
-        "height": 1080,
-        "tiles": [],
-        "content": []
+        online: true,
+        favorite: false,
+        disabled: true,
+        width: 1920,
+        height: 1080,
+        tiles: [],
+        content: []
     },
     {
-        "id": 3,
-        "name": "Crisis room wall 123",
-        "type": "DisplayWall",
-        "description": "",
-        "snapshotPath": "",
-        "resolution": {
-            "width": 1920,
-            "height": 1080
+        id: 3,
+        name: "Crisis room wall 123",
+        type: "DisplayWall",
+        description: "",
+        snapshotPath: "",
+        resolution: {
+            width: 1920,
+            height: 1080
         },
-        "online": true,
-        "favorite": true,
-        "disabled": false,
-        "width": 1920,
-        "height": 1080,
-        "tiles": [],
-        "content": []
+        online: true,
+        favorite: true,
+        disabled: false,
+        width: 1920,
+        height: 1080,
+        tiles: [],
+        content: []
     },
     {
-        "id": 4,
-        "name": "Crisis room wall - jEFF",
-        "type": "DisplayWall",
-        "description": "",
-        "snapshotPath": "",
-        "resolution": {
-            "width": 1920,
-            "height": 1080
+        id: 4,
+        name: "Crisis room wall - jEFF",
+        type: "DisplayWall",
+        description: "",
+        snapshotPath: "",
+        resolution: {
+            width: 1920,
+            height: 1080
         },
-        "online": true,
-        "favorite": false,
-        "disabled": false,
-        "width": 1920,
-        "height": 1080,
-        "tiles": [],
-        "content": []
+        online: true,
+        favorite: true,
+        disabled: false,
+        width: 1920,
+        height: 1080,
+        tiles: [],
+        content: []
     },
     {
-        "id": 5,
-        "name": "Crisis room wall -Commutor",
-        "type": "DisplayWall",
-        "description": "",
-        "snapshotPath": "",
-        "resolution": {
-            "width": 1920,
-            "height": 1080
+        id: 5,
+        name: "Crisis room wall -commutor",
+        type: "DisplayWall",
+        description: "",
+        snapshotPath: "",
+        resolution: {
+            width: 1920,
+            height: 1080
         },
-        "online": true,
-        "favorite": false,
-        "disabled": false,
-        "width": 1920,
-        "height": 1080,
-        "tiles": [],
-        "content": []
+        online: true,
+        favorite: false,
+        disabled: false,
+        width: 1920,
+        height: 1080,
+        tiles: [],
+        content: []
     },
     {
-        "id": 6,
-        "name": "Crisis room wall - Knight",
-        "type": "DisplayWall",
-        "description": "",
-        "snapshotPath": "",
-        "resolution": {
-            "width": 1920,
-            "height": 1080
+        id: 1,
+        name: "Crisis room wall -Knight",
+        type: "DisplayWall",
+        description: "",
+        snapshotPath: "",
+        resolution: {
+            width: 1920,
+            height: 1080
         },
-        "online": true,
-        "favorite": false,
-        "disabled": false,
-        "width": 1920,
-        "height": 1080,
-        "tiles": [],
-        "content": []
+        online: true,
+        favorite: false,
+        disabled: false,
+        width: 1920,
+        height: 1080,
+        tiles: [],
+        content: []
     }
 ];
 class MockCmsApiService {
-    getDisplayList(start: number = 1, count: number = 2147483647, search: string = "", favorite: boolean = false): Observable<Display[]> {
+    public getDisplayList(start: number = 1, count: number = 2147483647, search: string = "", favorite: boolean = false): Observable<Display[]> {
         if (search === "error") {
-            return Observable.throw(null);
+            return Observable.throw(undefined);
         } else {
             return Observable.of(displays);
         }
     }
-    getSelectedDisplayContent() {
-        return null;
+    public getSelectedDisplayContent(): undefined {
+        return undefined;
     }
 }
 class MockActivatedRoute {
 }
 class MockCmsEventEmitterService {
-    get(ID: CMS_EVENTS) {
+    // tslint:disable-next-line:no-reserved-keywords
+    public get(ID: CMS_EVENTS): CMS_EVENTS {
         return ID;
     }
 }
 
 class MockSettingsService {
-    userSettings = MocksUerProfileSettingsData;
-    updateWallConnectionSpecificDisplay() {
-        return Observable.of(null);
+    public selectedSources: any[] = [];
+    public userSettings: any = mocksUerProfileSettingsData;
+    public updateWallConnectionSpecificDisplay(): Observable<undefined> {
+        return Observable.of(undefined);
     }
 
-    updateWallConnectionRecentDisplay() {
-        return Observable.of(null);
+    public updateWallConnectionRecentDisplay(): Observable<undefined> {
+        return Observable.of(undefined);
     }
-    selectedSources = [];
 }
 
 class MockRouter {
-    navigate(string: string) {
-        return string;
+    public navigate(text: string): string {
+        return text;
     }
 }
 
 class MockCmsFavoriteService {
-    markObjectAsUnfavorite(objectId: number, objectType: string, objectArray, favoriteFilter?: boolean) {
-        return Observable.of(null);
+    public markObjectAsUnfavorite(objectId: number, objectType: string, objectArray: any[], favoriteFilter?: boolean): Observable<undefined> {
+        return Observable.of(undefined);
     }
-    markObjectAsFavorite(objectId: number, objectType: string, objectArray) {
-        return Observable.of(null);
+    public markObjectAsFavorite(objectId: number, objectType: string, objectArray: any[]): Observable<undefined> {
+        return Observable.of(undefined);
     }
 }
 
@@ -186,16 +191,21 @@ describe("CmsDisplayListComponent", () => {
     let translateService: TranslateService;
     let routerService: Router;
     let storageManager: StorageManager;
-    let i18n: any;
-    let debugInstance, nativeElement;
-    let spyMarkObjectAsFavorite: jasmine.Spy, spyMarkObjectAsUnfavorite, spyRouter, spyUpdateSpecificDisplay, spyUpdateRecentDisplay, spyRemove;
+    let debugInstance: any;
+    let nativeElement: HTMLElement;
+    let spyMarkObjectAsFavorite: jasmine.Spy;
+    let spyMarkObjectAsUnfavorite: jasmine.Spy;
+    let spyRouter: jasmine.Spy;
+    let spyUpdateSpecificDisplay: jasmine.Spy;
+    let spyUpdateRecentDisplay: jasmine.Spy;
+    let spyRemove: jasmine.Spy;
     beforeEach(async(() => {
         TestBed.configureTestingModule({
             declarations: [CmsDisplayListComponent],
             providers: [
                 {
                     provide: Router,
-                    useClass: MockRouter
+                    useClass: MockRouterStub
                 },
                 {
                     provide: CmsApiService,
@@ -222,7 +232,7 @@ describe("CmsDisplayListComponent", () => {
                 TranslateModule.forRoot({
                     loader: {
                         provide: TranslateLoader,
-                        useFactory: (http: Http) => new TranslateHttpLoader(
+                        useFactory: (http: Http): TranslateHttpLoader => new TranslateHttpLoader(
                             http, "/base/app/i18n/", ".json"),
                         deps: [Http]
                     }
@@ -241,12 +251,12 @@ describe("CmsDisplayListComponent", () => {
             cmsFavoriteService = fixture.debugElement.injector.get(CmsFavoriteService);
             translateService = fixture.debugElement.injector.get(TranslateService);
             translateService.setDefaultLang("en");
-            spyRemove = spyOn(storageManager, "removeItem").and.returnValue(Observable.of(null));
-            spyRouter = spyOn(routerService, "navigate").and.returnValue(Observable.of(null));
-            spyMarkObjectAsFavorite = spyOn(cmsFavoriteService, "markObjectAsFavorite").and.returnValue(Observable.of(null));
-            spyMarkObjectAsUnfavorite = spyOn(cmsFavoriteService, "markObjectAsUnfavorite").and.returnValue(Observable.of(null));
-            spyUpdateRecentDisplay = spyOn(cmsSettingsService, "updateWallConnectionRecentDisplay").and.returnValue(Observable.of(null));
-            spyUpdateSpecificDisplay = spyOn(cmsSettingsService, "updateWallConnectionSpecificDisplay").and.returnValue(Observable.of(null));
+            spyRemove = spyOn(storageManager, "removeItem").and.returnValue(Observable.of(undefined));
+            spyRouter = spyOn(routerService, "navigate").and.returnValue(Observable.of(undefined));
+            spyMarkObjectAsFavorite = spyOn(cmsFavoriteService, "markObjectAsFavorite").and.returnValue(Observable.of(undefined));
+            spyMarkObjectAsUnfavorite = spyOn(cmsFavoriteService, "markObjectAsUnfavorite").and.returnValue(Observable.of(undefined));
+            spyUpdateRecentDisplay = spyOn(cmsSettingsService, "updateWallConnectionRecentDisplay").and.returnValue(Observable.of(undefined));
+            spyUpdateSpecificDisplay = spyOn(cmsSettingsService, "updateWallConnectionSpecificDisplay").and.returnValue(Observable.of(undefined));
         });
     }));
 
@@ -255,33 +265,28 @@ describe("CmsDisplayListComponent", () => {
         expect(debugInstance.cmsServerApi).toBeDefined();
     }));
 
-    it("should remove scroll event on Destroy LifeCycle Hook", async(() => {
-        component.ngOnDestroy();
-        debugInstance.eventSubscription = null;
-    }));
-
-    it("should not let user mark favorite or unfavorite on a disabled source", () => {
+    it("should not let user mark favorite or unfavorite on a disabled display", () => {
         fixture.detectChanges();
         fixture.whenStable().then(() => {
+            debugInstance.toggleDisplayFavorite(displays[1]);
         });
-        debugInstance.toggleDisplayFavorite(displays[1]);
         expect(cmsFavoriteService.markObjectAsFavorite).not.toHaveBeenCalled();
         expect(cmsFavoriteService.markObjectAsFavorite).not.toHaveBeenCalled();
     });
 
-    it("should call CmsFavoriteService.markObjectAsFavorite when the selected source is unfavorite", () => {
+    it("should call CmsFavoriteService.markObjectAsFavorite when the selected display is unfavorite", () => {
         fixture.detectChanges();
         debugInstance.toggleDisplayFavorite(displays[0]);
-        let args = spyMarkObjectAsFavorite.calls.mostRecent().args;
+        const args: any[] = spyMarkObjectAsFavorite.calls.mostRecent().args;
         expect(args[0]).toEqual(displays[0].id);
         expect(args[1]).toEqual(displays[0].type);
         expect(args[2]).toBeFalsy();
     });
 
-    it("should call CmsFavoriteService.markObjectAsUnFavorite when the selected source is favorite", () => {
+    it("should call CmsFavoriteService.markObjectAsUnFavorite when the selected display is favorite", () => {
         fixture.detectChanges();
         debugInstance.toggleDisplayFavorite(displays[2]);
-        let args = spyMarkObjectAsUnfavorite.calls.mostRecent().args;
+        const args: any[] = spyMarkObjectAsUnfavorite.calls.mostRecent().args;
         expect(args[0]).toEqual(displays[2].id);
         expect(args[1]).toEqual(displays[2].type);
         expect(args[2]).toBeUndefined();
@@ -289,39 +294,55 @@ describe("CmsDisplayListComponent", () => {
 
     it("should check that displays are getting loaded on the OnChange, adds and remove the scroll service", () => {
         fixture.detectChanges();
-        component.ngOnChanges(null);
+        component.ngOnChanges(undefined);
         fixture.whenStable().then(() => {
             expect(debugInstance.displays).toEqual(displays);
         });
     });
 
     it("should render the list on UI based on displays from API", () => {
-        component.ngOnChanges(null);
-        let container = document.getElementById("display-list-card-container");
+        component.ngOnChanges(undefined);
+        const container: HTMLElement = document.getElementById("display-list-card-container");
         fixture.detectChanges();
         fixture.whenStable().then(() => {
-            let displayCollection = fixture.nativeElement.querySelectorAll("cms-card");
+            const displayCollection: any[] = fixture.nativeElement.querySelectorAll("cms-card");
             expect(displayCollection.length).toEqual(displays.length);
-        })
+        });
+    });
+
+    it("should route to sources panel", () => {
+        component.ngOnChanges(undefined);
+        fixture.detectChanges();
+        fixture.whenStable().then(() => {
+            const displayCard: HTMLElement = fixture.nativeElement.querySelector("cms-card");
+            debugInstance.route.params = [{ action: CMSConstants.TRANSPARENCY_STEPS }];
+            expect(displayCard).not.toBeNull();
+            displayCard.dispatchEvent(new Event("select"));
+            const args: any[] = spyRouter.calls.mostRecent().args;
+            expect(args[0]).toEqual(["/displays/1/sources-panel"]);
+        });
+
     });
 
     it("should not render the list on UI, if there are  no displays returned by the API", () => {
         debugInstance.displays = [];
         debugInstance.showConfirmationPopup = true;
-        let panelTitle;
-        let container = document.getElementById("display-list-card-container");
+        const panelTitle: string = "";
+        const container: HTMLElement = document.getElementById("display-list-card-container");
         fixture.detectChanges();
         fixture.whenStable().then(() => {
             expect(fixture.nativeElement.querySelectorAll("div.display-list-unavailable")).not.toBeUndefined();
-            let noDisplayText;
+            let noDisplayText: string = " ";
             translateService.get("displayList.unavailable").subscribe((response: string) => {
                 noDisplayText = response;
             });
-            expect(fixture.nativeElement.querySelectorAll("div.display-list-unavailable")[0].firstElementChild.innerText).toEqual(noDisplayText)
+            expect(fixture.nativeElement.querySelectorAll("div.display-list-unavailable")[0].firstElementChild.innerText).toEqual(noDisplayText);
         });
         fixture.detectChanges();
         fixture.whenStable().then(() => {
-            let common, ndPopup, displayList;
+            let common: any;
+            let ndPopup: any;
+            let displayList: any;
             fixture.detectChanges();
             fixture.whenStable().then(() => {
                 ndPopup = fixture.nativeElement.querySelectorAll("nd-popup")[0];
@@ -345,73 +366,55 @@ describe("CmsDisplayListComponent", () => {
     });
 
     it("should route onConfimation of pop up", () => {
-        component.ngOnChanges(null);
-        debugInstance.route.params = [{ "action": CMSConstants.SELECT_DISPLAY }];
+        component.ngOnChanges(undefined);
+        debugInstance.route.params = [{ action: CMSConstants.SELECT_DISPLAY }];
         debugInstance.onConfirmation();
-        let args = spyRouter.calls.mostRecent().args;
+        const args: any[] = spyRouter.calls.mostRecent().args;
         expect(args[0]).toEqual(["/settings"]);
-        component.ngOnChanges(null);
-        debugInstance.route.params = [{ "xyz": "abc" }];
+        component.ngOnChanges(undefined);
+        debugInstance.route.params = [{ xyz: "abc" }];
         debugInstance.onConfirmation();
         expect(debugInstance.showConfirmationPopup).toBeFalsy();
     });
-
-    // it("should connect the display to the wall, and redirect to the sources list", () => {
-    //     debugInstance.connectWall(displays[1]);
-    //     expect(cmsSettingsService.updateWallConnectionRecentDisplay).not.toHaveBeenCalled();
-    //     expect(cmsSettingsService.updateWallConnectionSpecificDisplay).not.toHaveBeenCalled();
-    //     debugInstance.route.params = [{ "action": CMSConstants.SELECT_DISPLAY }];
-    //     debugInstance.connectWall(displays[0]);
-    //     expect(cmsSettingsService.updateWallConnectionSpecificDisplay).toHaveBeenCalled();
-    //     debugInstance.route.params = [{ "action": "jargonText" }];
-    //     debugInstance.connectWall(displays[0]);
-    //     expect(cmsSettingsService.updateWallConnectionRecentDisplay).toHaveBeenCalled();
-    //     let displayStringify = JSON.stringify(displays[0]);
-    //     expect(window.sessionStorage.getItem(CMS_SESSION_STORAGE_ITEM.DISPLAY)).toEqual(displayStringify);
-    //     let args = spyRouter.calls.mostRecent().args;
-    //     expect(debugInstance.cmsSettingsService.selectedSources.length).toEqual(0);
-    //     expect(args[0]).toEqual([`/displays/${displays[0].id}/sources-panel`]);
-    // });
 
     it("should add displays on scroll to the displays list", () => {
         debugInstance.displays = [];
         debugInstance.showConfirmationPopup = true;
         debugInstance.getDisplays();
+        fixture.detectChanges();
         expect(debugInstance.displays.length).toEqual(displays.length);
         expect(debugInstance.eventSubscription).toBeDefined();
         debugInstance.eventSubscription.next(
             {
-                "body": debugInstance.displays[0],
-                "uri": "/1/1/1/1",
-                "verb": "deleted"
+                body: debugInstance.displays[0],
+                uri: "/1/1/1/1",
+                verb: "deleted"
             }
         );
-        fixture.detectChanges();
         fixture.whenStable().then(() => {
             expect(debugInstance.showConfirmationPopup).toBeFalsy();
-            expect(JSON.parse(window.sessionStorage.getItem(CmsSessionStorageItem.DISPLAY))).not.toBeNull();
+            expect(JSON.parse(storageManager.getItem(CmsSessionStorageItem.DISPLAY))).toBeDefined();
             // expect(storageManager.remove).toHaveBeenCalled();
         });
         debugInstance.eventSubscription.next(
             {
-                "body": { "id": 455 },
-                "uri": "/1/1/1/1",
-                "verb": "put"
+                body: { id: 455 },
+                uri: "/1/1/1/1",
+                verb: "put"
             }
         );
         debugInstance.eventSubscription.next(
             {
-                "body": { "id": 455 },
-                "uri": "/1/1/1/1",
-                "verb": "deleted"
+                body: { id: 455 },
+                uri: "/1/1/1/1",
+                verb: "deleted"
             }
         );
-        expect(JSON.parse(window.sessionStorage.getItem(CmsSessionStorageItem.DISPLAY))).not.toBeNull();
+        expect(JSON.parse(storageManager.getItem(CmsSessionStorageItem.DISPLAY))).toBeDefined();
     });
 
-
     it("should show a dialog popup whenever there are no displays turning up from API", () => {
-        let displayList;
+        let displayList: string;
         debugInstance.displays = [];
         debugInstance.searchFilter = "";
         debugInstance.dialogMessage = "";
@@ -429,7 +432,7 @@ describe("CmsDisplayListComponent", () => {
         debugInstance.searchFilter = "";
         debugInstance.dialogMessage = "";
         debugInstance.favoriteFilter = false;
-        debugInstance.eventSubscription = null;
+        debugInstance.eventSubscription = undefined;
         debugInstance.getDisplays();
         expect(debugInstance.showConfirmationPopup).toBeTruthy();
     });

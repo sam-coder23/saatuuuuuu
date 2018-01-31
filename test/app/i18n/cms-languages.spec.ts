@@ -1,9 +1,10 @@
-import { TestBed, async } from "@angular/core/testing";
+/**
+ * Test specification for cms-languages
+ */
 import { CmsLanguages } from "../../../app/i18n/cms-languages";
 
 describe("Cms Languages: ", () => {
-
-    let expectedLanguages = [
+    const expectedLanguages: { key: string, value: string }[] = [
         { key: "ar", value: "العربية" },
         { key: "de", value: "German" },
         { key: "en", value: "English" },
@@ -17,12 +18,10 @@ describe("Cms Languages: ", () => {
         { key: "ru", value: "русский" }
     ];
 
-    let expectedLanguagesKeys = ["ar", "de", "en", "es", "fr", "ja", "pl", "pt", "zh", "tr", "ru"];
-
-    let expectedLanguagesRegExPattern = /ar|de|en|es|fr|ja|pl|pt|zh|tr|ru/;
-
-    beforeEach(async () =>
-        TestBed.configureTestingModule({}));
+    const expectedLanguagesKeys: string[] = ["ar", "de", "en", "es", "fr", "ja", "pl", "pt", "zh", "tr", "ru"];
+     // tslint:disable-next-line:mocha-no-side-effect-code
+    const expectedLanguagesRegExPattern: any =
+        /ar|de|en|es|fr|ja|pl|pt|zh|tr|ru/;
 
     it("languages should be defined", () => {
         expect(CmsLanguages).toBeDefined();

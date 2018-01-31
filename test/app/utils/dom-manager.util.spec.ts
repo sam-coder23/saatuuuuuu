@@ -1,25 +1,29 @@
-import { DomManager } from "../../../app/utils/dom-manager.util";
+/**
+ * This class is responsible to handle unit test case of CmsAboutPanelComponent component
+ */
 import { ElementRef } from "@angular/core";
+import { DomManager } from "../../../app/utils/dom-manager.util";
 
 describe("DomManager", () => {
   let domManager: DomManager;
-  let parentContainer;
+  let parentContainer: any;
 
-  let createMockDom = () => {
+  const createMockDom: any = (): ElementRef => {
     parentContainer = document.createElement("div");
     parentContainer.setAttribute("id", "parent-id");
 
-    let firstChildContainer = document.createElement("div");
+    const firstChildContainer: HTMLDivElement = document.createElement("div");
     firstChildContainer.setAttribute("id", "first-child-id");
     firstChildContainer.setAttribute("class", "first-class-name");
 
-    let secondChildContainer = document.createElement("div");
+    const secondChildContainer: HTMLDivElement = document.createElement("div");
     secondChildContainer.setAttribute("id", "second-child-id");
     secondChildContainer.setAttribute("class", "second-class-name");
 
     parentContainer.appendChild(firstChildContainer);
     parentContainer.appendChild(secondChildContainer);
     document.body.appendChild(parentContainer);
+
     return new ElementRef(parentContainer);
   };
 

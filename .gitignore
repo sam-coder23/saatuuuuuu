@@ -8,3 +8,6 @@ build/reports/**
 coverage/**
 build/coverage/**
 npm-debug.log
+coverage/**
+build/coverage/**
+karma_html/**

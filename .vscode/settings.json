@@ -13,12 +13,5 @@
   "editor.formatOnType": true,
   "editor.formatOnPaste": true,
   "editor.autoIndent": true,
-  "editor.showFoldingControls": "always",
-  "tslint.exclude": [
-    "**/test/app/cms/**/*.ts",
-    "**/test/app/core/**/*.ts",
-    "**/test/app/i18n/**/*.ts",
-    "**/test/app/shared/**/*.ts",
-    "**/test/app/utils/**/*.ts"
-  ]
+  "editor.showFoldingControls": "always"
 }

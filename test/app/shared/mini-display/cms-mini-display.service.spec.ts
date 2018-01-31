@@ -1,29 +1,30 @@
-import { TestBed, inject, async } from "@angular/core/testing";
+/**
+ * Test Specification for CMS Mini Display Service.
+ */
+import { inject, TestBed } from "@angular/core/testing";
 import { Observable } from "rxjs/Observable";
-import { CmsMiniDisplayService } from "../../../../app/shared/mini-display/cms-mini-display.service";
 import { CmsApiService } from "../../../../app/cms/api/cms-api.service";
-import { AppConfig } from "../../../../app/config";
 import { Display } from "../../../../app/cms/models/cms-display";
 import { ISize } from "../../../../app/cms/models/cms-size";
-import { TileContent } from "../../../../app/cms/models/cms-tile-content";
 import { Tile } from "../../../../app/cms/models/cms-tile";
-import { mockDisplay1, expectedMiniDisplayResponse1, mockDisplay2, expectedMiniDisplayResponse2 } from "../../core/mock-stubs/cms-mini-display.service.mock";
+import { TileContent } from "../../../../app/cms/models/cms-tile-content";
+import { AppConfig } from "../../../../app/config";
+import { CmsMiniDisplayService } from "../../../../app/shared/mini-display/cms-mini-display.service";
+import {
+    expectedMiniDisplayResponse1,
+    expectedMiniDisplayResponse2,
+    mockDisplay1,
+    mockDisplay2
+} from "../../core/mock-stubs/cms-mini-display.service.mock";
 import { ParsingManager } from "./../../../../app/utils/parsing-manager-util";
 
-
 describe("Service: CmsMiniDisplayService", () => {
-
     let cmsMiniDisplayService: CmsMiniDisplayService;
-    let cmsServerApi: CmsApiService;
-    let appConfig: AppConfig;
-    let mockDisplay;
-
-    /**
-     * Mocked service for api service
-     */
+    let mockDisplay: Display;
     class MockCmsApiService {
-        getSelectedDisplayContent(displayId: number): Observable<Display> {
-            let display = new Display(mockDisplay);
+        public getSelectedDisplayContent(displayId: number): Observable<Display> {
+            const display: Display = new Display(mockDisplay);
+
             return Observable.of(display);
         }
     }
@@ -31,10 +32,10 @@ describe("Service: CmsMiniDisplayService", () => {
     /**
      * Method to create mock DOM element.
      */
-    let createDOM = function () {
-        let container = fetchDOM("mini-display-container");
+    const createDOM: any = (): void => {
+        const container: HTMLElement  = fetchDOM("mini-display-container");
         if (!container) {
-            let testHTMLElement = document.createElement("div");
+            const testHTMLElement: HTMLElement = document.createElement("div");
             testHTMLElement.id = "mini-display-container";
             testHTMLElement.style.width = "1366px";
             testHTMLElement.style.height = "534px";
@@ -49,7 +50,7 @@ describe("Service: CmsMiniDisplayService", () => {
     /**
      * Method to fetch mock DOM element.
      */
-    let fetchDOM = function (id: string): HTMLElement {
+    const fetchDOM: any = (id: string): HTMLElement => {
         if (id) {
             return document.getElementById(id);
         }
@@ -66,7 +67,7 @@ describe("Service: CmsMiniDisplayService", () => {
             ]
         }));
 
-    beforeEach(inject([CmsApiService, AppConfig], (cmsServerApi, appConfig) => {
+    beforeEach(inject([CmsApiService, AppConfig], (cmsServerApi: CmsApiService, appConfig: AppConfig) => {
         cmsServerApi = cmsServerApi;
         appConfig = appConfig;
         cmsMiniDisplayService = new CmsMiniDisplayService(cmsServerApi, appConfig);
@@ -86,9 +87,8 @@ describe("Service: CmsMiniDisplayService", () => {
 
     it("should return expected response from getMiniDisplayTilerInfoWithContent method when display width is less than height", () => {
         createDOM();
-        let containerElement: HTMLElement = fetchDOM("mini-display-container");
+        const containerElement: HTMLElement = fetchDOM("mini-display-container");
         mockDisplay = mockDisplay1;
-
         cmsMiniDisplayService.getMiniDisplayTilerInfoWithContent(mockDisplay.id, containerElement)
             .subscribe((miniDisplayResponse: {
                 displaySize: ISize,
@@ -105,7 +105,6 @@ describe("Service: CmsMiniDisplayService", () => {
                 expect(ParsingManager.TO_INTEGER(miniDisplayResponse.miniDisplayContentList[1].lastModified)).toBeGreaterThan(ParsingManager.TO_INTEGER(expectedMiniDisplayResponse1.miniDisplayContentList[1].lastModified));
                 miniDisplayResponse.miniDisplayContentList[0].lastModified = expectedMiniDisplayResponse1.miniDisplayContentList[0].lastModified;
                 miniDisplayResponse.miniDisplayContentList[1].lastModified = expectedMiniDisplayResponse1.miniDisplayContentList[1].lastModified;
-
                 expect(miniDisplayResponse.displaySize).toEqual(expectedMiniDisplayResponse1.displaySize);
                 expect(miniDisplayResponse.miniDisplayTilerList).toEqual(expectedMiniDisplayResponse1.miniDisplayTilerList);
                 expect(miniDisplayResponse.miniDisplayContentList).toEqual(expectedMiniDisplayResponse1.miniDisplayContentList);
@@ -116,7 +115,7 @@ describe("Service: CmsMiniDisplayService", () => {
 
     it("should return expected response from getMiniDisplayTilerInfoWithContent method when display width is more than height", () => {
         createDOM();
-        let containerElement: HTMLElement = fetchDOM("mini-display-container");
+        const containerElement: HTMLElement = fetchDOM("mini-display-container");
         mockDisplay = mockDisplay2;
 
         cmsMiniDisplayService.getMiniDisplayTilerInfoWithContent(mockDisplay.id, containerElement)

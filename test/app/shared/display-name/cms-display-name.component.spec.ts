@@ -1,24 +1,24 @@
-import { TestBed, ComponentFixture } from "@angular/core/testing";
-import { Subscriber } from "rxjs";
+/**
+ * Test Specification for Display Name component.
+ */
 import { Injector } from "@angular/core";
-import { CmsDisplayNameComponent } from "../../../../app/shared/display-name/cms-display-name.component";
+import { ComponentFixture, TestBed } from "@angular/core/testing";
+import { Subscriber } from "rxjs";
+
+import { CmsEventEmitterService } from "../../../../app/cms/api/cms-event-emitter.service";
+import { CMS_EVENTS } from "../../../../app/cms/api/cms-events.enum";
 import { StorageManager } from "../../../../app/cms/api/cms-storagemanager.service";
 import { CmsSessionStorageItem } from "../../../../app/cms/models/cms-session-storage-item";
-import { CMS_EVENTS } from "../../../../app/cms/api/cms-events.enum";
-import { CmsEventEmitterService } from "../../../../app/cms/api/cms-event-emitter.service";
+import { CmsDisplayNameComponent } from "../../../../app/shared/display-name/cms-display-name.component";
 
 describe("CmsDisplayNameComponent", () => {
     let component: CmsDisplayNameComponent;
     let fixture: ComponentFixture<CmsDisplayNameComponent>;
     let injector: Injector;
-    let debugInstance, nativeElement, debugInstanceGrid, nativeElementGrid,
-        cmsSettingsService, cmsMiniDisplayService, spyLoadContentOnTile;
-
-    const display = {
+    const display: any = {
         name: "My display",
         id: 1
     };
-
     beforeEach(() => {
         TestBed.configureTestingModule({
             declarations: [CmsDisplayNameComponent],
@@ -36,7 +36,6 @@ describe("CmsDisplayNameComponent", () => {
     afterEach(() => {
         removeDisplay();
     });
-
 
     it("component should be defined", () => {
         expect(component).toBeDefined();
@@ -57,7 +56,7 @@ describe("CmsDisplayNameComponent", () => {
 
     it("should update display name", () => {
         component.subscribeDisplayEvents();
-        const newDisplay = {
+        const newDisplay: any = {
             uri: "displays/1",
             body: {
                 name: "New display name",
@@ -69,14 +68,13 @@ describe("CmsDisplayNameComponent", () => {
         expect(component.displayName).toEqual(newDisplay.body.name);
     });
 
-
-    function removeDisplay() {
-        let storage: StorageManager = injector.get(StorageManager);
+    const removeDisplay: any = (): void => {
+        const storage: StorageManager = injector.get(StorageManager);
         storage.removeItem(CmsSessionStorageItem.DISPLAY);
-    }
+    };
 
-    function setDisplay() {
-        let storage: StorageManager = injector.get(StorageManager);
+    const setDisplay: any = (): void => {
+        const storage: StorageManager = injector.get(StorageManager);
         storage.setItem(CmsSessionStorageItem.DISPLAY, JSON.stringify(display));
-    }
-})
+    };
+});

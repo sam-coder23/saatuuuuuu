@@ -1,7 +1,7 @@
 /**
  * This class is responsible to handle unit test case of CmsSourcesPanelComponent
  */
-import { CUSTOM_ELEMENTS_SCHEMA, DebugElement, Injector, NO_ERRORS_SCHEMA } from "@angular/core";
+import {  Component, CUSTOM_ELEMENTS_SCHEMA, DebugElement, Injector, NO_ERRORS_SCHEMA } from "@angular/core";
 import { async, ComponentFixture, getTestBed, TestBed } from "@angular/core/testing";
 import { FormsModule } from "@angular/forms";
 import { Http, HttpModule } from "@angular/http";
@@ -20,10 +20,10 @@ import { ITilePreset } from "../../../../app/cms/models/cms-tile-preset";
 import { AppConfig } from "../../../../app/config";
 import { CmsSettingsService } from "../../../../app/launchpad/settings/cms-settings.service";
 import { CmsSourcesPanelComponent } from "../../../../app/launchpad/sources-panel/cms-sources-panel.component";
+import { CmsSourceListComponent } from "../../../../app/shared/source-list/cms-source-list.component";
 import { TilePresetManager } from "../../../../app/utils/tilepreset-manager.util";
 import { MockRouterStub } from "../../core/mock-stubs/mock-router.stub";
-import { MockDisplay, MockSources, MockTilersData } from "./../../core/mock-stubs/cms-sources.mock";
-import { TilePresets } from "./../../core/mock-stubs/tile-grid.mock";
+import { tilePresets } from "./../../core/mock-stubs/tile-grid.mock";
 import { MockCmsApiService } from "./mock-cms-api-service";
 
 let activatedRoute: ActivatedRoute;
@@ -31,6 +31,18 @@ let activatedRoute: ActivatedRoute;
 /**
  * Fake MockCmsSettingService with the below stub
  */
+
+@Component({
+    selector: "cms-source-list",
+    template: ""
+})
+
+class MockSourceListComponent {
+    public spyClearWall: jasmine.Spy = jasmine.createSpy("clearSelectedSourceList").and.returnValue(undefined);
+    public clearSelectedSourceList(): undefined {
+        return undefined;
+    }
+}
 class MockCmsSettingService {
     public selectedSources: any[] = [
         {
@@ -103,7 +115,8 @@ describe("CmsSourcesPanelComponent", () => {
 
     beforeEach(async(() => {
         TestBed.configureTestingModule({
-            declarations: [CmsSourcesPanelComponent],
+            declarations: [CmsSourcesPanelComponent,
+            MockSourceListComponent],
             providers: [
                 AppConfig,
                 TranslateService,
@@ -195,9 +208,6 @@ describe("CmsSourcesPanelComponent", () => {
     it("should show bottom toolbar in case selected source is > 0", () => {
         fixture.detectChanges();
         const bottomToolbar: DebugElement = fixture.debugElement.query(By.css(".page-toolbar.bottom"));
-        expect(bottomToolbar).toBeTruthy();
-
-        cmsSettingService.selectedSources = MockSources;
         expect(bottomToolbar).toBeTruthy();
     });
 
@@ -339,9 +349,36 @@ describe("CmsSourcesPanelComponent", () => {
         expect(putContentsOnDisplay.calls.count()).toEqual(1);
     });
 
-    it("clearMiniDisplayWall should set showClearWallPopup to FALSE and cmsSettingService.selectedSources to 0 ", () => {
-        debugInstance.clearMiniDisplayWall();
-        expect(debugInstance.showClearWallPopup).toBeFalsy();
-        expect(cmsSettingService.selectedSources.length).toBe(0);
+    it("clearMiniDisplayWall should set showClearWallPopup to FALSE", () => {
+        fixture.detectChanges();
+        fixture.whenStable().then(() => {
+            const clearWallBtn: HTMLElement = nativeElement.querySelector("#sources-panel-back-button");
+            expect(clearWallBtn).not.toBeNull();
+            clearWallBtn.dispatchEvent(new Event("ndClick"));
+            expect(debugInstance.showClearWallPopup).toBeTruthy();
+            fixture.detectChanges();
+            fixture.whenStable().then(() => {
+                const popup: any = nativeElement.querySelector("nd-popup");
+                const popupBody: any = nativeElement.querySelector("nd-popup popup-body");
+                expect(popup).not.toBeNull();
+                popup.dispatchEvent(new Event("done"));
+                expect(debugInstance.cmsSettingService.selectedSources.length).toEqual(0);
+                expect(debugInstance.showClearWallPopup).toBeFalsy();
+            });
+        });
     });
+
+    it("should not close popup if error occurs while updating display Content", () => {
+        const clearWallBtn: HTMLElement = nativeElement.querySelector("#sources-panel-back-button");
+        expect(clearWallBtn).not.toBeNull();
+        clearWallBtn.dispatchEvent(new Event("ndClick"));
+        fixture.detectChanges();
+        fixture.whenStable().then(() => {
+            expect(debugInstance.showClearWallPopup ).toBeTruthy();
+            debugInstance.displayId = -1;
+            debugInstance.clearMiniDisplayWall();
+            expect(debugInstance.cmsSettingService.selectedSources.length).not.toEqual(0);
+        });
+    });
+
 });

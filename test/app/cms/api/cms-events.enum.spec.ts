@@ -1,7 +1,8 @@
+/**
+ * test specification for  cms-events enumeration
+ */
 import { CMS_EVENTS } from "../../../../app/cms/api/cms-events.enum";
-
 describe("CMS-Events - ", () => {
-
     it("should expect enums not to be changed", () => {
         expect(CMS_EVENTS[CMS_EVENTS.MiniDisplay]).toBe("MiniDisplay");
         expect(CMS_EVENTS[CMS_EVENTS.DisplayList]).toBe("DisplayList");

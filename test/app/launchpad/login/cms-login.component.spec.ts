@@ -22,7 +22,7 @@ import { AppConfig } from "../../../../app/config";
 import { CmsLoginComponent } from "../../../../app/launchpad/login/cms-login.component";
 import { CmsSettingsService } from "../../../../app/launchpad/settings/cms-settings.service";
 import { CmsMiniDisplayService } from "../../../../app/shared/mini-display/cms-mini-display.service";
-import { MockLicenseInfo, MockUser, MockUserProfileSettings } from "./../../core/mock-stubs/login.mock";
+import { mockLicenseInfo, mockUser, mockUserProfileSettings } from "./../../core/mock-stubs/login.mock";
 import { MockCmsApiService } from "./mock-api-service-Login";
 
 let router: any;
@@ -117,12 +117,12 @@ describe("CmsLoginComponent", () => {
     });
 
     it("User Login: Success", () => {
-        debugInstance.user = MockUser;
+        debugInstance.user = mockUser;
         debugInstance.onLoginSubmit();
         fixture.whenStable().then(() => {
             const userModel : any = JSON.parse(storageManager.getItem(CmsSessionStorageItem.USER));
             if (userModel) {
-                expect(userModel.username).toEqual(MockUser.username);
+                expect(userModel.username).toEqual(mockUser.username);
                 expect(userModel.loggedIn).toEqual(true);
             } else {
                 debugInstance.appConfig.log("ERROR: User Login");

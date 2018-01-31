@@ -1,36 +1,61 @@
-import { ComponentFixture, TestBed, async, inject } from "@angular/core/testing";
-import { By } from "@angular/platform-browser";
-import { DebugElement, CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA, ElementRef, SimpleChanges } from "@angular/core";
-import { Subject } from "rxjs/Subject";
-import { Observable } from "rxjs/Observable";
-import { TranslateHttpLoader } from "@ngx-translate/http-loader";
+/**
+ * Test Specification for CMS Mini Display component.
+ */
+import { CUSTOM_ELEMENTS_SCHEMA, ElementRef, NO_ERRORS_SCHEMA } from "@angular/core";
+import { async, ComponentFixture, TestBed } from "@angular/core/testing";
+import { Http, HttpModule } from "@angular/http";
 import { Router } from "@angular/router";
-import { HttpModule, Http } from "@angular/http";
-import { TranslateModule, TranslateLoader } from "@ngx-translate/core";
-import { CmsMiniDisplayComponent } from "../../../../app/shared/mini-display/cms-mini-display.component";
-import { AppConfig } from "../../../../app/config";
-import { CmsMiniDisplayService } from "../../../../app/shared/mini-display/cms-mini-display.service";
-import { EventManager } from "../../../../app/utils/event-manager.util";
+import { TranslateLoader, TranslateModule } from "@ngx-translate/core";
+import { TranslateHttpLoader } from "@ngx-translate/http-loader";
+import { Observable } from "rxjs/Observable";
 import { StorageManager } from "../../../../app/cms/api/cms-storagemanager.service";
 import { CmsSessionStorageItem } from "../../../../app/cms/models/cms-session-storage-item";
-import { MockElementRef, CmsMiniDisplayServiceStub, RouterStub, mockDisplay, EventCases, reFactoredTile, reFactoredSource, reFactoredTileContent, miniDisplay, mockDisplayForService } from "../../core/mock-stubs/cms-mini-display.component.mock";
+import { AppConfig } from "../../../../app/config";
+import { CmsMiniDisplayComponent } from "../../../../app/shared/mini-display/cms-mini-display.component";
+import { CmsMiniDisplayService } from "../../../../app/shared/mini-display/cms-mini-display.service";
+import { EventManager } from "../../../../app/utils/event-manager.util";
+import {
+    CmsMiniDisplayServiceStub,
+    eventCases,
+    miniDisplay,
+    mockDisplay,
+    mockDisplayForService,
+    MockElementRef,
+    reFactoredSource,
+    reFactoredTile,
+    reFactoredTileContent,
+    RouterStub
+} from "../../core/mock-stubs/cms-mini-display.component.mock";
 
 describe("CmsMiniDisplayComponent", () => {
     let component: CmsMiniDisplayComponent;
     let fixture: ComponentFixture<CmsMiniDisplayComponent>;
-    let debugInstance, nativeElement;
-    let element: ElementRef;
+    let debugInstance: any;
+    let nativeElement: HTMLElement;
     let appConfig: AppConfig;
     let cmsMiniDisplayService: CmsMiniDisplayService;
-    let cmsEventManager: EventManager;
-    let fitHeight: number;
     let router: Router;
-    let change: any = {
-        "fitHeight": {
-            "isFirstChange": function () { return null; }
+    const ref: any = (): undefined => {
+        return undefined;
+    };
+    const change: any = {
+        fitHeight: {
+            isFirstChange: ref
         }
     };
-    let logSpy: jasmine.Spy, navigateSpy, addEventSpy, deleteEventSpy, hammerOnSpy;
+    let logSpy: jasmine.Spy;
+    let navigateSpy: jasmine.Spy;
+    let addEventSpy: jasmine.Spy;
+    let spyInitDisplayTileInfoWithContent: jasmine.Spy;
+    const zoomLevels: any = {
+        left: 100,
+        top: 200,
+        zoomOut: -100,
+        zoomIn: 100,
+        slightZoomIn: 510,
+        pageZoom: 500,
+        slightZoomOut: 490
+    };
 
     beforeEach(async(() => {
         TestBed.configureTestingModule({
@@ -41,14 +66,14 @@ describe("CmsMiniDisplayComponent", () => {
                 { provide: Router, useClass: RouterStub },
                 { provide: EventManager },
                 StorageManager,
-                AppConfig,
+                AppConfig
             ],
             imports: [
                 HttpModule,
                 TranslateModule.forRoot({
                     loader: {
                         provide: TranslateLoader,
-                        useFactory: (http: Http) => new TranslateHttpLoader(http, "/base/app/i18n/", ".json"),
+                        useFactory: (http: Http): TranslateHttpLoader => new TranslateHttpLoader(http, "/base/app/i18n/", ".json"),
                         deps: [Http]
                     }
                 })
@@ -63,9 +88,9 @@ describe("CmsMiniDisplayComponent", () => {
             cmsMiniDisplayService = fixture.debugElement.injector.get(CmsMiniDisplayService);
             appConfig = fixture.debugElement.injector.get(AppConfig);
             router = fixture.debugElement.injector.get(Router);
-            logSpy = spyOn(appConfig, "log").and.returnValue(Observable.of(null));
-            addEventSpy = spyOn(EventManager, "ADD_EVENT_ON_ELEMENT").and.returnValue(Observable.of(null));
-            navigateSpy = spyOn(router, "navigate").and.returnValue(Observable.of(null));
+            logSpy = spyOn(appConfig, "log").and.returnValue(Observable.of(undefined));
+            addEventSpy = spyOn(EventManager, "ADD_EVENT_ON_ELEMENT").and.returnValue(Observable.of(undefined));
+            navigateSpy = spyOn(router, "navigate").and.returnValue(Observable.of(undefined));
             sessionStorage.setItem(CmsSessionStorageItem.DISPLAY, JSON.stringify(mockDisplay));
         });
     }));
@@ -73,8 +98,7 @@ describe("CmsMiniDisplayComponent", () => {
     beforeEach(() => {
         sessionStorage.setItem(CmsSessionStorageItem.DISPLAY, JSON.stringify(mockDisplay));
         debugInstance.zoomlevel = 0;
-        hammerOnSpy = spyOn(Hammer, "on").and.returnValue(Observable.of(null));
-        component.fitHeight = 100;
+        component.fitHeight = zoomLevels.fitHeight;
     }
     );
 
@@ -88,49 +112,49 @@ describe("CmsMiniDisplayComponent", () => {
         cmsMiniDisplayService.init();
         fixture.detectChanges();
         fixture.whenStable().then(() => {
+            expect(debugInstance.miniDisplayCmsEvent.closed).toBeTruthy();
+            expect(debugInstance.windowResizeSubscription.closed).toBeTruthy();
+            expect(debugInstance.scrollSubscription.closed).toBeTruthy();
+            expect(debugInstance.touchstartSubscription.closed).toBeTruthy();
+            expect(debugInstance.touchendSubscription.closed).toBeTruthy();
         });
         component.ngOnDestroy();
-        expect(debugInstance.miniDisplayCmsEvent.closed).toBeTruthy();
-        expect(debugInstance.windowResizeSubscription.closed).toBeTruthy();
-        expect(debugInstance.scrollSubscription.closed).toBeTruthy();
-        expect(debugInstance.touchstartSubscription.closed).toBeTruthy();
-        expect(debugInstance.touchendSubscription.closed).toBeTruthy();
     });
 
     it("should fit mini display to fit screen with no zoom on Changes", () => {
         cmsMiniDisplayService.init();
         fixture.detectChanges();
         fixture.whenStable().then(() => {
+            component.ngOnChanges(change);
+            expect(debugInstance.miniDisplayHelper.fitHeightZoomLevel).toEqual(zoomLevels.fitHeight);
+            expect(debugInstance.zoomlevel).toEqual(0);
         });
-        component.ngOnChanges(change);
-        expect(debugInstance.miniDisplayHelper.fitHeightZoomLevel).toEqual(100);
-        expect(debugInstance.zoomlevel).toEqual(0);
     });
 
     it("should handle DisplayUpdated event", () => {
-        let spyInitDisplayTileInfoWithContent = spyOn(debugInstance, "initDisplayTileInfoWithContent").and.returnValue(Observable.of(null));
+        spyInitDisplayTileInfoWithContent = spyOn(debugInstance, "initDisplayTileInfoWithContent").and.returnValue(Observable.of(undefined));
         debugInstance.subscribeCMSEvents();
         debugInstance.miniDisplayCmsEvent.next(
             {
-                "eventType": "DisplayUpdated",
-                "body": EventCases.DisplayUpdated,
-                "displayId": component.display.id,
+                eventType: "DisplayUpdated",
+                body: eventCases.DisplayUpdated,
+                displayId: component.display.id
             }
         );
         expect(spyInitDisplayTileInfoWithContent.calls.count()).toEqual(1);
-        expect(JSON.parse(sessionStorage.getItem(CmsSessionStorageItem.DISPLAY))).toEqual(EventCases.DisplayUpdated);
+        expect(JSON.parse(sessionStorage.getItem(CmsSessionStorageItem.DISPLAY))).toEqual(eventCases.DisplayUpdated);
     });
 
     it("should handle DisplayDeleted event", () => {
         debugInstance.subscribeCMSEvents();
         debugInstance.miniDisplayCmsEvent.next(
             {
-                "eventType": "DisplayDeleted",
-                "body": EventCases.DisplayDeleted,
-                "displayId": component.display.id,
+                eventType: "DisplayDeleted",
+                body: eventCases.DisplayDeleted,
+                displayId: component.display.id
             }
         );
-        let args = navigateSpy.calls.mostRecent().args;
+        const args: any[] = navigateSpy.calls.mostRecent().args;
         expect(args[0]).toEqual(["/displays-panel"]);
         expect(appConfig.log).toHaveBeenCalled();
         expect(sessionStorage.getItem(CmsSessionStorageItem.DISPLAY)).toBeNull();
@@ -140,13 +164,13 @@ describe("CmsMiniDisplayComponent", () => {
         debugInstance.subscribeCMSEvents();
         debugInstance.miniDisplayCmsEvent.next(
             {
-                "eventType": "TilerAndContentUpdated",
-                "body": EventCases.TilerAndContentUpdated,
-                "displayId": component.display.id,
+                eventType: "TilerAndContentUpdated",
+                body: eventCases.TilerAndContentUpdated,
+                displayId: component.display.id
             }
         );
         expect(debugInstance.miniDisplayTilerList).toEqual(reFactoredTile);
-        expect(debugInstance.displayTilerList).toEqual(EventCases.TilerAndContentUpdated.tiles);
+        expect(debugInstance.displayTilerList).toEqual(eventCases.TilerAndContentUpdated.tiles);
         expect(debugInstance.miniDisplayContentList).toEqual(reFactoredSource);
         expect(debugInstance.showDisplayContent).toBeTruthy();
         expect(appConfig.log).toHaveBeenCalled();
@@ -157,9 +181,9 @@ describe("CmsMiniDisplayComponent", () => {
         debugInstance.subscribeCMSEvents();
         debugInstance.miniDisplayCmsEvent.next(
             {
-                "eventType": "ContentUpdated",
-                "body": EventCases.ContentUpdated,
-                "displayId": component.display.id,
+                eventType: "ContentUpdated",
+                body: eventCases.ContentUpdated,
+                displayId: component.display.id
             }
         );
         expect(debugInstance.miniDisplayContentList[0]).toEqual(reFactoredTileContent);
@@ -171,13 +195,13 @@ describe("CmsMiniDisplayComponent", () => {
         debugInstance.subscribeCMSEvents();
         debugInstance.miniDisplayCmsEvent.next(
             {
-                "eventType": "ResourceUpdated",
-                "body": EventCases.ResourceUpdated,
-                "displayId": component.display.id,
+                eventType: "ResourceUpdated",
+                body: eventCases.ResourceUpdated,
+                displayId: component.display.id
             }
         );
-        expect(debugInstance.miniDisplayContentList[0].name).toEqual(EventCases.ResourceUpdated.name);
-        expect(debugInstance.miniDisplayContentList[0].snapshotPath).toEqual(EventCases.ResourceUpdated.snapshotPath);
+        expect(debugInstance.miniDisplayContentList[0].name).toEqual(eventCases.ResourceUpdated.name);
+        expect(debugInstance.miniDisplayContentList[0].snapshotPath).toEqual(eventCases.ResourceUpdated.snapshotPath);
         expect(appConfig.log).toHaveBeenCalled();
     });
 
@@ -186,9 +210,9 @@ describe("CmsMiniDisplayComponent", () => {
         debugInstance.subscribeCMSEvents();
         debugInstance.miniDisplayCmsEvent.next(
             {
-                "eventType": "ResourceDeleted",
-                "body": EventCases.TilerAndContentUpdated,
-                "displayId": component.display.id,
+                eventType: "ResourceDeleted",
+                body: eventCases.TilerAndContentUpdated,
+                displayId: component.display.id
             }
         );
         expect(debugInstance.showDisplayContent).toBeTruthy();
@@ -196,13 +220,13 @@ describe("CmsMiniDisplayComponent", () => {
 
     it("should check for empty responseBody tiles and content in case of TilerAndContentUpdated event", () => {
         debugInstance.subscribeCMSEvents();
-        EventCases.TilerAndContentUpdated.tiles.length = 0;
-        EventCases.TilerAndContentUpdated.content.length = 0;
+        eventCases.TilerAndContentUpdated.tiles.length = 0;
+        eventCases.TilerAndContentUpdated.content.length = 0;
         debugInstance.miniDisplayCmsEvent.next(
             {
-                "eventType": "TilerAndContentUpdated",
-                "body": EventCases.TilerAndContentUpdated,
-                "displayId": component.display.id,
+                eventType: "TilerAndContentUpdated",
+                body: eventCases.TilerAndContentUpdated,
+                displayId: component.display.id
             }
         );
         expect(debugInstance.miniDisplayContentList).toEqual([]);
@@ -211,12 +235,11 @@ describe("CmsMiniDisplayComponent", () => {
     });
 
     it("should set keydown events for zooming on container", () => {
-        let container = document.getElementsByClassName("cms-mini-display-container");
+        const container: any = document.getElementsByClassName("cms-mini-display-container");
         expect(container.length).toEqual(1);
-
         debugInstance.addMiniDisplayEventListeners();
         expect(EventManager.ADD_EVENT_ON_ELEMENT).toHaveBeenCalled();
-        let args = addEventSpy.calls.mostRecent().args;
+        const args: any[] = addEventSpy.calls.mostRecent().args;
         expect(args[0]).toEqual(container[0]);
         expect(args[1]).toEqual("keydown");
     });
@@ -229,7 +252,7 @@ describe("CmsMiniDisplayComponent", () => {
 
     it("should scroll to new Left and Top position on scrolling", () => {
         cmsMiniDisplayService.init();
-        let container = document.getElementById("mini-display-container");
+        const container: any = document.getElementById("mini-display-container");
         debugInstance.subscribeScroller();
         expect(debugInstance.scrollSubscription).toBeDefined();
         expect(debugInstance.miniDisplayHelper.scrollPosition.Left).toEqual(0);
@@ -238,8 +261,8 @@ describe("CmsMiniDisplayComponent", () => {
             Left: 100,
             Top: 200
         });
-        expect(debugInstance.miniDisplayHelper.scrollPosition.Left).toEqual(100);
-        expect(debugInstance.miniDisplayHelper.scrollPosition.Top).toEqual(200);
+        expect(debugInstance.miniDisplayHelper.scrollPosition.Left).toEqual(zoomLevels.left);
+        expect(debugInstance.miniDisplayHelper.scrollPosition.Top).toEqual(zoomLevels.top);
     });
 
     it("should set the miniDisplay initial values on resizing the window", () => {
@@ -249,8 +272,8 @@ describe("CmsMiniDisplayComponent", () => {
         debugInstance.windowResizeSubscription.next();
         expect(JSON.stringify(component.display)).toEqual(sessionStorage.getItem(CmsSessionStorageItem.DISPLAY));
         expect(appConfig.log).toHaveBeenCalled();
-        expect(debugInstance.miniDisplayStyle.height).toEqual(miniDisplay.miniDisplaySize.height + "px");
-        expect(debugInstance.miniDisplayStyle.width).toEqual(miniDisplay.miniDisplaySize.width + "px");
+        expect(debugInstance.miniDisplayStyle.height).toEqual(`${miniDisplay.miniDisplaySize.height}px`);
+        expect(debugInstance.miniDisplayStyle.width).toEqual(`${miniDisplay.miniDisplaySize.width}px`);
         //zoom to stay same as we are only reinitializing values.
         expect(debugInstance.zoomlevel).toBe(0);
         expect(debugInstance.miniDisplayTilerList).toEqual(miniDisplay.miniDisplayTilerList);
@@ -261,7 +284,7 @@ describe("CmsMiniDisplayComponent", () => {
     });
 
     it("should throw error while invoking getMiniDisplayTilerInfoWithContent API", () => {
-        sessionStorage.setItem(CmsSessionStorageItem.DISPLAY, JSON.stringify({ "id": -1 }));
+        sessionStorage.setItem(CmsSessionStorageItem.DISPLAY, JSON.stringify({ id: -1 }));
         debugInstance.initDisplayTileInfoWithContent();
         expect(debugInstance.showDisplayContent).toBeFalsy();
     });
@@ -273,49 +296,63 @@ describe("CmsMiniDisplayComponent", () => {
     });
 
     it("should call zoomMiniDisplayOnBrowser method and return without invoking zoom method when ctrlKey is false", () => {
-        let spyZoom = spyOn(debugInstance, "zoom").and.returnValue(Observable.of(null));
-        let eventKeyDown = new KeyboardEvent("keydown", { ctrlKey: false });
+        const spyZoom: any = spyOn(debugInstance, "zoom").and.returnValue(Observable.of(undefined));
+        const eventKeyDown: KeyboardEvent = new KeyboardEvent("keydown", { ctrlKey: false });
         debugInstance.zoomMiniDisplayOnBrowser(eventKeyDown);
         expect(spyZoom.calls.count()).toEqual(0);
     });
 
     it("should perform zoom out on CTRL++", () => {
-        let spyZoom = spyOn(debugInstance, "zoom").and.returnValue(Observable.of(null));
-        let whichList = [61, 107, 187];
-        for (let whichListIndex = 0; whichListIndex < whichList.length; whichListIndex++) {
-            let eventKeyDown = new KeyboardEvent("keydown", { ctrlKey: true });
-            Object.defineProperty(eventKeyDown, "which", { get: function () { return whichList[whichListIndex]; } });
+        const spyZoom: any = spyOn(debugInstance, "zoom").and.returnValue(Observable.of(undefined));
+        // tslint:disable-next-line:no-magic-numbers
+        const whichList: number[] = [61, 107, 187];
+        const eventKeyDown: KeyboardEvent = new KeyboardEvent("keydown", { ctrlKey: true });
+        for (const whichListItem  of  whichList) {
+            Object.defineProperty(eventKeyDown, "which", {
+                get: (): number => {
+                    return whichListItem;
+                }
+            });
             debugInstance.zoomMiniDisplayOnBrowser(eventKeyDown);
-            expect(spyZoom).toHaveBeenCalledWith(-100);
+            expect(spyZoom).toHaveBeenCalledWith(zoomLevels.zoomOut);
         }
     });
 
     it("should perform zoom in on CTRL--", () => {
-        let spyZoom = spyOn(debugInstance, "zoom").and.returnValue(Observable.of(null));
-        let whichList = [173, 109, 189];
-        for (let whichListIndex = 0; whichListIndex < whichList.length; whichListIndex++) {
-            let eventKeyDown = new KeyboardEvent("keydown", { ctrlKey: true });
-            Object.defineProperty(eventKeyDown, "which", { get: function () { return whichList[whichListIndex]; } });
+        const spyZoom: any = spyOn(debugInstance, "zoom").and.returnValue(Observable.of(undefined));
+        // tslint:disable-next-line:no-magic-numbers
+        const whichList: number[] = [173, 109, 189];
+        for (const whichListItem  of whichList) {
+            const eventKeyDown: KeyboardEvent = new KeyboardEvent("keydown", { ctrlKey: true });
+            Object.defineProperty(eventKeyDown, "which", {
+                get: (): number => {
+                    return whichListItem;
+                }
+            });
             debugInstance.zoomMiniDisplayOnBrowser(eventKeyDown);
-            expect(spyZoom).toHaveBeenCalledWith(100);
+            expect(spyZoom).toHaveBeenCalled();
         }
     });
 
     it("should perform zoom in or out on CTRL + MouseWheel", () => {
-        let spyZoom = spyOn(debugInstance, "zoom").and.returnValue(Observable.of(null));
-        let wheelEvent = new WheelEvent("syntheticWheel", { "deltaY": 4, ctrlKey: true });
+        const callTimes: number = 4;
+        const spyZoom: any = spyOn(debugInstance, "zoom").and.returnValue(Observable.of(undefined));
+        const wheelEvent: WheelEvent = new WheelEvent("syntheticWheel", {
+            deltaY: 4,
+            ctrlKey: true
+        });
         debugInstance.zoomMiniDisplayOnBrowser(wheelEvent);
-        expect(spyZoom).toHaveBeenCalledWith(4);
+        expect(spyZoom).toHaveBeenCalledWith(callTimes);
     });
 
     it("should return if event received is for other display", () => {
-        let spyHandleMiniDisplayChangeEvent = spyOn(debugInstance, "handleMiniDisplayChangeEvent").and.returnValue(Observable.of(null));
+        const spyHandleMiniDisplayChangeEvent: any = spyOn(debugInstance, "handleMiniDisplayChangeEvent").and.returnValue(Observable.of(undefined));
         debugInstance.subscribeCMSEvents();
         debugInstance.miniDisplayCmsEvent.next(
             {
-                "eventType": "DisplayUpdated",
-                "body": EventCases.DisplayUpdated,
-                "displayId": -1,
+                eventType: "DisplayUpdated",
+                body: eventCases.DisplayUpdated,
+                displayId: -1
             }
         );
         expect(spyHandleMiniDisplayChangeEvent.calls.count()).toEqual(0);
@@ -324,18 +361,16 @@ describe("CmsMiniDisplayComponent", () => {
     it("should perform zoom in and zoom out", () => {
         cmsMiniDisplayService.init();
         fixture.detectChanges();
-
-        debugInstance.zoomLevel = 500;
+        debugInstance.zoomLevel = zoomLevels.pageZoom;
         debugInstance.zoom(-1);
-        expect(debugInstance.zoomLevel).toEqual(510);
-
-        debugInstance.zoomLevel = 500;
+        expect(debugInstance.zoomLevel).toEqual(zoomLevels.slightZoomIn);
+        debugInstance.zoomLevel = zoomLevels.pageZoom;
         debugInstance.zoom(1);
-        expect(debugInstance.zoomLevel).toEqual(490);
+        expect(debugInstance.zoomLevel).toEqual(zoomLevels.slightZoomOut);
     });
 
     it("should set focus on mini-display container", () => {
-        let spyOnFocus = spyOn(document.getElementById("mini-display-container"), 'focus').and.returnValue(Observable.of(null));
+        const spyOnFocus: any = spyOn(document.getElementById("mini-display-container"), "focus").and.returnValue(Observable.of(undefined));
         debugInstance.setFocusOnMiniDisplayContainer();
         expect(spyOnFocus.calls.count()).toEqual(1);
     });

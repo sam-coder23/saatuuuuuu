@@ -1,23 +1,22 @@
-import { TestBed, async } from "@angular/core/testing";
+/**
+ * Test specification for User model.
+ */
+import { IUserToken } from "../../../../app/cms/models/cms-user-token";
 import { IUserConfig, User } from "../../../../app/cms/models/cms-user.model";
 
 describe("User Model: ", () => {
+    let user: User;
+    const expectedLoggedInState: boolean = true;
 
-    let user, expectedLoggedInState = true;
-
-    let expectedIUserConfig: IUserConfig = {
+    const expectedIUserConfig: IUserConfig = {
         username: "bcd-se-test",
         password: "bcdsetest"
     };
 
-    let expectedSerializableObj = {
+    const expectedSerializableObj: IUserToken = {
         username: "bcd-se-test",
         loggedIn: expectedLoggedInState
     };
-
-    beforeEach(async () =>
-        TestBed.configureTestingModule({}));
-
     beforeEach(() => {
         user = new User(expectedIUserConfig);
     });
@@ -46,12 +45,12 @@ describe("User Model: ", () => {
         // LoggedIn setter to set loggedIn property
         user.LoggedIn = expectedLoggedInState;
 
-        let serializableObj = user.asSerializable();
+        const serializableObj: IUserToken = user.asSerializable();
         expect(serializableObj).toEqual(expectedSerializableObj);
     });
 
     it("should return expected object from toJSON method", () => {
-        let userJSON = user.toJSON();
+        const userJSON: IUserConfig = user.toJSON();
         expect(userJSON).toEqual(expectedIUserConfig);
     });
 

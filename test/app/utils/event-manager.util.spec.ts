@@ -1,8 +1,11 @@
-import { EventManager } from '../../../app/utils/event-manager.util';
+/**
+ * Test Specification Event manger utility class.
+ */
+import { EventManager } from "../../../app/utils/event-manager.util";
 
 describe("Event Manager", () => {
   let mockValue: boolean;
-  let mockHandler = () => {
+  const mockHandler: EventListener = (): void => {
     mockValue = true;
   };
 
@@ -23,14 +26,14 @@ describe("Event Manager", () => {
   });
 
   it("should add event listener to event loop on element given as parameter", () => {
-    let container = document.createElement("div");
+    const container: HTMLElement = document.createElement("div");
     EventManager.ADD_EVENT_ON_ELEMENT(container, "click", mockHandler);
     container.dispatchEvent(new Event("click"));
     expect(mockValue).toBeTruthy();
   });
 
   it("should remove event listener to event loop on element given as parameter", () => {
-    let container = document.createElement("div");
+    const container: HTMLElement = document.createElement("div");
     EventManager.REMOVE_EVENT_ON_ELEMENT(container, "click", mockHandler);
     container.dispatchEvent(new Event("click"));
     expect(mockValue).toBeFalsy();

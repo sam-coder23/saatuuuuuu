@@ -1,33 +1,35 @@
+/**
+ * Test specification for Generic collections utility.
+ */
 import { GenericCollection } from "../../../../../app/core/type/extended/GenericCollection";
 
+const dataLimit: number = 10;
 describe("GenericCollection", () => {
-
     it("add key value(number) pair as defined collection and get the data as passed to collection", () => {
-        let collection = new GenericCollection<number>();
+        const collection: GenericCollection<number> = new GenericCollection<number>();
         expect(collection).toBeDefined();
 
-        collection.add("limit", 10);
-
-        let value = collection.hasKey("limit");
+        collection.add("limit", dataLimit);
+        const value: boolean = collection.hasKey("limit");
         expect(value).toBe(true);
 
-        let noValue = collection.hasKey("source");
+        const noValue: boolean = collection.hasKey("source");
         expect(noValue).toBe(false);
 
-        let data = collection.item("limit");
-        expect(data).toBe(10);
+        const data: number = collection.item("limit");
+        expect(data).toBe(dataLimit);
     });
 
     it("add key value(string) pair as defined collection and get the data as passed to collection", () => {
-        let collection = new GenericCollection<string>();
+        const collection: GenericCollection<string> = new GenericCollection<string>();
         expect(collection).toBeDefined();
 
         collection.add("userName", "Kanchan");
 
-        let value = collection.hasKey("userName");
+        const value: boolean = collection.hasKey("userName");
         expect(value).toBe(true);
 
-        let data = collection.item("userName");
+        const data: string = collection.item("userName");
         expect(data).toBe("Kanchan");
     });
 });

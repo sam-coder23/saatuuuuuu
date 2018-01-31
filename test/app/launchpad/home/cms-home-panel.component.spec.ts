@@ -19,7 +19,7 @@ import { Source } from "../../../../app/cms/models/cms-source";
 import { AppConfig } from "../../../../app/config";
 import { CmsHomePanelComponent } from "../../../../app/launchpad/home/cms-home-panel.component";
 import { CmsSettingsService } from "../../../../app/launchpad/settings/cms-settings.service";
-import { MockRouter } from "./mock-router-home";
+import { MockRouterStub } from "../../core/mock-stubs/mock-router.stub";
 
 const mockDisplayData: Display = {
     favorite: true,
@@ -137,7 +137,7 @@ describe("Component: CmsHomePanelComponent", () => {
                 StorageManager,
                 {
                     provide: Router,
-                    useClass: MockRouter
+                    useClass: MockRouterStub
                 },
                 {
                     provide: ActivatedRoute,

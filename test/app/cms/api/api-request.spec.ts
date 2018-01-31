@@ -1,26 +1,39 @@
-import { TestBed, inject, async } from "@angular/core/testing";
+/**
+ * Test specification for API Request service
+ */
+import { async, inject, TestBed } from "@angular/core/testing";
+import { BaseRequestOptions, Http, HttpModule, Response, ResponseOptions } from "@angular/http";
+import { MockBackend, MockConnection } from "@angular/http/testing";
 import { Router } from "@angular/router";
 
-import { MockBackend, MockConnection } from "@angular/http/testing";
-import { HttpModule, Http, BaseRequestOptions, XHRBackend, ResponseOptions, Response } from "@angular/http";
-import { AppConfig } from "../../../../app/config";
 import { APIRequest } from "../../../../app/cms/api/api-request";
 import { StorageManager } from "../../../../app/cms/api/cms-storagemanager.service";
+import { AppConfig } from "../../../../app/config";
+import { settingsMock } from "../../core/mock-stubs/tile.mock";
 
 class MockRouterStub {
-    navigate(commands: any[]): any[] {
+    public navigate(commands: any[]): any[] {
         return commands;
     }
 }
 
 class MockAppConfigStub {
-    ServerURL = "https://0.0.0.0/cms-rest/v1";
-    log() { }
+    public serverURL: string = "https://0.0.0.0/cms-rest/v1";
+
+    public get ServerURL(): string {
+        return this.serverURL;
+    }
+    public log(): undefined {
+        return undefined;
+    }
 }
 
 describe("Service: APIRequest", () => {
-    let mockbackend, router, appConfig, APIRequestService,
-    storageManager: StorageManager;
+    let mockBackEnd: MockBackend;
+    let router: Router;
+    let appConfig: AppConfig;
+    let apiRequestService: APIRequest;
+    let storageManager: StorageManager;
 
     beforeEach(async(() =>
         TestBed.configureTestingModule({
@@ -34,7 +47,7 @@ describe("Service: APIRequest", () => {
                         BaseRequestOptions
                     ],
                     provide: Http,
-                    useFactory: (mockBackend: MockBackend, defaultOptions: BaseRequestOptions) => {
+                    useFactory: (mockBackend: MockBackend, defaultOptions: BaseRequestOptions): Http => {
                         return new Http(mockBackend, defaultOptions);
                     }
                 },
@@ -50,33 +63,35 @@ describe("Service: APIRequest", () => {
             ]
         })));
 
-    beforeEach(inject([MockBackend, Router, AppConfig, Http, StorageManager], (mb, router, appConfig, http, storageManager) => {
-        router = router;
-        appConfig = appConfig;
-        mockbackend = mb;
-        storageManager = storageManager;
-        APIRequestService = new APIRequest(http, router, appConfig, storageManager);
-    }));
+    beforeEach(inject([MockBackend, Router, AppConfig, Http, StorageManager],
+        (mockBackendService: MockBackend, routerService: Router, appConfigService: AppConfig, http: Http, storageManagerService: StorageManager) => {
+            router = routerService;
+            appConfig = appConfigService;
+            mockBackEnd = mockBackendService;
+            storageManager = storageManagerService;
+            apiRequestService = new APIRequest(http, router, appConfig, storageManager);
+        }));
 
     it("Service should be defined", () => {
-        expect(APIRequestService).toBeDefined();
-        expect(APIRequestService.serverURL).toBe(APIRequestService.appConfig.ServerURL);
-        expect(APIRequestService.headers).toBeDefined();
-        expect(APIRequestService.requestOption).toBeDefined();
+        expect(apiRequestService).toBeDefined();
+        //expect(apiRequestService.serverURL).toBe(apiRequestService.appConfig.ServerURL);
+        expect(apiRequestService.headers).toBeDefined();
+        expect(apiRequestService.requestOption).toBeDefined();
     });
 
     it("Should return specific url as per request - GetURL()", () => {
-        let loginUrl = "login";
-        let snapshotUrl = "display_snapshot.jpg";
-        let resourceRequestUrl = "displays/11/resources?start=1&count=20&filter=&onlyfavorite=false"
+        debugger;
+        const loginUrl: string = "login";
+        const snapshotUrl: string = "display_snapshot.jpg";
+        const resourceRequestUrl: string = "displays/11/resources?start=1&count=20&filter=&onlyfavorite=false";
 
-        let serverUrlRegex = /^https:\/\/0.0.0.0\/cms-rest\/v1/;
-        let dateQuestionRegex = /\?_=\d{10,14}\w+/;
-        let dateAmpersandRegex = /\&_=\d{10,14}\w+/;
+        const serverUrlRegex: any = /^https:\/\/0.0.0.0\/cms-rest\/v1/;
+        const dateQuestionRegex: any = /\?_=\d{10,14}\w+/;
+        const dateAmpersandRegex: any = /\&_=\d{10,14}\w+/;
 
-        let finalLoginUrl = APIRequestService.getUrl(loginUrl);
-        let finalSnapshotUrl = APIRequestService.getUrl(snapshotUrl);
-        let finalResourceRequestUrl = APIRequestService.getUrl(resourceRequestUrl);
+        const finalLoginUrl: string = apiRequestService.getUrl(loginUrl);
+        const finalSnapshotUrl: string = apiRequestService.getUrl(snapshotUrl);
+        const finalResourceRequestUrl: string = apiRequestService.getUrl(resourceRequestUrl);
 
         expect(serverUrlRegex.test(finalLoginUrl)).toBeTruthy();
         expect(dateQuestionRegex.test(finalLoginUrl)).toBeTruthy();
@@ -89,11 +104,16 @@ describe("Service: APIRequest", () => {
     });
 
     it("Should be able to make POST request", async(() => {
-        let url = "/login";
-        let requestBody = { "username": "barco", "password": "barco" }
-        let responseBody = { "Message": "Login Successful" };
+        const url: string = "/login";
+        const requestBody: any = {
+            username: "barco",
+            password: "barco"
+        };
+        const responseBody: any = {
+            Message: "Login Successful"
+        };
 
-        mockbackend.connections.subscribe((connection: MockConnection) => {
+        mockBackEnd.connections.subscribe((connection: MockConnection) => {
             connection.mockRespond(new Response(
                 new ResponseOptions({
                     body: responseBody
@@ -101,16 +121,15 @@ describe("Service: APIRequest", () => {
             ));
         });
 
-        APIRequestService.postRequest(url, requestBody).subscribe(data => {
+        apiRequestService.postRequest(url, requestBody).subscribe( (data: any) => {
             expect(responseBody).toEqual(data);
         });
     }));
 
     it("Should be able to make GET request", async(() => {
-        let url = "/users/current/profile/settings";
-        let responseBody = { "language": "en", "wallConnection": { "startUpAction": "auto-connect-to-specific-wall", "specificDisplay": "Auditorium", "recentDisplay": "Board Meeting Room" }, "sourceLabel": { "displaySourceNameLabels": true, "useMultipleLines": false, "fontColor": "#E57373", "fontSize": 16, "backgroundColor": "#4FC3F7", "transparency": 50 }, "wallContent": { "requireConfirmationForLoadingLayouts": false, "allowChangingSources": false, "clipboardEnabled": false, "clipboardSize": "large" }, "logOffTime": 0, "pageSize": 20 };
-
-        mockbackend.connections.subscribe((connection: MockConnection) => {
+        const url: string = "/users/current/profile/settings";
+        const responseBody: any = settingsMock;
+        mockBackEnd.connections.subscribe((connection: MockConnection) => {
             connection.mockRespond(new Response(
                 new ResponseOptions({
                     body: responseBody
@@ -118,17 +137,18 @@ describe("Service: APIRequest", () => {
             ));
         });
 
-        APIRequestService.getRequest(url).subscribe(data => {
+        apiRequestService.getRequest(url).subscribe( (data: any) => {
             expect(responseBody).toEqual(data);
         });
     }));
 
     it("Should be able to make PUT request", async(() => {
-        let url = "/users/current/profile/settings";
-        let requestBody = { "language": "en", "wallConnection": { "startUpAction": "auto-connect-to-specific-wall", "specificDisplay": "Auditorium", "recentDisplay": "Board Meeting Room" }, "sourceLabel": { "displaySourceNameLabels": true, "useMultipleLines": false, "fontColor": "#E57373", "fontSize": 16, "backgroundColor": "#4FC3F7", "transparency": 50 }, "wallContent": { "requireConfirmationForLoadingLayouts": false, "allowChangingSources": false, "clipboardEnabled": false, "clipboardSize": "large" }, "logOffTime": 0, "pageSize": 20 };
-        let responseBody = { "Message": "UserSettings updated sucessfully" };
-
-        mockbackend.connections.subscribe((connection: MockConnection) => {
+        const url: string = "/users/current/profile/settings";
+        const requestBody: any = settingsMock;
+        const responseBody: any = {
+            Message: "UserSettings updated sucessfully"
+        };
+        mockBackEnd.connections.subscribe((connection: MockConnection) => {
             connection.mockRespond(new Response(
                 new ResponseOptions({
                     body: responseBody
@@ -136,16 +156,18 @@ describe("Service: APIRequest", () => {
             ));
         });
 
-        APIRequestService.putRequest(url, requestBody).subscribe(data => {
+        apiRequestService.putRequest(url, requestBody).subscribe( (data: any) => {
             expect(responseBody).toEqual(data);
         });
     }));
 
     it("Should be able to make DELETE request", async(() => {
-        let url = "/users/current/profile/favorites/DIS_8";
-        let responseBody = { "Message": "Favorite has been deleted successfully." };
+        const url: string = "/users/current/profile/favorites/DIS_8";
+        const responseBody: any = {
+            Message: "Favorite has been deconsted successfully."
+        };
 
-        mockbackend.connections.subscribe((connection: MockConnection) => {
+        mockBackEnd.connections.subscribe((connection: MockConnection) => {
             connection.mockRespond(new Response(
                 new ResponseOptions({
                     body: responseBody
@@ -153,39 +175,39 @@ describe("Service: APIRequest", () => {
             ));
         });
 
-        APIRequestService.deleteRequest(url).subscribe(data => {
+        apiRequestService.deleteRequest(url).subscribe( (data: any) => {
             expect(responseBody).toEqual(data);
         });
     }));
 
     it("Should be able to handle 401 error", async(() => {
-        let unAuthorizedError = {
-            "_body": "{\"Message\":\"No valid session associated with this request. Perform login first.\"}",
-            "status": 401,
-            "ok": false,
-            "statusText": "Unauthorized",
-            "headers": {
+        const unAuthorizedError: any = {
+            _body: "{\"Message\":\"No valid session associated with this request. Perform login first.\"}",
+            status: 401,
+            ok: false,
+            statusText: "Unauthorized",
+            headers: {
                 "content-type": [
                     "application/json"
                 ]
             },
-            "type": 2,
-            "url": "https://10.98.0.153/cms-rest/v1/system/info?_=1510045756349"
+            type: 2,
+            url: "https://10.98.0.153/cms-rest/v1/system/info?_=1510045756349"
         };
 
-        mockbackend.connections.subscribe((connection: MockConnection) => {
+        mockBackEnd.connections.subscribe((connection: MockConnection) => {
             connection.mockRespond(new Response(
                 new ResponseOptions({
-                    body: { "Message": "Logout Successful" }
+                    body: {
+                        Message: "Logout Successful"
+                    }
                 })
             ));
         });
 
-        let spyRouterNavigate = spyOn(APIRequestService.router, "navigate").and.callThrough();
-        let spyOnConsole = spyOn(APIRequestService.appConfig, "log").and.returnValue(null);
-
-        APIRequestService.handleError(unAuthorizedError);
-
+        const spyRouterNavigate: jasmine.Spy = spyOn(router, "navigate").and.callThrough();
+        const spyOnConsole: jasmine.Spy = spyOn(appConfig, "log").and.returnValue(undefined);
+        apiRequestService.handleError(unAuthorizedError);
         expect(spyRouterNavigate).toHaveBeenCalled();
         expect(spyOnConsole).toHaveBeenCalled();
     }));

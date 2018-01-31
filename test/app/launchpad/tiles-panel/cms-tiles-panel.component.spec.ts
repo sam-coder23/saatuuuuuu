@@ -86,7 +86,6 @@ describe("CmsTilesPanelComponent - Test Suite", () => {
         expect(reloadButton).toBeFalsy();
     });
 
-
     it("should have back button and onclick it navigates to back history", () => {
         fixture.detectChanges();
         const buttonBack : any = fixture.nativeElement.querySelector("#layouts-panel-back-button");

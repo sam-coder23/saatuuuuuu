@@ -24,3 +24,8 @@ cms-source-list{
     bottom: 0px;
 }
 
+.action-button-share.disabled {
+    opacity: 0.3;
+    background-color: $grey_200 !important;
+    cursor: no-drop !important;
+}

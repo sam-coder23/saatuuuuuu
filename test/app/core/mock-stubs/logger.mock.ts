@@ -3,20 +3,21 @@
  */
 
 export class MockLogger {
-    constructor() {}
+    constructor() {
+        const unUsed: string = "";
+    }
 
     /**
      * returns logged arguments
-     * @param args 
+     * @param args
      */
     public log(...args: any[]): any[] {
         return args;
     }
 
-
     /**
      * returns logged arguments
-     * @param args 
+     * @param args
      */
     public error(...args: any[]): any[] {
         return this.log(args);

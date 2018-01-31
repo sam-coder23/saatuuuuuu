@@ -14,16 +14,15 @@ import { Observable } from "rxjs/Observable";
 import { APIRequest } from "../../../app/cms/api/api-request";
 import { CmsApiService } from "../../../app/cms/api/cms-api.service";
 import { StorageManager } from "../../../app/cms/api/cms-storagemanager.service";
+import { CMSConstants } from "../../../app/cms/models/cms-constants";
 import { CmsSessionStorageItem } from "../../../app/cms/models/cms-session-storage-item";
 import { IUserProfileSettings } from "../../../app/cms/models/cms-user-profile-settings";
-import { IUserConfig } from "../../../app/cms/models/cms-user.model";
 import { AppConfig } from "../../../app/config";
 import { CmsLanguages } from "../../../app/i18n/cms-languages";
 import { CmsLaunchpadComponent } from "../../../app/launchpad/cms-launchpad.component";
 import { CmsSettingsService } from "../../../app/launchpad/settings/cms-settings.service";
-import { MockUserProfileSettings } from "../core/mock-stubs/login.mock";
+import { mockUserProfileSettings } from "../core/mock-stubs/login.mock";
 import { ParsingManager } from "./../../../app/utils/parsing-manager-util";
-import { CMSConstants } from "../../../app/cms/models/cms-constants";
 
 /**
  * Fake CmsApiService Service
@@ -38,7 +37,7 @@ class MockCmsApiService {
     }
 
     public updateUserProfileSettings(): Promise<IUserProfileSettings> {
-        return Promise.resolve(MockUserProfileSettings);
+        return Promise.resolve(mockUserProfileSettings);
     }
 
     public logout() : Observable<string>  {
