@@ -1,0 +1,39 @@
+<mat-card id="card-{{card.id}}" (click)="selectCard(card)" class="card" [ngClass]="{disabled: card.disabled}">
+      <div class="card-inner layout-row">
+            <div class="card-image-section">
+                  <img src={{cardSnapshot}} class="card-image" alt="source">
+            </div>
+            <div class="card-content-section layout-column">
+                  <mat-card-title id="card-title" class="card-title" [title]="card.name">
+                        {{card.name}}
+                  </mat-card-title>
+                  <mat-card-content class="card-content" [title]="card.description">
+                        <div id="card-description" class="card-desc">
+                              <pre>{{card.description}}</pre>
+                        </div>
+                  </mat-card-content>
+            </div>
+            <div class="card-fav-section layout-column layout-align-space-between">
+                  <button id="card-favorite" mat-icon-button (click)="markFavorite($event, card)">
+                        <i class="material-icons" *ngIf="!isFavorite">star_border</i>
+                        <i class="material-icons" *ngIf="isFavorite">star</i>
+                  </button>
+                  <button id="card-status" *ngIf="card['online'] != undefined" mat-icon-button>
+                        <i class="material-icons" *ngIf="card['online']">
+                              <img src="app/resources/icons/display_online_black_36.svg">
+                        </i>
+                        <i class="material-icons" *ngIf="!card['online']">
+                              <img src="app/resources/icons/display_offline_black_36.svg">
+                        </i>
+                  </button>
+                  <!-- <button id="card-selected" mat-icon-button *ngIf="multi">
+                        <i class="material-icons">
+                              {{card?.selected ? 'check_box' : 'check_box_outline_blank'}}
+                        </i>
+                  </button> -->
+                  <section class="checkbox-section">
+                        <mat-checkbox id="card-selected" class="selection-checkbox" [(ngModel)]="card.selected"></mat-checkbox>
+                  </section>
+            </div>
+      </div>
+</mat-card>

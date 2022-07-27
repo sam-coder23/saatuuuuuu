@@ -5,67 +5,75 @@ var HtmlWebpackPlugin = require("html-webpack-plugin");
 var ENV = process.env.ENV = "production";
 
 module.exports = {
-  htmlLoader: {
-    minimize: false // this is needed by ng2
-  },
+  mode: ENV,
 
-  metadata: {
-      ENV: ENV
-  },
+  // metadata: {
+  //   ENV: ENV
+  // },
 
   devtool: "cheap-source-map",
+  stats: "errors-only",
 
   entry: {
     "polyfills": path.resolve(__dirname, "../../app/deps.ts"),
     "app": path.resolve(__dirname, "../../app/main.ts")
   },
 
-  debug: false,
+  // debug: false,
 
   output: {
-    path: "./build/dist",
-    filename: "[name].[hash].bundle.js",
-    sourcemapFilename: "[name].map"
+    path: path.resolve(__dirname, "../build/dist"),
+    filename: "[name].[contentHash].bundle.js",
+    sourceMapFilename: "[name].map"
   },
 
   resolve: {
-    extensions: ["", ".ts", ".tsx", ".js"]
+    extensions: [".ts", ".tsx", ".js"]
   },
 
   module: {
-    loaders: [
+    rules: [
       {
         test: /\.tsx?$/,
-        loader: "ts-loader",
+        use: "ts-loader",
         include: [ path.resolve(__dirname, "../../app") ]
       },
       {
         test: /\.html$/,
-        loader: "raw-loader",
-        exclude: [ path.resolve(__dirname, "../../app/index.html") ]
+        loader: "html-loader",
+        exclude: [path.resolve(__dirname, "../../app/index.html")],
+        options: {
+          minimize: false // this is needed by angular2 and beyond
+        }
       },
       {
         test: /\.global\.scss$/,
-        loaders: ["style-loader", "css-loader", "sass-loader"]
+        use: ["style-loader", "css-loader", "sass-loader"]
       },
       {
         test: /\.scss$/,
         exclude: [/node_modules/, /\.global\.scss$/],
-        loaders: ["raw-loader", "sass-loader"]
+        use: ["to-string-loader", "css-loader", "sass-loader"]
       },
       {
         test: /\.css$/,
-        loader: "style-loader!css-loader"
+        use: ["style-loader", "css-loader"]
       },
       {
-          test: /\.(eot|woff|woff2|ttf|svg|png|jpg)$/,
-          loader: "url-loader?limit=30000&name=[name]-[hash].[ext]"
+        test: /\.(woff(2)?|ttf|eot|svg)(\?v=\d+\.\d+\.\d+)?$/,
+        use: [
+          {
+            loader: "file-loader",
+            options: {
+              esModule: false,
+              name(file) {
+                return "[name].[ext]";
+              }
+            }
+          }
+        ]
       }
     ]
-  },
-
-  sassLoader: {
-    includePaths: [path.resolve(__dirname, "../../app")]
   },
 
   plugins: [
@@ -110,22 +118,6 @@ module.exports = {
       ignore: [".svn"]
     }),
 
-    new webpack.optimize.DedupePlugin(),
-    new webpack.optimize.AggressiveMergingPlugin(),
-    new webpack.optimize.UglifyJsPlugin({
-      mangle: {
-        except: ["$super", "exports", "require"]
-      },
-      compress: {
-        warnings: false,
-        dead_code : true,
-        drop_debugger: true,
-        unused: true,
-        drop_console: true
-      },
-      output: {
-        comments: false
-      }
-    })
+    new webpack.optimize.AggressiveMergingPlugin()
   ]
 }

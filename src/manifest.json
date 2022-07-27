@@ -1,0 +1,15 @@
+{
+ "name": "Collaboration Wall Manager",
+ "display": "fullscreen",
+ "start_url": "index.html",
+ "prefer_related_applications": false,
+ "related_applications": [],
+ "short_name": "Collaboration Wall Manager",
+ "icons": [
+  {
+   "src": "icon_barco.png",
+   "sizes": "192x126",
+   "type": "image/png"
+  }
+ ]
+}

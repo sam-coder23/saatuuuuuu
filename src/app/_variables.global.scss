@@ -1,0 +1,126 @@
+//Fonts and Font Family
+$baseFont: RobotoRegular;
+$baseFont_light: RobotoLight;
+$baseFont_size: 24px;
+
+$size_12: 12px;
+$size_14: 14px;
+$size_18: 18px;
+
+$h1: 28px;
+$h2: 26px;
+$h3: 24px;
+$h4: 22px;
+
+$primaryBackground: #212121;
+$secondaryBackground: #2b2b2b;
+$contrastDarkBackground: #000000;
+
+$titleForeground: rgba(255, 255, 255, 0.87);
+$textForeground: rgba(255, 255, 255, 0.62);
+$hintForeground: rgba(255, 255, 255, 0.38);
+$contrastForeground: #ffffff;
+$contrastDarkForeground: #000000;
+$transparentColor: rgba(255, 255, 255, 0);
+
+$errorState: #f44336;
+$warningState: #ffab00;
+$successState: #00c853;
+$infoState: #536dfe;
+
+$primary: #424242;
+$secondary: #363636;
+$heading: #111111;
+$accent: #2196f3;
+$highlight: #1565c0;
+
+$borderColor: rgba(255, 255, 255, 0.12);
+
+$primaryHover: #616161;
+$secondaryHover: #515151;
+$accentHover: #4215f5;
+$highlightHover: #1976d2;
+$errorHover: #ef5350;
+$warningHover: #ffbb00;
+$successHover: #00dc6a;
+$infoHover: #7086ff;
+
+$disableOpacity: 0.38;
+
+//Colors Themes
+$blue_500: #2196F3;
+$blue_200: #90CAF9;
+$blue_grey_200: #B0BEC5;
+$red_500: #F44336;
+$blue_grey_200: #B0BEC5;
+$red_500: #F44336;
+$grey_100: #F5F5F5;
+$grey_200: #EEEEEE;
+$grey_300: #E0E0E0;
+$grey_400: #BDBDBD;
+$grey_500: #9E9E9E;
+$grey_600: #757575;
+$grey_800: #424242;
+$grey_300: #E0E0E0;
+$grey_400: #BDBDBD;
+$grey_500: #9E9E9E;
+$grey_600: #757575;
+$grey_800: #424242;
+$white: #FFFFFF;
+$teal_500: #009688;
+$black: #212121;
+
+//Extend and Inheritance CSS Styles - Reusable Flex CSS Properties
+@mixin layout-row{
+    display: -webkit-flex;
+    display: flex;
+    -webkit-flex-direction: row;
+    flex-direction: row;
+}
+
+@mixin layout-row-reverse{
+    display: -webkit-flex;
+    display: flex;
+    -webkit-flex-direction: row-reverse;
+    flex-direction: row-reverse;
+}
+
+@mixin layout-column{
+    display: -webkit-flex;
+    display: flex;
+    -webkit-flex-direction: column;
+    flex-direction: column;
+}
+
+@mixin layout-column-reverse{
+    display: -webkit-flex;
+    display: flex;
+    -webkit-flex-direction: column-reverse;
+    flex-direction: column-reverse;
+}
+
+@mixin layout-align-center{
+    align-items: center;
+    justify-content: center;
+}
+
+@mixin layout-align-space-between{
+    justify-content: space-between;
+}
+
+@mixin fill-remaining-space {
+    flex: 1 1 auto;
+    -webkit-flex:  1 1 auto;
+    -ms-flex:  1 1 auto;
+}
+
+@mixin layout-align-space-around{
+    justify-content: space-around;
+}
+
+// Extend and Inheritance CSS Styles - Reusable page header CSS Properties
+@mixin page-header-fixed{
+    position: fixed;
+    z-index: 1;
+    width: 100%;
+}

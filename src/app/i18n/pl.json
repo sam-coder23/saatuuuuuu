@@ -1,0 +1,113 @@
+{
+    "login": {
+        "welcome": "Collaboration Wall Manager",
+        "username": "Nazwa u\u017cytkownika",
+        "password": "Has\u0142o",
+        "button": "Zaloguj si\u0119",
+        "error": "Nazwa u\u017cytkownika lub has\u0142o s\u0105 nieprawid\u0142owe",
+        "licenceError": "Nie mo\u017cna uzyska\u0107 licencji.",
+        "serverNotReadyError": "Serwer nie jest jeszcze gotowy. Prosz\u0119 czeka\u0107!",
+        "serverUnavailableError": "Serwer jest niedost\u0119pny lub nieosi\u0105galny.",
+        "settingsReadyError": "Nie mo\u017cna pobra\u0107 ustawie\u0144 z serwera, przez co nie mo\u017cna uruchomi\u0107 aplikacji. Skontaktuj si\u0119 z administratorem.",
+        "userDisabledError": "Konto u\u017cytkownika jest wy\u0142\u0105czone"
+    },
+    "options": {
+        "logoff": "Wyloguj si\u0119",
+        "refresh": "Od\u015bwie\u017c",
+        "exit": "Wyjd\u017a",
+        "saveNewLayout": "Zapisz nowy uk\u0142ad",
+        "zoom": "Powi\u0119kszenie: ",
+        "fitHeight": "Dopasuj wysoko\u015b\u0107",
+        "settings": "Ustawienia",
+        "aboutCmsLaunchPad": "Informacje"
+    },
+    "displayPanel": {
+        "unavailable": "Brak monitora",
+        "selectDisplay": "Wybierz monitor"
+    },
+    "displayList": {
+        "connectTo": "Po\u0142\u0105cz ze \u015bcian\u0105 monitor\u00f3w",
+        "unavailable": "Brak monitor\u00f3w",
+        "unavailableConfirmation": "Brak dost\u0119pnych monitor\u00f3w dla Twojego konta. Skontaktuj si\u0119 z administratorem."
+    },
+    "layoutList": {
+        "connectTo": "Za\u0142aduj uk\u0142ad",
+        "search": "Szukaj",
+        "unavailable": "Brak uk\u0142ad\u00f3w"
+    },
+    "saveLayout": {
+        "heading": "Wprowad\u017a nazw\u0119 nowego uk\u0142ad\u00f3w lub wybierz jedn\u0105 z poni\u017cszych pozycji, aby j\u0105 zast\u0105pi\u0107",
+        "inputText": "Nazwa uk\u0142adu",
+        "button": "Zapisz",
+        "saveLayoutConfirmation": "Uk\u0142ad \u201e{{value}}\u201d ju\u017c istnieje. Czy chcesz zast\u0105pi\u0107?",
+        "toolbarText": "Zapisz uk\u0142ad"
+    },
+    "miniDisplay": {
+        "loadLayout": "Za\u0142aduj uk\u0142ad"
+    },
+    "sourceList": {
+        "connectTo": "Wybierz \u017ar\u00f3d\u0142o",
+        "unavailable": "Brak \u017ar\u00f3de\u0142"
+    },
+    "panelToolbar": {
+        "search": "Szukaj"
+    },
+    "settings": {
+        "settings": "Ustawienia",
+        "language": "J\u0119zyk",
+        "wallConnection": "Po\u0142\u0105czenie ze \u015bcian\u0105",
+        "atStartup": "W czasie uruchamiania",
+        "availableWallsList": "poka\u017c list\u0119 dost\u0119pnych \u015bcian",
+        "connectToMostRecentWall": "po\u0142\u0105cz automatycznie z ostatni\u0105 \u015bcian\u0105",
+        "connectToSpecificWall": "po\u0142\u0105cz automatycznie z okre\u015blon\u0105 \u015bcian\u0105",
+        "sourceLabels": "Etykiety \u017ar\u00f3de\u0142",
+        "displaySourceName": "Wy\u015bwietl etykiety nazw \u017ar\u00f3de\u0142",
+        "multipleLines": "U\u017cyj wielu linii",
+        "fontColor": "Kolor czcionki",
+        "fontSize": "Rozmiar czcionki",
+        "backgroundColor": "T\u0142o",
+        "transparency": "Przezroczysto\u015b\u0107 (%)",
+        "languageTitle": "J\u0119zyk",
+        "selectDisplay": "wybierz \u015bcian\u0119 monitor\u00f3w",
+        "noDisplayWallFound": "nie znaleziono wybranej \u015bciany monitor\u00f3w",
+        "loadLayoutConfirmation": "Czy chcesz za\u0142adowa\u0107 na \u015bcian\u0119 uk\u0142ad \u201e{{value}}\u201d?",
+        "never": "nigdy",
+        "autoLogOff": "Wyloguj automatycznie",
+        "timeOutInMinute": "Czas do wylogowania w przypadku braku aktywno\u015bci (minuty)",
+        "listPageSizes": "List page sizes",
+        "pageSize": "Domy\u015Blny rozmiar strony",
+        "defaultColorPickerTabLabel": "Custom",
+        "cancel": "ANULUJ"
+    },
+    "about": {
+        "daysRemaining": "Pozosta\u0142a liczba dni wersji pr\u00F3bnej: {{value}}.",
+        "about": "Informacje",
+        "version": "Wersja:",
+        "licensed": "Licencja dla:",
+        "project": "Nazwa projektu:",
+        "licenseStatus": "Stan licencji:",
+        "server": "Serwer:",
+        "contentText": "Ten produkt jest licencjonowany zgodnie z warunkami firmy Barco N.V. i powinien by\u0107 u\u017cywany zgodnie z warunkami umowy licencyjnej. Aby uzyska\u0107 pe\u0142ne informacje o licencji, zapoznaj si\u0119 z plikiem Readme.",
+        "copyrightText": "Copyright \u24b8 {{value}}, Barco N.V. Wszelkie prawa zastrze\u017cone."
+    },
+    "dialog": {
+        "cancel": "ANULUJ",
+        "ok": "OK"
+    },
+    "systemDialog": {
+        "serverDisconnected": "Pr\u00f3ba nawi\u0105zania po\u0142\u0105czenia z serwerem...",
+        "serverConnected": "Po\u0142\u0105czenie z serwerem zosta\u0142o nawi\u0105zane! Zaloguj si\u0119 ponownie.",
+        "licenseChanged": "Nowy plik licencji zosta\u0142 przes\u0142any na serwer. Nale\u017cy zalogowa\u0107 si\u0119 ponownie.",
+        "restoreStarted": "Trwa operacja przywracania systemu. Czekaj...",
+        "restoreFinished": "Zako\u0144czono przywracanie systemu! Zaloguj si\u0119 ponownie.",
+        "databaseResetStarted": "Trwa resetowanie bazy danych...",
+        "userDeleted": "Twoje konto zosta\u0142o wy\u0142\u0105czone lub usuni\u0119te. Skontaktuj si\u0119 z administratorem.",
+        "userModified": "Aktywne role u\u017cytkownik\u00f3w zosta\u0142y zmodyfikowane. Aplikacja zostanie teraz od\u015bwie\u017cona.",
+        "noPermission": {
+            "shareContent": "Nie masz uprawnienia, aby doda\u0107 to \u017ar\u00f3d\u0142o do mini-monitora.",
+            "unshareContent": "Nie masz uprawnienia, aby usun\u0105\u0107 to \u017ar\u00f3d\u0142o z mini-monitora.",
+            "loadLayout": "Nie masz uprawnienia, aby za\u0142adowa\u0107 uk\u0142ad.",
+            "saveLayout": "Nie masz uprawnienia, aby zapisa\u0107 uk\u0142ad."
+        }
+    }
+}

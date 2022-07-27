@@ -1,0 +1,59 @@
+<div class="page-toolbar">
+    <mat-toolbar id="sources-panel-toolbar" class="toolbar-theme">
+        <button id="sources-panel-back-button" mat-icon-button nd-click-debounce (ndClick)="navigateBack()">
+            <i class="material-icons"> arrow_back </i>
+        </button>
+        <span class="fill-remaining-space"></span>
+        <span class="fill-remaining-space"></span>
+        <cms-display-name class="toolbar-text"></cms-display-name>
+        <span class="fill-remaining-space"></span>
+        <button id="sources-panel-reload-button" mat-icon-button *ngIf="reloadState" (click)="reloadList()">
+            <i class="material-icons">refresh</i>
+        </button>
+        <button id="sources-panel-favorite-button" mat-icon-button nd-click-debounce (ndClick)="setFavourite()">
+            <i class="material-icons">{{ isFavoriteFilter ? "star" : "star_border" }}</i>
+        </button>
+        <button mat-icon-button (click)="initializeSearch($event)">
+            <i class="material-icons">search</i>
+        </button>
+        <mat-form-field id="sources-panel-search-input">
+            <input matInput type="text" placeholder="{{ 'panelToolbar.search' | translate }}" [(ngModel)]="searchKey">
+        </mat-form-field>
+    </mat-toolbar>
+</div>
+
+<div class="sources-panel-main">
+    <cms-source-list #sourceListComp [tilePresets]="" [displayId]="displayId" [selectedOnly]="true" (change)="onListChanged()"
+        *ngIf="listState" [searchFilter]="searchFilter" [favoriteFilter]="isFavoriteFilter" (error)="errorMessage = $event">
+    </cms-source-list>
+</div>
+
+<div class="page-toolbar bottom">
+    <mat-toolbar id="sources-panel-bottom-toolbar" class="toolbar-theme">
+        <button mat-button mat-raised-button nd-click-debounce id="sources-panel-back-button" [hidden]="!cmsSettingService?.selectedSources?.length"
+            (ndClick)="showClearWallPopup = true" class="action-button-clear">
+            {{'common.clear' | translate}}
+        </button>
+        <span class="fill-remaining-space"></span>
+        <span class="toolbar-text">
+            {{cmsSettingService?.selectedSources?.length}} {{'common.of' | translate}} {{maxSelection}} {{'common.source' | translate}}
+        </span>
+        &nbsp;
+        <span class="error" *ngIf="errorMessage">
+            {{errorMessage}}
+        </span>
+        <span class="fill-remaining-space"></span>
+        <button id="sources-panel-next-button" mat-button mat-raised-button nd-click-debounce (ndClick)="shareTheSources()" class="action-button-share"
+        [disabled]="cmsSettingService?.selectedSources?.length === 0">
+            {{'common.share' | translate}}
+        </button>
+    </mat-toolbar>
+
+    <nd-popup id="display-panel-clear-wall-popup" *ngIf="showClearWallPopup" class="confirm-popup" title="{{'common.clearWallTitle' | translate }}"
+        (done)="clearMiniDisplayWall()" (cancelled)="cancelClearWallPopup();" (closing)="closingClearWallPopup();" okText="{{'common.yes' | translate}}"
+        cancelText="{{'common.no' | translate}}">
+        <popup-body>
+            {{'common.clearWallMessage' | translate}}
+        </popup-body>
+    </nd-popup>
+</div>

@@ -1,0 +1,202 @@
+@import "../app/_variables.global.scss";
+
+cms-launchpad{
+    .error-color{
+        color: $red_500;
+    }
+
+    // mat-toolbar theme (in general) ----------
+
+    mat-toolbar.toolbar-theme {
+        background: $grey_800;
+        color: $white;
+
+        .toolbar-text {
+            font-size: 20px;
+        }
+    }
+
+    mat-toolbar.toolbar-theme [mat-raised-button] {
+        background-color: $grey_800;
+    }
+
+    mat-toolbar.toolbar-theme .mat-form-field {
+        width: 230px;
+    }
+
+    mat-toolbar.toolbar-theme .mat-form-field-label{
+        color: $grey_400;
+        font-style: italic;
+        font-size: 20px;
+    }
+
+    mat-toolbar.toolbar-theme .mat-form-field.mat-focused .mat-form-field-label {
+        color: transparent !important;
+    }
+
+    mat-toolbar.toolbar-theme .mat-form-field-label:not(.mat-form-field-empty) {
+        color: transparent !important;
+    }
+
+    mat-toolbar.toolbar-theme .mat-form-field-underline{
+        border-top-color: $grey_800;
+        margin-top: 4px;
+    }
+
+    mat-toolbar.toolbar-theme .mat-form-field-ripple {
+        background-color: $white;
+    }
+
+    mat-toolbar.toolbar-theme .mat-input-element{
+        color: $white;
+        font-size: 20px;
+    }
+
+    // login - input
+    .login-input-container .mat-form-field-underline {
+        background-color: rgba(0, 0, 0, .38);
+    }
+
+    .login-input-container .mat-form-field.mat-focused .mat-form-field-ripple {
+        background-color: $blue_500 !important;
+    }
+
+    // save layout - input
+    .save-panel-section .mat-form-field-label {
+        color: black;
+    }
+
+    .save-panel-section .mat-form-field-underline {
+        background-color: rgba(0, 0, 0, .38);
+        margin-top: 4px;
+    }
+
+    .save-panel-section .mat-form-field.mat-focused .mat-form-field-ripple {
+        background-color: $blue_500 !important;
+    }
+
+     // ---------- mat-radio and mat-slide-toggle  (in general)
+    .mat-radio-checked .mat-radio-outer-circle{
+        border-color: $blue_500;
+    }
+
+    .mat-slide-toggle-thumb {
+        box-shadow: 0 2px 1px -1px RGB(0 0 0 / 20%), 0 1px 1px 0 RGB(0 0 0 / 14%), 0 1px 3px 0 RGB(0 0 0 / 12%);
+    }
+
+    .mat-radio-checked .mat-radio-inner-circle,
+    .mat-checked .mat-slide-toggle-thumb {
+        background-color: $blue_500;
+    }
+
+    .mat-radio-focused .md-ink-ripple,
+    .mat-slide-toggle-focused .md-ink-ripple{
+        background-color: rgba(0, 150, 243, 0.26)  !important;;
+    }
+
+   .disabled {
+        .mat-radio-checked .mat-radio-outer-circle{
+             border-color: $black;
+        }
+
+        .mat-radio-checked .mat-radio-inner-circle{
+            background-color: $black !important;
+        }
+    }
+
+    .mat-checked .mat-slide-toggle-bar{
+        background-color: rgba(0, 150, 243, 0.5);
+    }
+
+    .settings-panel  mat-progress-spinner svg,
+    .about-panel  mat-progress-spinner svg{
+         stroke: $white !important;
+    }
+
+    // progress circle
+    mat-progress-spinner svg{
+        stroke: $blue_500 !important;
+    }
+
+    mat-card {
+        background-color: $white;
+    }
+
+    [mat-button] {
+        background-color: $white;
+    }
+
+    [mat-button]:disabled {
+        background-color: $white;
+        color: $grey_400;
+    }
+
+    [mat-button] .mat-button-focus-overlay {
+        background-color: rgba(0, 0, 0, 1);
+        border-radius: inherit;
+        pointer-events: none;
+    }
+
+    [mat-raised-button] {
+        background-color: $grey_100;
+        border-radius: 2px;
+        box-shadow: 0 3px 1px -2px RGB(0 0 0 / 20%), 0 2px 2px 0 RGB(0 0 0 / 14%), 0 1px 5px 0 RGB(0 0 0 / 12%);
+    }
+
+    [mat-icon-button] {
+        background-color: transparent;
+    }
+
+    [mat-icon-button] .mat-button-focus-overlay {
+        background-color: transparent;
+    }
+
+    [mat-raised-button]:disabled {
+        background-color: rgba(0, 0, 0, 0.12);
+        color: rgba(0, 0, 0, 0.38);
+        box-shadow: none;
+    }
+
+    mat-divider {
+        border-top-color: rgba(0, 0, 0, 0.12);
+    }
+
+    .mat-slide-toggle-bar {
+        background-color: $grey_500;
+    }
+
+    .mat-slide-toggle-thumb {
+        background-color: $grey_100;
+    }
+
+    .mat-drawer-backdrop.mat-drawer-shown {
+        background-color: rgba(0, 0, 0, 0.6);
+    }
+
+    .mat-form-field-label {
+        color: rgba(0, 0, 0, 0.38);
+        transition: transform .4s cubic-bezier(.25, .8, .25, 1), color .4s cubic-bezier(.25, .8, .25, 1), width .4s cubic-bezier(.25, .8, .25, 1);
+    }
+
+    .mat-form-field-label:not(.mat-form-field-empty) {
+        transform: translateY(-1.28125em) scale(.75) perspective(100px) translateZ(0.001px);
+    }
+
+    .mat-form-field.mat-focused .mat-form-field-label {
+        color: $blue_500  !important;
+        transform: translateY(-1.28125em) scale(.75) perspective(100px) translateZ(0.001px);
+    }
+
+    .mat-form-field-underline {
+        border-top-color: rgba(0, 0, 0, 0.38);
+    }
+
+    .mat-form-field-label-wrapper {
+        top: -1.2em;
+        padding-top: 1.2em;
+    }
+
+    .mat-form-field-required-marker {
+        display: none;
+    }
+}

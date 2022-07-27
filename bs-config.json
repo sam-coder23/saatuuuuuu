@@ -1,0 +1,9 @@
+{
+  "port": 8000,
+  "files": [
+    "./build/build/dist/**/*.{html,htm,css,js}"
+  ],
+  "server": {
+    "baseDir": "./build/build/dist/collaboration-wall-manager"
+  }
+}

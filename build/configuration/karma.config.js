@@ -1,4 +1,3 @@
-
 module.exports = function (config) {
   config.set({
     basePath: "../..",
@@ -22,23 +21,23 @@ module.exports = function (config) {
       'jasmine',
       'karma-typescript'
     ],
-    reporters: [
-      "progress",
-      "karma-typescript",
-      "html"
-    ],
-    htmlReporter: {
-      outputDir: "build/reports",
-      reportName: "karma-test-report",
-      preserveDescribeNesting: false,
-      foldAll: false,
-    },
     preprocessors: {
       '**/*.ts': [
         'karma-typescript'
       ]
       , 'app/*.*scss': ['scss']
       , 'app/**/*.*scss': ['scss']
+    },
+    htmlReporter: {
+      outputDir: 'build/reports/',
+      templatePath: null,
+      focusOnFailures: true,
+      namedFiles: false,
+      pageTitle: null,
+      urlFriendlyName: false,
+      reportName: 'karma-test-report',
+      preserveDescribeNesting: false,
+      foldAll: false
     },
     autoWatch: true,
     files: [
@@ -70,13 +69,13 @@ module.exports = function (config) {
         included: false
       },
       {
-        pattern: 'app/*.*scss',
+        pattern: './app/*.*scss',
         watched: true,
         included: true,
         served: true
       },
       {
-        pattern: 'app/main.ts',
+        pattern: './app/main.ts',
         watched: false,
         included: false,
         served: false

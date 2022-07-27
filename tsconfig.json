@@ -1,19 +1,41 @@
+/* To learn more about this file see: https://angular.io/config/tsconfig. */
 {
+    "compileOnSave": false,
     "compilerOptions": {
-        "target": "es5",
+        "baseUrl": "./",
+        "outDir": "./dist/out-tsc",
+        "forceConsistentCasingInFileNames": true,
+        "strict": false,
+        "noImplicitOverride": true,
+        "noPropertyAccessFromIndexSignature": true,
+        "noImplicitReturns": true,
+        "noFallthroughCasesInSwitch": true,
         "sourceMap": true,
-        "moduleResolution": "node",
+        "declaration": false,
+        "downlevelIteration": true,
         "experimentalDecorators": true,
-        "emitDecoratorMetadata": true,
+        "moduleResolution": "node",
+        "importHelpers": true,
+        "allowSyntheticDefaultImports": true,
+        "resolveJsonModule": true,
+        "strictPropertyInitialization": false,
+        "target": "es6",
         "module": "commonjs",
-        "noImplicitAny": false,
-        "outDir": "built",
-        "rootDir": ".",
-        "typeRoots": ["node_modules/@types"],
-        "types": ["node", "core-js", "hammerjs", "jasmine"]
+        "lib": [
+            "es2018",
+            "dom"
+        ]
     },
     "exclude": [
-        "node_modules/*",
+        "build/core-components/**",
         ".scannerwork/**"
-    ]
+    ],
+    "angularCompilerOptions": {
+        "enableI18nLegacyMessageIdFormat": false,
+        "strictInjectionParameters": true,
+        "strictInputAccessModifiers": true,
+        "strictTemplates": true,
+        "esModuleInterop": true,
+        "allowSyntheticDefaultImports": true
+    }
 }

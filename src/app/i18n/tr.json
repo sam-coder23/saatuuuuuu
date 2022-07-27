@@ -1,0 +1,113 @@
+{
+    "login": {
+        "welcome": "Collaboration Wall Manager",
+        "username": "Kullan\u0131c\u0131 ad\u0131",
+        "password": "Parola",
+        "button": "Giri\u015f yap",
+        "error": "Kullan\u0131c\u0131 ad\u0131 veya parola yanl\u0131\u015f",
+        "licenceError": "Lisans edinilemedi.",
+        "serverNotReadyError": "Sunucu hen\u00fcz haz\u0131r de\u011fil. L\u00fctfen bekleyin!",
+        "serverUnavailableError": "Sunucu kullan\u0131lam\u0131yor veya eri\u015filebilir de\u011fil.",
+        "settingsReadyError": "Ayarlar uygulaman\u0131n ba\u015flat\u0131lamad\u0131\u011f\u0131 neden dolay\u0131 sunucudan getirilemiyor. L\u00fctfen y\u00f6neticiye ba\u015fvurun.",
+        "userDisabledError": "Kullan\u0131c\u0131 hesab\u0131 devre d\u0131\u015f\u0131 b\u0131rak\u0131ld\u0131"
+    },
+    "options": {
+        "logoff": "\u00c7\u0131k\u0131\u015f Yap",
+        "refresh": "Yenile",
+        "exit": "\u00c7\u0131k\u0131\u015f",
+        "saveNewLayout": "Yeni bir yerle\u015fim kaydet",
+        "zoom": "Yakla\u015ft\u0131r: ",
+        "fitHeight": "Y\u00fcksekli\u011fi s\u0131\u011fd\u0131r",
+        "settings": "Ayarlar",
+        "aboutCmsLaunchPad": "Hakk\u0131nda"
+    },
+    "displayPanel": {
+        "unavailable": "Ekran Yok",
+        "selectDisplay": "Bir ekran se\u00e7in"
+    },
+    "displayList": {
+        "connectTo": "Bir ekran duvar\u0131na ba\u011flan\u0131n",
+        "unavailable": "Ekran Yok",
+        "unavailableConfirmation": "Hesab\u0131n\u0131z i\u00e7in hi\u00e7bir ekran mevcut de\u011fil. L\u00fctfen y\u00f6neticiye ba\u015fvurun."
+    },
+    "layoutList": {
+        "connectTo": "Bir yerle\u015fim y\u00fckleyin",
+        "search": "Ara",
+        "unavailable": "Yerle\u015fim Yok"
+    },
+    "saveLayout": {
+        "heading": "Yeni yerle\u015fimin ad\u0131n\u0131 girin veya de\u011fi\u015ftirmek i\u00e7in a\u015fa\u011f\u0131daki \u00f6\u011felerden birini se\u00e7in",
+        "inputText": "Yerle\u015fim Ad\u0131",
+        "button": "Kaydet",
+        "saveLayoutConfirmation": "\u201c{{value}}\u201d yerle\u015fimi zaten mevcut. Bunu de\u011fi\u015ftirmek istiyor musunuz?",
+        "toolbarText": "Yerle\u015fimi kaydet"
+    },
+    "miniDisplay": {
+        "loadLayout": "Bir yerle\u015fim y\u00fckleyin"
+    },
+    "sourceList": {
+        "connectTo": "Bir kaynak se\u00e7in",
+        "unavailable": "Kaynak Yok"
+    },
+    "panelToolbar": {
+        "search": "Ara"
+    },
+    "settings": {
+        "settings": "Ayarlar",
+        "language": "Dil",
+        "wallConnection": "Duvar Ba\u011flant\u0131s\u0131",
+        "atStartup": "Ba\u015flang\u0131\u00e7ta",
+        "availableWallsList": "mevcut duvarlar\u0131n listesini g\u00f6ster",
+        "connectToMostRecentWall": "en son duvara otomatik ba\u011flan",
+        "connectToSpecificWall": "belirli bir duvara otomatik ba\u011flan",
+        "sourceLabels": "Kaynak Etiketleri",
+        "displaySourceName": "Ekran kaynak ad\u0131 etiketleri",
+        "multipleLines": "Birden fazla hat kullan",
+        "fontColor": "Yaz\u0131tipi rengi",
+        "fontSize": "Yaz\u0131tipi boyutu",
+        "backgroundColor": "Arka Plan",
+        "transparency": "\u015eeffafl\u0131k (%)",
+        "languageTitle": "Dil",
+        "selectDisplay": "bir ekran duvar\u0131 se\u00e7in",
+        "noDisplayWallFound": "se\u00e7ili ekran duvar\u0131 bulunamad\u0131",
+        "loadLayoutConfirmation": "\u201c{{value}}\u201d yerle\u015fimini duvarda y\u00fcklemek ister misiniz?",
+        "never": "hi\u00e7",
+        "autoLogOff": "Otomatik \u00e7\u0131k\u0131\u015f yap",
+        "timeOutInMinute": "\u0130\u015flem yap\u0131lmad\u0131\u011f\u0131nda \u00e7\u0131k\u0131\u015f yapma s\u00fcresi (dakika)",
+        "listPageSizes": "List page sizes",
+        "pageSize": "Varsay\u0131lan sayfa boyutu",
+        "defaultColorPickerTabLabel": "Custom",
+        "cancel": "\u0130PTAL"
+    },
+    "about": {
+        "daysRemaining": "De\u011Ferlendirme i\u00E7in {{value}} g\u00FCn kald\u0131.",
+        "about": "Hakk\u0131nda",
+        "version": "S\u00fcr\u00fcm:",
+        "licensed": "Lisans sahibi:",
+        "project": "Proje ad\u0131:",
+        "licenseStatus": "Lisans durumu:",
+        "server": "Sunucu:",
+        "contentText": "Bu \u00fcr\u00fcn Barco N.V. \u015fartlar\u0131 dahilinde lisansl\u0131d\u0131r ve lisans s\u00f6zle\u015fmesine uygun olarak kullan\u0131lmal\u0131d\u0131r. Lisans bilgisinin tamam\u0131 i\u00e7in l\u00fctfen Readme dosyas\u0131na ba\u015fvurun.",
+        "copyrightText": "Telif Hakk\u0131 \u24b8 {{value}}, Barco N.V. T\u00fcm Haklar\u0131 Sakl\u0131d\u0131r."
+    },
+    "dialog": {
+        "cancel": "\u0130PTAL",
+        "ok": "TAMAM"
+    },
+    "systemDialog": {
+        "serverDisconnected": "Sunucuya ba\u011flanmaya \u00e7al\u0131\u015f\u0131l\u0131yor...",
+        "serverConnected": "Sunucuyla ba\u011flant\u0131 \u015fimdi kuruldu! Tekrar giri\u015f yap\u0131n.",
+        "licenseChanged": "Yeni lisans dosyas\u0131 sunucuya y\u00fcklendi. Tekrar giri\u015f yapman\u0131z gerekiyor.",
+        "restoreStarted": "Sistem geri y\u00fckleme i\u015flemi ger\u00e7ekle\u015ftiriyor, l\u00fctfen bekleyin...",
+        "restoreFinished": "Sistem geri y\u00fckleme i\u015flemi bitti! Tekrar giri\u015f yap\u0131n.",
+        "databaseResetStarted": "Veritaban\u0131 s\u0131f\u0131rlama i\u015flemi devam ediyor...",
+        "userDeleted": "Hesab\u0131n\u0131z devre d\u0131\u015f\u0131 b\u0131rak\u0131lm\u0131\u015f veya silinmi\u015f. L\u00fctfen y\u00f6neticiye ba\u015fvurun.",
+        "userModified": "Kullan\u0131c\u0131 etkin rolleri de\u011fi\u015ftirildi. Uygulama \u015fimdi yenilenecek.",
+        "noPermission": {
+            "shareContent": "Bu kayna\u011f\u0131 mini ekrana ekleme izniniz yok.",
+            "unshareContent": "Bu kayna\u011f\u0131 mini ekrandan kald\u0131rma izniniz yok.",
+            "loadLayout": "Bir yerle\u015fim y\u00fckleme izniniz yok.",
+            "saveLayout": "Bir yerle\u015fim kaydetme izniniz yok."
+        }
+    }
+}

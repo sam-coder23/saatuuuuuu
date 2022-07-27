@@ -1,0 +1,113 @@
+{
+    "login": {
+        "welcome": "Collaboration Wall Manager",
+        "username": "Nome do utilizador",
+        "password": "Palavra-passe",
+        "button": "In\u00edcio de sess\u00e3o",
+        "error": "Nome do utilizador ou palavra-passe incorretos",
+        "licenceError": "N\u00e3o \u00e9 poss\u00edvel adquirir licen\u00e7a.",
+        "serverNotReadyError": "O servidor ainda n\u00e3o est\u00e1 pronto. Aguarde!",
+        "serverUnavailableError": "O servidor est\u00e1 indispon\u00edvel ou n\u00e3o pode ser acedido.",
+        "settingsReadyError": "N\u00e3o \u00e9 poss\u00edvel obter as configura\u00e7\u00f5es do servidor, pelo que n\u00e3o \u00e9 poss\u00edvel iniciar a aplica\u00e7\u00e3o. Contacte o administrador.",
+        "userDisabledError": "Conta de utilizador desativada"
+    },
+    "options": {
+        "logoff": "Terminar sess\u00e3o",
+        "refresh": "Atualizar",
+        "exit": "Sair",
+        "saveNewLayout": "Guardar uma nova disposi\u00e7\u00e3o",
+        "zoom": "Zoom: ",
+        "fitHeight": "Adaptar altura",
+        "settings": "Configura\u00e7\u00f5es",
+        "aboutCmsLaunchPad": "Acerca de"
+    },
+    "displayPanel": {
+        "unavailable": "Nenhuma tela",
+        "selectDisplay": "Selecionar uma tela"
+    },
+    "displayList": {
+        "connectTo": "Ligar a uma parede de telas",
+        "unavailable": "Nenhuma tela",
+        "unavailableConfirmation": "N\u00e3o est\u00e1 dispon\u00edvel nenhuma tela para a sua conta. Contacte o administrador."
+    },
+    "layoutList": {
+        "connectTo": "Carregar uma disposi\u00e7\u00e3o",
+        "search": "Procurar",
+        "unavailable": "Nenhuma disposi\u00e7\u00e3o"
+    },
+    "saveLayout": {
+        "heading": "Introduza o nome da nova disposi\u00e7\u00e3o ou selecione um dos itens abaixo para substitu\u00ed-la",
+        "inputText": "Nome da disposi\u00e7\u00e3o",
+        "button": "Guardar",
+        "saveLayoutConfirmation": "A disposi\u00e7\u00e3o \u201c{{value}}\u201d j\u00e1 existe. Pretende substitu\u00ed-la?",
+        "toolbarText": "Guardar disposi\u00e7\u00e3o"
+    },
+    "miniDisplay": {
+        "loadLayout": "Carregar uma disposi\u00e7\u00e3o"
+    },
+    "sourceList": {
+        "connectTo": "Selecionar uma fonte",
+        "unavailable": "Nenhuma fonte"
+    },
+    "panelToolbar": {
+        "search": "Procurar"
+    },
+    "settings": {
+        "settings": "Configura\u00e7\u00f5es",
+        "language": "Idioma",
+        "wallConnection": "Liga\u00e7\u00e3o de parede",
+        "atStartup": "No arranque",
+        "availableWallsList": "mostrar a lista de paredes dispon\u00edveis",
+        "connectToMostRecentWall": "liga\u00e7\u00e3o autom\u00e1tica \u00e0 parede mais recente",
+        "connectToSpecificWall": "liga\u00e7\u00e3o autom\u00e1tica a uma parede espec\u00edfica",
+        "sourceLabels": "Etiquetas de fonte",
+        "displaySourceName": "Apresentar etiquetas de nome das fontes",
+        "multipleLines": "Utilizar m\u00faltiplas linhas",
+        "fontColor": "Cor do tipo de letra",
+        "fontSize": "Tamanho do tipo de letra",
+        "backgroundColor": "Fundo",
+        "transparency": "Transpar\u00eancia (%)",
+        "languageTitle": "Idioma",
+        "selectDisplay": "selecionar uma parede de telas",
+        "noDisplayWallFound": "parede de telas selecionada n\u00e3o encontrada",
+        "loadLayoutConfirmation": "Gostaria de carregar a disposi\u00e7\u00e3o \u201c{{value}}\u201d na parede?",
+        "never": "nunca",
+        "autoLogOff": "Terminar de sess\u00e3o autom\u00e1tico",
+        "timeOutInMinute": "Tempo at\u00e9 terminar sess\u00e3o em caso de inatividade (minutos)",
+        "listPageSizes": "List page sizes",
+        "pageSize": "Dimens\u00E3o predefinida da p\u00E1gina",
+        "defaultColorPickerTabLabel": "Custom",
+        "cancel": "CANCELAR"
+    },
+    "about": {
+        "daysRemaining": "Faltam {{value}} dias para avalia\u00E7\u00E3o.",
+        "about": "Acerca de",
+        "version": "Vers\u00e3o:",
+        "licensed": "Licenciada a:",
+        "project": "Nome do projeto:",
+        "licenseStatus": "Estado da licen\u00e7a:",
+        "server": "Servidor:",
+        "contentText": "Este produto est\u00e1 licenciado ao abrigo dos termos da Barco N.V. e dever\u00e1 ser utilizado em conformidade com os termos do contrato de licen\u00e7a. Para obter as informa\u00e7\u00f5es completas acerca da licen\u00e7a, consulte o ficheiro Readme.",
+        "copyrightText": "Direitos de autor \u24b8 {{value}}, Barco N.V. Todos os direitos reservados."
+    },
+    "dialog": {
+        "cancel": "CANCELAR",
+        "ok": "OK"
+    },
+    "systemDialog": {
+        "serverDisconnected": "A tentar ligar ao servidor...",
+        "serverConnected": "A liga\u00e7\u00e3o ao servidor est\u00e1 estabelecida! Realizar novo in\u00edcio de sess\u00e3o.",
+        "licenseChanged": "Novo ficheiro de licen\u00e7a carregado para o servidor. Tem de iniciar sess\u00e3o de novo.",
+        "restoreStarted": "O sistema est\u00e1 numa opera\u00e7\u00e3o de restauro, aguarde...",
+        "restoreFinished": "Restauro do sistema conclu\u00eddo! Realizar novo in\u00edcio de sess\u00e3o.",
+        "databaseResetStarted": "Rein\u00edcio da base de dados em curso...",
+        "userDeleted": "A sua conta foi desativada ou eliminada. Contacte o administrador.",
+        "userModified": "As fun\u00e7\u00f5es ativas do utilizador foram modificadas. A aplica\u00e7\u00e3o vai ser atualizada agora.",
+        "noPermission": {
+            "shareContent": "N\u00e3o tem permiss\u00e3o para adicionar esta fonte \u00e0 minitela.",
+            "unshareContent": "N\u00e3o tem permiss\u00e3o para remover esta fonte da minitela.",
+            "loadLayout": "N\u00e3o tem permiss\u00e3o para carregar uma disposi\u00e7\u00e3o.",
+            "saveLayout": "N\u00e3o tem permiss\u00e3o para guardar uma disposi\u00e7\u00e3o."
+        }
+    }
+}
