@@ -3,30 +3,30 @@
         <span>{{ 'tilePresetList.unavailable' | translate }}</span>
     </div>
     <div *ngIf="tilePresets?.length > 0">
-        <md-card *ngFor="let tilePreset of tilePresets" class="card" (click)="loadTilePreset(tilePreset)">
+        <mat-card *ngFor="let tilePreset of tilePresets" class="card" (click)="loadTilePreset(tilePreset)">
             <div class="card-inner layout-row">
                 <div class="card-image-section">
                     <cms-tile-grid [displayBase]="displayResolution" [tilePreset]="tilePreset"></cms-tile-grid>
                 </div>
                 <div class="card-content-section layout-column">
-                    <md-card-title id="card-title" class="card-title" [title]="tilePreset.name">
+                    <mat-card-title id="card-title" class="card-title" [title]="tilePreset.name">
                         {{tilePreset.name}}
-                    </md-card-title>
-                    <md-card-content class="card-content" [title]="tilePreset.description">
+                    </mat-card-title>
+                    <mat-card-content class="card-content" [title]="tilePreset.description">
                         <div id="card-description" class="card-desc">
                             <pre>{{tilePreset.description}}</pre>
                         </div>
-                    </md-card-content>
+                    </mat-card-content>
                 </div>
                 <div class="card-selection-section layout-column layout-align-space-between">
-                    <button id="card-default" md-icon-button>
+                    <button id="card-default" mat-icon-button>
                         <i class="material-icons" *ngIf="false">{{defaultTilerID === tilePreset.id ? 'bookmark' : 'bookmark_border'}}</i>
                     </button>
-                    <button class="card-select" md-icon-button>
+                    <button class="card-select" mat-icon-button>
                         <i class="material-icons">{{tilePreset?.isSelected ? 'check_box' : 'check_box_outline_blank'}}</i>
                     </button>
                 </div>
             </div>
-        </md-card>
+        </mat-card>
     </div>
 </div>

@@ -22,7 +22,7 @@ cms-launchpad{
     }
 
     // removing asterix sign on input labels defined as required
-    .md-placeholder-required{
+    .mat-placeholder-required{
         display: none;
     }
 
@@ -32,7 +32,7 @@ cms-launchpad{
         min-height: 64px;
     }
 
-    mat-toolbar.toolbar-theme md-icon,
+    mat-toolbar.toolbar-theme mat-icon,
     mat-toolbar.toolbar-theme .material-icons{
         font-size: 34px;
         width: 34px;
@@ -88,7 +88,7 @@ cms-launchpad{
         line-height: 24px;
     }
 
-    [mat-icon-button] md-icon,
+    [mat-icon-button] mat-icon,
     [mat-icon-button] .material-icons {
         line-height: 1;
     }
@@ -154,7 +154,7 @@ cms-launchpad{
         position: relative;
     }
 
-    .settings-panel mat-slide-toggle[ng-reflect-checked="true"].md-disabled{
+    .settings-panel mat-slide-toggle[ng-reflect-checked="true"].mat-disabled{
         opacity: 0.4;
     }
 
@@ -202,7 +202,7 @@ cms-launchpad{
         position: relative;
     }
 
-  .settings-panel  .specific-wall-row .md-list-item{
+  .settings-panel  .specific-wall-row .mat-list-item{
         width:  100%;
         height: inherit;
     }
@@ -237,7 +237,7 @@ cms-launchpad{
       height: inherit !important;
     }
 
-    .about-panel .content-text .md-list-item{
+    .about-panel .content-text .mat-list-item{
       height: inherit !important;
     }
 
@@ -291,7 +291,7 @@ html[dir="rtl"]{
     }
 
    // toolbar icon - flip
-   mat-toolbar md-icon,
+   mat-toolbar mat-icon,
    mat-toolbar .material-icons{
         transform: scaleX(-1);
         -moz-transform: scaleX(-1);
@@ -299,7 +299,7 @@ html[dir="rtl"]{
         -ms-transform: scaleX(-1);
     }
 
-   mat-toolbar md-icon[aria-label="search"],
+   mat-toolbar mat-icon[aria-label="search"],
    mat-toolbar .material-icons[aria-label="search"]{
         transform: scaleX(1);
         -moz-transform: scaleX(1);
@@ -400,7 +400,7 @@ mat-select.ng-invalid.ng-touched:not(.mat-select-disabled) .mat-select-arrow {
 .mat-select-content {
     background: #fff
 }
-mat-option.md-selected,
+mat-option.mat-selected,
 mat-option:focus:not(.mat-option-disabled),
 mat-option:hover:not(.mat-option-disabled) {
     background: rgba(0, 0, 0, .04)
@@ -411,7 +411,7 @@ mat-option:hover:not(.mat-option-disabled) {
 .mat-select-disabled .mat-select-value {
     color: rgba(0, 0, 0, .38)
 }
-mat-option.md-selected {
+mat-option.mat-selected {
     color: $blue_500
 }
 mat-option.mat-option-disabled {

@@ -31,7 +31,7 @@
         @include layout-column();
         @include layout-align-center();
 
-        md-progress-circle{
+        mat-progress-circle{
             width: 80px;
             height: 80px;
         }

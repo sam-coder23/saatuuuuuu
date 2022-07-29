@@ -1,7 +1,7 @@
-<md-toolbar id="display-panel-toolbar" class="toolbar-theme">
+<mat-toolbar id="display-panel-toolbar" class="toolbar-theme">
     <div class="display-panel-toolbar-row">
-        <button id="display-panel-back-button" class="action-button-exit" md-raised-button nd-click-debounce (ndClick)="navigateBack()">
-            <md-icon class="material-icons"> arrow_back </md-icon>
+        <button id="display-panel-back-button" class="action-button-exit" mat-raised-button (click)="navigateBack()">
+            <mat-icon class="material-icons"> arrow_back </mat-icon>
             {{'common.exit' | translate}}
         </button>
     </div>
@@ -10,7 +10,7 @@
     <cms-display-name></cms-display-name>
 
     <span class="fill-remaining-space"></span>
-</md-toolbar>
+</mat-toolbar>
 
 <cms-mini-display *ngIf="display" [display]="display" (onZoom)="zoomLevel = $event" [fitHeight]="fitHeightCount">
 </cms-mini-display>

@@ -72,7 +72,7 @@ cms-launchpad{
                 padding: 0;
                 min-width: 0;
                 background-color: transparent;
-                .md-button-focus-overlay {
+                .mat-button-focus-overlay {
                     display: none;
                 }
             }
@@ -100,11 +100,11 @@ cms-launchpad{
     }
 }
 
-md-card.disabled {
+mat-card.disabled {
     background-color: $grey_200 !important;
     cursor: no-drop !important;
 }
 
-md-card.disabled * {
+mat-card.disabled * {
     cursor: no-drop !important;
 }

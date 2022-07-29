@@ -32,7 +32,7 @@
         @include layout-column();
         @include layout-align-center();
 
-        md-progress-circle {
+        mat-progress-circle {
             width: 80px;
             height: 80px;
         }
@@ -41,24 +41,24 @@
     .setting-card {
         margin: 10px 0;
 
-        md-card-subtitle {
+        mat-card-subtitle {
             font-size: 14px;
             font-weight: bold;
             color: $grey_500;
         }
 
-        md-card-content {
+        mat-card-content {
             padding: 0 16px;
         }
 
     }
 
     .setting-card-language {
-        md-card-subtitle{
+        mat-card-subtitle{
             margin-bottom: 10px;
         }
 
-        md-card-content {
+        mat-card-content {
             padding: 0;
         }
 
@@ -180,4 +180,12 @@
         pointer-events: none;
         opacity: 0.5;
     }
+}
+
+#source-labels-fonts-settings {
+    height: 100px;
+}
+
+#mat-select-page-size {
+    width: 112px;
 }

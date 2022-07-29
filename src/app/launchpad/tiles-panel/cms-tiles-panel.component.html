@@ -1,16 +1,16 @@
 <div class="page-toolbar">
-    <md-toolbar id="tiles-panel-toolbar" class="toolbar-theme">
-        <button id="layouts-panel-back-button" class="action-button-exit" md-button md-raised-button nd-click-debounce (ndClick)="navigateBack()">
-            <md-icon class="material-icons"> arrow_back </md-icon>
+    <mat-toolbar id="tiles-panel-toolbar" class="toolbar-theme">
+        <button id="layouts-panel-back-button" class="action-button-exit" mat-button mat-raised-button (click)="navigateBack()">
+            <mat-icon class="material-icons"> arrow_back </mat-icon>
             {{'common.exit' | translate}}
         </button>
         <span class="fill-remaining-space"></span>
         <cms-display-name></cms-display-name>
         <span class="fill-remaining-space"></span>
-        <button id="tiles-panel-reload-button" md-icon-button *ngIf="reloadState" (click)="reloadList()">
+        <button id="tiles-panel-reload-button" mat-icon-button *ngIf="reloadState" (click)="reloadList()">
             <i class="material-icons">refresh</i>
         </button>
-    </md-toolbar>
+    </mat-toolbar>
 </div>
 
 <div class="tiles-panel-main">

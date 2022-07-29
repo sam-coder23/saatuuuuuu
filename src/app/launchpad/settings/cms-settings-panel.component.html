@@ -1,12 +1,12 @@
 <div class="page-toolbar">
 	<!-- PAGE HEADER -->
-	<md-toolbar id="setting-panel-toolbar" class="toolbar-theme">
-		<button id="setting-panel-back-button" md-icon-button (click)="navigateBack();">
+	<mat-toolbar id="setting-panel-toolbar" class="toolbar-theme">
+		<button id="setting-panel-back-button" mat-icon-button (click)="navigateBack();">
             <i class="material-icons">arrow_back</i>
         </button>
 
 		<span id="setting-panel-title-text">{{ 'settings.settings' | translate }}</span>
-	</md-toolbar>
+	</mat-toolbar>
 </div>
 
 <div class="settings-panel">
@@ -15,102 +15,102 @@
 
 		<!-- LOADING PROGRESS -->
 		<div class="loading-content" *ngIf="loading" id="loading-progress-indicator">
-			<md-progress-circle mode="indeterminate"></md-progress-circle>
+			<mat-progress-circle mode="indeterminate"></mat-progress-circle>
 		</div>
 
 		<div class="settings-content-wrapper" *ngIf="!loading">
 			<form>
 				<!-- LANGUAGE PART -->
-				<md-card class="setting-card setting-card-language">
-					<md-card-subtitle id="setting-panel-language-subtitle">{{ 'settings.language' | translate }}</md-card-subtitle>
-					<md-card-content>
-						<button md-raised-button class="language-button" id="setting-panel-language-link" (click)="showLanguages($event)" [disabled]="!localizationLicense">
+				<mat-card class="setting-card setting-card-language">
+					<mat-card-subtitle id="setting-panel-language-subtitle">{{ 'settings.language' | translate }}</mat-card-subtitle>
+					<mat-card-content>
+						<button mat-raised-button class="language-button" id="setting-panel-language-link" (click)="showLanguages($event)" [disabled]="!localizationLicense">
 							{{ userSelectedLanguage }}
 						</button>
-					</md-card-content>
-				</md-card>
+					</mat-card-content>
+				</mat-card>
 
 				<!-- AUTO LOG-OFF PART -->
-				<md-card class="setting-card">
-					<md-card-subtitle id="setting-panel-auto-logoff-subtitle">{{ 'settings.autoLogOff' | translate }}</md-card-subtitle>
-					<md-card-content>
-						<md-list dense>
-							<md-list-item>
+				<mat-card class="setting-card">
+					<mat-card-subtitle id="setting-panel-auto-logoff-subtitle">{{ 'settings.autoLogOff' | translate }}</mat-card-subtitle>
+					<mat-card-content>
+						<mat-list dense>
+							<mat-list-item>
 								<div class="fill-remaining-space">{{ 'settings.timeOutInMinute' | translate }}</div>
 
 								<div class="setting-button-group">
-									<button md-raised-button class="setting-square-button" id="logoffTime-decrease-button" (click)="decreaseLogOffTime()" [disabled]="logOffTimeSteps[0] === userSettings.logOffTime">
+									<button mat-raised-button class="setting-square-button" id="logoffTime-decrease-button" (click)="decreaseLogOffTime()" [disabled]="logOffTimeSteps[0] === userSettings.logOffTime">
 										-
 									</button>
-									<md-input-container class="setting-square-input">
-										<input md-input type="text" name="logOffTime" [value]="autoLogOffTime" [(ngModel)]="autoLogOffTime" (change)="updateLogOffTime()"
+									<mat-form-field class="setting-square-input">
+										<input matInput type="text" name="logOffTime" [value]="autoLogOffTime" [(ngModel)]="autoLogOffTime" (change)="updateLogOffTime()"
 										 #logOffTime>
-									</md-input-container>
-									<button md-raised-button class="setting-square-button" id="logoffTime-increase-button" (click)="increaseLogOffTime()" [disabled]="logOffTimeSteps[logOffTimeSteps.length-1] === userSettings.logOffTime">
+									</mat-form-field>
+									<button mat-raised-button class="setting-square-button" id="logoffTime-increase-button" (click)="increaseLogOffTime()" [disabled]="logOffTimeSteps[logOffTimeSteps.length-1] === userSettings.logOffTime">
 										+
 									</button>
 								</div>
-							</md-list-item>
-						</md-list>
-					</md-card-content>
-				</md-card>
+							</mat-list-item>
+						</mat-list>
+					</mat-card-content>
+				</mat-card>
 
 				<!-- WALL CONNECTION PART -->
-				<md-card class="setting-card">
-					<md-card-subtitle id="setting-panel-wallconnection-subtitle">{{ 'settings.wallConnection' | translate }}</md-card-subtitle>
-					<md-card-content>
-						<md-radio-group name="wallConnection-atstartup" [value]="userSettings.wallConnection.startUpAction" [(ngModel)]="userSettings.wallConnection.startUpAction"
+				<mat-card class="setting-card">
+					<mat-card-subtitle id="setting-panel-wallconnection-subtitle">{{ 'settings.wallConnection' | translate }}</mat-card-subtitle>
+					<mat-card-content>
+						<mat-radio-group name="wallConnection-atstartup" [value]="userSettings.wallConnection.startUpAction" [(ngModel)]="userSettings.wallConnection.startUpAction"
 						 (change)="updateUserSettingsByAction($event)" id="wallconnection-radiogroup">
-							<md-list dense>
-								<md-list-item id="setting-panel-wallconnection-atstartup-subtitle">
+							<mat-list dense>
+								<mat-list-item id="setting-panel-wallconnection-atstartup-subtitle">
 									{{ 'settings.atStartup' | translate }}
-								</md-list-item>
-								<md-list-item>
-									<md-radio-button value="show-available-walls-list" id="show-available-walls-list-radio-button">
-										<span class="md-line">{{ 'settings.availableWallsList' | translate }}</span>
-									</md-radio-button>
-								</md-list-item>
-								<md-list-item>
-									<md-radio-button value="auto-connect-to-most-recent-wall" id="auto-connect-to-most-recent-wall-radio-button">{{ 'settings.connectToMostRecentWall' | translate }}</md-radio-button>
-								</md-list-item>
-								<md-list-item class="specific-wall-row" [class.disabled]="noDisplayAvailable">
+								</mat-list-item>
+								<mat-list-item>
+									<mat-radio-button value="show-available-walls-list" id="show-available-walls-list-radio-button">
+										<span class="mat-line">{{ 'settings.availableWallsList' | translate }}</span>
+									</mat-radio-button>
+								</mat-list-item>
+								<mat-list-item>
+									<mat-radio-button value="auto-connect-to-most-recent-wall" id="auto-connect-to-most-recent-wall-radio-button">{{ 'settings.connectToMostRecentWall' | translate }}</mat-radio-button>
+								</mat-list-item>
+								<mat-list-item class="specific-wall-row" [class.disabled]="noDisplayAvailable">
 									<div class="text-block">
-										<md-radio-button value="auto-connect-to-specific-wall" id="auto-connect-to-specific-wall-radio-button">{{ 'settings.connectToSpecificWall' | translate }}</md-radio-button>
+										<mat-radio-button value="auto-connect-to-specific-wall" id="auto-connect-to-specific-wall-radio-button">{{ 'settings.connectToSpecificWall' | translate }}</mat-radio-button>
 									</div>
 									<div class="button-block">
-										<button md-raised-button class="wall-connection-button" [disabled]="!(userSettings.wallConnection.startUpAction === wallConnection.SPECIFIC_WALL)"
+										<button mat-raised-button class="wall-connection-button" [disabled]="!(userSettings.wallConnection.startUpAction === wallConnection.SPECIFIC_WALL)"
 										 (click)="goToSelectDisplayForAutoConnect()" type="button" id="auto-connect-to-specific-wall-select-button">
 											<span *ngIf="!userSettings.wallConnection.specificDisplay">{{ 'settings.selectDisplay' | translate }}</span>
 											<span *ngIf="displayWallName ==='nodisplayfound'">{{ 'settings.noDisplayWallFound' | translate }}</span>
 											<span *ngIf="displayWallName !=='nodisplayfound'">{{ displayWallName }}</span>
 											</button>
 									</div>
-								</md-list-item>
-							</md-list>
-						</md-radio-group>
-					</md-card-content>
-				</md-card>
+								</mat-list-item>
+							</mat-list>
+						</mat-radio-group>
+					</mat-card-content>
+				</mat-card>
 
 				<!-- SOURCE LABEL PART -->
-				<md-card class="setting-card">
-					<md-card-subtitle id="setting-panel-source-label-subtitle">{{ 'settings.sourceLabels' | translate }}</md-card-subtitle>
-					<md-card-content>
-						<md-list dense>
-							<md-list-item>
+				<mat-card class="setting-card">
+					<mat-card-subtitle id="setting-panel-source-label-subtitle">{{ 'settings.sourceLabels' | translate }}</mat-card-subtitle>
+					<mat-card-content>
+						<mat-list dense>
+							<mat-list-item>
 								<div class="fill-remaining-space">{{ 'settings.displaySourceName' | translate }}</div>
-								<md-slide-toggle [checked]="userSettings.sourceLabel.displaySourceNameLabels" name="sourceLabel-display-source-name-label"
-								 [(ngModel)]="userSettings.sourceLabel.displaySourceNameLabels" (change)="updateUserSettingsByAction($event)" id="display-sourcename-labels-slider-button"></md-slide-toggle>
-							</md-list-item>
-							<md-divider></md-divider>
-							<md-list-item>
+								<mat-slide-toggle [checked]="userSettings.sourceLabel.displaySourceNameLabels" name="sourceLabel-display-source-name-label"
+								 [(ngModel)]="userSettings.sourceLabel.displaySourceNameLabels" (change)="updateUserSettingsByAction($event)" id="display-sourcename-labels-slider-button"></mat-slide-toggle>
+							</mat-list-item>
+							<mat-divider></mat-divider>
+							<mat-list-item>
 								<div class="fill-remaining-space list-text" [class.disabled]="!userSettings.sourceLabel.displaySourceNameLabels">{{ 'settings.multipleLines' | translate }}</div>
-								<md-slide-toggle [checked]="userSettings.sourceLabel.useMultipleLines" name="sourceLabel-use-multiple-lines" [(ngModel)]="userSettings.sourceLabel.useMultipleLines"
-								 (change)="updateUserSettingsByAction($event)" [disabled]="!userSettings.sourceLabel.displaySourceNameLabels" id="use-multiplelines-sourcename-labels-slider-button"></md-slide-toggle>
-							</md-list-item>
-							<md-divider></md-divider>
+								<mat-slide-toggle [checked]="userSettings.sourceLabel.useMultipleLines" name="sourceLabel-use-multiple-lines" [(ngModel)]="userSettings.sourceLabel.useMultipleLines"
+								 (change)="updateUserSettingsByAction($event)" [disabled]="!userSettings.sourceLabel.displaySourceNameLabels" id="use-multiplelines-sourcename-labels-slider-button"></mat-slide-toggle>
+							</mat-list-item>
+							<mat-divider></mat-divider>
 
 							<!-- COLOR AND FONT SIZE PART -->
-							<md-list-item class="list-main-row" [class.disabled]="!userSettings.sourceLabel.displaySourceNameLabels" id="source-labels-fonts-settings">
+							<mat-list-item class="list-main-row" [class.disabled]="!userSettings.sourceLabel.displaySourceNameLabels" id="source-labels-fonts-settings">
 								<div class="cell-block title-box">
 									<div class="cell-block-content" id="font-color-title">{{ 'settings.fontColor' | translate }}</div>
 									<div class="cell-block-content" id="background-title">{{ 'settings.backgroundColor' | translate }}</div>
@@ -135,48 +135,48 @@
 								<div class="block setting-button-box">
 									<!-- Font Size -->
 									<div class="setting-button-group cell-block-content">
-										<button md-raised-button class="setting-square-button small-label" (click)="decreaseFontSize()"
+										<button mat-raised-button class="setting-square-button small-label" (click)="decreaseFontSize()"
 										 id="font-decrease-button">A</button>
-										<md-input-container class="setting-square-input">
-											<input md-input type="text" [value]="userSettings.sourceLabel.fontSize" name="sourceLabel-font-size" [(ngModel)]="userSettings.sourceLabel.fontSize"
+										<mat-form-field class="setting-square-input">
+											<input matInput type="text" [value]="userSettings.sourceLabel.fontSize" name="sourceLabel-font-size" [(ngModel)]="userSettings.sourceLabel.fontSize"
 											 (change)="updateFontSize()" #fonSize id="font-size-input">
-										</md-input-container>
-										<button md-raised-button class="setting-square-button large-label" (click)="increaseFontSize()"
+										</mat-form-field>
+										<button mat-raised-button class="setting-square-button large-label" (click)="increaseFontSize()"
 										 id="font-increase-button">A</button>
 									</div>
 									<!-- Transparency -->
 									<div class="setting-button-group cell-block-content">
-										<button md-raised-button class="setting-square-button" (click)="decreaseTransparency()"
+										<button mat-raised-button class="setting-square-button" (click)="decreaseTransparency()"
 										 id="transparency-decrease-button">-</button>
-										<md-input-container class="setting-square-input">
+										<mat-form-field class="setting-square-input">
 											<input matInput type="text" name="sourceLabel-transparency" [value]="userSettings.sourceLabel.transparency" [(ngModel)]="userSettings.sourceLabel.transparency"
 											 (change)="updateTransparency()" #transparency id="transparency-input">
-										</md-input-container>
-										<button md-raised-button class="setting-square-button" (click)="increaseTransparency()"
+										</mat-form-field>
+										<button mat-raised-button class="setting-square-button" (click)="increaseTransparency()"
 										 id="transparency-increase-button">+</button>
 									</div>
 								</div>
-							</md-list-item>
-						</md-list>
-					</md-card-content>
-				</md-card>
+							</mat-list-item>
+						</mat-list>
+					</mat-card-content>
+				</mat-card>
 				<!-- List page sizes -->
-				<md-card class="setting-card">
-					<md-card-subtitle id="setting-panel-list-page-sizes-subtitle">{{ 'settings.listPageSizes' | translate }}</md-card-subtitle>
-					<md-card-content>
-						<md-list dense>
-							<md-list-item>
+				<mat-card class="setting-card">
+					<mat-card-subtitle id="setting-panel-list-page-sizes-subtitle">{{ 'settings.listPageSizes' | translate }}</mat-card-subtitle>
+					<mat-card-content>
+						<mat-list dense>
+							<mat-list-item>
 								<div class="fill-remaining-space">{{ 'settings.pageSize' | translate }}</div>
 
-								<md-select name="pageSize" [(ngModel)]="userSettings.pageSize" (ngModelChange)="updateUserSettingsByAction($event)">
-									<md-option *ngFor="let pageSize of pageSizes" [value]="pageSize">
+								<mat-select name="pageSize" [(ngModel)]="userSettings.pageSize" (ngModelChange)="updateUserSettingsByAction($event)" id="mat-select-page-size">
+									<mat-option *ngFor="let pageSize of pageSizes" [value]="pageSize">
 										{{ pageSize }}
-									</md-option>
-								</md-select>
-							</md-list-item>
-						</md-list>
-					</md-card-content>
-				</md-card>
+									</mat-option>
+								</mat-select>
+							</mat-list-item>
+						</mat-list>
+					</mat-card-content>
+				</mat-card>
 			</form>
 		</div>
 	</div>

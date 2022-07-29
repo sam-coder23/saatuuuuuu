@@ -1,6 +1,6 @@
 <div class="page-toolbar">
     <mat-toolbar id="sources-panel-toolbar" class="toolbar-theme">
-        <button id="sources-panel-back-button" mat-icon-button nd-click-debounce (ndClick)="navigateBack()">
+        <button id="sources-panel-back-button" mat-icon-button (click)="navigateBack()">
             <i class="material-icons"> arrow_back </i>
         </button>
         <span class="fill-remaining-space"></span>
@@ -10,7 +10,7 @@
         <button id="sources-panel-reload-button" mat-icon-button *ngIf="reloadState" (click)="reloadList()">
             <i class="material-icons">refresh</i>
         </button>
-        <button id="sources-panel-favorite-button" mat-icon-button nd-click-debounce (ndClick)="setFavourite()">
+        <button id="sources-panel-favorite-button" mat-icon-button (click)="setFavourite()">
             <i class="material-icons">{{ isFavoriteFilter ? "star" : "star_border" }}</i>
         </button>
         <button mat-icon-button (click)="initializeSearch($event)">
@@ -31,7 +31,7 @@
 <div class="page-toolbar bottom">
     <mat-toolbar id="sources-panel-bottom-toolbar" class="toolbar-theme">
         <button mat-button mat-raised-button nd-click-debounce id="sources-panel-back-button" [hidden]="!cmsSettingService?.selectedSources?.length"
-            (ndClick)="showClearWallPopup = true" class="action-button-clear">
+            (click)="showClearWallPopup = true" class="action-button-clear">
             {{'common.clear' | translate}}
         </button>
         <span class="fill-remaining-space"></span>
@@ -43,7 +43,7 @@
             {{errorMessage}}
         </span>
         <span class="fill-remaining-space"></span>
-        <button id="sources-panel-next-button" mat-button mat-raised-button nd-click-debounce (ndClick)="shareTheSources()" class="action-button-share"
+        <button id="sources-panel-next-button" mat-button mat-raised-button (click)="shareTheSources()" class="action-button-share"
         [disabled]="cmsSettingService?.selectedSources?.length === 0">
             {{'common.share' | translate}}
         </button>

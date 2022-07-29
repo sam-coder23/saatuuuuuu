@@ -3,10 +3,10 @@
         <span id="displays-panel-back-button-text">{{ 'displayList.connectTo' | translate }}</span>
         <span class="fill-remaining-space"></span>
 
-        <button id="display-panel-reload-button" mat-icon-button *ngIf="reloadState" nd-click-debounce (ndClick)="reloadList()">
+        <button id="display-panel-reload-button" mat-icon-button *ngIf="reloadState" (click)="reloadList()">
             <i class="material-icons">refresh</i>
         </button>
-        <button id="display-list-favorite-button" mat-icon-button nd-click-debounce (ndClick)="setFavourite()">
+        <button id="display-list-favorite-button" mat-icon-button (click)="setFavourite()">
             <i class="material-icons">{{ isFavoriteFilter ? "star" : "star_border" }}</i>
         </button>
         <button id="display-list-search-button" mat-icon-button (click)="initializeSearch($event)">

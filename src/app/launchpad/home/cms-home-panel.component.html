@@ -1,7 +1,7 @@
 <div class="page-toolbar">
       <mat-toolbar class="toolbar-theme">
             <!-- logoff-button -->
-            <button class="action-button-exit" mat-raised-button nd-click-debounce (ndClick)="userLogoff()">
+            <button class="action-button-exit" mat-raised-button (click)="userLogoff()">
                   {{ 'home.logoff' | translate}}
             </button>
             <!-- end -->
@@ -11,13 +11,13 @@
             <i class="material-icons menu-button" [matMenuTriggerFor]="menu">more_vert</i>
             <mat-menu #menu="matMenu">
                   <!-- setting button -->
-                  <button mat-menu-item nd-click-debounce (ndClick)="navigateToSettings()">
+                  <button mat-menu-item (click)="navigateToSettings()">
                         <mat-icon>settings</mat-icon>
                         <span>{{ 'home.settings' | translate }}</span>
                   </button>
                   <!-- end -->
                   <!-- about button -->
-                  <button mat-menu-item nd-click-debounce (ndClick)="navigateToAbout()">
+                  <button mat-menu-item (click)="navigateToAbout()">
                         <mat-icon>info</mat-icon>
                         <span>{{ 'home.about' | translate }}</span>
                   </button>
@@ -28,7 +28,7 @@
 
 <div class="home-panel-wrapper" *ngIf="showHomePanel">
       <!-- Source Block -->
-      <mat-card class="card source-block" nd-click-debounce (ndClick)="navigateToSource()">
+      <mat-card class="card source-block" (click)="navigateToSource()">
             <div class="card-content">
                   <mat-card-title class="card-title">
                         {{ 'home.selectSource' | translate }}
@@ -38,7 +38,7 @@
       </mat-card>
       <!-- end -->
       <!-- Layout Block -->
-      <mat-card class="card layout-block" nd-click-debounce (ndClick)="navigateToLayout()" [ngClass]="{disabled: isDisabled}">
+      <mat-card class="card layout-block" (click)="navigateToLayout()" [ngClass]="{disabled: isDisabled}">
             <div class="card-content">
                   <mat-card-title class="card-title">
                         {{ 'home.selectLayout' | translate }}
@@ -48,7 +48,7 @@
       </mat-card>
       <!-- end -->
       <!-- Reposition Block -->
-      <mat-card class="card reposition-block" nd-click-debounce (ndClick)="navigateToResposition()" [ngClass]="{disabled: isDisabled}">
+      <mat-card class="card reposition-block" (click)="navigateToResposition()" [ngClass]="{disabled: isDisabled}">
             <div class="card-content">
                   <mat-card-title class="card-title">
                         {{ 'home.repositionSources' | translate }}

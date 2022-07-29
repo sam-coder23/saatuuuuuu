@@ -36,11 +36,11 @@
     animation-duration: 500ms;
     z-index: 2;
 
-    md-card {
+    mat-card {
        max-width: 350px;
     }
 
-    md-card-content {
+    mat-card-content {
         font-size: 16px;
 
         .message{
@@ -66,7 +66,7 @@
             @include layout-align-center();
         }
 
-        md-progress-circle {
+        mat-progress-circle {
             width: 60px;
         }
     }
