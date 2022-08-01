@@ -119,11 +119,13 @@
 								<div class="cell-block color-box">
 									<!-- Font Color -->
 									<div class="cell-block-content">
-										<nd-colorpicker [ngModel]="fontColorModel" (ngModelChange)="updateFontColor($event)" name="font-color"></nd-colorpicker>
+										<cms-colorpicker [color]="userSettings.sourceLabel.fontColor" [defaultColor]="fontColorDefault"
+											id="sourceLabels-fontcolor-box" (change)="updateFontColor($event)"></cms-colorpicker>
 									</div>
 									<!-- Background Color -->
 									<div class="cell-block-content">
-										<nd-colorpicker [ngModel]="backgroundColorModel" (ngModelChange)="updateBackgroundColor($event)" name="background-color"></nd-colorpicker>
+										<cms-colorpicker [color]="userSettings.sourceLabel.backgroundColor" [defaultColor]="backgroundDefault"
+											id="sourceLabels-background-box" (change)="updateBackgroundColor($event)"></cms-colorpicker>
 									</div>
 								</div>
 

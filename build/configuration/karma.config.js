@@ -5,17 +5,17 @@ module.exports = function (config) {
       "/settings/language/resources/": "/base/app/resources/",
       "/settings/language/icon_barco.png": "/base/app/icon_barco.png",
       "/display-panel/resources/": "/base/app/resources/",
-      "/display-panel/icon_barco.png": "/base/app/icon_barco.png",
+      "/display-panel/icon_barco.png": "/base/app/resources/images/icon_barco.png",
       "/resources/": "/base/app/resources/",
-      "/icon_barco.png": "/base/app/icon_barco.png",
+      "/icon_barco.png": "/base/app/resources/images/icon_barco.png",
       "/home/resources/": "/base/app/resources/",
       "/home/icon_barco.png": "/base/app/icon_barco.png",
       "/display_snapshot.jpg": "/base/app/resources/images/display_snapshot.jpg",
       "/home/display_snapshot.jpg": "/base/app/resources/images/display_snapshot.jpg",
-      "/display-panel/favicon.ico": "/base/app/icon_barco.png",
-      "/displays/1/favicon.ico": "/base/app/icon_barco.png",
-      "/settings/language/favicon.ico": "/base/app/icon_barco.png",
-      "/home/favicon.ico": "/base/app/icon_barco.png"
+      "/display-panel/favicon.ico": "/base/app/resources/images/icon_barco.png",
+      "/displays/1/favicon.ico": "/base/app/resources/images/icon_barco.png",
+      "/settings/language/favicon.ico": "/base/app/resources/images/icon_barco.png",
+      "/home/favicon.ico": "/base/app/resources/images/icon_barco.png"
     },
     frameworks: [
       'jasmine',

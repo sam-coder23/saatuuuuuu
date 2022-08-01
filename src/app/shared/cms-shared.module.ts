@@ -49,6 +49,8 @@ import { CmsGridComponent } from "./mini-display/grid/cms-grid.component";
 import { CmsSourceListComponent } from "./source-list/cms-source-list.component";
 import { TileGridComponent } from "./tile-grid/tile-grid.component";
 import { CmsTileListComponent } from "./tile-list/cms-tile-list.component";
+import { CmsDialogComponent } from './dialog/cms-dialog.component';
+import { CmsColorPickerComponent } from './colorpicker/cms-colorpicker.component';
 
 /**
  * This module defines various components that are designed keeping in
@@ -106,7 +108,9 @@ import { CmsTileListComponent } from "./tile-list/cms-tile-list.component";
     CmsSourceListComponent,
     TileGridComponent,
     CmsTileListComponent,
-    CmsDisplayNameComponent
+    CmsDisplayNameComponent,
+    CmsDialogComponent,
+    CmsColorPickerComponent
   ],
   exports: [
     CmsCardComponent,
@@ -116,7 +120,9 @@ import { CmsTileListComponent } from "./tile-list/cms-tile-list.component";
     CmsSourceListComponent,
     TileGridComponent,
     CmsTileListComponent,
-    CmsDisplayNameComponent
+    CmsDisplayNameComponent,
+    CmsDialogComponent,
+    CmsColorPickerComponent
   ],
   providers: [
     MatIconRegistry,

@@ -7,7 +7,7 @@
         <cms-card *ngFor="let source of sources"
             [card]="source" (select)="updateSelection(source)"
             (toggleFavorite)="toggleSourceFavorite(source)"
-            [ngClass]="{disabled: source.disabled}">
+            [ngClass]="{disabled: source.disabled}" [multi]="true">
         </cms-card>
     </div>
 </div>

@@ -26,14 +26,9 @@
                               <img src="app/resources/icons/display_offline_black_36.svg">
                         </i>
                   </button>
-                  <!-- <button id="card-selected" mat-icon-button *ngIf="multi">
-                        <i class="material-icons">
-                              {{card?.selected ? 'check_box' : 'check_box_outline_blank'}}
-                        </i>
-                  </button> -->
-                  <section class="checkbox-section">
-                        <mat-checkbox id="card-selected" class="selection-checkbox" [(ngModel)]="card.selected"></mat-checkbox>
-                  </section>
+                  <button id="card-selected" mat-icon-button *ngIf="multi">
+                        <i class="material-icons">{{card?.selected ? 'check_box' : 'check_box_outline_blank'}}</i>
+                  </button>
             </div>
       </div>
 </mat-card>

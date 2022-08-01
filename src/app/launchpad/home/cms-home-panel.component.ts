@@ -32,6 +32,7 @@ export class CmsHomePanelComponent implements OnInit {
     private selectedSourcesLength: number;
     public isDisabled: boolean = false;
     public showClearWallPopup: boolean = false;
+    public dialogMessage: string = "";
 
     constructor(
         private appConfig: AppConfig,
@@ -46,6 +47,9 @@ export class CmsHomePanelComponent implements OnInit {
             this.displayId = ParsingManager.TO_INTEGER(value.displayId);
 
             this.updateOptions();
+        });
+        this.translate.get('home.clearWallConfirmationPopupMessage').subscribe((response: string) => {
+            this.dialogMessage = response;
         });
     }
 

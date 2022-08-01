@@ -59,7 +59,6 @@ export class CmsSettingsService {
             .then((response: IUserProfileSettings) => {
                 if (response) {
                     this.userSettings = response;
-                    console.log('user settings-------', response);
 
                     if (callback) {
                         callback();

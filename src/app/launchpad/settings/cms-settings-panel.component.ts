@@ -94,10 +94,10 @@ export class CmsSettingsPanelComponent implements OnInit {
     public logOffTimeSteps: number[] = CMSConstants.LOGOFF_TIME_STEPS;
 
     //default colors
-    private fontColorDefault: string = CMSConstants.DEFAULT_FONT_COLOR;
-    private backgroundDefault: string = CMSConstants.DEFAULT_BACKGROUND_COLOR;
+    public fontColorDefault: string = CMSConstants.DEFAULT_FONT_COLOR;
+    public backgroundDefault: string = CMSConstants.DEFAULT_BACKGROUND_COLOR;
 
-    private recentDisplayId: number;
+    public recentDisplayId: number;
 
     // toshow or hide language option on the basis of this Property.
     public localizationLicense: number;

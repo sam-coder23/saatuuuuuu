@@ -37,20 +37,21 @@ import { CmsSettingsService } from "./settings/cms-settings.service";
 
 @Component({
   selector: 'cms-launchpad',
-  templateUrl: './cms-launchpad.component.html',
-  styleUrls: ['./cms-launchpad.component.scss']
+  template: `<router-outlet></router-outlet>
+    <cms-dialog *ngIf="showSystemDialog" [message]="dialogMessage" [type]="'alert'" (okPress)="onDialogConfirmation()"></cms-dialog>
+    <cms-dialog *ngIf="showProgressDialog" [message]="dialogMessage" [type]="'progress'" (okPress)="onDialogConfirmation()"></cms-dialog>`
 })
 
 export class CmsLaunchpadComponent implements OnInit, OnDestroy {
   // hold last time of user action like click or mousemove
-  private userLastActionTime: number;
-  private calculateUserWrapperHash: any;
+  public userLastActionTime: number = 0;
+  public calculateUserWrapperHash: any;
   // it saves the CMS events subscription and unsubscribe them on component destruction
-  private applicationLevelEvent: any;
+  public applicationLevelEvent: any;
   public showProgressDialog: boolean;
   public showSystemDialog: boolean;
-  public dialogMessage: string;
-  private applicationEventType: string;
+  public dialogMessage: string = '';
+  public applicationEventType: string = '';
 
   constructor(
     private translate: TranslateService,
@@ -66,7 +67,7 @@ export class CmsLaunchpadComponent implements OnInit, OnDestroy {
     this.showProgressDialog = false;
 
     // add svg icons to icon registry
-    matIconRegistry
+    this.matIconRegistry
       .addSvgIcon("fit_height", sanitizer.bypassSecurityTrustResourceUrl("resources/icons/fit_height.svg"))
       .addSvgIcon("display_offline", sanitizer.bypassSecurityTrustResourceUrl("resources/icons/display_offline_black_36.svg"))
       .addSvgIcon("display_online", sanitizer.bypassSecurityTrustResourceUrl("resources/icons/display_online_black_36.svg"));

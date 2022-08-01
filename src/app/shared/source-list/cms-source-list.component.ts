@@ -40,7 +40,6 @@ import { TileContent } from "../../cms/models/cms-tile-content";
  * @class CmsSourceListComponent
  * @property {boolean} favoriteFilter @Input
  * @property {string} searchFilter @Input
- * @property {boolean} selectedOnly @Input
  * @property {displayId} number @Input selected display's id.
  * @property {EventEmitter} changeEmitter @Output emit changes on source panel
  * @property {EventEmitter<string>} errorEmitter @Output emit changes on source panel
@@ -53,7 +52,6 @@ export class CmsSourceListComponent implements OnInit, OnChanges, OnDestroy {
     @Output("error") public errorEmitter: EventEmitter<string> = new EventEmitter<string>();
     @Input() public favoriteFilter: boolean = false;
     @Input() public searchFilter: string = "";
-    @Input() public selectedOnly: boolean = false;
     @Input() public displayId: number = 0;
 
     public sources: Source[] = [];
@@ -191,13 +189,7 @@ export class CmsSourceListComponent implements OnInit, OnChanges, OnDestroy {
         if (isNaN(this.displayId)) {
             return;
         }
-        console.log('this.cmsSettingsService-----', this.cmsSettingsService);
-        console.log('selectedSources-----', this.cmsSettingsService.selectedSources);
-        // if (this.selectedOnly) {
-        //     this.sources.push(...this.cmsSettingsService.selectedSources);
 
-        //     return;
-        // }
         if (this.scroller.max) {
             return;
         }

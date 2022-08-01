@@ -376,6 +376,19 @@ html[dir="ltr"]{
     background: 0 0
 }
 
+.mat-select-panel {
+    background-color: white;
+    transform-origin: 50% 24px 0px;
+    font-size: 16px;
+    opacity: 1;
+    min-width: calc(100% + 32px);
+    transform: scaleY(1);
+}
+
+.mat-select-panel:not([class*=mat-elevation-z]) {
+    box-shadow: 0 2px 4px -1px #0003, 0 4px 5px #00000024, 0 1px 10px #0000001f;
+}
+
 .mat-select-trigger {
     color: rgba(0, 0, 0, .38);
     border-bottom: 1px solid rgba(0, 0, 0, .12)
@@ -438,13 +451,4 @@ mat-option.mat-option-disabled {
     flex-direction: column;
     min-width: 1px;
     min-height: 1px;
-}
-
-.mat-checkbox-checked.mat-accent .mat-checkbox-background {
-    background-color: black;
-}
-
-.mat-checkbox-inner-container{
-    width: 18px !important;
-    height: 18px !important;
 }

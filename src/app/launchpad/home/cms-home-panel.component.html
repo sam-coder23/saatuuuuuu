@@ -57,13 +57,6 @@
             </div>
       </mat-card>
       <!-- end -->
-      <!-- popup -->
-      <nd-popup *ngIf="showClearWallPopup" class="confirm-popup" title="{{'home.clearWallConfirmationPopupTitle' | translate }}"
-            (done)="clearMiniDisplayWall()" (cancelled)="cancelClearWallPopup();" (closing)="closingClearWallPopup();" okText="{{'common.yes' | translate}}"
-            cancelText="{{'common.no' | translate}}">
-            <popup-body>
-                  {{'home.clearWallConfirmationPopupMessage' | translate}}
-            </popup-body>
-      </nd-popup>
-      <!-- end -->
+
+      <cms-dialog *ngIf="showClearWallPopup" class="confirm-popup" [message]="dialogMessage" [type]="'confirmation'" (okPress)="clearMiniDisplayWall()" (cancelPress)="cancelClearWallPopup()" [yesNoDialog]="true"></cms-dialog>
 </div>

@@ -95,7 +95,9 @@
     },
     "dialog": {
         "cancel": "CANCEL",
-        "ok": "OK"
+        "ok": "OK",
+        "yes": "Yes",
+        "no": "No"
     },
     "systemDialog": {
         "serverDisconnected": "Trying to connect to the server...",
@@ -122,7 +124,7 @@
         "ok": "OK",
         "exit": "Exit",
         "clear" : "Clear Wall",
-        "share": "Show Sources",
+        "share": "Share Sources",
         "logout" : "Log off",
         "layouts": "Layouts",
         "sources": "Sources",

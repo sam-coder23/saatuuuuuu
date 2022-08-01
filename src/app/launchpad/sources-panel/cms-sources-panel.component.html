@@ -23,9 +23,12 @@
 </div>
 
 <div class="sources-panel-main">
-    <cms-source-list #sourceListComp [tilePresets]="" [displayId]="displayId" [selectedOnly]="true" (change)="onListChanged()"
+    <cms-source-list #sourceListComp [tilePresets]="" [displayId]="displayId" (change)="onListChanged()"
         *ngIf="listState" [searchFilter]="searchFilter" [favoriteFilter]="isFavoriteFilter" (error)="errorMessage = $event">
     </cms-source-list>
+
+    <cms-dialog *ngIf="showClearWallPopup" id="display-panel-clear-wall-popup" class="confirm-popup" [message]="dialogMessage" [type]="'confirmation'" (okPress)="clearMiniDisplayWall()" (cancelPress)="closingClearWallPopup()" [yesNoDialog]="true">
+    </cms-dialog>
 </div>
 
 <div class="page-toolbar bottom">
@@ -48,12 +51,4 @@
             {{'common.share' | translate}}
         </button>
     </mat-toolbar>
-
-    <nd-popup id="display-panel-clear-wall-popup" *ngIf="showClearWallPopup" class="confirm-popup" title="{{'common.clearWallTitle' | translate }}"
-        (done)="clearMiniDisplayWall()" (cancelled)="cancelClearWallPopup();" (closing)="closingClearWallPopup();" okText="{{'common.yes' | translate}}"
-        cancelText="{{'common.no' | translate}}">
-        <popup-body>
-            {{'common.clearWallMessage' | translate}}
-        </popup-body>
-    </nd-popup>
 </div>

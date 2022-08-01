@@ -1,6 +1,6 @@
-@import "../../app/_variables.global.scss";
+@import "../../../app/_variables.global.scss";
 
-.cms-dialog-overlay {
+.cms-dialog-overlay{
     position: absolute;
     top: 0;
     left: 0;
@@ -19,57 +19,56 @@
     -moz-animation-duration: 500ms;
 }
 
-.cms-dialog-content-block {
+.cms-dialog-content-block{
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
+    z-index: 2;
 
     @include layout-column();
     @include layout-align-center();
 }
 
-.cms-dialog-content {
-    align-self: center;
+.cms-dialog-content{
+   align-self: center;
+
     animation-name: cms-opacity-animation;
     animation-duration: 500ms;
-    z-index: 2;
 
-    mat-card {
+   mat-card{
        max-width: 350px;
-    }
+   }
 
-    mat-card-content {
+   mat-card-content {
         font-size: 16px;
 
         .message{
             word-wrap: break-word;
             overflow-wrap: break-word;
             line-height: 24px;
+            padding-top: 20px;
         }
 
-        .action-buttons {
+        .action-buttons{
             @include layout-row();
             @include layout-align-space-around();
 
             margin-top: 40px;
         }
 
-        button {
+        button{
             color: $blue_500;
-            width: 50%;
+            width: 35%;
+            background-color: $grey_100;
         }
 
-        .cms-dialog-message-container {
+        .cms-dialog-message-container{
             @include layout-column();
             @include layout-align-center();
         }
-
-        mat-progress-circle {
-            width: 60px;
-        }
-    }
+   }
 }
 
 @keyframes cms-opacity-animation { from { opacity: 0 } }

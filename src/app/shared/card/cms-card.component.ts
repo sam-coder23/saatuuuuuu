@@ -29,8 +29,8 @@ import { CmsResource } from "./../../cms/models/cms-resource";
  * @constructor injects the nessecary dependencies to the component.
  */
 export class CmsCardComponent implements OnInit, OnChanges {
-    @Output("select") public selectedEventEmitter: EventEmitter<{}> = new EventEmitter(); // card selection
-    @Output("toggleFavorite") public favoriteEventEmitter: EventEmitter<{}> = new EventEmitter();
+    @Output("select") public selectedEventEmitter = new EventEmitter(); // card selection
+    @Output("toggleFavorite") public favoriteEventEmitter = new EventEmitter();
     /**
      * Above variable is used to decided whether we need to refresh image. When we just mark image as fav
      * then due to current implementation it will
@@ -41,7 +41,7 @@ export class CmsCardComponent implements OnInit, OnChanges {
     @Input() public multi: boolean;
     public isFavorite?: boolean;
     public cardSnapshot?: string;
-    private refreshSnapshot: boolean;
+    public refreshSnapshot: boolean;
 
     constructor(
         private appConfig: AppConfig,
@@ -51,7 +51,6 @@ export class CmsCardComponent implements OnInit, OnChanges {
     }
 
     public ngOnInit(): void {
-        console.log('card--------',this.card);
         const snapshotPath: string | undefined = this.card?.snapshotPath;
         this.isFavorite = this.card?.favorite;
         if (snapshotPath && this.refreshSnapshot) {

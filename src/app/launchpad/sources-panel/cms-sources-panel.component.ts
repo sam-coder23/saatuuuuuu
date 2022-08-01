@@ -39,7 +39,7 @@ import { ParsingManager } from "./../../utils/parsing-manager-util";
     styleUrls: ['./cms-sources-panel.component.scss']
 })
 export class CmsSourcesPanelComponent implements OnInit {
-    @ViewChild("sourceListComp", {static: false}) private sourceListComp: CmsSourceListComponent;
+    @ViewChild("sourceListComp", {static: true}) private sourceListComp: CmsSourceListComponent;
     public searchFilter: string;
     public searchKey: string;
     public showClearWallPopup: boolean;
@@ -51,6 +51,7 @@ export class CmsSourcesPanelComponent implements OnInit {
     public errorMessage: string;
     public reloadState: boolean = false;
     public listState: boolean = true;
+    public dialogMessage: string = "";
 
     constructor(
         private route: ActivatedRoute,
@@ -75,6 +76,10 @@ export class CmsSourcesPanelComponent implements OnInit {
 
         this.translate.get("sourceList.connectTo", { value: CMSConstants.MAXSELECTION }).subscribe((response: string) => {
             this.panelTitle = response;
+        });
+
+        this.translate.get('common.clearWallMessage').subscribe((response: string) => {
+            this.dialogMessage = response;
         });
     }
 

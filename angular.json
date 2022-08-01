@@ -30,7 +30,7 @@
             "tsConfig": "tsconfig.app.json",
             "inlineStyleLanguage": "scss",
             "assets": [
-              "src/favicon.ico",
+              "src/icon_barco.png",
               "src/app/resources",
               "src/app/i18n"
             ],
@@ -98,7 +98,7 @@
             "karmaConfig": "build/configuration/karma.config.js",
             "codeCoverage": true,
             "assets": [
-              "src/favicon.ico",
+              "src/icon_barco.png",
               "src/assets",
               "src/i18n"
             ],

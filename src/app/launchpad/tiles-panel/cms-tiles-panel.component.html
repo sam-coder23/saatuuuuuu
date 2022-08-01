@@ -1,11 +1,10 @@
 <div class="page-toolbar">
     <mat-toolbar id="tiles-panel-toolbar" class="toolbar-theme">
-        <button id="layouts-panel-back-button" class="action-button-exit" mat-button mat-raised-button (click)="navigateBack()">
-            <mat-icon class="material-icons"> arrow_back </mat-icon>
-            {{'common.exit' | translate}}
+        <button id="layouts-panel-back-button" mat-icon-button (click)="navigateBack()">
+            <i class="material-icons"> arrow_back </i>
         </button>
         <span class="fill-remaining-space"></span>
-        <cms-display-name></cms-display-name>
+        <cms-display-name class="toolbar-text"></cms-display-name>
         <span class="fill-remaining-space"></span>
         <button id="tiles-panel-reload-button" mat-icon-button *ngIf="reloadState" (click)="reloadList()">
             <i class="material-icons">refresh</i>
