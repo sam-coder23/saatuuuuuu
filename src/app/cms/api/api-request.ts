@@ -126,6 +126,6 @@ export class APIRequest {
             this.router.navigate(["/login"]);
         }
 
-        return throwError(() => new Error("Server error"));
+        return throwError(() => error || new Error("Server error"));
     }
 }

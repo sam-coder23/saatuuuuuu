@@ -21,6 +21,7 @@ import { MatIconRegistry } from "@angular/material/icon";
 import { DomSanitizer } from "@angular/platform-browser";
 import { Router } from "@angular/router";
 import { TranslateService } from "@ngx-translate/core";
+import { Subscription } from 'rxjs';
 
 import { CmsApiService } from "../cms/api/cms-api.service";
 import { CmsEventEmitterService } from "../cms/api/cms-event-emitter.service";
@@ -37,9 +38,7 @@ import { CmsSettingsService } from "./settings/cms-settings.service";
 
 @Component({
   selector: 'cms-launchpad',
-  template: `<router-outlet></router-outlet>
-    <cms-dialog *ngIf="showSystemDialog" [message]="dialogMessage" [type]="'alert'" (okPress)="onDialogConfirmation()"></cms-dialog>
-    <cms-dialog *ngIf="showProgressDialog" [message]="dialogMessage" [type]="'progress'" (okPress)="onDialogConfirmation()"></cms-dialog>`
+  templateUrl: './cms-launchpad.component.html'
 })
 
 export class CmsLaunchpadComponent implements OnInit, OnDestroy {
@@ -47,7 +46,7 @@ export class CmsLaunchpadComponent implements OnInit, OnDestroy {
   public userLastActionTime: number = 0;
   public calculateUserWrapperHash: any;
   // it saves the CMS events subscription and unsubscribe them on component destruction
-  public applicationLevelEvent: any;
+  public applicationLevelEvent: Subscription;
   public showProgressDialog: boolean;
   public showSystemDialog: boolean;
   public dialogMessage: string = '';
