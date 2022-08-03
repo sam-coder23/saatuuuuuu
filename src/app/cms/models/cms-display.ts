@@ -26,11 +26,11 @@ export class Display extends CmsResource {
     public content?: TileContent[];
 
     public override get width(): number {
-        return this.resolution?.width??0;
+        return this.resolution?.width ?? 0;
     }
 
     public override get height(): number {
-        return this.resolution?.height??0;
+        return this.resolution?.height ?? 0;
     }
 
     public modules?: any[];
@@ -48,7 +48,7 @@ export class Display extends CmsResource {
                 this.tiles = displayObject.tiles.map((tile: Tile) => new Tile(tile));
             }
             if (displayObject.content instanceof Array) {
-                this.content = displayObject.content.map((content: TileContent) => new TileContent(content));
+                this.content = displayObject.content.map((content: TileContent) => content as TileContent);
             }
             this.tilerId = displayObject.tilerId;
         }

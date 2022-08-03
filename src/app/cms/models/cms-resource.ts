@@ -19,11 +19,11 @@ export class CmsResource {
     public selected?: boolean = false;
 
     public get width(): number {
-        return this.width??0;
+        return this?.width ?? 0;
     }
 
     public get height(): number {
-        return this?.height??0;
+        return this?.height ?? 0;
     }
 
     constructor (resource: object) {
