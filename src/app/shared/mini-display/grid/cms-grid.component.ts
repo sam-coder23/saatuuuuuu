@@ -44,6 +44,7 @@ export class CmsGridComponent implements OnInit, AfterViewInit {
     @Input() public tiles: Tile[];
     // the input property will contain the array of sources in each tile
     @Input() public contents: TileContent[];
+
     // Collect swapping content when clicked
     private selectedContent: TileContent;
     private swappingContent: TileContent;
@@ -70,8 +71,8 @@ export class CmsGridComponent implements OnInit, AfterViewInit {
     public ngAfterViewInit(): void {
         const timeValue: number = 500;
         fromEvent(this.elementRef.nativeElement, "click").pipe(
-            debounceTime(timeValue),
-            map((event: any) => {
+            debounceTime(timeValue))
+            .subscribe((event: any) => {
                 const contentId: string = event.target.getAttribute("data-content-id");
                 if (contentId) {
                     const filteredContent: TileContent = this.contents.find((content: TileContent) => {
@@ -79,7 +80,7 @@ export class CmsGridComponent implements OnInit, AfterViewInit {
                     });
                     this.contentClick(filteredContent);
                 }
-            }));
+            });
     }
 
     /**
