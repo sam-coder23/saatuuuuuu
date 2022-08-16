@@ -39,7 +39,7 @@ import { ParsingManager } from "./../../utils/parsing-manager-util";
     styleUrls: ['./cms-sources-panel.component.scss']
 })
 export class CmsSourcesPanelComponent implements OnInit {
-    @ViewChild("sourceListComp", {static: true}) private sourceListComp: CmsSourceListComponent;
+    @ViewChild("sourceListComp", {static: false}) private sourceListComp: CmsSourceListComponent;
     public searchFilter: string;
     public searchKey: string;
     public showClearWallPopup: boolean;
@@ -181,12 +181,11 @@ export class CmsSourcesPanelComponent implements OnInit {
      */
     private updateDisplayWall(): void {
         const selectedSourcesLength: number = this.cmsSettingService.selectedSources.length;
-        const sources: Source[] = new Array(selectedSourcesLength);
         let selectedSources: Source[] = [...this.cmsSettingService.selectedSources];
         let sharedSources: Source[] = [...this.cmsSettingService.sourcesOnDisplay];
         let contentsOnDisplay: TileContent[] = [];
         let sortedShareSources: any[] = [];
-        let reStructuredPayload: object[] = [];
+        let reStructuredPayload: any[] = [];
 
         this.cmsServerApi.getSelectedDisplayContent(this.displayId)
             .subscribe(
@@ -211,23 +210,34 @@ export class CmsSourcesPanelComponent implements OnInit {
                                 );
                             } else {
                                 this.cmsSettingService.selectedSources.forEach(
-                                    (element: object) => {
+                                    (element: any) => {
                                         reStructuredPayload.push(element);
                                     });
                             }
 
                         } else {
                             this.cmsSettingService.selectedSources.forEach(
-                                (element: object) => {
+                                (element: any) => {
                                     reStructuredPayload.push(element);
                                 });
                         }
 
                     }
-                    // Clone sources and delete selected property; API service rejects extra properties
-                    for (let resourceIndex: number = 0; resourceIndex < sources.length; resourceIndex = resourceIndex + 1) {
-                        sources[resourceIndex] = new Source(reStructuredPayload[resourceIndex]);
-                        delete sources[resourceIndex].selected;
+
+                    let sources: any[] = [];
+
+                    // Clone sources without selected property; API service rejects extra properties
+                    for (let resourceIndex: number = 0; resourceIndex < selectedSourcesLength; resourceIndex = resourceIndex + 1) {
+                        sources[resourceIndex] = {
+                            description: reStructuredPayload[resourceIndex].description,
+                            favorite: reStructuredPayload[resourceIndex].favorite,
+                            height: reStructuredPayload[resourceIndex].height,
+                            id: reStructuredPayload[resourceIndex].id,
+                            name: reStructuredPayload[resourceIndex].name,
+                            snapshotPath: reStructuredPayload[resourceIndex].snapshotPath,
+                            type: reStructuredPayload[resourceIndex].type,
+                            width: reStructuredPayload[resourceIndex].width
+                        };
                     }
                     const requestPayload: object = {
                         resources: sources
@@ -242,10 +252,10 @@ export class CmsSourcesPanelComponent implements OnInit {
                             this.cmsServerApi.putContentsOnDisplay(this.displayId, tileId, requestPayload)
                                 .subscribe(
                                 (response: TileContent[]) => {
-                                    this.appConfig.log("success");
+                                    this.appConfig.log("success ", response);
                                 },
                                 (error: any) => {
-                                    this.appConfig.error(error);
+                                    this.appConfig.error('error: ', error);
                                 });
                         }
                     }, (error: any) => {

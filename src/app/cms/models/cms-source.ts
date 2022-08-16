@@ -15,10 +15,18 @@ import { CmsResource } from "./cms-resource";
 
 export class Source extends CmsResource {
     // tslint:disable-next-line:no-reserved-keywords
-    type: string = "";
-    x: number = 0;
-    y: number = 0;
-    zOrder: number = 0;
+    public type: string = "";
+    public x: number = 0;
+    public y: number = 0;
+    public zOrder: number = 0;
+
+    public override get width(): number {
+        return this.width;
+    }
+
+    public override get height(): number {
+        return this.height;
+    }
 
     public override set width(value) {
         this.width = value;
@@ -26,18 +34,5 @@ export class Source extends CmsResource {
 
     public override set height(value) {
         this.height = value;
-    }
-
-    constructor(source: object) {
-        super(source);
-        let sourceModel: Source;
-        if (source) {
-            sourceModel = <Source>source;
-            this.type = sourceModel.type;
-            this.x = sourceModel.x;
-            this.y = sourceModel.y;
-            this.zOrder = sourceModel.zOrder;
-            this.selected = sourceModel.selected;
-        }
     }
 }
