@@ -1,31 +1,73 @@
-How to generate generate CrisisRoomUI.war -
+HOW TO SETUP THE PROJECT -
 
-Following files are needed to achive this -
-files: "build_new.xml"
-This is placed at the root of the project
+Pre-requisites:
+    1. Install GIT on your machine.
+       Install git bash tool recommended for executing commands.
+    2. Install NodeJS version 16.15.1
+    3. Install Microsoft Visual Studio Code (latest version).
 
-Step 1 -
-Install NodeJS version 4.5.0 in "C:\Lang\nodejs".
+How to clone?
+Execute the following command on git bash terminal:
+> git clone ssh://git@git.barco.com:7999/ocs/launchpad-cr.git
 
-Step 2 -
-Install APACHE ANT, minimum version required(1.8.0) in "C:\Lang\apache-ant-1.8.0"
+This will ask for password, enter correct password to checkout the project.
 
-Step 3 -
-Set system environment variable ANT_HOME=C:\Lang\apache-ant-1.8.0
+By default pull requests are disabled so you will need write permission before you will be able to contribute to the project.
 
-Step 4 -
-Add ANT_HOME  variable in user environment variable PATH.
+Open VSCode editor and open launchpad-cr project folder.
 
-Step 5 -
-Set system environment variable LAUNCHPAD_PATH = <Sandbox>\Subsystems\CMS\JavaScript\Codebase\Launchpad\
+Execute the following command to install all the required project dependencies:
+> npm install
 
-Step 6 -
-Take latest updated code. Launch cmd.exe and go to  location "<Sandbox>\Subsystems\CMS\JavaScript\Codebase\Launchpad\" of branch "TFN_LAUNCHPAD".
+Undo removal of core-components in node_modules folder from VSCode Source control tab.
 
-Step 7 -
-Execute folllwing at command prompt
-ant -f build_new.xml
-This will generate WebUI.war at the root of the project
+Execute the following command to start the application:
+> npm start
 
-How to trouble shoot incase something does not work -
-execute cmd.exe as "Run as Administrator" to see detailed error
+Now open http://127.0.0.1:3000 to be able to launch the application.
+
+To configure server goto "environment.ts" and look for server property.
+To configure server proxy goto "proxy.conf.json" and look for target property.
+
+How to run unit tests?
+
+To run the application in test mode you will need to run the following command:
+> npm test
+
+To create the production bundle, execute the following command:
+> npm run build
+
+Above command will produce production ready bundle at following location:
+    "\launchpad-cr\build\build\dist\collaboration-wall-manager\"
+
+
+=========================================================================================================================
+HOW TO GENERATE "CollaborationWallManager.war" LOCALLY:
+
+Prerequisite:
+
+		a) NodeJS version 16.15.1 should be installed on the system.
+		b) Install APACHE ANT, minimum version required(1.9.16) in "C:\Lang\apache-ant-1.9.16"
+		c) Set system environment variable ANT_HOME=C:\Lang\apache-ant-1.9.16
+		d) Add ANT_HOME variable in user environment variable PATH.
+
+I.   Executing "build_new.xml" to generate WAR
+
+     a) Run command "npm run build" to generate production ready bundle. 
+        The following folder will be created with the compiled code:
+            "\launchpad-cr\build\build\dist\collaboration-wall-manager\"
+
+     b) Copy the file "build_new.xml" from the project root at the folder location in step (a). 
+        Edit two lines in the file as follows:
+            i.  <target name="build" depends="delete-war, create-war" />
+            ii. <zipfileset dir="./" includes="**/**" excludes="build_new.xml, .svn, .js.map, .git"/>
+        Remove the backup file created at the same location.
+
+	 c) Open command prompt and go to location given in step (a).
+        Execute the following command at the command prompt:
+            ant -f build_new.xml
+        This will generate CollaborationWallManager.war at the current location.
+
+II.  Trouble shooting
+
+	a) Execute cmd.exe as "Run as Administrator".
