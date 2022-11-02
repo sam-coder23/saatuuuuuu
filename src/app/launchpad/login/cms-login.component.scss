@@ -39,22 +39,44 @@
     height: 80%;
 }
 
-.login-input-container{
-    width: 42%;
-    height: 72px;
-    margin: 0.5% 29%;
-    position: relative;
-
-    ::ng-deep mat-form-field {
+@media screen and (orientation:portrait) {
+    .login-input-container {
+        width: 55%;
+        height: 72px;
+        margin: 0.5% 22%;
+        position: relative;
+    
+        ::ng-deep mat-form-field{
             width: 84%;
             padding: 2% 3%;
             font-size: 20px;
             line-height: normal;
-
+    
             .mat-form-field-wrapper {
                 margin: 16px 0;
             }
         }
+    }    
+}
+
+@media screen and (orientation:landscape) {
+    .login-input-container {
+        width: 42%;
+        height: 72px;
+        margin: 0.5% 29%;
+        position: relative;
+
+        ::ng-deep mat-form-field{
+            width: 84%;
+            padding: 2% 3%;
+            font-size: 20px;
+            line-height: normal;
+            
+            .mat-form-field-wrapper {
+                margin: 16px 0;
+            }
+        }
+    }
 }
 
 input {
@@ -99,11 +121,22 @@ input {
     height: 44px;
 }
 
-.login-button-container{
-    width: 69.5%;
-    height: inherit;
-    position: relative;
-    padding: 2% 0 1% 0;
+@media screen and (orientation:portrait) {
+    .login-button-container{
+        width: 75%;
+        height: inherit;
+        position: relative;
+        padding: 2% 0 1% 0;
+    }
+}
+
+@media screen and (orientation:landscape) {
+    .login-button-container{
+        width: 69.5%;
+        height: inherit;
+        position: relative;
+        padding: 2% 0 1% 0;
+    }
 }
 
 .login-button-container [mat-raised-button]{

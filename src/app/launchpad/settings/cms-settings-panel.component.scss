@@ -46,11 +46,6 @@
             font-weight: bold;
             color: $grey_500;
         }
-
-        mat-card-content {
-            padding: 0 16px;
-        }
-
     }
 
     .setting-card-language {
@@ -103,7 +98,7 @@
             @include layout-row();
             align-items: center;
             height: 45px;
-            white-space: nowrap;
+            white-space: wrap;
         }
 
         .setting-button-box {

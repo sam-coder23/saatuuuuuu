@@ -213,9 +213,15 @@ cms-launchpad{
         overflow-wrap: break-word;
     }
 
-     .settings-panel .specific-wall-row .mat-radio-container{
+    .settings-panel .specific-wall-row .mat-radio-container{
         flex-shrink: 0;
-     }
+    }
+
+    .settings-panel .most-recent-wall-row .mat-radio-label-content{
+        white-space: normal !important;
+        word-wrap: break-word;
+        overflow-wrap: break-word;
+    }
 
     .settings-panel mat-slide-toggle{
         display: block;
