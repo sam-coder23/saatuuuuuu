@@ -32,7 +32,7 @@ import { MatDialogModule } from "@angular/material/dialog";
 import { MatTooltipModule } from "@angular/material/tooltip";
 import { MatSnackBarModule } from "@angular/material/snack-bar";
 
-import { BrowserModule } from "@angular/platform-browser";
+import { BrowserModule, HammerModule } from "@angular/platform-browser";
 import { RouterModule } from "@angular/router";
 import { TranslateLoader, TranslateModule } from "@ngx-translate/core";
 import { TranslateHttpLoader } from "@ngx-translate/http-loader";
@@ -59,6 +59,7 @@ import { CmsColorPickerComponent } from './colorpicker/cms-colorpicker.component
 @NgModule({
   imports: [
     BrowserModule,
+    HammerModule,
     HttpClientModule,
     RouterModule,
     FormsModule,

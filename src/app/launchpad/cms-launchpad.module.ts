@@ -36,7 +36,7 @@ import { MatTooltipModule } from "@angular/material/tooltip";
 import { MatSnackBarModule } from "@angular/material/snack-bar";
 
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
-import { BrowserModule } from "@angular/platform-browser";
+import { BrowserModule, HammerModule } from "@angular/platform-browser";
 
 import { TranslateLoader, TranslateModule } from "@ngx-translate/core";
 import { TranslateHttpLoader } from "@ngx-translate/http-loader";
@@ -95,6 +95,7 @@ import { CmsTilesPanelComponent } from "./tiles-panel/cms-tiles-panel.component"
     MatTooltipModule,
     MatSnackBarModule,
     BrowserAnimationsModule,
+    HammerModule,
 
     TranslateModule.forRoot({
       loader: {

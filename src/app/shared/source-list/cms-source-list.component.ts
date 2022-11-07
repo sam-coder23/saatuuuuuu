@@ -64,6 +64,7 @@ export class CmsSourceListComponent implements OnInit, OnChanges, OnDestroy {
     public domManager: DomManager;
     private selectedDisplay: Display;
     private defaultScrollerCount: number = 20;
+    
     /**
      * The constructor initializes various dependencies.
      */
@@ -88,7 +89,7 @@ export class CmsSourceListComponent implements OnInit, OnChanges, OnDestroy {
         this.scroller.removeScrollListener();
         this.sources = [];
         this.scroller.dataCount = 0;
-        this.scroller.max = 0;
+        this.scroller.max = undefined;
         this.scroller.count = this.cmsSettingsService.userSettings?.pageSize || this.defaultScrollerCount;
         this.scrollTarget = this.domManager.getElementById("source-list-card-container");
         this.getSources();
@@ -189,10 +190,10 @@ export class CmsSourceListComponent implements OnInit, OnChanges, OnDestroy {
         if (isNaN(this.displayId)) {
             return;
         }
-
-        if (this.scroller.max) {
+        if (!Validation.IS_NULL_OR_UNDEFINED(this.scroller.max)) {
             return;
         }
+
         this.cmsServerApi.getSourceList(
             this.sources.length + 1,
             this.scroller.count,

@@ -472,14 +472,17 @@ export class CmsMiniDisplayComponent implements OnInit, OnChanges, OnDestroy {
         this.touchendSubscription = fromEvent(document, "touchend").subscribe(() => disablePinch);
 
         manager.on("pinchin", (e: any) => {
+            console.log('pinchin');
             this.outController = 0;
             this.zoom(1);
         });
 
         manager.on("pinchout", (e: any) => {
+            console.log('pinchout');
+            
             if (this.outController === 0) {
                 this.outController = 1;
-                e.preventDefault();
+                // e.preventDefault();
 
                 return false;
             }
