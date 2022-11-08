@@ -236,7 +236,8 @@ export class CmsLaunchpadComponent implements OnInit, OnDestroy {
    */
   private onMouseWheel(e): void {
     if (e.ctrlKey) {
-      e.preventDefault();
+      console.log('scrolling with mouse wheel invoked');
+      // e.preventDefault();
     }
   }
 
