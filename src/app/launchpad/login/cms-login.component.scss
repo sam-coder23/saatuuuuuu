@@ -41,7 +41,7 @@
 
 @media screen and (orientation:portrait) {
     .login-input-container {
-        width: 55%;
+        width: 58%;
         height: 72px;
         margin: 0.5% 22%;
         position: relative;
@@ -61,7 +61,7 @@
 
 @media screen and (orientation:landscape) {
     .login-input-container {
-        width: 42%;
+        width: 43%;
         height: 72px;
         margin: 0.5% 29%;
         position: relative;
@@ -123,7 +123,7 @@ input {
 
 @media screen and (orientation:portrait) {
     .login-button-container{
-        width: 75%;
+        width: 78%;
         height: inherit;
         position: relative;
         padding: 2% 0 1% 0;
@@ -132,7 +132,7 @@ input {
 
 @media screen and (orientation:landscape) {
     .login-button-container{
-        width: 69.5%;
+        width: 70.5%;
         height: inherit;
         position: relative;
         padding: 2% 0 1% 0;
@@ -155,11 +155,22 @@ input {
     background-color: $blue_200;
 }
 
-.login-progress-container{
-    width: 30.5%;
-    height: inherit;
-    position: relative;
-    padding: 2% 0 1% 0;
+@media screen and (orientation:portrait) {
+    .login-progress-container{
+        width: 22%;
+        height: inherit;
+        position: relative;
+        padding: 2% 0 1% 0;
+    }
+}
+
+@media screen and (orientation:landscape) {
+    .login-progress-container{
+        width: 29.5%;
+        height: inherit;
+        position: relative;
+        padding: 2% 0 1% 0;
+    }
 }
 
 .app-logo{
