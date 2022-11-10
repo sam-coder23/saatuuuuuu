@@ -194,6 +194,11 @@ export class CmsSourceListComponent implements OnInit, OnChanges, OnDestroy {
             return;
         }
 
+        // fetch display detail for the selected display
+        if (Validation.IS_NULL_OR_UNDEFINED(this.selectedDisplay)) {
+            this.getDisplayDetails();
+        }
+
         this.cmsServerApi.getSourceList(
             this.sources.length + 1,
             this.scroller.count,

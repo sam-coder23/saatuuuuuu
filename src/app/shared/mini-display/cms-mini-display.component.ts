@@ -106,6 +106,7 @@ export class CmsMiniDisplayComponent implements OnInit, OnChanges, OnDestroy {
     // Touch subscriptions on document for pinch zoom gesture on mini display
     private touchstartSubscription: Subscription;
     private touchendSubscription: Subscription;
+    public hammerManager: HammerManager;
 
     constructor(
         private element: ElementRef,
@@ -436,14 +437,14 @@ export class CmsMiniDisplayComponent implements OnInit, OnChanges, OnDestroy {
     private configureTouchGestures(): void {
         // get reference to an element
         const miniDisplayContainer: HTMLElement = this.element.nativeElement.children[0];
-        const manager: HammerManager = new Hammer.Manager(miniDisplayContainer, {
+        this.hammerManager = new Hammer.Manager(miniDisplayContainer, {
             recognizers: [
                 // RecognizerClass, [options], [recognizeWith, ...], [requireFailure, ...]
                 [Hammer.Pinch, { enable: false }]
             ],
             domEvents: false
         });
-        this.configurePinchZoomOnMiniDisplay(manager);
+        this.configurePinchZoomOnMiniDisplay(this.hammerManager);
     }
 
     /**
@@ -453,37 +454,22 @@ export class CmsMiniDisplayComponent implements OnInit, OnChanges, OnDestroy {
      * @return {void}
      */
     private configurePinchZoomOnMiniDisplay(manager: HammerManager): void {
-        //enable pinch zoom when touched with two fingers
-        const enablePinch: any = (event: TouchEvent): void => {
-            const touchLength: number = 2;
-            if (event.touches.length === touchLength) {
-                manager.get("pinch").set({
-                    enable: true
-                });
-            }
-        };
-        // disable pinch zoom on touchend
-        const disablePinch: any = (event: TouchEvent): void => {
-            manager.get("pinch").set({
-                enable: false
-            });
-        };
-        this.touchstartSubscription = fromEvent(document, "touchstart").subscribe(() => enablePinch);
-        this.touchendSubscription = fromEvent(document, "touchend").subscribe(() => disablePinch);
+        this.touchstartSubscription = fromEvent(document, "touchstart").pipe().subscribe((event: TouchEvent) => {
+            this.enablePinch(event);
+        });
+        this.touchendSubscription = fromEvent(document, "touchend").pipe().subscribe((event: TouchEvent) => {
+            this.disablePinch(event);
+        });
 
         manager.on("pinchin", (e: any) => {
-            console.log('pinchin');
             this.outController = 0;
             this.zoom(1);
         });
 
         manager.on("pinchout", (e: any) => {
-            console.log('pinchout');
-            
             if (this.outController === 0) {
                 this.outController = 1;
-                // e.preventDefault();
-
+                e.preventDefault();
                 return false;
             }
             this.zoom(-1);
@@ -491,6 +477,22 @@ export class CmsMiniDisplayComponent implements OnInit, OnChanges, OnDestroy {
         });
     }
 
+    // enable pinch zoom on touchstart
+    private enablePinch(event: TouchEvent): void {
+        const touchLength: number = 2;
+        if (event.touches.length === touchLength) {
+            this.hammerManager.get("pinch").set({
+                enable: true
+            });
+        }
+    };
+    // disable pinch zoom on touchend
+    private disablePinch(event: TouchEvent): void {
+        this.hammerManager.get("pinch").set({
+            enable: false
+        });
+    };
+    
     /**
      * This method calculate zoom level of mini-display on desktop browser.
      * @method zoomMiniDisplayOnBrowser
