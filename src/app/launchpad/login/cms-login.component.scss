@@ -39,7 +39,8 @@
     height: 80%;
 }
 
-@media screen and (orientation:portrait) {
+/* for portrait mode */
+@media screen and (max-aspect-ratio: 13/9) {
     .login-input-container {
         width: 58%;
         height: 72px;
@@ -59,7 +60,8 @@
     }    
 }
 
-@media screen and (orientation:landscape) {
+/* for landscape mode */
+@media screen and (min-aspect-ratio: 13/9) {
     .login-input-container {
         width: 43%;
         height: 72px;
