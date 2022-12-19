@@ -3,6 +3,7 @@
  * This service is used to implement virtual scroll in large lists to load content on scroll down.
  */
 import { Injectable } from "@angular/core";
+import { CMSConstants } from "../cms/models/cms-constants";
 import { EventManager } from "../utils/event-manager.util";
 import { CmsSettingsService } from "./../launchpad/settings/cms-settings.service";
 
@@ -28,9 +29,8 @@ export class CmsVirtualScrollService {
     private scrollCallback: () => void;
 
     constructor(private cmsSettingsService: CmsSettingsService) {
-        const defaultPageSize: number = 20;
         this.loading = false;
-        this.count = cmsSettingsService.userSettings.pageSize || defaultPageSize;
+        this.count = cmsSettingsService.userSettings.pageSize || CMSConstants.DEFAULT_PAGE_SIZE;
     }
 
     /**
