@@ -148,5 +148,6 @@
         "logoff": "Log Off",
         "clearWallConfirmationPopupTitle": "Log Off",
         "clearWallConfirmationPopupMessage": "Do you want to clear the display wall before logging off?"
+
     }
 }

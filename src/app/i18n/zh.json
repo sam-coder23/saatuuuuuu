@@ -12,7 +12,6 @@
         "userDisabledError": "\u7528\u6237\u5e10\u53f7\u5df2\u7981\u7528"
     },
     "options": {
-        "logoff": "\u6ce8\u9500",
         "refresh": "\u5237\u65b0",
         "exit": "\u9000\u51fa",
         "saveNewLayout": "\u4fdd\u5b58\u65b0\u5e03\u5c40",
@@ -22,13 +21,14 @@
         "aboutCmsLaunchPad": "\u5173\u4E8E"
     },
     "displayPanel": {
-        "unavailable": "\u65e0\u663e\u793a\u5668",
-        "selectDisplay": "\u9009\u62e9\u4e00\u4e2a\u663e\u793a\u5668"
+        "clearWallConfirmationPopupTitle": "\u6ce8\u9500",
+        "clearWallConfirmationPopupMessage": "Do you want to clear the display wall before logging off?"
     },
     "displayList": {
         "connectTo": "\u8fde\u63a5\u81f3\u663e\u793a\u5e55\u5899",
         "unavailable": "\u65e0\u663e\u793a\u5668",
-        "unavailableConfirmation": "\u60a8\u7684\u5e10\u6237\u6ca1\u6709\u53ef\u7528\u7684\u663e\u793a\u5668\u3002\u8bf7\u4e0e\u7ba1\u7406\u5458\u8054\u7cfb\u3002"
+        "unavailableConfirmation": "\u60a8\u7684\u5e10\u6237\u6ca1\u6709\u53ef\u7528\u7684\u663e\u793a\u5668\u3002\u8bf7\u4e0e\u7ba1\u7406\u5458\u8054\u7cfb\u3002",
+        "confirmationTitlePopup": "Information Alert"
     },
     "layoutList": {
         "connectTo": "\u52a0\u8f7d\u5e03\u5c40",
@@ -46,6 +46,8 @@
         "loadLayout": "\u52a0\u8f7d\u5e03\u5c40"
     },
     "sourceList": {
+        "tileLayoutNotAvailable": "No tile layout found for loading source on display wall.",
+        "maxSelection": "Maximum {{value}} source(s) can be selected.",
         "connectTo": "\u9009\u62e9\u8f93\u5165\u6e90",
         "unavailable": "\u65e0\u8f93\u5165\u6e90"
     },
@@ -74,7 +76,7 @@
         "never": "\u4ece\u4e0d",
         "autoLogOff": "\u81ea\u52a8\u6ce8\u9500",
         "timeOutInMinute": "\u5728\u591a\u957f\u65f6\u95f4\u4e0d\u6d3b\u52a8\u4e4b\u540e\u6ce8\u9500\uff08\u5206\u949f\uff09",
-        "listPageSizes": "List page sizes",
+        "listPageSizes": "\u5217\u8868\u9875\u9762\u5927\u5C0F",
         "pageSize": "\u9ED8\u8BA4\u9875\u9762\u5927\u5C0F",
         "defaultColorPickerTabLabel": "Custom",
         "cancel": "\u53d6\u6d88"
@@ -92,7 +94,9 @@
     },
     "dialog": {
         "cancel": "\u53d6\u6d88",
-        "ok": "\u786e\u5b9a"
+        "ok": "\u786e\u5b9a",
+        "yes": "Yes",
+        "no": "No"
     },
     "systemDialog": {
         "serverDisconnected": "\u6b63\u5728\u5c1d\u8bd5\u8fde\u63a5\u5230\u670d\u52a1\u5668...",
@@ -108,6 +112,40 @@
             "unshareContent": "\u60a8\u65e0\u6743\u4ece\u8ff7\u4f60\u663e\u793a\u5668\u4e2d\u79fb\u9664\u6b64\u8f93\u5165\u6e90\u3002",
             "loadLayout": "\u60a8\u65e0\u6743\u52a0\u8f7d\u5e03\u5c40\u3002",
             "saveLayout": "\u60a8\u65e0\u6743\u4fdd\u5b58\u5e03\u5c40\u3002"
-        }
+        },
+        "confirmationTitlePopup": "Information Alert"
+    },
+    "common": {
+        "back": "Back",
+        "next": "Next",
+        "yes": "Yes",
+        "no": "No",
+        "ok": "\u786e\u5b9a",
+        "exit": "\u9000\u51fa",
+        "clear": "Clear Wall",
+        "share": "Show Sources",
+        "logout": "\u6ce8\u9500",
+        "layouts": "Layouts",
+        "sources": "Sources",
+        "displays": "Displays",
+        "display": "Preview",
+        "of": "of",
+        "source": "sources",
+        "clearWallMessage": "Do you wish to clear the wall?",
+        "clearWallTitle": "Clear the wall"
+    },
+    "tilePresetList": {
+        "unavailable": "No Tile Layouts",
+        "layouts": "\u52a0\u8f7d\u5e03\u5c40"
+    },
+    "home": {
+        "selectSource": "\u9009\u62e9\u8f93\u5165\u6e90",
+        "selectLayout": "Select Layout",
+        "repositionSources": "Reposition Sources",
+        "settings": "\u8bbe\u7f6e",
+        "about": "\u5173\u4E8E",
+        "logoff": "\u6ce8\u9500",
+        "clearWallConfirmationPopupTitle": "\u6ce8\u9500",
+        "clearWallConfirmationPopupMessage": "Do you want to clear the display wall before logging off?"
     }
 }

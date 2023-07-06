@@ -12,7 +12,6 @@
         "userDisabledError": "Kullan\u0131c\u0131 hesab\u0131 devre d\u0131\u015f\u0131 b\u0131rak\u0131ld\u0131"
     },
     "options": {
-        "logoff": "\u00c7\u0131k\u0131\u015f Yap",
         "refresh": "Yenile",
         "exit": "\u00c7\u0131k\u0131\u015f",
         "saveNewLayout": "Yeni bir yerle\u015fim kaydet",
@@ -22,13 +21,14 @@
         "aboutCmsLaunchPad": "Hakk\u0131nda"
     },
     "displayPanel": {
-        "unavailable": "Ekran Yok",
-        "selectDisplay": "Bir ekran se\u00e7in"
+        "clearWallConfirmationPopupTitle": "\u00c7\u0131k\u0131\u015f Yap",
+        "clearWallConfirmationPopupMessage": "Do you want to clear the display wall before logging off?"
     },
     "displayList": {
         "connectTo": "Bir ekran duvar\u0131na ba\u011flan\u0131n",
         "unavailable": "Ekran Yok",
-        "unavailableConfirmation": "Hesab\u0131n\u0131z i\u00e7in hi\u00e7bir ekran mevcut de\u011fil. L\u00fctfen y\u00f6neticiye ba\u015fvurun."
+        "unavailableConfirmation": "Hesab\u0131n\u0131z i\u00e7in hi\u00e7bir ekran mevcut de\u011fil. L\u00fctfen y\u00f6neticiye ba\u015fvurun.",
+        "confirmationTitlePopup": "Information Alert"
     },
     "layoutList": {
         "connectTo": "Bir yerle\u015fim y\u00fckleyin",
@@ -46,6 +46,8 @@
         "loadLayout": "Bir yerle\u015fim y\u00fckleyin"
     },
     "sourceList": {
+        "tileLayoutNotAvailable": "No tile layout found for loading source on display wall.",
+        "maxSelection": "Maximum {{value}} source(s) can be selected.",
         "connectTo": "Bir kaynak se\u00e7in",
         "unavailable": "Kaynak Yok"
     },
@@ -74,7 +76,7 @@
         "never": "hi\u00e7",
         "autoLogOff": "Otomatik \u00e7\u0131k\u0131\u015f yap",
         "timeOutInMinute": "\u0130\u015flem yap\u0131lmad\u0131\u011f\u0131nda \u00e7\u0131k\u0131\u015f yapma s\u00fcresi (dakika)",
-        "listPageSizes": "List page sizes",
+        "listPageSizes": "Sayfa boyutlar\u0131n\u0131 listele",
         "pageSize": "Varsay\u0131lan sayfa boyutu",
         "defaultColorPickerTabLabel": "Custom",
         "cancel": "\u0130PTAL"
@@ -92,7 +94,9 @@
     },
     "dialog": {
         "cancel": "\u0130PTAL",
-        "ok": "TAMAM"
+        "ok": "TAMAM",
+        "yes": "Yes",
+        "no": "No"
     },
     "systemDialog": {
         "serverDisconnected": "Sunucuya ba\u011flanmaya \u00e7al\u0131\u015f\u0131l\u0131yor...",
@@ -108,6 +112,40 @@
             "unshareContent": "Bu kayna\u011f\u0131 mini ekrandan kald\u0131rma izniniz yok.",
             "loadLayout": "Bir yerle\u015fim y\u00fckleme izniniz yok.",
             "saveLayout": "Bir yerle\u015fim kaydetme izniniz yok."
-        }
+        },
+        "confirmationTitlePopup": "Information Alert"
+    },
+    "common": {
+        "back": "Back",
+        "next": "Next",
+        "yes": "Yes",
+        "no": "No",
+        "ok": "TAMAM",
+        "exit": "\u00c7\u0131k\u0131\u015f",
+        "clear": "Clear Wall",
+        "share": "Show Sources",
+        "logout": "\u00c7\u0131k\u0131\u015f Yap",
+        "layouts": "Layouts",
+        "sources": "Sources",
+        "displays": "Displays",
+        "display": "Preview",
+        "of": "of",
+        "source": "sources",
+        "clearWallMessage": "Do you wish to clear the wall?",
+        "clearWallTitle": "Clear the wall"
+    },
+    "tilePresetList": {
+        "unavailable": "No Tile Layouts",
+        "layouts": "Bir yerle\u015fim y\u00fckleyin"
+    },
+    "home": {
+        "selectSource": "Bir kaynak se\u00e7in",
+        "selectLayout": "Select Layout",
+        "repositionSources": "Reposition Sources",
+        "settings": "Ayarlar",
+        "about": "Hakk\u0131nda",
+        "logoff": "\u00c7\u0131k\u0131\u015f Yap",
+        "clearWallConfirmationPopupTitle": "\u00c7\u0131k\u0131\u015f Yap",
+        "clearWallConfirmationPopupMessage": "Do you want to clear the display wall before logging off?"
     }
 }

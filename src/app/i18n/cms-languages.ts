@@ -23,6 +23,7 @@ export class CmsLanguages {
     private CHINESE: string = "zh";
     private TURKISH: string = "tr";
     private RUSSIAN: string = "ru";
+    private ITALIAN: string = "it";
 
     constructor() {
         this.languageKeys = [
@@ -36,7 +37,8 @@ export class CmsLanguages {
             this.PORTUGESE,
             this.CHINESE,
             this.TURKISH,
-            this.RUSSIAN
+            this.RUSSIAN,
+            this.ITALIAN
         ];
 
         this.languages = [
@@ -44,13 +46,14 @@ export class CmsLanguages {
             { key: this.GERMAN, value: "German" },
             { key: this.ENGLISH, value: "English" },
             { key: this.ESPANOL, value: "Español" },
-            { key: this.FRENCH, value: "Francais" },
+            { key: this.FRENCH, value: "Français" },
             { key: this.JAPANESE, value: "日本語" },
             { key: this.POLISH, value: "Polski" },
             { key: this.PORTUGESE, value: "Portuguěs" },
             { key: this.CHINESE, value: "中文" },
-            { key: this.TURKISH, value: "Türk" },
-            { key: this.RUSSIAN, value: "русский" }
+            { key: this.TURKISH, value: "Türkçe" },
+            { key: this.RUSSIAN, value: "русский" },
+            { key: this.ITALIAN, value: "Italiano" }
         ];
     }
 }

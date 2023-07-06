@@ -12,7 +12,6 @@
         "userDisabledError": "Benutzerkonto ist deaktiviert"
     },
     "options": {
-        "logoff": "Abmelden",
         "refresh": "Aktualisieren",
         "exit": "Beenden",
         "saveNewLayout": "Neues Layout speichern",
@@ -22,13 +21,14 @@
         "aboutCmsLaunchPad": "Info"
     },
     "displayPanel": {
-        "unavailable": "Kein Monitor",
-        "selectDisplay": "Einen Monitor ausw\u00e4hlen"
+        "clearWallConfirmationPopupTitle": "Abmelden",
+        "clearWallConfirmationPopupMessage": "Do you want to clear the display wall before logging off?"
     },
     "displayList": {
         "connectTo": "Mit einer Anzeigewand verbinden",
         "unavailable": "Keine Monitore",
-        "unavailableConfirmation": "F\u00fcr Ihr Konto sind keine Monitore verf\u00fcgbar. Wenden Sie sich an den Administrator."
+        "unavailableConfirmation": "F\u00fcr Ihr Konto sind keine Monitore verf\u00fcgbar. Wenden Sie sich an den Administrator.",
+        "confirmationTitlePopup": "Information Alert"
     },
     "layoutList": {
         "connectTo": "Layout laden",
@@ -46,6 +46,8 @@
         "loadLayout": "Layout laden"
     },
     "sourceList": {
+        "tileLayoutNotAvailable": "No tile layout found for loading source on display wall.",
+        "maxSelection": "Maximum {{value}} source(s) can be selected.",
         "connectTo": "Eine Quelle ausw\u00e4hlen",
         "unavailable": "Keine Quellen"
     },
@@ -74,7 +76,7 @@
         "never": "nie",
         "autoLogOff": "Automatisches Abmelden",
         "timeOutInMinute": "Zeitablauf f\u00fcr das Abmelden bei Inaktivit\u00e4t (Minuten)",
-        "listPageSizes": "List page sizes",
+        "listPageSizes": "Seitengr\u00F6\u00DFen auflisten",
         "pageSize": "Standard-Seitengr\u00F6\u00DFe",
         "defaultColorPickerTabLabel": "Custom",
         "cancel": "ABBRECHEN"
@@ -92,7 +94,9 @@
     },
     "dialog": {
         "cancel": "ABBRECHEN",
-        "ok": "OK"
+        "ok": "OK",
+        "yes": "Yes",
+        "no": "No"
     },
     "systemDialog": {
         "serverDisconnected": "Es wird versucht, die Verbindung zum Server herzustellen...",
@@ -108,6 +112,40 @@
             "unshareContent": "Sie haben keine Berechtigung zum Entfernen dieser Quelle aus einer Minianzeige.",
             "loadLayout": "Sie haben keine Berechtigung zum Laden eines Layouts.",
             "saveLayout": "Sie haben keine Berechtigung zum Speichern eines Layouts."
-        }
+        },
+        "confirmationTitlePopup": "Information Alert"
+    },
+    "common": {
+        "back": "Back",
+        "next": "Next",
+        "yes": "Yes",
+        "no": "No",
+        "ok": "OK",
+        "exit": "Beenden",
+        "clear": "Clear Wall",
+        "share": "Show Sources",
+        "logout": "Abmelden",
+        "layouts": "Layouts",
+        "sources": "Sources",
+        "displays": "Displays",
+        "display": "Preview",
+        "of": "of",
+        "source": "sources",
+        "clearWallMessage": "Do you wish to clear the wall?",
+        "clearWallTitle": "Clear the wall"
+    },
+    "tilePresetList": {
+        "unavailable": "No Tile Layouts",
+        "layouts": "Layout laden"
+    },
+    "home": {
+        "selectSource": "Eine Quelle ausw\u00e4hlen",
+        "selectLayout": "Select Layout",
+        "repositionSources": "Reposition Sources",
+        "settings": "Einstellungen",
+        "about": "Info",
+        "logoff": "Abmelden",
+        "clearWallConfirmationPopupTitle": "Abmelden",
+        "clearWallConfirmationPopupMessage": "Do you want to clear the display wall before logging off?"
     }
 }

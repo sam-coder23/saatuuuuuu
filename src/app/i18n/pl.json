@@ -12,7 +12,6 @@
         "userDisabledError": "Konto u\u017cytkownika jest wy\u0142\u0105czone"
     },
     "options": {
-        "logoff": "Wyloguj si\u0119",
         "refresh": "Od\u015bwie\u017c",
         "exit": "Wyjd\u017a",
         "saveNewLayout": "Zapisz nowy uk\u0142ad",
@@ -22,13 +21,14 @@
         "aboutCmsLaunchPad": "Informacje"
     },
     "displayPanel": {
-        "unavailable": "Brak monitora",
-        "selectDisplay": "Wybierz monitor"
+        "clearWallConfirmationPopupTitle": "Wyloguj si\u0119",
+        "clearWallConfirmationPopupMessage": "Do you want to clear the display wall before logging off?"
     },
     "displayList": {
         "connectTo": "Po\u0142\u0105cz ze \u015bcian\u0105 monitor\u00f3w",
         "unavailable": "Brak monitor\u00f3w",
-        "unavailableConfirmation": "Brak dost\u0119pnych monitor\u00f3w dla Twojego konta. Skontaktuj si\u0119 z administratorem."
+        "unavailableConfirmation": "Brak dost\u0119pnych monitor\u00f3w dla Twojego konta. Skontaktuj si\u0119 z administratorem.",
+        "confirmationTitlePopup": "Information Alert"
     },
     "layoutList": {
         "connectTo": "Za\u0142aduj uk\u0142ad",
@@ -46,6 +46,8 @@
         "loadLayout": "Za\u0142aduj uk\u0142ad"
     },
     "sourceList": {
+        "tileLayoutNotAvailable": "No tile layout found for loading source on display wall.",
+        "maxSelection": "Maximum {{value}} source(s) can be selected.",
         "connectTo": "Wybierz \u017ar\u00f3d\u0142o",
         "unavailable": "Brak \u017ar\u00f3de\u0142"
     },
@@ -74,7 +76,7 @@
         "never": "nigdy",
         "autoLogOff": "Wyloguj automatycznie",
         "timeOutInMinute": "Czas do wylogowania w przypadku braku aktywno\u015bci (minuty)",
-        "listPageSizes": "List page sizes",
+        "listPageSizes": "Wy\u015Bwietl rozmiary stron",
         "pageSize": "Domy\u015Blny rozmiar strony",
         "defaultColorPickerTabLabel": "Custom",
         "cancel": "ANULUJ"
@@ -92,7 +94,9 @@
     },
     "dialog": {
         "cancel": "ANULUJ",
-        "ok": "OK"
+        "ok": "OK",
+        "yes": "Yes",
+        "no": "No"
     },
     "systemDialog": {
         "serverDisconnected": "Pr\u00f3ba nawi\u0105zania po\u0142\u0105czenia z serwerem...",
@@ -108,6 +112,40 @@
             "unshareContent": "Nie masz uprawnienia, aby usun\u0105\u0107 to \u017ar\u00f3d\u0142o z mini-monitora.",
             "loadLayout": "Nie masz uprawnienia, aby za\u0142adowa\u0107 uk\u0142ad.",
             "saveLayout": "Nie masz uprawnienia, aby zapisa\u0107 uk\u0142ad."
-        }
+        },
+        "confirmationTitlePopup": "Information Alert"
+    },
+    "common": {
+        "back": "Back",
+        "next": "Next",
+        "yes": "Yes",
+        "no": "No",
+        "ok": "OK",
+        "exit": "Wyjd\u017a",
+        "clear": "Clear Wall",
+        "share": "Show Sources",
+        "logout": "Wyloguj si\u0119",
+        "layouts": "Layouts",
+        "sources": "Sources",
+        "displays": "Displays",
+        "display": "Preview",
+        "of": "of",
+        "source": "sources",
+        "clearWallMessage": "Do you wish to clear the wall?",
+        "clearWallTitle": "Clear the wall"
+    },
+    "tilePresetList": {
+        "unavailable": "No Tile Layouts",
+        "layouts": "Za\u0142aduj uk\u0142ad"
+    },
+    "home": {
+        "selectSource": "Wybierz \u017ar\u00f3d\u0142o",
+        "selectLayout": "Select Layout",
+        "repositionSources": "Reposition Sources",
+        "settings": "Ustawienia",
+        "about": "Informacje",
+        "logoff": "Wyloguj si\u0119",
+        "clearWallConfirmationPopupTitle": "Wyloguj si\u0119",
+        "clearWallConfirmationPopupMessage": "Do you want to clear the display wall before logging off?"
     }
 }

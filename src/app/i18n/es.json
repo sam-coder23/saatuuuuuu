@@ -12,7 +12,6 @@
         "userDisabledError": "La cuenta de usuario est\u00e1 desactivada"
     },
     "options": {
-        "logoff": "Cerrar sesi\u00f3n",
         "refresh": "Actualizar",
         "exit": "Salir",
         "saveNewLayout": "Guardar un nuevo dise\u00f1o",
@@ -22,13 +21,14 @@
         "aboutCmsLaunchPad": "Acerca de"
     },
     "displayPanel": {
-        "unavailable": "Sin pantalla",
-        "selectDisplay": "Seleccione una pantalla"
+        "clearWallConfirmationPopupTitle": "Cerrar sesi\u00f3n",
+        "clearWallConfirmationPopupMessage": "Do you want to clear the display wall before logging off?"
     },
     "displayList": {
         "connectTo": "Conectar a una pantalla mural",
         "unavailable": "Sin pantallas",
-        "unavailableConfirmation": "No hay ninguna pantalla disponible para su cuenta. P\u00f3ngase en contacto con el administrador."
+        "unavailableConfirmation": "No hay ninguna pantalla disponible para su cuenta. P\u00f3ngase en contacto con el administrador.",
+        "confirmationTitlePopup": "Information Alert"
     },
     "layoutList": {
         "connectTo": "Cargar un dise\u00f1o",
@@ -46,6 +46,8 @@
         "loadLayout": "Cargar un dise\u00f1o"
     },
     "sourceList": {
+        "tileLayoutNotAvailable": "No tile layout found for loading source on display wall.",
+        "maxSelection": "Maximum {{value}} source(s) can be selected.",
         "connectTo": "Seleccione una entrada",
         "unavailable": "No hay entradas"
     },
@@ -74,7 +76,7 @@
         "never": "nunca",
         "autoLogOff": "Cerrar sesi\u00f3n autom\u00e1ticamente",
         "timeOutInMinute": "Tiempo para cerrar sesi\u00f3n en caso de inactividad (minutos)",
-        "listPageSizes": "List page sizes",
+        "listPageSizes": "Lista de tama\u00F1os de p\u00E1gina",
         "pageSize": "Tama\u00F1o de p\u00E1gina predeterminado",
         "defaultColorPickerTabLabel": "Custom",
         "cancel": "CANCELAR"
@@ -92,7 +94,9 @@
     },
     "dialog": {
         "cancel": "CANCELAR",
-        "ok": "Aceptar"
+        "ok": "Aceptar",
+        "yes": "Yes",
+        "no": "No"
     },
     "systemDialog": {
         "serverDisconnected": "Intentando conectar con el servidor...",
@@ -108,6 +112,40 @@
             "unshareContent": "No tiene permiso para eliminar esta entrada de la minipantalla.",
             "loadLayout": "No tiene permiso para cargar un dise\u00f1o.",
             "saveLayout": "No tiene permiso para guardar un dise\u00f1o."
-        }
+        },
+        "confirmationTitlePopup": "Information Alert"
+    },
+    "common": {
+        "back": "Back",
+        "next": "Next",
+        "yes": "Yes",
+        "no": "No",
+        "ok": "Aceptar",
+        "exit": "Salir",
+        "clear": "Clear Wall",
+        "share": "Show Sources",
+        "logout": "Cerrar sesi\u00f3n",
+        "layouts": "Layouts",
+        "sources": "Sources",
+        "displays": "Displays",
+        "display": "Preview",
+        "of": "of",
+        "source": "sources",
+        "clearWallMessage": "Do you wish to clear the wall?",
+        "clearWallTitle": "Clear the wall"
+    },
+    "tilePresetList": {
+        "unavailable": "No Tile Layouts",
+        "layouts": "Cargar un dise\u00f1o"
+    },
+    "home": {
+        "selectSource": "Seleccione una entrada",
+        "selectLayout": "Select Layout",
+        "repositionSources": "Reposition Sources",
+        "settings": "Configuraci\u00f3n",
+        "about": "Acerca de",
+        "logoff": "Cerrar sesi\u00f3n",
+        "clearWallConfirmationPopupTitle": "Cerrar sesi\u00f3n",
+        "clearWallConfirmationPopupMessage": "Do you want to clear the display wall before logging off?"
     }
 }

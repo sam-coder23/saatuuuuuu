@@ -12,7 +12,6 @@
         "userDisabledError": "Conta de utilizador desativada"
     },
     "options": {
-        "logoff": "Terminar sess\u00e3o",
         "refresh": "Atualizar",
         "exit": "Sair",
         "saveNewLayout": "Guardar uma nova disposi\u00e7\u00e3o",
@@ -22,13 +21,14 @@
         "aboutCmsLaunchPad": "Acerca de"
     },
     "displayPanel": {
-        "unavailable": "Nenhuma tela",
-        "selectDisplay": "Selecionar uma tela"
+        "clearWallConfirmationPopupTitle": "Terminar sess\u00e3o",
+        "clearWallConfirmationPopupMessage": "Do you want to clear the display wall before logging off?"
     },
     "displayList": {
         "connectTo": "Ligar a uma parede de telas",
         "unavailable": "Nenhuma tela",
-        "unavailableConfirmation": "N\u00e3o est\u00e1 dispon\u00edvel nenhuma tela para a sua conta. Contacte o administrador."
+        "unavailableConfirmation": "N\u00e3o est\u00e1 dispon\u00edvel nenhuma tela para a sua conta. Contacte o administrador.",
+        "confirmationTitlePopup": "Information Alert"
     },
     "layoutList": {
         "connectTo": "Carregar uma disposi\u00e7\u00e3o",
@@ -46,6 +46,8 @@
         "loadLayout": "Carregar uma disposi\u00e7\u00e3o"
     },
     "sourceList": {
+        "tileLayoutNotAvailable": "No tile layout found for loading source on display wall.",
+        "maxSelection": "Maximum {{value}} source(s) can be selected.",
         "connectTo": "Selecionar uma fonte",
         "unavailable": "Nenhuma fonte"
     },
@@ -74,7 +76,7 @@
         "never": "nunca",
         "autoLogOff": "Terminar de sess\u00e3o autom\u00e1tico",
         "timeOutInMinute": "Tempo at\u00e9 terminar sess\u00e3o em caso de inatividade (minutos)",
-        "listPageSizes": "List page sizes",
+        "listPageSizes": "Listar tamanhos das p\u00E1ginas",
         "pageSize": "Dimens\u00E3o predefinida da p\u00E1gina",
         "defaultColorPickerTabLabel": "Custom",
         "cancel": "CANCELAR"
@@ -92,7 +94,9 @@
     },
     "dialog": {
         "cancel": "CANCELAR",
-        "ok": "OK"
+        "ok": "OK",
+        "yes": "Yes",
+        "no": "No"
     },
     "systemDialog": {
         "serverDisconnected": "A tentar ligar ao servidor...",
@@ -108,6 +112,40 @@
             "unshareContent": "N\u00e3o tem permiss\u00e3o para remover esta fonte da minitela.",
             "loadLayout": "N\u00e3o tem permiss\u00e3o para carregar uma disposi\u00e7\u00e3o.",
             "saveLayout": "N\u00e3o tem permiss\u00e3o para guardar uma disposi\u00e7\u00e3o."
-        }
+        },
+        "confirmationTitlePopup": "Information Alert"
+    },
+    "common": {
+        "back": "Back",
+        "next": "Next",
+        "yes": "Yes",
+        "no": "No",
+        "ok": "OK",
+        "exit": "Sair",
+        "clear": "Clear Wall",
+        "share": "Show Sources",
+        "logout": "Terminar sess\u00e3o",
+        "layouts": "Layouts",
+        "sources": "Sources",
+        "displays": "Displays",
+        "display": "Preview",
+        "of": "of",
+        "source": "sources",
+        "clearWallMessage": "Do you wish to clear the wall?",
+        "clearWallTitle": "Clear the wall"
+    },
+    "tilePresetList": {
+        "unavailable": "No Tile Layouts",
+        "layouts": "Carregar uma disposi\u00e7\u00e3o"
+    },
+    "home": {
+        "selectSource": "Selecionar uma fonte",
+        "selectLayout": "Select Layout",
+        "repositionSources": "Reposition Sources",
+        "settings": "Configura\u00e7\u00f5es",
+        "about": "Acerca de",
+        "logoff": "Terminar sess\u00e3o",
+        "clearWallConfirmationPopupTitle": "Terminar sess\u00e3o",
+        "clearWallConfirmationPopupMessage": "Do you want to clear the display wall before logging off?"
     }
 }
