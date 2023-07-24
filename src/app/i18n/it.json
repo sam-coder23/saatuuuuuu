@@ -1,153 +1,152 @@
 {
     "login": {
         "welcome": "Collaboration Wall Manager",
-        "username": "User name",
+        "username": "Nome utente",
         "password": "Password",
-        "button": "Login",
-        "error": "User name or password is incorrect",
-        "licenceError": "Unable to acquire licence.",
-        "serverNotReadyError": "Server is not yet ready. Please wait!",
-        "serverUnavailableError": "Server is either unavailable or not reachable.",
-        "settingsReadyError": "Settings can't be fetched from the server due to same application can't be started. Please contact administrator.",
-        "userDisabledError": "User account is disabled"
+        "button": "Accedi",
+        "error": "Nome utente o password non corretti",
+        "licenceError": "Impossibile acquisire la licenza.",
+        "serverNotReadyError": "Il server non è ancora pronto. Attendere!",
+        "serverUnavailableError": "Il server è indisponibile o non raggiungibile.",
+        "settingsReadyError": "Impossibile recuperare le impostazioni dal server perché è impossibile avviare la stessa applicazione. Contattare l’amministratore.",
+        "userDisabledError": "L’account utente è disabilitato"
     },
     "options": {
-        "refresh": "Refresh",
-        "exit": "Exit",
-        "saveNewLayout": "Save a new layout",
+        "refresh": "Aggiorna",
+        "exit": "Esci",
+        "saveNewLayout": "Salva un nuovo layout",
         "zoom": "Zoom: ",
-        "fitHeight": "Fit height",
-        "settings": "Settings",
-        "aboutCmsLaunchPad": "About"
+        "fitHeight": "Adatta altezza",
+        "settings": "Impostazioni",
+        "aboutCmsLaunchPad": "Informazioni"
     },
     "displayPanel": {
-        "clearWallConfirmationPopupTitle": "Log Off",
-        "clearWallConfirmationPopupMessage": "Do you want to clear the display wall before logging off?"
+        "clearWallConfirmationPopupTitle": "Disconnetti",
+        "clearWallConfirmationPopupMessage": "Cancellare il display wall prima della disconnessione?"
     },
     "displayList": {
-        "connectTo": "Connect to a display wall",
-        "unavailable": "No Displays",
-        "unavailableConfirmation": "No display is available for your account. Please contact the administrator.",
-        "confirmationTitlePopup": "Information Alert"
+        "connectTo": "Collega a un display wall",
+        "unavailable": "Nessun display",
+        "unavailableConfirmation": "Nessun display disponibile per l’account in uso. Contattare l’amministratore.",
+        "confirmationTitlePopup": "Avviso informativo"
     },
     "layoutList": {
-        "connectTo": "Load a layout",
-        "search": "Search",
-        "unavailable": "No Layouts"
+        "connectTo": "Carica un layout",
+        "search": "Cerca",
+        "unavailable": "Nessun layout"
     },
     "saveLayout": {
-        "heading": "Enter the name of the new layout or select one of the items below to replace it",
-        "inputText": "Layout Name",
-        "button": "Save",
-        "saveLayoutConfirmation": "The layout '{{value}}' already exists. Do you want to replace it?",
-        "toolbarText": "Save layout"
+        "heading": "Immettere il nome del nuovo layout o selezionare uno degli elementi seguenti per sostituirlo",
+        "inputText": "Nome layout",
+        "button": "Salva",
+        "saveLayoutConfirmation": "Il layout “{{value}}” è già presente. Sostituirlo?",
+        "toolbarText": "Salva layout"
     },
     "miniDisplay": {
-        "loadLayout": "Load a layout"
+        "loadLayout": "Carica un layout"
     },
     "sourceList": {
-        "tileLayoutNotAvailable": "No tile layout found for loading source on display wall.",
-        "maxSelection": "Maximum {{value}} source(s) can be selected.",
-        "connectTo": "Select sources",
-        "unavailable": "No Sources"
+        "tileLayoutNotAvailable": "Non è stato trovato nessun layout a mattonelle per caricare la sorgente sul display wall.",
+        "maxSelection": "È possibile selezionare un massimo di {{value}} sorgenti.",
+        "connectTo": "Selezionare le sorgenti",
+        "unavailable": "Nessuna sorgente"
     },
     "panelToolbar": {
-        "search": "Search"
+        "search": "Cerca"
     },
     "settings": {
-        "settings": "Settings",
-        "language": "Language",
-        "wallConnection": "Wall Connection",
-        "atStartup": "At startup",
-        "availableWallsList": "show the list of available walls",
-        "connectToMostRecentWall": "auto-connect to the most recent wall",
-        "connectToSpecificWall": "auto-connect to a specific wall",
-        "sourceLabels": "Source Labels",
-        "displaySourceName": "Display source name labels",
-        "multipleLines": "Use multiple lines",
-        "fontColor": "Font color",
-        "fontSize": "Font size",
-        "backgroundColor": "Background",
-        "transparency": "Transparency (%)",
-        "languageTitle": "Language",
-        "selectDisplay": "select a display wall",
-        "noDisplayWallFound": "selected display wall not found",
-        "loadLayoutConfirmation": "Would you like to load the layout '{{value}}' on the wall?",
-        "never": "never",
-        "autoLogOff": "Auto log-off",
-        "timeOutInMinute": "Time out to log off in case of inactivity (minutes)",
-        "listPageSizes": "List page sizes",
-        "pageSize": "Default page size",
-        "defaultColorPickerTabLabel": "Custom",
-        "cancel" : "Cancel"
+        "settings": "Impostazioni",
+        "language": "Lingua",
+        "wallConnection": "Collegamento wall",
+        "atStartup": "All’avvio",
+        "availableWallsList": "mostra l’elenco di wall disponibili",
+        "connectToMostRecentWall": "collegamento automatico al wall più recente",
+        "connectToSpecificWall": "collegamento automatico a un wall specifico",
+        "sourceLabels": "Etichette sorgente",
+        "displaySourceName": "Etichette nome sorgente display",
+        "multipleLines": "Usa più linee",
+        "fontColor": "Colore font",
+        "fontSize": "Dimensioni font",
+        "backgroundColor": "Sfondo",
+        "transparency": "Trasparenza (%)",
+        "languageTitle": "Lingua",
+        "selectDisplay": "seleziona un display wall",
+        "noDisplayWallFound": "display wall selezionato non trovato",
+        "loadLayoutConfirmation": "Si desidera caricare il layout “{{value}}” sul wall?",
+        "never": "mai",
+        "autoLogOff": "Disconnessione automatica",
+        "timeOutInMinute": "Timeout per la disconnessione in caso di inattività (minuti)",
+        "listPageSizes": "Elenca dimensioni pagine",
+        "pageSize": "Dimensioni predefinite pagina",
+        "defaultColorPickerTabLabel": "Personalizzate",
+        "cancel": "Annulla"
     },
     "about": {
-        "daysRemaining": "{{value}} days left for evaluation.",
-        "about": "About",
-        "version": "Version:",
-        "licensed": "Licensed to:",
-        "project": "Project name:",
-        "licenseStatus": "License status:",
+        "daysRemaining": "Ancora {{value}} giorni per la valutazione.",
+        "about": "Informazioni",
+        "version": "Versione:",
+        "licensed": "Concesso in licenza a:",
+        "project": "Nome progetto:",
+        "licenseStatus": "Stato licenza:",
         "server": "Server:",
-        "contentText": "This product is licensed under the terms of Barco N.V. and shall be used in accordance with the terms of the license agreement. For complete license information, please refer to the Readme file.",
-        "copyrightText": "Copyright \u24b8 {{value}}, Barco N.V. All Rights Reserved.",
-        "licenceValid": "License valid"
+        "contentText": "Questo prodotto è concesso in licenza secondo le condizioni di Barco N.V. e deve essere utilizzato in conformità alle condizioni del contratto di licenza. Per informazioni complete sulla licenza, consultare il file Readme.",
+        "copyrightText": "Copyright \u24b8 {{value}}, Barco N.V. Tutti i diritti riservati.",
+        "licenceValid": "Licenza valida"
     },
     "dialog": {
-        "cancel": "CANCEL",
+        "cancel": "ANNULLA",
         "ok": "OK",
-        "yes": "Yes",
+        "yes": "Sì",
         "no": "No"
     },
     "systemDialog": {
-        "serverDisconnected": "Trying to connect to the server...",
-        "serverConnected": "Connection with the server is now established! Perform login again.",
-        "licenseChanged": "New license file uploaded on the server. You need to perform login again.",
-        "restoreStarted": "System is undergoing a restore operation, please wait...",
-        "restoreFinished": "System restore is finished! Perform login again.",
-        "databaseResetStarted": "Database reset in progress...",
-        "userDeleted": "Your account is either disabled or deleted. Please contact the administrator.",
-        "userModified": "User active roles have been modified. Application will be refreshed now.",
+        "serverDisconnected": "Tentativo di connessione al server in corso...",
+        "serverConnected": "La connessione al server è stata stabilita! Eseguire nuovamente l’accesso.",
+        "licenseChanged": "Nuovo file di licenza caricato sul server. È necessario eseguire nuovamente l’accesso.",
+        "restoreStarted": "È in corso un’operazione di ripristino del sistema, attendere...",
+        "restoreFinished": "Il ripristino del sistema è terminato! Eseguire nuovamente l’accesso.",
+        "databaseResetStarted": "Reimpostazione del database in corso...",
+        "userDeleted": "L’account è stato disabilitato o eliminato. Contattare l’amministratore.",
+        "userModified": "I ruoli utenti attivi sono stati modificati. L’applicazione verrà aggiornata.",
         "noPermission": {
-            "shareContent": "You do not have permission to add this source to mini-display.",
-            "unshareContent": "You do not have permission to remove this source from mini-display.",
-            "loadLayout": "You do not have permission to load a layout.",
-            "saveLayout": "You do not have permission to save a layout."
+            "shareContent": "Non si dispone dell’autorizzazione per aggiungere questa sorgente al mini display.",
+            "unshareContent": "Non si dispone dell’autorizzazione per rimuovere questa sorgente dal mini display.",
+            "loadLayout": "Non si dispone dell’autorizzazione per caricare un layout.",
+            "saveLayout": "Non si dispone dell’autorizzazione per salvare un layout."
         },
-        "confirmationTitlePopup": "Information Alert"
+        "confirmationTitlePopup": "Avviso informativo"
     },
     "common": {
-        "back": "Back",
-        "next": "Next",
-        "yes": "Yes",
+        "back": "Indietro",
+        "next": "Avanti",
+        "yes": "Sì",
         "no": "No",
         "ok": "OK",
-        "exit": "Exit",
-        "clear" : "Clear Wall",
-        "share": "Show Sources",
-        "logout" : "Log off",
-        "layouts": "Layouts",
-        "sources": "Sources",
-        "displays": "Displays",
-        "display": "Preview",
-        "of": "of",
-        "source": "sources",
-        "clearWallMessage": "Do you wish to clear the wall?",
-        "clearWallTitle": "Clear the wall"
+        "exit": "Esci",
+        "clear": "Cancella wall",
+        "share": "Mostra sorgenti",
+        "logout": "Disconnetti",
+        "layouts": "Layout",
+        "sources": "Sorgenti",
+        "displays": "Display",
+        "display": "Anteprima",
+        "of": "di",
+        "source": "sorgenti",
+        "clearWallMessage": "Cancellare il wall?",
+        "clearWallTitle": "Cancella il wall"
     },
     "tilePresetList": {
-        "unavailable": "No Tile Layouts",
-        "layouts": "Load a layout"
+        "unavailable": "Nessun layout a mattonelle",
+        "layouts": "Carica un layout"
     },
     "home": {
-        "selectSource": "Select Sources",
-        "selectLayout": "Select Layout",
-        "repositionSources": "Reposition Sources",
-        "settings": "Settings",
-        "about": "About",
-        "logoff": "Log Off",
-        "clearWallConfirmationPopupTitle": "Log Off",
-        "clearWallConfirmationPopupMessage": "Do you want to clear the display wall before logging off?"
-
+        "selectSource": "Seleziona sorgenti",
+        "selectLayout": "Seleziona layout",
+        "repositionSources": "Riposiziona sorgenti",
+        "settings": "Impostazioni",
+        "about": "Informazioni",
+        "logoff": "Disconnetti",
+        "clearWallConfirmationPopupTitle": "Disconnetti",
+        "clearWallConfirmationPopupMessage": "Cancellare il display wall prima della disconnessione?"
     }
 }
