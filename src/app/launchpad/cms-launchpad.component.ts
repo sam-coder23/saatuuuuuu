@@ -9,12 +9,12 @@
  * @property {string} dialogMessage
  * @property {string} applicationEventType
  */
-import '../../app/resources/fonts/material-fonts.css';
-import '../../app/resources/fonts/cmslaunchpad-fonts.css';
-import '../../app/_variables.global.scss';
-import '../../app/themes.global.scss';
-import '../../app/global.global.scss';
-import '../../app/override.global.scss';
+// import '../../app/resources/fonts/material-fonts.css';
+// import '../../app/resources/fonts/cmslaunchpad-fonts.css';
+// import '../../app/_variables.global.scss';
+// import '../../app/themes.global.scss';
+// import '../../app/global.global.scss';
+// import '../../app/override.global.scss';
 
 import { Component, ElementRef, EventEmitter, OnDestroy, OnInit } from "@angular/core";
 import { MatIconRegistry } from "@angular/material/icon";
