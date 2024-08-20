@@ -1,6 +1,6 @@
 {
   "/cms-rest/**": {
-    "target": "https://10.99.216.92/",
+    "target": "https://10.65.216.66/",
     "secure": false
   }
 }
