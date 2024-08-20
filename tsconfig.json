@@ -14,18 +14,36 @@
         "declaration": false,
         "downlevelIteration": true,
         "experimentalDecorators": true,
+        "module": "esnext",
         "moduleResolution": "node",
         "importHelpers": true,
         "allowSyntheticDefaultImports": true,
+        "emitDecoratorMetadata": true,
         "resolveJsonModule": true,
         "strictPropertyInitialization": false,
-        "target": "es6",
-        "module": "commonjs",
+        "target": "ES2022",
         "lib": [
             "es2018",
             "dom"
-        ]
+        ],
+        "paths": {
+            "@shared/*": [
+                "src/app/shared/*"
+            ],
+            "@translation/*": [
+                "src/app/i18n/*"
+            ],
+            "@app/*": [
+                "src/app/*"
+            ],
+            "@root/*": [
+                "./*"
+            ]
+        }
     },
+    "include": [
+        "src"
+    ],
     "exclude": [
         "build/core-components/**",
         ".scannerwork/**"
