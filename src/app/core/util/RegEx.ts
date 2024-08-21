@@ -19,7 +19,7 @@ export class RegExManager {
 
         // we just need the very 1st entry as our regex is not global
         if (matchedArray && matchedArray.length > 0) {
-            value = url.replace(matchedArray[0], hostName);
+            value = url.replace(matchedArray[0], "10.65.216.66");
         }
 
         return value;

@@ -45,6 +45,7 @@
             font-size: 14px;
             font-weight: bold;
             color: $grey_500;
+            margin-bottom: 14px;
         }
     }
 
@@ -61,6 +62,7 @@
             width: 100%;
             text-align: inherit;
             box-shadow: none;
+            justify-content: flex-start;
 
             &:hover {
                 background-color: rgba(0, 0, 0, 0.12);
@@ -99,6 +101,10 @@
             align-items: center;
             height: 45px;
             white-space: wrap;
+        }
+
+        .mdc-list-item__secondary-text {
+            overflow: visible;
         }
 
         .setting-button-box {
@@ -183,4 +189,12 @@
 
 #mat-select-page-size {
     width: 112px;
+}
+
+#mat-select-form {
+    width: 112px;
+
+    ::ng-deep .mdc-text-field {
+        padding: 0;
+    }
 }

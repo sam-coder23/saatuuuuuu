@@ -36,9 +36,9 @@
 					<mat-card-content>
 						<mat-list dense>
 							<mat-list-item>
-								<div class="fill-remaining-space">{{ 'settings.timeOutInMinute' | translate }}</div>
+								<div matListItemLine class="fill-remaining-space">{{ 'settings.timeOutInMinute' | translate }}</div>
 
-								<div class="setting-button-group">
+								<div matListItemLine class="setting-button-group">
 									<button mat-raised-button class="setting-square-button" id="logoffTime-decrease-button" (click)="decreaseLogOffTime()" [disabled]="logOffTimeSteps[0] === userSettings.logOffTime">
 										-
 									</button>
@@ -74,10 +74,10 @@
 									<mat-radio-button value="auto-connect-to-most-recent-wall" id="auto-connect-to-most-recent-wall-radio-button">{{ 'settings.connectToMostRecentWall' | translate }}</mat-radio-button>
 								</mat-list-item>
 								<mat-list-item class="specific-wall-row" [class.disabled]="noDisplayAvailable">
-									<div class="text-block">
+									<div matListItemLine class="text-block">
 										<mat-radio-button value="auto-connect-to-specific-wall" id="auto-connect-to-specific-wall-radio-button">{{ 'settings.connectToSpecificWall' | translate }}</mat-radio-button>
 									</div>
-									<div class="button-block">
+									<div matListItemLine class="button-block">
 										<button mat-raised-button class="wall-connection-button" [disabled]="!(userSettings.wallConnection.startUpAction === wallConnection.SPECIFIC_WALL)"
 										 (click)="goToSelectDisplayForAutoConnect()" type="button" id="auto-connect-to-specific-wall-select-button">
 											<span *ngIf="!userSettings.wallConnection.specificDisplay">{{ 'settings.selectDisplay' | translate }}</span>
@@ -97,44 +97,44 @@
 					<mat-card-content>
 						<mat-list dense>
 							<mat-list-item>
-								<div class="fill-remaining-space">{{ 'settings.displaySourceName' | translate }}</div>
-								<mat-slide-toggle [checked]="userSettings.sourceLabel.displaySourceNameLabels" name="sourceLabel-display-source-name-label"
+								<div matListItemLine class="fill-remaining-space">{{ 'settings.displaySourceName' | translate }}</div>
+								<mat-slide-toggle matListItemLine [checked]="userSettings.sourceLabel.displaySourceNameLabels" name="sourceLabel-display-source-name-label"
 								 [(ngModel)]="userSettings.sourceLabel.displaySourceNameLabels" (change)="updateUserSettingsByAction($event)" id="display-sourcename-labels-slider-button"></mat-slide-toggle>
 							</mat-list-item>
 							<mat-divider></mat-divider>
 							<mat-list-item>
-								<div class="fill-remaining-space list-text" [class.disabled]="!userSettings.sourceLabel.displaySourceNameLabels">{{ 'settings.multipleLines' | translate }}</div>
-								<mat-slide-toggle [checked]="userSettings.sourceLabel.useMultipleLines" name="sourceLabel-use-multiple-lines" [(ngModel)]="userSettings.sourceLabel.useMultipleLines"
+								<div matListItemLine class="fill-remaining-space list-text" [class.disabled]="!userSettings.sourceLabel.displaySourceNameLabels">{{ 'settings.multipleLines' | translate }}</div>
+								<mat-slide-toggle matListItemLine [checked]="userSettings.sourceLabel.useMultipleLines" name="sourceLabel-use-multiple-lines" [(ngModel)]="userSettings.sourceLabel.useMultipleLines"
 								 (change)="updateUserSettingsByAction($event)" [disabled]="!userSettings.sourceLabel.displaySourceNameLabels" id="use-multiplelines-sourcename-labels-slider-button"></mat-slide-toggle>
 							</mat-list-item>
 							<mat-divider></mat-divider>
 
 							<!-- COLOR AND FONT SIZE PART -->
 							<mat-list-item class="list-main-row" [class.disabled]="!userSettings.sourceLabel.displaySourceNameLabels" id="source-labels-fonts-settings">
-								<div class="cell-block title-box">
-									<div class="cell-block-content" id="font-color-title">{{ 'settings.fontColor' | translate }}</div>
-									<div class="cell-block-content" id="background-title">{{ 'settings.backgroundColor' | translate }}</div>
+								<div matListItemLine class="cell-block title-box">
+									<div matListItemLine class="cell-block-content" id="font-color-title">{{ 'settings.fontColor' | translate }}</div>
+									<div matListItemLine class="cell-block-content" id="background-title">{{ 'settings.backgroundColor' | translate }}</div>
 								</div>
 
-								<div class="cell-block color-box">
+								<div matListItemLine class="cell-block color-box">
 									<!-- Font Color -->
-									<div class="cell-block-content">
+									<div matListItemLine class="cell-block-content">
 										<cms-colorpicker [color]="userSettings.sourceLabel.fontColor" [defaultColor]="fontColorDefault"
 											id="sourceLabels-fontcolor-box" (change)="updateFontColor($event)"></cms-colorpicker>
 									</div>
 									<!-- Background Color -->
-									<div class="cell-block-content">
+									<div matListItemLine class="cell-block-content">
 										<cms-colorpicker [color]="userSettings.sourceLabel.backgroundColor" [defaultColor]="backgroundDefault"
 											id="sourceLabels-background-box" (change)="updateBackgroundColor($event)"></cms-colorpicker>
 									</div>
 								</div>
 
-								<div class="cell-block title-box">
+								<div matListItemLine class="cell-block title-box">
 									<div class="cell-block-content" id="font-size-title">{{ 'settings.fontSize' | translate }}</div>
 									<div class="cell-block-content" id="font-transparency-title">{{ 'settings.transparency' | translate }}</div>
 								</div>
 
-								<div class="block setting-button-box">
+								<div matListItemLine class="block setting-button-box cell-block">
 									<!-- Font Size -->
 									<div class="setting-button-group cell-block-content">
 										<button mat-raised-button class="setting-square-button small-label" (click)="decreaseFontSize()"
@@ -168,13 +168,16 @@
 					<mat-card-content>
 						<mat-list dense>
 							<mat-list-item>
-								<div class="fill-remaining-space">{{ 'settings.pageSize' | translate }}</div>
+								<div matListItemLine class="fill-remaining-space">{{ 'settings.pageSize' | translate }}</div>
 
-								<mat-select name="pageSize" [(ngModel)]="userSettings.pageSize" (ngModelChange)="updateUserSettingsByAction($event)" id="mat-select-page-size">
-									<mat-option *ngFor="let pageSize of pageSizes" [value]="pageSize">
-										{{ pageSize }}
-									</mat-option>
-								</mat-select>
+								<mat-form-field appearance="fill" id="mat-select-form">
+									<mat-select matListItemLine name="pageSize" [(ngModel)]="userSettings.pageSize" (ngModelChange)="updateUserSettingsByAction($event)" id="mat-select-page-size">
+										<mat-option *ngFor="let pageSize of pageSizes" [value]="pageSize">
+											{{ pageSize }}
+										</mat-option>
+									</mat-select>
+								</mat-form-field>
+
 							</mat-list-item>
 						</mat-list>
 					</mat-card-content>
