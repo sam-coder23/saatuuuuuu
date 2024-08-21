@@ -479,17 +479,20 @@ html[dir="ltr"]{
 
 // Updated CSS for MAT-MENU Component in home page
 
-.mat-menu-panel{
+.mat-mdc-menu-panel {
     border-radius: 2px !important;
     box-shadow: 0 2px 4px -1px RGB(0 0 0 / 20%), 0 4px 5px 0 RGB(0 0 0 / 14%), 0 1px 10px 0 RGB(0 0 0 / 12%);
     background-color: $white;
 }
-.mat-menu-item {
+.mat-mdc-menu-item {
     color: $grey_800;
     background: $white;
     border-bottom: 1px solid $grey_300 !important;
 }
-.mat-menu-item:hover:not([disabled]) {
+.mat-mdc-menu-item .mdc-list-item__primary-text {
+    font-size: 14px;
+}
+.mat-mdc-menu-item:hover:not([disabled]) {
     background: rgba(0, 0, 0, .04);
 }
 .cdk-overlay-connected-position-bounding-box {
