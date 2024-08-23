@@ -46,18 +46,20 @@
         height: 72px;
         margin: 0.5% 22%;
         position: relative;
-    
+
         ::ng-deep mat-form-field{
             width: 84%;
             padding: 2% 3%;
             font-size: 20px;
             line-height: normal;
-    
-            .mat-form-field-wrapper {
+
+            .mat-mdc-text-field-wrapper.mdc-text-field {
                 margin: 16px 0;
+                padding: 0 0 5px 0;
+                overflow: visible;
             }
         }
-    }    
+    }
 }
 
 /* for landscape mode */
@@ -73,9 +75,11 @@
             padding: 2% 3%;
             font-size: 20px;
             line-height: normal;
-            
-            .mat-form-field-wrapper {
+
+            .mat-mdc-text-field-wrapper.mdc-text-field {
                 margin: 16px 0;
+                padding: 0 0 5px 0;
+                overflow: visible;
             }
         }
     }

@@ -13,16 +13,16 @@
             <div class="login-input-container">
                 <i class="material-icons">person</i>
                 <mat-form-field class="field-container">
-                    <input matInput type="text" placeholder="{{ 'login.username' | translate }}" required [(ngModel)]="user.username"
-                        #username="ngModel" name="username" (input)="userNameChanged()" id="login-username-input">
+                    <mat-label id="login-username-label">{{ 'login.username' | translate}}</mat-label>
+                    <input matInput type="text" required [(ngModel)]="user.username" #username="ngModel" name="username"
+                        (input)="userNameChanged()" id="login-username-input">
                 </mat-form-field>
             </div>
             <div class="login-input-container">
                 <i class="material-icons">vpn_key</i>
                 <mat-form-field class="field-container">
-                    <input matInput type="password" placeholder="{{ 'login.password' | translate }}" type="password"
-                        [(ngModel)]="user.password" #password="ngModel" name="password" (input)="passwordChanged()"
-                        id="login-password-input">
+                    <mat-label id="login-password-label">{{ 'login.password' | translate}}</mat-label>
+                    <input matInput type="password" type="password" [(ngModel)]="user.password" #password="ngModel" name="password" (input)="passwordChanged()" id="login-password-input">
                 </mat-form-field>
             </div>
             <div class="login-error-container error-color" *ngIf="hasError">

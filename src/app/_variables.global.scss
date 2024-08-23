@@ -124,3 +124,21 @@ $black: #212121;
     z-index: 1;
     width: 100%;
 }
+
+@keyframes cms-opacity-animation {
+    from {
+        opacity: 0
+    }
+}
+
+@-webkit-keyframes cms-opacity-animation {
+    from {
+        opacity: 0
+    }
+}
+
+@-moz-keyframes cms-opacity-animation {
+    from {
+        opacity: 0
+    }
+}

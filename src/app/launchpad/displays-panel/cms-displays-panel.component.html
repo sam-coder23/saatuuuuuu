@@ -13,7 +13,8 @@
             <i class="material-icons">search</i>
         </button>
         <mat-form-field id="display-list-search-input">
-            <input matInput type="text" placeholder="{{ 'panelToolbar.search' | translate }}" [(ngModel)]="searchKey">
+            <mat-label>{{ 'panelToolbar.search' | translate}}</mat-label>
+            <input matInput type="text" [(ngModel)]="searchKey">
         </mat-form-field>
     </mat-toolbar>
 </div>

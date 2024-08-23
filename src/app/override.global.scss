@@ -11,9 +11,31 @@ html{
 
 cms-launchpad{
     // login - input
-    #login-username-input .mat-form-field-label.mat-focused,
-    #login-password-input .mat-form-field-label.mat-focused{
-        color: $blue_500;
+    #application-login-form mat-form-field {
+        .mdc-floating-label {
+            color: rgba(0, 0, 0, .38);
+        }
+
+        .mdc-floating-label--float-above {
+            color: $blue_500;
+        }
+
+        .mdc-line-ripple {
+            color: rgba(0, 0, 0, .38);
+        }
+
+        .mdc-line-ripple--active {
+            color: $blue_500;
+        }
+
+        .mdc-text-field .mdc-floating-label {
+            top: 30%;
+            transform: translateY(-30%);
+        }
+
+        .mdc-text-field--filled .mdc-floating-label--float-above {
+            transform: translateY(-106%) scale(0.75);
+        }
     }
 
     // remove cross icon (X) in internet explorer
@@ -22,7 +44,7 @@ cms-launchpad{
     }
 
     // removing asterix sign on input labels defined as required
-    .mat-placeholder-required{
+    .mat-mdc-form-field-required-marker {
         display: none;
     }
 
@@ -60,9 +82,8 @@ cms-launchpad{
         font-size: 18px;
     }
 
-    #options [mat-button] .mat-button-wrapper{
+    #options [mat-button] {
         @include layout-row();
-        align-items: center;
     }
 
     // ---------- mat-icon-button (in general)
@@ -86,18 +107,14 @@ cms-launchpad{
 
     [mat-icon-button] {
         line-height: 24px;
+        padding: 0;
+        width: 40px;
+        height: 40px;
     }
 
     [mat-icon-button] mat-icon,
     [mat-icon-button] .material-icons {
         line-height: 1;
-    }
-
-    [mat-icon-button] .mat-ripple-foreground {
-        top: 0;
-        left: 0;
-        width: 40px !important;
-        height: 40px !important;
     }
 
     /* To hide non material components such as normal radio button and checkbox */
@@ -113,32 +130,57 @@ cms-launchpad{
     }
 
     // ---------- mat-list  (override for setting page)
-    .settings-panel mat-list[dense] mat-list-item .mat-list-item-content,
-    .settings-panel mat-list mat-list-item .mat-list-item-content,
-    .about-panel mat-list[dense] .mat-list-item .mat-list-item-content,
-    .about-panel mat-list .mat-list-item .mat-list-item-content{
+    .settings-panel mat-list[dense] .mat-mdc-list-item .mdc-list-item__content,
+    .settings-panel mat-list .mat-mdc-list-item .mdc-list-item__content,
+    .about-panel mat-list[dense] .mat-mdc-list-item .mdc-list-item__content,
+    .about-panel mat-list .mat-mdc-list-item .mdc-list-item__content {
         padding: 0;
         font-size: 16px;
+        display: flex;
+        flex-direction: row;
+        align-self: flex-start;
     }
 
-    .about-panel mat-card {
+    .settings-panel mat-list[dense] .mat-mdc-list-item {
+        height: 35px;
+        padding: 0;
+    }
+
+    .about-panel .mat-mdc-card {
         padding: 24px;
     }
 
-    .mat-card {
+    .about-panel .mat-mdc-list-item {
+        padding: 12px 0px;
+        height: inherit;
+    }
+
+    .mat-mdc-card {
         border-radius: 2px;
         padding: 24px;
         box-shadow: 0 3px 1px -2px RGB(0 0 0 / 20%), 0 2px 2px 0 RGB(0 0 0 / 14%), 0 1px 5px 0 RGB(0 0 0 / 12%);
 
-        .mat-card-header-text {
+        .mat-mdc-card-header {
+            padding: 0;
+        }
+
+        .mat-mdc-card-header-text {
             margin: 0;
+        }
+
+        .mat-mdc-card-content {
+            padding: 0;
+        }
+
+        .mdc-list {
+            padding: 4px 16px;
         }
     }
 
-    .mat-card .mat-divider-horizontal {
+    .mat-mdc-card .mat-divider-horizontal {
         position: relative;
-        left: 8px;
-        width: 98%;
+        left: 0;
+        width: 100%;
     }
 
     .settings-language-panel mat-nav-list[dense] .mat-list-item .mat-list-item-content {
@@ -149,7 +191,7 @@ cms-launchpad{
         height: inherit;
     }
 
-    .settings-panel  .mat-radio-label-content{
+    .settings-panel .mat-radio-label-content{
         font-size: 16px;
         position: relative;
     }
@@ -169,20 +211,16 @@ cms-launchpad{
         margin: 0 10px;
         font-size: 16px;
 
-        input{
-            height: 35px;
+        .mat-mdc-text-field-wrapper {
+            align-items: center;
         }
 
-        .mat-form-field-label-wrapper{
-            margin: 0;
+        .mat-mdc-form-field-subscript-wrapper {
+            height: 0;
         }
 
-        .mat-input-element{
-            text-align: center;
-        }
-
-        .mat-form-field-underline{
-            display: none;
+        .mdc-line-ripple {
+            color: transparent;
         }
 
        input[type=number]::-webkit-inner-spin-button,
@@ -197,12 +235,28 @@ cms-launchpad{
         }
     }
 
-    .setting-card-language-page  .mat-list-item{
+    .setting-card-language-page .mat-mdc-list-item{
         border-bottom: 1px solid $grey_300;
         position: relative;
+        height: 40px;
+        padding: 0;
+
+        .mdc-list-item__content {
+            height: inherit;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            font-size: 14px;
+            font-family: $baseFont;
+        }
+
+        // .mdc-list-item__primary-text {
+        //     font-size: 14px;
+        //     font-family: $baseFont;
+        // }
     }
 
-  .settings-panel  .specific-wall-row .mat-list-item{
+    .settings-panel .specific-wall-row .mdc-list-item{
         width:  100%;
         height: inherit;
     }
@@ -224,7 +278,7 @@ cms-launchpad{
     }
 
     .settings-panel mat-slide-toggle{
-        display: block;
+        display: flex;
     }
 
     //hide up and down arrow in input number field
@@ -235,21 +289,6 @@ cms-launchpad{
     //disable class for grid-tiles
     .tileHighlightDisabled .tile:hover{
         box-shadow: 0px 2px 4px -1px rgba(0, 0, 0, 0.2), 0px 4px 5px 0px rgba(0, 0, 0, 0.14), 0px 1px 10px 0px rgba(0, 0, 0, 0.12);
-    }
-
-    // ---------- mat-list-item  (override for about page)
-    .about-panel .mat-list-item{
-      padding: 15px 0px !important;
-      height: inherit !important;
-    }
-
-    .about-panel .content-text .mat-list-item{
-      height: inherit !important;
-    }
-
-    .about-panel .info-text .mat-list-item{
-      word-break: break-all;
-      word-wrap: initial;
     }
 
     // ---------- override for save layout page
@@ -382,72 +421,83 @@ html[dir="ltr"]{
     background: 0 0
 }
 
-.mat-select-panel {
+// Updated CSS for MAT-SELECT Component in settings page
+.mat-mdc-select-panel {
     background-color: white;
     transform-origin: 50% 24px 0px;
     font-size: 16px;
     opacity: 1;
     min-width: calc(100% + 32px);
     transform: scaleY(1);
-}
-
-.mat-select-panel:not([class*=mat-elevation-z]) {
     box-shadow: 0 2px 4px -1px #0003, 0 4px 5px #00000024, 0 1px 10px #0000001f;
 }
 
-.mat-select-trigger {
-    color: rgba(0, 0, 0, .38);
-    border-bottom: 1px solid rgba(0, 0, 0, .12)
-}
-mat-select:focus:not(.mat-select-disabled) .mat-select-trigger {
-    color: $blue_500;
-    border-bottom: 1px solid $blue_500
-}
-mat-select.ng-invalid.ng-touched:not(.mat-select-disabled) .mat-select-trigger {
-    color: #f44336;
-    border-bottom: 1px solid #f44336
-}
-.mat-select-arrow {
-    color: rgba(0, 0, 0, .38)
-}
-mat-select:focus:not(.mat-select-disabled) .mat-select-arrow {
-    color: $blue_500
-}
-mat-select.ng-invalid.ng-touched:not(.mat-select-disabled) .mat-select-arrow {
-    color: #f44336
-}
-.mat-select-content {
-    background: #fff
-}
-mat-option.mat-selected,
-mat-option:focus:not(.mat-option-disabled),
-mat-option:hover:not(.mat-option-disabled) {
-    background: rgba(0, 0, 0, .04)
-}
-.mat-select-value {
-    color: rgba(0, 0, 0, .87)
-}
-.mat-select-disabled .mat-select-value {
-    color: rgba(0, 0, 0, .38)
-}
-mat-option.mat-selected {
-    color: $blue_500
-}
-mat-option.mat-option-disabled {
-    color: rgba(0, 0, 0, .38)
+.mat-mdc-form-field.mdc-text-field-wrapper {
+    padding: 0;
 }
 
-.mat-menu-panel{
+.mat-mdc-option.mat-mdc-option-active {
+    background: rgba(0, 0, 0, .04) !important;
+}
+
+// .mat-select-trigger {
+//     color: rgba(0, 0, 0, .38);
+//     border-bottom: 1px solid rgba(0, 0, 0, .12)
+// }
+// mat-select:focus:not(.mat-select-disabled) .mat-select-trigger {
+//     color: $blue_500;
+//     border-bottom: 1px solid $blue_500
+// }
+// mat-select.ng-invalid.ng-touched:not(.mat-select-disabled) .mat-select-trigger {
+//     color: #f44336;
+//     border-bottom: 1px solid #f44336
+// }
+// .mat-select-arrow {
+//     color: rgba(0, 0, 0, .38)
+// }
+// mat-select:focus:not(.mat-select-disabled) .mat-select-arrow {
+//     color: $blue_500
+// }
+// mat-select.ng-invalid.ng-touched:not(.mat-select-disabled) .mat-select-arrow {
+//     color: #f44336
+// }
+// .mat-select-content {
+//     background: #fff
+// }
+// mat-option.mat-selected,
+// mat-option:focus:not(.mat-option-disabled),
+// mat-option:hover:not(.mat-option-disabled) {
+//     background: rgba(0, 0, 0, .04)
+// }
+// .mat-select-value {
+//     color: rgba(0, 0, 0, .87)
+// }
+// .mat-select-disabled .mat-select-value {
+//     color: rgba(0, 0, 0, .38)
+// }
+// mat-option.mat-selected {
+//     color: $blue_500
+// }
+// mat-option.mat-option-disabled {
+//     color: rgba(0, 0, 0, .38)
+// }
+
+// Updated CSS for MAT-MENU Component in home page
+
+.mat-mdc-menu-panel {
     border-radius: 2px !important;
     box-shadow: 0 2px 4px -1px RGB(0 0 0 / 20%), 0 4px 5px 0 RGB(0 0 0 / 14%), 0 1px 10px 0 RGB(0 0 0 / 12%);
     background-color: $white;
 }
-.mat-menu-item {
+.mat-mdc-menu-item {
     color: $grey_800;
     background: $white;
     border-bottom: 1px solid $grey_300 !important;
 }
-.mat-menu-item:hover:not([disabled]) {
+.mat-mdc-menu-item .mdc-list-item__primary-text {
+    font-size: 14px;
+}
+.mat-mdc-menu-item:hover:not([disabled]) {
     background: rgba(0, 0, 0, .04);
 }
 .cdk-overlay-connected-position-bounding-box {
