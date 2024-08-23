@@ -27,6 +27,15 @@ cms-launchpad{
         .mdc-line-ripple--active {
             color: $blue_500;
         }
+
+        .mdc-text-field .mdc-floating-label {
+            top: 30%;
+            transform: translateY(-30%);
+        }
+
+        .mdc-text-field--filled .mdc-floating-label--float-above {
+            transform: translateY(-106%) scale(0.75);
+        }
     }
 
     // remove cross icon (X) in internet explorer
@@ -202,20 +211,16 @@ cms-launchpad{
         margin: 0 10px;
         font-size: 16px;
 
-        input{
-            height: 35px;
+        .mat-mdc-text-field-wrapper {
+            align-items: center;
         }
 
-        .mat-form-field-label-wrapper{
-            margin: 0;
+        .mat-mdc-form-field-subscript-wrapper {
+            height: 0;
         }
 
-        .mat-input-element{
-            text-align: center;
-        }
-
-        .mat-form-field-underline{
-            display: none;
+        .mdc-line-ripple {
+            color: transparent;
         }
 
        input[type=number]::-webkit-inner-spin-button,
