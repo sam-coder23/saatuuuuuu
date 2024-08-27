@@ -423,8 +423,8 @@ html[dir="ltr"]{
 
 // Updated CSS for MAT-SELECT Component in settings page
 .mat-mdc-select-panel {
-    background-color: white;
-    transform-origin: 50% 24px 0px;
+    background-color: white !important;
+    transform-origin: 50% 24px 0px !important;
     font-size: 16px;
     opacity: 1;
     min-width: calc(100% + 32px);
