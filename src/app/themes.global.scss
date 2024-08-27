@@ -25,25 +25,25 @@ cms-launchpad{
     }
 
     mat-toolbar.toolbar-theme .mdc-floating-label{
-        color: $grey_400;
+        color: $grey_400 !important;
         font-style: italic;
         font-size: 20px;
     }
 
     mat-toolbar.toolbar-theme .mdc-floating-label--float-above {
-        color: transparent;
+        color: transparent !important;
     }
 
     mat-toolbar.toolbar-theme .mdc-line-ripple {
-        color: transparent;
+        color: transparent !important;
     }
 
     mat-toolbar.toolbar-theme .mdc-line-ripple--active {
-        color: $white;
+        color: $white !important;
     }
 
     mat-toolbar.toolbar-theme .mat-mdc-input-element{
-        color: $white;
+        color: $white !important;
         font-size: 20px;
     }
 
