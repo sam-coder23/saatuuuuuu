@@ -191,12 +191,45 @@ cms-launchpad{
     }
 
     // Theme for all SLIDE TOGGLE BUTTONS
-    .mat-mdc-slide-toggle .mdc-switch:enabled .mdc-switch__track::after {
+    .mat-mdc-slide-toggle .mdc-switch:enabled.mdc-switch--selected .mdc-switch__track {
         background-color: rgba(0, 150, 243, 0.5) !important;
     }
 
-    .mat-mdc-slide-toggle .mdc-switch.mdc-switch--selected:enabled .mdc-switch__handle::after {
+    .mat-mdc-slide-toggle .mdc-switch:enabled.mdc-switch--selected .mdc-switch__handle {
         background-color: $blue_500 !important;
+    }
+
+    .mat-mdc-slide-toggle .mdc-switch:disabled.mdc-switch--selected .mdc-switch__track {
+        background-color: rgba(0, 150, 243, 1) !important;
+    }
+
+    .mat-mdc-slide-toggle .mdc-switch:disabled.mdc-switch--selected .mdc-switch__handle {
+        background-color: $blue_200 !important;
+    }
+
+    .mat-mdc-slide-toggle .mdc-switch:enabled.mdc-switch--unselected .mdc-switch__track {
+        background-color: $grey_300 !important;
+    }
+
+    .mat-mdc-slide-toggle .mdc-switch:enabled.mdc-switch--unselected .mdc-switch__handle {
+        background-color: $grey_800 !important;
+    }
+
+    .mat-mdc-slide-toggle .mdc-switch:disabled.mdc-switch--unselected .mdc-switch__track {
+        background-color: $grey_100 !important;
+        opacity: 1;
+    }
+
+    .mat-mdc-slide-toggle .mdc-switch:disabled.mdc-switch--unselected .mdc-switch__handle {
+        background-color: $grey_400 !important;
+    }
+
+    .mdc-switch.mdc-switch--selected:enabled .mdc-switch__icon {
+        fill: white;
+    }
+
+    .mdc-switch.mdc-switch--unselected:enabled .mdc-switch__icon {
+        fill: white;
     }
 
     // Theme for all RADIO BUTTONS
