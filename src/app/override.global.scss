@@ -211,6 +211,10 @@ cms-launchpad{
         margin: 0 10px;
         font-size: 16px;
 
+        input {
+            text-align: center;
+        }
+
         .mat-mdc-text-field-wrapper {
             align-items: center;
         }
