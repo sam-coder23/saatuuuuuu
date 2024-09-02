@@ -144,6 +144,11 @@ cms-launchpad{
     .settings-panel mat-list[dense] .mat-mdc-list-item {
         height: 35px;
         padding: 0;
+        overflow: visible;
+
+        .mdc-list-item__content {
+            overflow: visible;
+        }
     }
 
     .about-panel .mat-mdc-card {
