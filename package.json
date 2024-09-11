@@ -1,6 +1,6 @@
 {
   "name": "collaboration-wall-manager",
-  "version": "1.2.0",
+  "version": "1.5.0",
   "scripts": {
     "ng": "ng",
     "start": "ng serve --port 3001",
@@ -16,7 +16,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "ssh://git@git.barco.com:7999/ocs/launchpad-cr.git"
+    "url": "ssh://git@github.com:barcoemu/tfn-launchpad-cr.git"
   },
   "license": "ISC",
   "dependencies": {

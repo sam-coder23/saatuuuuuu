@@ -1,18 +1,22 @@
-HOW TO SETUP THE PROJECT -
+HOW TO SETUP THE PROJECT (with Angular 16) -
+
+Open Github repository in any browser: https://github.com/barcoemu/tfn-launchpad-cr
 
 Pre-requisites:
-    1. Install GIT on your machine.
-       Install git bash tool recommended for executing commands.
-    2. Install NodeJS version 16.15.1
-    3. Install Microsoft Visual Studio Code (latest version).
+1. Install GIT on your machine.
+2. Install git bash tool recommended for executing commands.
+3. Install NodeJS version 18.20.4
+4. Install Microsoft Visual Studio Code (latest version).
+5. Install GitHub Desktop (latest version).
 
 How to clone?
-Execute the following command on git bash terminal:
-> git clone ssh://git@git.barco.com:7999/ocs/launchpad-cr.git
+1. Open GitHub Desktop and go to current repository dropdown.
+2. Click on Add and select "clone repository...".
+3. In first tab, "GitHub.com", write the repository name "barcoemu/tfn-launchpad-cr".
+4. Select repository and select local path where code will be checked out.
+5. Click on clone.
 
-This will ask for password, enter correct password to checkout the project.
-
-By default pull requests are disabled so you will need write permission before you will be able to contribute to the project.
+After code is cloned to the specified location, GitHub Desktop will show your current repository and default branch as "develop".
 
 Open VSCode editor and open launchpad-cr project folder.
 
@@ -53,11 +57,11 @@ Prerequisite:
 
 I.   Executing "build_new.xml" to generate WAR
 
-     a) Run command "npm run build" to generate production ready bundle. 
+     a) Run command "npm run build" to generate production ready bundle.
         The following folder will be created with the compiled code:
             "\launchpad-cr\build\build\dist\collaboration-wall-manager\"
 
-     b) Copy the file "build_new.xml" from the project root at the folder location in step (a). 
+     b) Copy the file "build_new.xml" from the project root at the folder location in step (a).
         Edit two lines in the file as follows:
             i.  <target name="build" depends="delete-war, create-war" />
             ii. <zipfileset dir="./" includes="**/**" excludes="build_new.xml, .svn, .js.map, .git"/>
