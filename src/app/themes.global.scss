@@ -28,6 +28,7 @@ cms-launchpad{
         color: $grey_400 !important;
         font-style: italic;
         font-size: 20px;
+        transform: translateY(20%);
     }
 
     mat-toolbar.toolbar-theme .mdc-floating-label--float-above {
@@ -153,6 +154,7 @@ cms-launchpad{
 
     .mat-divider {
         border-top-color: rgba(0, 0, 0, 0.12);
+        border-top-width: thin;
     }
 
     .mat-drawer-backdrop.mat-drawer-shown {
@@ -188,6 +190,10 @@ cms-launchpad{
 
     .mat-mdc-form-field .mdc-line-ripple--active {
         color: $blue_500;
+    }
+
+    .mat-mdc-form-field .mdc-line-ripple::before {
+        border-bottom-width: thin;
     }
 
     // Theme for all SLIDE TOGGLE BUTTONS

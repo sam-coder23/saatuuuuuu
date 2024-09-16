@@ -63,6 +63,8 @@
             text-align: inherit;
             box-shadow: none;
             justify-content: flex-start;
+            font-size: 14px;
+            line-height: 36px;
 
             &:hover {
                 background-color: rgba(0, 0, 0, 0.12);
@@ -101,10 +103,6 @@
             align-items: center;
             height: 45px;
             white-space: wrap;
-        }
-
-        .mdc-list-item__secondary-text {
-            overflow: visible;
         }
 
         .setting-button-box {
@@ -197,4 +195,8 @@
     ::ng-deep .mdc-text-field {
         padding: 0;
     }
+}
+
+.mdc-list-item__secondary-text {
+    overflow: visible;
 }
