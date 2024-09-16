@@ -65,6 +65,7 @@ cms-launchpad{
         font-size: 18px;
         margin: 0 8px;
         color: white;
+        line-height: 36px;
     }
 
     mat-toolbar.toolbar-theme [mat-icon-button]{
@@ -502,7 +503,15 @@ html[dir="ltr"]{
     color: $grey_800 !important;
     background: $white !important;
     border-bottom: 1px solid $grey_300 !important;
-    font-size: 14px !important;
+    --mat-menu-item-label-text-font: $baseFont;
+    --mat-app-label-large-font: $baseFont;
+    --mat-menu-item-label-text-size: 14px; // font-size
+    --mat-menu-item-with-icon-leading-spacing: 16px; // padding-left
+    --mat-menu-item-with-icon-trailing-spacing: 16px; // padding-right
+
+    .mat-icon {
+        --mat-menu-item-spacing: 16px;
+    }
 }
 
 .mat-mdc-menu-item:hover:not([disabled]) {
