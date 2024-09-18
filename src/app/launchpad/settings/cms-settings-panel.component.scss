@@ -65,6 +65,7 @@
             justify-content: flex-start;
             font-size: 14px;
             line-height: 36px;
+            color: $grey_600;
 
             &:hover {
                 background-color: rgba(0, 0, 0, 0.12);
@@ -186,14 +187,18 @@
 }
 
 #mat-select-page-size {
-    width: 112px;
+    width: 130px;
 }
 
 #mat-select-form {
-    width: 112px;
+    width: 130px;
 
     ::ng-deep .mdc-text-field {
         padding: 0;
+    }
+
+    ::ng-deep .mat-mdc-select-trigger {
+        padding: 0 10px;
     }
 }
 

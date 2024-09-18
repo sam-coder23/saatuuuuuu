@@ -22,6 +22,11 @@ cms-launchpad{
 
     mat-toolbar.toolbar-theme .mat-mdc-form-field {
         width: 230px;
+        height: inherit;
+    }
+
+    mat-toolbar.toolbar-theme .mdc-text-field--filled:not(.mdc-text-field--disabled) {
+        --mdc-filled-text-field-caret-color: $white; // cursor color
     }
 
     mat-toolbar.toolbar-theme .mdc-floating-label{
@@ -43,6 +48,10 @@ cms-launchpad{
         color: $white !important;
     }
 
+    mat-toolbar.toolbar-theme .mdc-text-field--filled:not(.mdc-text-field--disabled) .mdc-line-ripple::after {
+        --mdc-filled-text-field-focus-active-indicator-color: white;
+    }
+
     mat-toolbar.toolbar-theme .mat-mdc-input-element{
         color: $white !important;
         font-size: 20px;
@@ -57,36 +66,31 @@ cms-launchpad{
     }
 
     // save layout - input
-    .save-panel-section .mat-form-field-label {
-        color: black;
-    }
+    // .save-panel-section .mat-form-field-label {
+    //     color: black;
+    // }
 
-    .save-panel-section .mat-form-field-underline {
-        background-color: rgba(0, 0, 0, .38);
-        margin-top: 4px;
-    }
+    // .save-panel-section .mat-form-field-underline {
+    //     background-color: rgba(0, 0, 0, .38);
+    //     margin-top: 4px;
+    // }
 
-    .save-panel-section .mat-form-field.mat-focused .mat-form-field-ripple {
-        background-color: $blue_500 !important;
-    }
+    // .save-panel-section .mat-form-field.mat-focused .mat-form-field-ripple {
+    //     background-color: $blue_500 !important;
+    // }
 
-     // ---------- mat-radio and mat-slide-toggle  (in general)
+     // ---------- mat-radio ---------  (in general)
     .mat-radio-checked .mat-radio-outer-circle{
         border-color: $blue_500;
     }
 
-    .mat-slide-toggle-thumb {
-        box-shadow: 0 2px 1px -1px RGB(0 0 0 / 20%), 0 1px 1px 0 RGB(0 0 0 / 14%), 0 1px 3px 0 RGB(0 0 0 / 12%);
-    }
-
     .mat-radio-checked .mat-radio-inner-circle,
-    .mat-checked .mat-slide-toggle-thumb {
+    .mat-checked {
         background-color: $blue_500;
     }
 
-    .mat-radio-focused .mat-ink-ripple,
-    .mat-slide-toggle-focused .mat-ink-ripple{
-        background-color: rgba(0, 150, 243, 0.26)  !important;
+    .mat-radio-focused .mat-ink-ripple {
+        background-color: rgba(0, 150, 243, 0.26) !important;
     }
 
    .disabled {
@@ -97,10 +101,6 @@ cms-launchpad{
         .mat-radio-checked .mat-radio-inner-circle{
             background-color: $black !important;
         }
-    }
-
-    .mat-checked .mat-slide-toggle-bar{
-        background-color: rgba(0, 150, 243, 0.5);
     }
 
     .settings-panel  mat-progress-spinner svg,
@@ -147,14 +147,23 @@ cms-launchpad{
     }
 
     [mat-raised-button]:disabled {
-        background-color: rgba(0, 0, 0, 0.12);
+        background-color: $grey_200;
         color: rgba(0, 0, 0, 0.38);
         box-shadow: none;
+        border-radius: 2px;
+    }
+
+    .mat-mdc-raised-button:not(:disabled) {
+        color: $grey_800;
+        border-radius: 2px;
+    }
+
+    .mat-mdc-button:not(:disabled) {
+        color: $grey_800;
     }
 
     .mat-divider {
-        border-top-color: rgba(0, 0, 0, 0.12);
-        border-top-width: thin;
+        border-top-color: $grey_200;
     }
 
     .mat-drawer-backdrop.mat-drawer-shown {
@@ -166,23 +175,13 @@ cms-launchpad{
         transition: transform .4s cubic-bezier(.25, .8, .25, 1), color .4s cubic-bezier(.25, .8, .25, 1), width .4s cubic-bezier(.25, .8, .25, 1);
     }
 
-    .mat-form-field-label:not(.mat-form-field-empty) {
-        transform: translateY(-1.28125em) scale(.75) perspective(100px) translateZ(0.001px);
-    }
-
     .mat-form-field.mat-focused .mat-form-field-label {
         color: $blue_500  !important;
-        transform: translateY(-1.28125em) scale(.75) perspective(100px) translateZ(0.001px);
     }
 
     .mat-form-field-underline {
         border-top-color: rgba(0, 0, 0, 0.38);
     }
-
-    // .mat-form-field-label-wrapper {
-    //     top: -1.2em;
-    //     padding-top: 1.2em;
-    // }
 
     .mat-mdc-form-field--required-marker {
         display: none;
@@ -192,50 +191,8 @@ cms-launchpad{
         color: $blue_500;
     }
 
-    .mat-mdc-form-field .mdc-line-ripple::before {
-        border-bottom-width: thin;
-    }
-
-    // Theme for all SLIDE TOGGLE BUTTONS
-    .mat-mdc-slide-toggle .mdc-switch:enabled.mdc-switch--selected .mdc-switch__track {
-        background-color: rgba(0, 150, 243, 0.5) !important;
-    }
-
-    .mat-mdc-slide-toggle .mdc-switch:enabled.mdc-switch--selected .mdc-switch__handle {
-        background-color: $blue_500 !important;
-    }
-
-    .mat-mdc-slide-toggle .mdc-switch:disabled.mdc-switch--selected .mdc-switch__track {
-        background-color: rgba(0, 150, 243, 1) !important;
-    }
-
-    .mat-mdc-slide-toggle .mdc-switch:disabled.mdc-switch--selected .mdc-switch__handle {
-        background-color: $blue_200 !important;
-    }
-
-    .mat-mdc-slide-toggle .mdc-switch:enabled.mdc-switch--unselected .mdc-switch__track {
-        background-color: $grey_300 !important;
-    }
-
-    .mat-mdc-slide-toggle .mdc-switch:enabled.mdc-switch--unselected .mdc-switch__handle {
-        background-color: $grey_800 !important;
-    }
-
-    .mat-mdc-slide-toggle .mdc-switch:disabled.mdc-switch--unselected .mdc-switch__track {
-        background-color: $grey_100 !important;
-        opacity: 1;
-    }
-
-    .mat-mdc-slide-toggle .mdc-switch:disabled.mdc-switch--unselected .mdc-switch__handle {
-        background-color: $grey_400 !important;
-    }
-
-    .mdc-switch.mdc-switch--selected:enabled .mdc-switch__icon {
-        fill: white;
-    }
-
-    .mdc-switch.mdc-switch--unselected:enabled .mdc-switch__icon {
-        fill: white;
+    .mat-mdc-form-field .mdc-line-ripple {
+        color: $grey_500;
     }
 
     // Theme for all RADIO BUTTONS
@@ -245,5 +202,16 @@ cms-launchpad{
 
     .mat-mdc-radio-button .mdc-radio .mdc-radio__native-control:enabled+.mdc-radio__background .mdc-radio__inner-circle {
         border-color: $blue_500 !important;
+    }
+
+    // Theme for all SLIDE TOGGLE BUTTONS
+    .mat-mdc-slide-toggle {
+        --mdc-switch-selected-focus-state-layer-color: #2196F3;
+        --mdc-switch-selected-hover-state-layer-color: #2196F3;
+        --mdc-switch-selected-pressed-state-layer-color: #2196F3;
+        --mdc-switch-selected-focus-track-color: #2196F3;
+        --mdc-switch-selected-hover-track-color: #2196F3;
+        --mdc-switch-selected-pressed-track-color: #2196F3;
+        --mdc-switch-selected-track-color: #2196F3;
     }
 }

@@ -56,6 +56,7 @@ import { CmsSettingsService } from "./settings/cms-settings.service";
 import { CmsSettingsLanguagePanelComponent } from "./settings/language/cms-settings-language-panel.component";
 import { CmsSourcesPanelComponent } from "./sources-panel/cms-sources-panel.component";
 import { CmsTilesPanelComponent } from "./tiles-panel/cms-tiles-panel.component";
+import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 
 @NgModule({
   imports: [
@@ -125,6 +126,7 @@ import { CmsTilesPanelComponent } from "./tiles-panel/cms-tiles-panel.component"
     MatIconRegistry,
     CmsCanActivateViaAuthorizationService,
     CmsSettingsService,
+    provideAnimationsAsync(),
     // BuilderService
   ],
   schemas: [NO_ERRORS_SCHEMA]
