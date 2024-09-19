@@ -28,12 +28,16 @@ cms-launchpad {
     .mdc-text-field--filled:not(.mdc-text-field--disabled) .mdc-floating-label--float-above {
         --mdc-filled-text-field-label-text-color: #2196F3; // color: $blue_500
         --mat-app-surface-variant: #2196F3; // color: $blue_500
-        // --mdc-filled-text-field-focus-label-text-color: #2196F3; // color: $blue_500
+        --mdc-filled-text-field-focus-label-text-color: #2196F3; // color: $blue_500
     }
 
     // .mdc-text-field--filled:not(.mdc-text-field--disabled):hover .mdc-floating-label {
     //     --mdc-filled-text-field-error-hover-label-text-color: #2196F3; // color: $blue_500
     // }
+
+    .mdc-text-field--filled:not(.mdc-text-field--disabled) .mdc-line-ripple::after {
+        --mdc-filled-text-field-focus-active-indicator-color: #2196F3; // color: $blue_500;
+    }
 
     // remove cross icon (X) in internet explorer
     input::-ms-clear {
