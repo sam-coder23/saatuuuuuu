@@ -75,15 +75,16 @@
 
    .wall-connection-button {
         font-size: 16px;
-        line-height: 24px;
+        line-height: 36px;
         flex-shrink: 0;
         max-width: 300px;
-        padding: 4px 16px;
+        padding: 0 16px;
         white-space: normal;
         word-wrap: break-word;
         overflow-wrap: break-word;
         text-align: inherit;
         margin: 0px 15px;
+        height: 36px;
     }
 
     .list-main-row {
@@ -192,6 +193,7 @@
 
 #mat-select-form {
     width: 130px;
+    height: 64px;
 
     ::ng-deep .mdc-text-field {
         padding: 0;

@@ -33,7 +33,6 @@ cms-launchpad{
         color: $grey_400 !important;
         font-style: italic;
         font-size: 20px;
-        transform: translateY(20%);
     }
 
     mat-toolbar.toolbar-theme .mdc-floating-label--float-above {
@@ -160,10 +159,11 @@ cms-launchpad{
 
     .mat-mdc-button:not(:disabled) {
         color: $grey_800;
+        border-radius: 2px;
     }
 
     .mat-divider {
-        border-top-color: $grey_200;
+        border-top-color: $grey_300;
     }
 
     .mat-drawer-backdrop.mat-drawer-shown {
