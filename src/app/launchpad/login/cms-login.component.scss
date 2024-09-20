@@ -49,13 +49,13 @@
 
         ::ng-deep mat-form-field{
             width: 84%;
-            padding: 2% 3%;
+            padding: 0 3%;
             font-size: 20px;
             line-height: normal;
 
             .mat-mdc-text-field-wrapper.mdc-text-field {
-                margin: 16px 0;
-                padding: 0 0 5px 0;
+                margin: 0;
+                padding: 0;
                 overflow: visible;
             }
         }
@@ -72,13 +72,13 @@
 
         ::ng-deep mat-form-field{
             width: 84%;
-            padding: 2% 3%;
+            padding: 0 3%;
             font-size: 20px;
             line-height: normal;
 
             .mat-mdc-text-field-wrapper.mdc-text-field {
-                margin: 16px 0;
-                padding: 0 0 5px 0;
+                margin: 0;
+                padding: 0;
                 overflow: visible;
             }
         }
@@ -97,7 +97,7 @@ input {
     font-size: 44px !important;
     top: 18%;
     position: relative;
-    vertical-align: top;
+    //vertical-align: top;
 }
 
 .login-error-container{

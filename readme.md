@@ -1,11 +1,11 @@
-HOW TO SETUP THE PROJECT (with Angular 16) -
+HOW TO SETUP THE PROJECT (with Angular 18) -
 
 Open Github repository in any browser: https://github.com/barcoemu/tfn-launchpad-cr
 
 Pre-requisites:
 1. Install GIT on your machine.
 2. Install git bash tool recommended for executing commands.
-3. Install NodeJS version 18.20.4 (LTS).
+3. Install NodeJS version 20.17.0 (LTS).
 4. Install Microsoft Visual Studio Code (latest version).
 5. Install GitHub Desktop (latest version).
 
@@ -50,7 +50,7 @@ HOW TO GENERATE "CollaborationWallManager.war" LOCALLY:
 
 Prerequisite:
 
-		a) NodeJS version 18.20.4 (LTS) should be installed on the system.
+		a) NodeJS version 20.17.0 (LTS) should be installed on the system.
 		b) Install APACHE ANT, minimum version required(1.9.16) in "C:\Lang\apache-ant-1.9.16"
 		c) Set system environment variable ANT_HOME=C:\Lang\apache-ant-1.9.16
 		d) Add ANT_HOME variable in user environment variable PATH.

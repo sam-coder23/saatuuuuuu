@@ -63,6 +63,9 @@
             text-align: inherit;
             box-shadow: none;
             justify-content: flex-start;
+            font-size: 14px;
+            line-height: 36px;
+            color: $grey_600;
 
             &:hover {
                 background-color: rgba(0, 0, 0, 0.12);
@@ -72,15 +75,16 @@
 
    .wall-connection-button {
         font-size: 16px;
-        line-height: 24px;
+        line-height: 36px;
         flex-shrink: 0;
         max-width: 300px;
-        padding: 4px 16px;
+        padding: 0 16px;
         white-space: normal;
         word-wrap: break-word;
         overflow-wrap: break-word;
         text-align: inherit;
         margin: 0px 15px;
+        height: 36px;
     }
 
     .list-main-row {
@@ -101,10 +105,6 @@
             align-items: center;
             height: 45px;
             white-space: wrap;
-        }
-
-        .mdc-list-item__secondary-text {
-            overflow: visible;
         }
 
         .setting-button-box {
@@ -188,13 +188,22 @@
 }
 
 #mat-select-page-size {
-    width: 112px;
+    width: 130px;
 }
 
 #mat-select-form {
-    width: 112px;
+    width: 130px;
+    height: 64px;
 
     ::ng-deep .mdc-text-field {
         padding: 0;
     }
+
+    ::ng-deep .mat-mdc-select-trigger {
+        padding: 0 10px;
+    }
+}
+
+.mdc-list-item__secondary-text {
+    overflow: visible;
 }
