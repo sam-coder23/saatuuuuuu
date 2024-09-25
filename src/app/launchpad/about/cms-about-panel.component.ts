@@ -65,7 +65,7 @@ export class CmsAboutPanelComponent implements OnInit {
                                 .subscribe((daysRemaining: string) => {
                                     this.systemInfo.daysRemaining = daysRemaining;
                                 });
-                            this.systemInfo.licenseStatus = `${response.LicenseInfo.licenseStatus},${this.systemInfo.daysRemaining}`;
+                            this.systemInfo.licenseStatus = `${response.LicenseInfo.licenseStatus}, ${this.systemInfo.daysRemaining}`;
                         }
                     }
                 }

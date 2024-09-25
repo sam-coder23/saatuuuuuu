@@ -13,7 +13,7 @@ export class CMSConstants {
     public static RTLLANGUAGES: string[] = ["ar"];
     public static DISPLAYUPDATED: string = "DisplayUpdated";
     public static DEFAULTLANGUAGE: string = "en";
-    public static COPYRIGHTYEAR: string = "2022";
+    public static COPYRIGHTYEAR: string = "2024";
     public static WALL_CONNECTION: any = {
         DISPLAY_WALL_LIST: "show-available-walls-list",
         SPECIFIC_WALL: "auto-connect-to-specific-wall",
@@ -36,7 +36,7 @@ export class CMSConstants {
     public static DEFAULT_FONT_COLOR: string = "#000";
     public static DEFAULT_BACKGROUND_COLOR: string = "#bdbdbd";
     public static NO_DISPLAY_FOUND: string = "nodisplayfound";
-    public static APP_VERSION: string = "1.2.0";
+    public static APP_VERSION: string = "2.0.0";
     public static BUILD_VERSION: string = "1.1 Build";
     public static DECIMAL_SYSTEM: number = 10;
     // tslint:disable-next-line:no-null-keyword
