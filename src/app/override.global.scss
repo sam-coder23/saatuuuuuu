@@ -143,6 +143,10 @@ cms-launchpad {
         display: flex;
         flex-direction: row;
         align-self: flex-start;
+
+        .mdc-list-item__secondary-text {
+            --mdc-list-list-item-supporting-text-size: 16px;
+        }
     }
 
     .settings-panel mat-list[dense] .mat-mdc-list-item {
@@ -198,11 +202,6 @@ cms-launchpad {
 
     .settings-panel .list-main-row{
         height: inherit;
-    }
-
-    .settings-panel .mat-radio-label-content{
-        font-size: 16px;
-        position: relative;
     }
 
     .settings-panel .setting-square-input{
@@ -273,22 +272,6 @@ cms-launchpad {
     .settings-panel .specific-wall-row .mdc-list-item{
         width:  100%;
         height: inherit;
-    }
-
-    .settings-panel .specific-wall-row .mat-radio-label-content{
-        white-space: normal !important;
-        word-wrap: break-word;
-        overflow-wrap: break-word;
-    }
-
-    .settings-panel .specific-wall-row .mat-radio-container{
-        flex-shrink: 0;
-    }
-
-    .settings-panel .most-recent-wall-row .mat-radio-label-content{
-        white-space: normal !important;
-        word-wrap: break-word;
-        overflow-wrap: break-word;
     }
 
     //hide up and down arrow in input number field
