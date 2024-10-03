@@ -64,44 +64,6 @@ cms-launchpad{
         height: 10px;
     }
 
-    // save layout - input
-    // .save-panel-section .mat-form-field-label {
-    //     color: black;
-    // }
-
-    // .save-panel-section .mat-form-field-underline {
-    //     background-color: rgba(0, 0, 0, .38);
-    //     margin-top: 4px;
-    // }
-
-    // .save-panel-section .mat-form-field.mat-focused .mat-form-field-ripple {
-    //     background-color: $blue_500 !important;
-    // }
-
-     // ---------- mat-radio ---------  (in general)
-    .mat-radio-checked .mat-radio-outer-circle{
-        border-color: $blue_500;
-    }
-
-    .mat-radio-checked .mat-radio-inner-circle,
-    .mat-checked {
-        background-color: $blue_500;
-    }
-
-    .mat-radio-focused .mat-ink-ripple {
-        background-color: rgba(0, 150, 243, 0.26) !important;
-    }
-
-   .disabled {
-        .mat-radio-checked .mat-radio-outer-circle{
-             border-color: $black;
-        }
-
-        .mat-radio-checked .mat-radio-inner-circle{
-            background-color: $black !important;
-        }
-    }
-
     .settings-panel  mat-progress-spinner svg,
     .about-panel  mat-progress-spinner svg{
          stroke: $white !important;
@@ -202,6 +164,10 @@ cms-launchpad{
 
     .mat-mdc-radio-button .mdc-radio .mdc-radio__native-control:enabled+.mdc-radio__background .mdc-radio__inner-circle {
         border-color: $blue_500 !important;
+    }
+
+    .mat-mdc-radio-button .mat-internal-form-field {
+        font-size: 16px;
     }
 
     // Theme for all SLIDE TOGGLE BUTTONS
