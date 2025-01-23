@@ -65,13 +65,15 @@
 								<mat-list-item id="setting-panel-wallconnection-atstartup-subtitle">
 									{{ 'settings.atStartup' | translate }}
 								</mat-list-item>
-								<mat-list-item>
+								<mat-list-item class="available-walls-list">
 									<mat-radio-button value="show-available-walls-list" id="show-available-walls-list-radio-button">
 										<span class="mat-line">{{ 'settings.availableWallsList' | translate }}</span>
 									</mat-radio-button>
 								</mat-list-item>
 								<mat-list-item class="most-recent-wall-row">
-									<mat-radio-button value="auto-connect-to-most-recent-wall" id="auto-connect-to-most-recent-wall-radio-button">{{ 'settings.connectToMostRecentWall' | translate }}</mat-radio-button>
+									<mat-radio-button value="auto-connect-to-most-recent-wall" id="auto-connect-to-most-recent-wall-radio-button">
+										<span class="mat-line">{{ 'settings.connectToMostRecentWall' | translate }}</span>
+									</mat-radio-button>
 								</mat-list-item>
 								<mat-list-item class="specific-wall-row" [class.disabled]="noDisplayAvailable">
 									<div matListItemLine class="text-block">

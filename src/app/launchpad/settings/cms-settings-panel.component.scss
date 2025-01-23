@@ -177,6 +177,18 @@
         }
     }
 
+    .most-recent-wall-row {
+        ::ng-deep span.mdc-list-item__primary-text{
+            white-space: break-spaces;
+        }
+    }
+
+    .available-walls-list {
+        ::ng-deep span.mdc-list-item__primary-text{
+            white-space: break-spaces;
+        }
+    }
+
     .list-text.disabled {
         pointer-events: none;
         opacity: 0.5;
