@@ -29,3 +29,9 @@ cms-source-list{
     background-color: $grey_200 !important;
     cursor: no-drop !important;
 }
+
+.bottom-toolbar-text-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}

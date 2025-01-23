@@ -39,13 +39,14 @@
             {{'common.clear' | translate}}
         </button>
         <span class="fill-remaining-space"></span>
-        <span class="toolbar-text">
-            {{cmsSettingService?.selectedSources?.length}} {{'common.of' | translate}} {{maxSelection}} {{'common.source' | translate}}
-        </span>
-        &nbsp;
-        <span class="error" *ngIf="errorMessage">
-            {{errorMessage}}
-        </span>
+        <div class="bottom-toolbar-text-container">
+            <span class="toolbar-text">
+                {{cmsSettingService?.selectedSources?.length}} {{'common.of' | translate}} {{maxSelection}} {{'common.source' | translate}}
+            </span>
+            <span class="error bottom-toolbar-sources-error" *ngIf="errorMessage">
+                {{errorMessage}}
+            </span>
+        </div>
         <span class="fill-remaining-space"></span>
         <button id="sources-panel-next-button" mat-button mat-raised-button (click)="shareTheSources()" class="action-button-share"
         [disabled]="cmsSettingService?.selectedSources?.length === 0">
