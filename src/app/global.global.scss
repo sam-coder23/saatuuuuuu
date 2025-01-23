@@ -84,13 +84,13 @@ cms-launchpad{
    .action-button-clear{
         color: rgb(0, 0, 0) !important;
         background-color: $grey_300 !important;
-        min-width: 0;
+        min-width: 100px;
     }
 
     .action-button-share{
         color: rgb(0, 0, 0) !important;
         background-color:$grey_300 !important;
-        min-width: 0;
+        min-width: 135px;
     }
 
     .action-button-exit{
