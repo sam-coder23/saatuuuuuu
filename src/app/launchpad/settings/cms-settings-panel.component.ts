@@ -386,9 +386,9 @@ export class CmsSettingsPanelComponent implements OnInit {
      * @method updateFontColor
      * @return void
      */
-    public updateFontColor(event: any): void {
-        if (event) {
-            const fontColor: string = event.value;
+    public updateFontColor(eventData: string): void {
+        if (eventData) {
+            const fontColor: string = eventData[0];
             if (fontColor) {
                 this.userSettings.sourceLabel.fontColor = fontColor;
                 this.cmsSettingsService.updateUserProfileData(this.userSettings);
@@ -402,9 +402,9 @@ export class CmsSettingsPanelComponent implements OnInit {
      * @param event
      * @return void
      */
-    public updateBackgroundColor(event: any): void {
-        if (event) {
-            const backgroundColor: string = event.value;
+    public updateBackgroundColor(eventData: string): void {
+        if (eventData) {
+            const backgroundColor: string = eventData[0];
             if (backgroundColor) {
                 this.userSettings.sourceLabel.​backgroundColor = backgroundColor;
                 this.cmsSettingsService.updateUserProfileData(this.userSettings);
