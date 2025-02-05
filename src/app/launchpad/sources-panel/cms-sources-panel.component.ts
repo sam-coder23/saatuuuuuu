@@ -218,7 +218,9 @@ export class CmsSourcesPanelComponent implements OnInit {
                         } else {
                             this.cmsSettingService.selectedSources.forEach(
                                 (element: any) => {
-                                    reStructuredPayload.push(element);
+                                    if (element) {
+                                        reStructuredPayload.push(element);
+                                    }
                                 });
                         }
 
