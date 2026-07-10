@@ -1,32 +1,40 @@
 <div id="tile-list-card-container" class="tile-list-cards" [ngClass]="{'bottom-up' : cmsSettingService?.selectedSources?.length > 0}">
-    <div class="tile-list-unavailable" *ngIf="tilePresets?.length === 0">
-        <span>{{ 'tilePresetList.unavailable' | translate }}</span>
+  @if (tilePresets?.length === 0) {
+    <div class="tile-list-unavailable">
+      <span>{{ 'tilePresetList.unavailable' | translate }}</span>
     </div>
-    <div *ngIf="tilePresets?.length > 0">
-        <mat-card *ngFor="let tilePreset of tilePresets" class="card" (click)="loadTilePreset(tilePreset)">
-            <div class="card-inner layout-row">
-                <div class="card-image-section">
-                    <cms-tile-grid [displayBase]="displayResolution" [tilePreset]="tilePreset"></cms-tile-grid>
-                </div>
-                <div class="card-content-section layout-column">
-                    <mat-card-title id="card-title" class="card-title" [title]="tilePreset.name">
-                        {{tilePreset.name}}
-                    </mat-card-title>
-                    <mat-card-content class="card-content" [title]="tilePreset.description">
-                        <div id="card-description" class="card-desc">
-                            <pre>{{tilePreset.description}}</pre>
-                        </div>
-                    </mat-card-content>
-                </div>
-                <div class="card-selection-section layout-column layout-align-space-between">
-                    <button id="card-default" mat-icon-button>
-                        <i class="material-icons" *ngIf="false">{{defaultTilerID === tilePreset.id ? 'bookmark' : 'bookmark_border'}}</i>
-                    </button>
-                    <button class="card-select" mat-icon-button>
-                        <i class="material-icons">{{tilePreset?.isSelected ? 'check_box' : 'check_box_outline_blank'}}</i>
-                    </button>
-                </div>
+  }
+  @if (tilePresets?.length > 0) {
+    <div>
+      @for (tilePreset of tilePresets; track tilePreset) {
+        <mat-card class="card" (click)="loadTilePreset(tilePreset)">
+          <div class="card-inner layout-row">
+            <div class="card-image-section">
+              <cms-tile-grid [displayBase]="displayResolution" [tilePreset]="tilePreset"></cms-tile-grid>
             </div>
+            <div class="card-content-section layout-column">
+              <mat-card-title id="card-title" class="card-title" [title]="tilePreset.name">
+                {{tilePreset.name}}
+              </mat-card-title>
+              <mat-card-content class="card-content" [title]="tilePreset.description">
+                <div id="card-description" class="card-desc">
+                  <pre>{{tilePreset.description}}</pre>
+                </div>
+              </mat-card-content>
+            </div>
+            <div class="card-selection-section layout-column layout-align-space-between">
+              <button id="card-default" mat-icon-button>
+                @if (false) {
+                  <i class="material-icons">{{defaultTilerID === tilePreset.id ? 'bookmark' : 'bookmark_border'}}</i>
+                }
+              </button>
+              <button class="card-select" mat-icon-button>
+                <i class="material-icons">{{tilePreset?.isSelected ? 'check_box' : 'check_box_outline_blank'}}</i>
+              </button>
+            </div>
+          </div>
         </mat-card>
+      }
     </div>
+  }
 </div>

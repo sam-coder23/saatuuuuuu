@@ -1,19 +1,25 @@
 <div class="cms-dialog-content-block" id="cms-dialog">
-	<div class="cms-dialog-content">
-		<mat-card class="setting-card setting-card-language">
-			<mat-card-content>
-				<div class="cms-dialog-message-container">
-					<mat-progress-spinner id="cms-dialog-connection-progress" diameter="60" color="primary" mode="indeterminate" *ngIf="type === 'progress'"></mat-progress-spinner>
-				</div>
-				<div class="message">
-					{{mMessage}}
-				</div>
-				<div class="action-buttons" *ngIf="type !== 'progress'">
-					<button mat-button class="cancel-button" type="button" id="cancel-button" (click)="clickOnCancel()" *ngIf="type === 'confirmation'">{{ (yesNoDialog ? 'dialog.no' : 'dialog.cancel') | translate }}</button>
-					<button mat-button class="ok-button" type="button" id="ok-button" (click)="clickOnOk()">{{ (yesNoDialog ? 'dialog.yes' : 'dialog.ok') | translate }}</button>
-				</div>
-			</mat-card-content>
-		</mat-card>
-	</div>
+  <div class="cms-dialog-content">
+    <mat-card class="setting-card setting-card-language">
+      <mat-card-content>
+        <div class="cms-dialog-message-container">
+          @if (type === 'progress') {
+            <mat-progress-spinner id="cms-dialog-connection-progress" diameter="60" color="primary" mode="indeterminate"></mat-progress-spinner>
+          }
+        </div>
+        <div class="message">
+          {{mMessage}}
+        </div>
+        @if (type !== 'progress') {
+          <div class="action-buttons">
+            @if (type === 'confirmation') {
+              <button mat-button class="cancel-button" type="button" id="cancel-button" (click)="clickOnCancel()">{{ (yesNoDialog ? 'dialog.no' : 'dialog.cancel') | translate }}</button>
+            }
+            <button mat-button class="ok-button" type="button" id="ok-button" (click)="clickOnOk()">{{ (yesNoDialog ? 'dialog.yes' : 'dialog.ok') | translate }}</button>
+          </div>
+        }
+      </mat-card-content>
+    </mat-card>
+  </div>
 </div>
 <div class="cms-dialog-overlay"></div>

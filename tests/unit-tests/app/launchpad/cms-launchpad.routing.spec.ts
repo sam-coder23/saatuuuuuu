@@ -95,9 +95,9 @@ describe("Router: App", () => {
             ],
             schemas: [NO_ERRORS_SCHEMA]
         }).compileComponents().then(() => {
-            router = TestBed.get(Router);
-            location = TestBed.get(Location);
-            canActiveViaAuthorizationService = TestBed.get(CmsCanActivateViaAuthorizationService);
+            router = TestBed.inject(Router);
+            location = TestBed.inject(Location);
+            canActiveViaAuthorizationService = TestBed.inject(CmsCanActivateViaAuthorizationService);
             fixture = TestBed.createComponent(CmsLaunchpadComponent);
             router.initialNavigation();
         });

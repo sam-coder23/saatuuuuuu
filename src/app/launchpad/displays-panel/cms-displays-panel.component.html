@@ -1,24 +1,28 @@
 <div class="page-toolbar">
-    <mat-toolbar id="displays-panel-toolbar" class="toolbar-theme">
-        <span id="displays-panel-back-button-text" class="toolbar-text">{{ 'displayList.connectTo' | translate }}</span>
-        <span class="fill-remaining-space"></span>
+  <mat-toolbar id="displays-panel-toolbar" class="toolbar-theme">
+    <span id="displays-panel-back-button-text" class="toolbar-text">{{ 'displayList.connectTo' | translate }}</span>
+    <span class="fill-remaining-space"></span>
 
-        <button id="display-panel-reload-button" mat-icon-button *ngIf="reloadState" (click)="reloadList()">
-            <i class="material-icons">refresh</i>
-        </button>
-        <button id="display-list-favorite-button" mat-icon-button (click)="setFavourite()">
-            <i class="material-icons">{{ isFavoriteFilter ? "star" : "star_border" }}</i>
-        </button>
-        <button id="display-list-search-button" mat-icon-button (click)="initializeSearch($event)">
-            <i class="material-icons">search</i>
-        </button>
-        <mat-form-field id="display-list-search-input">
-            <mat-label>{{ 'panelToolbar.search' | translate}}</mat-label>
-            <input matInput type="text" [(ngModel)]="searchKey">
-        </mat-form-field>
-    </mat-toolbar>
+    @if (reloadState) {
+      <button id="display-panel-reload-button" mat-icon-button (click)="reloadList()">
+        <i class="material-icons">refresh</i>
+      </button>
+    }
+    <button id="display-list-favorite-button" mat-icon-button (click)="setFavourite()">
+      <i class="material-icons">{{ isFavoriteFilter ? "star" : "star_border" }}</i>
+    </button>
+    <button id="display-list-search-button" mat-icon-button (click)="initializeSearch($event)">
+      <i class="material-icons">search</i>
+    </button>
+    <mat-form-field id="display-list-search-input">
+      <mat-label>{{ 'panelToolbar.search' | translate}}</mat-label>
+      <input matInput type="text" [(ngModel)]="searchKey">
+    </mat-form-field>
+  </mat-toolbar>
 </div>
 
 <div class="displays-panel-main">
-    <cms-display-list (change)="onListChanged()" *ngIf="listState" [searchFilter]= "searchFilter" [favoriteFilter]="isFavoriteFilter"></cms-display-list>
+  @if (listState) {
+    <cms-display-list (change)="onListChanged()" [searchFilter]= "searchFilter" [favoriteFilter]="isFavoriteFilter"></cms-display-list>
+  }
 </div>

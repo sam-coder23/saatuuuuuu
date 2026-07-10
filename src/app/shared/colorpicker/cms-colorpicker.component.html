@@ -1,11 +1,13 @@
 <div class="cms-colorpicker-wrapper" id="cms-color-picker">
-	<div class="color-indicator-box" (click)="showColorPaletteBox()">
-		<div class="color-box" [style.backgroundColor]="mInputColor"></div>
-	</div>
+  <div class="color-indicator-box" (click)="showColorPaletteBox()">
+    <div class="color-box" [style.backgroundColor]="mInputColor"></div>
+  </div>
 
-	<div class="cms-color-picker-palette">
-		<ul>
-            <li *ngFor="let color of mColorShades" [style.backgroundColor]="color" (click)="pickColor(color)"></li>
-        </ul>      
-	<div>
-</div>
+  <div class="cms-color-picker-palette">
+    <ul>
+      @for (color of mColorShades; track color) {
+        <li [style.backgroundColor]="color" (click)="pickColor(color)"></li>
+      }
+    </ul>
+    <div>
+    </div>

@@ -1,5 +1,9 @@
 <router-outlet></router-outlet>
-<cms-dialog *ngIf="showSystemDialog" id="sytem-events-alert-popup" [message]="dialogMessage" [type]="'alert'" (okPress)="onDialogConfirmation()">
-</cms-dialog>
-<cms-dialog *ngIf="showProgressDialog" [message]="dialogMessage" [type]="'progress'" (okPress)="onDialogConfirmation()">
-</cms-dialog>`
+@if (showSystemDialog) {
+  <cms-dialog id="sytem-events-alert-popup" [message]="dialogMessage" [type]="'alert'" (okPress)="onDialogConfirmation()">
+  </cms-dialog>
+}
+@if (showProgressDialog) {
+  <cms-dialog [message]="dialogMessage" [type]="'progress'" (okPress)="onDialogConfirmation()">
+  </cms-dialog>
+  }`

@@ -2,44 +2,44 @@
 {
     "compileOnSave": false,
     "compilerOptions": {
-        "baseUrl": "./",
-        "outDir": "./dist/out-tsc",
-        "forceConsistentCasingInFileNames": true,
-        "strict": false,
-        "noImplicitOverride": true,
-        "noPropertyAccessFromIndexSignature": true,
-        "noImplicitReturns": true,
-        "noFallthroughCasesInSwitch": true,
-        "sourceMap": true,
-        "declaration": false,
-        "downlevelIteration": true,
-        "experimentalDecorators": true,
-        "module": "esnext",
-        "moduleResolution": "node",
-        "importHelpers": true,
-        "allowSyntheticDefaultImports": true,
-        "emitDecoratorMetadata": true,
-        "resolveJsonModule": true,
-        "strictPropertyInitialization": false,
-        "target": "ES2022",
-        "lib": [
-            "es2018",
-            "dom"
+      "baseUrl": "./",
+      "outDir": "./dist/out-tsc",
+      "forceConsistentCasingInFileNames": true,
+      "strict": false,
+      "noImplicitOverride": true,
+      "noPropertyAccessFromIndexSignature": true,
+      "noImplicitReturns": true,
+      "noFallthroughCasesInSwitch": true,
+      "sourceMap": true,
+      "declaration": false,
+      "downlevelIteration": true,
+      "experimentalDecorators": true,
+      "module": "esnext",
+      "moduleResolution": "bundler",
+      "importHelpers": true,
+      "allowSyntheticDefaultImports": true,
+      "emitDecoratorMetadata": true,
+      "resolveJsonModule": true,
+      "strictPropertyInitialization": false,
+      "target": "ES2022",
+      "lib": [
+        "es2018",
+        "dom"
+      ],
+      "paths": {
+        "@shared/*": [
+          "src/app/shared/*"
         ],
-        "paths": {
-            "@shared/*": [
-                "src/app/shared/*"
-            ],
-            "@translation/*": [
-                "src/app/i18n/*"
-            ],
-            "@app/*": [
-                "src/app/*"
-            ],
-            "@root/*": [
-                "./*"
-            ]
-        }
+        "@translation/*": [
+          "src/app/i18n/*"
+        ],
+        "@app/*": [
+          "src/app/*"
+        ],
+        "@root/*": [
+          "./*"
+        ]
+      }
     },
     "include": [
         "src"
