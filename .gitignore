@@ -13,3 +13,4 @@ karma_html/**
 .dccache
 .vscode/
 /.angular/cache
+node_modules/
