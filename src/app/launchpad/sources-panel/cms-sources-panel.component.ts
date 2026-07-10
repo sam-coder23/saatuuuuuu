@@ -36,7 +36,8 @@ import { ParsingManager } from "./../../utils/parsing-manager-util";
 @Component({
     selector: 'cms-sources-panel',
     templateUrl: './cms-sources-panel.component.html',
-    styleUrls: ['./cms-sources-panel.component.scss']
+    styleUrls: ['./cms-sources-panel.component.scss'],
+    standalone: false
 })
 export class CmsSourcesPanelComponent implements OnInit {
     @ViewChild("sourceListComp", {static: false}) private sourceListComp: CmsSourceListComponent;

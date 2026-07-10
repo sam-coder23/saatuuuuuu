@@ -13,7 +13,8 @@ import { Validation } from "../../core/util/Validation";
 
 @Component({
     selector: "cms-display-name",
-    template: "<span id='display-name'>{{ displayName }}</span>"
+    template: "<span id='display-name'>{{ displayName }}</span>",
+    standalone: false
 })
 /**
  * This class contains the behaviour for display-name component used in all the launchpad

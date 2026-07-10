@@ -1,15 +1,17 @@
 <mat-toolbar id="display-panel-toolbar" class="toolbar-theme">
-    <div class="display-panel-toolbar-row">
-        <button id="display-panel-back-button" mat-icon-button (click)="navigateBack()">
-            <i class="material-icons"> arrow_back </i>
-        </button>
-    </div>
-    <span class="fill-remaining-space"></span>
+  <div class="display-panel-toolbar-row">
+    <button id="display-panel-back-button" mat-icon-button (click)="navigateBack()">
+      <i class="material-icons"> arrow_back </i>
+    </button>
+  </div>
+  <span class="fill-remaining-space"></span>
 
-    <cms-display-name class="toolbar-text"></cms-display-name>
+  <cms-display-name class="toolbar-text"></cms-display-name>
 
-    <span class="fill-remaining-space"></span>
+  <span class="fill-remaining-space"></span>
 </mat-toolbar>
 
-<cms-mini-display *ngIf="display" [display]="display" (onZoom)="zoomLevel = $event" [fitHeight]="fitHeightCount">
-</cms-mini-display>
+@if (display) {
+  <cms-mini-display [display]="display" (onZoom)="zoomLevel = $event" [fitHeight]="fitHeightCount">
+  </cms-mini-display>
+}

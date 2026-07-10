@@ -37,8 +37,9 @@ import { EventManager } from "../utils/event-manager.util";
 import { CmsSettingsService } from "./settings/cms-settings.service";
 
 @Component({
-  selector: 'cms-launchpad',
-  templateUrl: './cms-launchpad.component.html'
+    selector: 'cms-launchpad',
+    templateUrl: './cms-launchpad.component.html',
+    standalone: false
 })
 
 export class CmsLaunchpadComponent implements OnInit, OnDestroy {

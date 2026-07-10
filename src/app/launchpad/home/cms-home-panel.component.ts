@@ -23,7 +23,8 @@ import { ParsingManager } from "./../../utils/parsing-manager-util";
 @Component({
     selector: 'cms-home-panel',
     templateUrl: './cms-home-panel.component.html',
-    styleUrls: ['./cms-home-panel.component.scss']
+    styleUrls: ['./cms-home-panel.component.scss'],
+    standalone: false
 })
 
 export class CmsHomePanelComponent implements OnInit {

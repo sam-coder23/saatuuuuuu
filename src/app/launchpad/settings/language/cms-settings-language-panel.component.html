@@ -1,28 +1,32 @@
 <div class="page-toolbar">
-	<!-- PAGE HEADER -->
-	<mat-toolbar id="setting-language-panel-toolbar" class="toolbar-theme">
-		<button id="setting-language-panel-back-button" mat-icon-button (click)="navigateBack();">
-            <i class="material-icons">arrow_back</i>
-        </button>
+  <!-- PAGE HEADER -->
+  <mat-toolbar id="setting-language-panel-toolbar" class="toolbar-theme">
+    <button id="setting-language-panel-back-button" mat-icon-button (click)="navigateBack();">
+      <i class="material-icons">arrow_back</i>
+    </button>
 
-		<span id="setting-language-panel-title-text">{{ 'settings.languageTitle' | translate }}</span>
-	</mat-toolbar>
+    <span id="setting-language-panel-title-text">{{ 'settings.languageTitle' | translate }}</span>
+  </mat-toolbar>
 </div>
 
 <div class="settings-language-panel">
-	<!-- PAGE CONTENT SECTION -->
-	<div class="settings-panel-container">
-		<div class="settings-content-wrapper">
-			<mat-card class="setting-card setting-card-language-page">
-				<mat-card-content>
-					<mat-nav-list dense>
-						<a mat-list-item *ngFor="let langauage of cmsLanguages" (click)="setLanguage(langauage.key)" id="set-langauge-{{langauage.key}}-link">
-							{{ langauage.value }}
-							<i class="link-select-icon material-icons" *ngIf="userSelectedLanguageKey === langauage.key" id="langauge-{{langauage.key}}-check-icon">done</i>
-							</a>
-					</mat-nav-list>
-				</mat-card-content>
-			</mat-card>
-		</div>
-	</div>
+  <!-- PAGE CONTENT SECTION -->
+  <div class="settings-panel-container">
+    <div class="settings-content-wrapper">
+      <mat-card class="setting-card setting-card-language-page">
+        <mat-card-content>
+          <mat-nav-list dense>
+            @for (langauage of cmsLanguages; track langauage) {
+              <a mat-list-item (click)="setLanguage(langauage.key)" id="set-langauge-{{langauage.key}}-link">
+                {{ langauage.value }}
+                @if (userSelectedLanguageKey === langauage.key) {
+                  <i class="link-select-icon material-icons" id="langauge-{{langauage.key}}-check-icon">done</i>
+                }
+              </a>
+            }
+          </mat-nav-list>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </div>
 </div>

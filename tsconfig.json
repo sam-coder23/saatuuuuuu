@@ -15,39 +15,22 @@
         "downlevelIteration": true,
         "experimentalDecorators": true,
         "module": "esnext",
-        "moduleResolution": "node",
+        "moduleResolution": "bundler",
         "importHelpers": true,
         "allowSyntheticDefaultImports": true,
         "emitDecoratorMetadata": true,
         "resolveJsonModule": true,
         "strictPropertyInitialization": false,
         "target": "ES2022",
-        "lib": [
-            "es2018",
-            "dom"
-        ],
         "paths": {
-            "@shared/*": [
-                "src/app/shared/*"
-            ],
-            "@translation/*": [
-                "src/app/i18n/*"
-            ],
-            "@app/*": [
-                "src/app/*"
-            ],
-            "@root/*": [
-                "./*"
-            ]
+            "@shared/*": ["src/app/shared/*"],
+            "@translation/*": ["src/app/i18n/*"],
+            "@app/*": ["src/app/*"],
+            "@root/*": ["./*"]
         }
     },
-    "include": [
-        "src"
-    ],
-    "exclude": [
-        "build/core-components/**",
-        ".scannerwork/**"
-    ],
+    "include": ["src"],
+    "exclude": ["build/core-components/**", ".scannerwork/**"],
     "angularCompilerOptions": {
         "enableI18nLegacyMessageIdFormat": false,
         "strictInjectionParameters": true,

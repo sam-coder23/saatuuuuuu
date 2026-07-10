@@ -34,7 +34,8 @@ import Hammer from 'hammerjs';
 @Component({
     selector: 'cms-mini-display',
     templateUrl: './cms-mini-display.component.html',
-    styleUrls: ['./cms-mini-display.component.scss']
+    styleUrls: ['./cms-mini-display.component.scss'],
+    standalone: false
 })
 /**
  * This class holds the behaviour for mini-display component, comprise of logic for zooming, Hammer zoom

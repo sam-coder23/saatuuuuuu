@@ -41,7 +41,8 @@ import { CmsSettingsService } from "./cms-settings.service";
 @Component({
     selector: 'cms-settings-panel',
     templateUrl: './cms-settings-panel.component.html',
-    styleUrls: ['./cms-settings-panel.component.scss']
+    styleUrls: ['./cms-settings-panel.component.scss'],
+    standalone: false
 })
 
 export class CmsSettingsPanelComponent implements OnInit {

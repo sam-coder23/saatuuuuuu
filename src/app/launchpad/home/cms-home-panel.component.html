@@ -1,62 +1,65 @@
 <div class="page-toolbar">
-      <mat-toolbar class="toolbar-theme">
-            <!-- logoff-button -->
-            <button class="action-button-exit" mat-raised-button (click)="userLogoff()">
-                  {{ 'home.logoff' | translate}}
-            </button>
-            <!-- end -->
-            <span class="fill-remaining-space"></span>
-            <cms-display-name class="toolbar-text"></cms-display-name>
-            <span class="fill-remaining-space"></span>
-            <i class="material-icons menu-button" [matMenuTriggerFor]="menu">more_vert</i>
-            <mat-menu #menu="matMenu">
-                  <!-- setting button -->
-                  <button mat-menu-item (click)="navigateToSettings()">
-                        <mat-icon>settings</mat-icon>
-                        <span>{{ 'home.settings' | translate }}</span>
-                  </button>
-                  <!-- end -->
-                  <!-- about button -->
-                  <button mat-menu-item (click)="navigateToAbout()">
-                        <mat-icon>info</mat-icon>
-                        <span>{{ 'home.about' | translate }}</span>
-                  </button>
-                  <!-- end -->
-            </mat-menu>
-      </mat-toolbar>
+  <mat-toolbar class="toolbar-theme">
+    <!-- logoff-button -->
+    <button class="action-button-exit" mat-raised-button (click)="userLogoff()">
+      {{ 'home.logoff' | translate}}
+    </button>
+    <!-- end -->
+    <span class="fill-remaining-space"></span>
+    <cms-display-name class="toolbar-text"></cms-display-name>
+    <span class="fill-remaining-space"></span>
+    <i class="material-icons menu-button" [matMenuTriggerFor]="menu">more_vert</i>
+    <mat-menu #menu="matMenu">
+      <!-- setting button -->
+      <button mat-menu-item (click)="navigateToSettings()">
+        <mat-icon>settings</mat-icon>
+        <span>{{ 'home.settings' | translate }}</span>
+      </button>
+      <!-- end -->
+      <!-- about button -->
+      <button mat-menu-item (click)="navigateToAbout()">
+        <mat-icon>info</mat-icon>
+        <span>{{ 'home.about' | translate }}</span>
+      </button>
+      <!-- end -->
+    </mat-menu>
+  </mat-toolbar>
 </div>
 
-<div class="home-panel-wrapper" *ngIf="showHomePanel">
-      <!-- Source Block -->
-      <mat-card class="card source-block" (click)="navigateToSource()">
-            <div class="card-content">
-                  <mat-card-title class="card-title">
-                        {{ 'home.selectSource' | translate }}
-                  </mat-card-title>
-                  <i aria-label="Sources" class="material-icons">check_box_outline_blank</i>
-            </div>
-      </mat-card>
-      <!-- end -->
-      <!-- Layout Block -->
-      <mat-card class="card layout-block" (click)="navigateToLayout()" [ngClass]="{disabled: isDisabled}">
-            <div class="card-content">
-                  <mat-card-title class="card-title">
-                        {{ 'home.selectLayout' | translate }}
-                  </mat-card-title>
-                  <i aria-label="Layout" class="material-icons">dashboard</i>
-            </div>
-      </mat-card>
-      <!-- end -->
-      <!-- Reposition Block -->
-      <mat-card class="card reposition-block" (click)="navigateToResposition()" [ngClass]="{disabled: isDisabled}">
-            <div class="card-content">
-                  <mat-card-title class="card-title">
-                        {{ 'home.repositionSources' | translate }}
-                  </mat-card-title>
-                  <i aria-label="Sources" class="material-icons">picture_in_picture_alt</i>
-            </div>
-      </mat-card>
-      <!-- end -->
-
-      <cms-dialog *ngIf="showClearWallPopup" class="confirm-popup" [message]="dialogMessage" [type]="'confirmation'" (okPress)="clearMiniDisplayWall()" (cancelPress)="cancelClearWallPopup()" [yesNoDialog]="true"></cms-dialog>
-</div>
+@if (showHomePanel) {
+  <div class="home-panel-wrapper">
+    <!-- Source Block -->
+    <mat-card class="card source-block" (click)="navigateToSource()">
+      <div class="card-content">
+        <mat-card-title class="card-title">
+          {{ 'home.selectSource' | translate }}
+        </mat-card-title>
+        <i aria-label="Sources" class="material-icons">check_box_outline_blank</i>
+      </div>
+    </mat-card>
+    <!-- end -->
+    <!-- Layout Block -->
+    <mat-card class="card layout-block" (click)="navigateToLayout()" [ngClass]="{disabled: isDisabled}">
+      <div class="card-content">
+        <mat-card-title class="card-title">
+          {{ 'home.selectLayout' | translate }}
+        </mat-card-title>
+        <i aria-label="Layout" class="material-icons">dashboard</i>
+      </div>
+    </mat-card>
+    <!-- end -->
+    <!-- Reposition Block -->
+    <mat-card class="card reposition-block" (click)="navigateToResposition()" [ngClass]="{disabled: isDisabled}">
+      <div class="card-content">
+        <mat-card-title class="card-title">
+          {{ 'home.repositionSources' | translate }}
+        </mat-card-title>
+        <i aria-label="Sources" class="material-icons">picture_in_picture_alt</i>
+      </div>
+    </mat-card>
+    <!-- end -->
+    @if (showClearWallPopup) {
+      <cms-dialog class="confirm-popup" [message]="dialogMessage" [type]="'confirmation'" (okPress)="clearMiniDisplayWall()" (cancelPress)="cancelClearWallPopup()" [yesNoDialog]="true"></cms-dialog>
+    }
+  </div>
+}

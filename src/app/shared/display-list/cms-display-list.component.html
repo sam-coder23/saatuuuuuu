@@ -1,13 +1,21 @@
 <div id="display-list-card-container" class="display-list-cards">
-    <div class="display-list-unavailable" *ngIf="displays && displays.length === 0">
-        <span>{{ 'displayList.unavailable' | translate }}</span>
-        <cms-dialog *ngIf="showConfirmationPopup" id="display-list-confirmation-popup" [message]="dialogMessage" [type]="'alert'" (okPress)="onConfirmation()">
+  @if (displays && displays.length === 0) {
+    <div class="display-list-unavailable">
+      <span>{{ 'displayList.unavailable' | translate }}</span>
+      @if (showConfirmationPopup) {
+        <cms-dialog id="display-list-confirmation-popup" [message]="dialogMessage" [type]="'alert'" (okPress)="onConfirmation()">
         </cms-dialog>
+      }
     </div>
-    <div *ngIf="displays && displays.length > 0">
-        <cms-card *ngFor="let display of displays" [card]="display"
-            (select)="connectWall(display)" (toggleFavorite)="toggleDisplayFavorite(display)"
-            [ngClass]="{disabled: display.disabled}" [multi]="false">
+  }
+  @if (displays && displays.length > 0) {
+    <div>
+      @for (display of displays; track display) {
+        <cms-card [card]="display"
+          (select)="connectWall(display)" (toggleFavorite)="toggleDisplayFavorite(display)"
+          [ngClass]="{disabled: display.disabled}" [multi]="false">
         </cms-card>
+      }
     </div>
+  }
 </div>

@@ -16,7 +16,8 @@ import { CmsSettingsService } from "./../../settings/cms-settings.service";
 @Component({
     selector: 'cms-settings-language-panel',
     templateUrl: './cms-settings-language-panel.component.html',
-    styleUrls: ['./cms-settings-language-panel.component.scss']
+    styleUrls: ['./cms-settings-language-panel.component.scss'],
+    standalone: false
 })
 
 export class CmsSettingsLanguagePanelComponent implements OnInit {

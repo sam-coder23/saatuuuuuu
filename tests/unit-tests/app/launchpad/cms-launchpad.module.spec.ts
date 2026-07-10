@@ -15,7 +15,7 @@ describe("Module: App", () => {
                 { provide: APP_BASE_HREF, useValue: "/" }
             ]
         }).compileComponents().then(() => {
-            fixture = TestBed.get(CmsLaunchapadModule);
+            fixture = TestBed.inject(CmsLaunchapadModule);
         });
     }));
 

@@ -13,7 +13,8 @@ import { CmsResource } from "./../../cms/models/cms-resource";
 @Component({
     selector: 'cms-card',
     templateUrl: './cms-card.component.html',
-    styleUrls: ['./cms-card.scss']
+    styleUrls: ['./cms-card.scss'],
+    standalone: false
 })
 /**
  * This class has the behaviour for card component used as a shared component to display material

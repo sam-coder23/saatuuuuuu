@@ -19,7 +19,8 @@ import { ParsingManager } from "./../../utils/parsing-manager-util";
 @Component({
     selector: 'cms-display-panel',
     templateUrl: './cms-display-panel.component.html',
-    styleUrls: ['./cms-display-panel.component.scss']
+    styleUrls: ['./cms-display-panel.component.scss'],
+    standalone: false
 })
 export class CmsDisplayPanelComponent implements OnInit {
     //Holds current zoom level of mini-display

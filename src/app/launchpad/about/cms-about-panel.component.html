@@ -1,80 +1,76 @@
 <div class="page-toolbar">
-	<!-- PAGE HEADER -->
-	<mat-toolbar id="about-panel-toolbar" class="toolbar-theme">
-		<button id="about-panel-back-button" mat-icon-button (click)="goBack()">
-            <i class="material-icons">arrow_back</i>
-        </button>
+  <!-- PAGE HEADER -->
+  <mat-toolbar id="about-panel-toolbar" class="toolbar-theme">
+    <button id="about-panel-back-button" mat-icon-button (click)="goBack()">
+      <i class="material-icons">arrow_back</i>
+    </button>
 
-		<span id="about-panel-title-text">{{ 'about.about' | translate }}</span>
-	</mat-toolbar>
+    <span id="about-panel-title-text">{{ 'about.about' | translate }}</span>
+  </mat-toolbar>
 </div>
 
 <div class="about-panel">
-	<!-- PAGE CONTENT SECTION -->
-	<div class="about-panel-container">
+  <!-- PAGE CONTENT SECTION -->
+  <div class="about-panel-container">
 
-		<!-- LOADING PROGRESS -->
-		<div class="loading-content" *ngIf="loading" id="loading-progress-indicator">
-			<mat-progress-circle mode="indeterminate"></mat-progress-circle>
-		</div>
+    <!-- LOADING PROGRESS -->
+    @if (loading) {
+      <div class="loading-content" id="loading-progress-indicator">
+        <mat-progress-circle mode="indeterminate"></mat-progress-circle>
+      </div>
+    }
 
-		<div class="about-content-wrapper" *ngIf="!loading">
-
-				<!-- ABOUT PANEL CONTENT PART -->
-				<mat-card class="about-card">
-					<mat-card-content>
-						<mat-list dense>
-							<!-- VERSION -->
-							<mat-list-item class="info-text">
-								<div matListItemLine class="title">{{ 'about.version' | translate }}</div>
+    @if (!loading) {
+      <div class="about-content-wrapper">
+        <!-- ABOUT PANEL CONTENT PART -->
+        <mat-card class="about-card">
+          <mat-card-content>
+            <mat-list dense>
+              <!-- VERSION -->
+              <mat-list-item class="info-text">
+                <div matListItemLine class="title">{{ 'about.version' | translate }}</div>
                 <div matListItemLine class="fill-remaining-space text-break">{{ systemInfo.version }}</div>
-							</mat-list-item>
-							<mat-divider></mat-divider>
-
-							<!-- LICENSED TO -->
-							<mat-list-item class="info-text">
-								<div matListItemLine class="title">{{ 'about.licensed' | translate }}</div>
+              </mat-list-item>
+              <mat-divider></mat-divider>
+              <!-- LICENSED TO -->
+              <mat-list-item class="info-text">
+                <div matListItemLine class="title">{{ 'about.licensed' | translate }}</div>
                 <div matListItemLine class="fill-remaining-space text-break">{{ systemInfo.licensedTo }}</div>
-							</mat-list-item>
-
-							<!-- PROJECT NAME -->
+              </mat-list-item>
+              <!-- PROJECT NAME -->
               <mat-list-item class="info-text">
-								<div matListItemLine class="title">{{ 'about.project' | translate }}</div>
+                <div matListItemLine class="title">{{ 'about.project' | translate }}</div>
                 <div matListItemLine class="fill-remaining-space text-break">{{ systemInfo.projectName }}</div>
-							</mat-list-item>
-
-							<!-- LICENSE STATUS -->
+              </mat-list-item>
+              <!-- LICENSE STATUS -->
               <mat-list-item class="info-text">
-								<div matListItemLine class="title">{{ 'about.licenseStatus' | translate }}</div>
+                <div matListItemLine class="title">{{ 'about.licenseStatus' | translate }}</div>
                 <div matListItemLine class="fill-remaining-space text-break">{{ systemInfo.licenseStatus }}</div>
-							</mat-list-item>
-							<mat-divider></mat-divider>
-
-							<!-- SERVER IP AND VERSION -->
+              </mat-list-item>
+              <mat-divider></mat-divider>
+              <!-- SERVER IP AND VERSION -->
               <mat-list-item class="info-text">
-								<div matListItemLine class="title">{{ 'about.server' | translate }}</div>
+                <div matListItemLine class="title">{{ 'about.server' | translate }}</div>
                 <div matListItemLine class="fill-remaining-space text-break">{{ systemInfo.server  }}</div>
-							</mat-list-item>
+              </mat-list-item>
               <mat-list-item class="info-text">
-								<div matListItemLine class="title"></div>
+                <div matListItemLine class="title"></div>
                 <div matListItemLine class="fill-remaining-space text-break">{{ systemInfo.serverVersion  }}</div>
-							</mat-list-item>
+              </mat-list-item>
               <mat-divider></mat-divider>
-
-							<!-- ABOUT TEXT -->
+              <!-- ABOUT TEXT -->
               <mat-list-item class="content-text">
-								<div matListItemLine class="fill-remaining-space text-break">{{ 'about.contentText' | translate }}</div>
-							</mat-list-item>
+                <div matListItemLine class="fill-remaining-space text-break">{{ 'about.contentText' | translate }}</div>
+              </mat-list-item>
               <mat-divider></mat-divider>
-
-							<!-- COPYRIGHT TEXT -->
+              <!-- COPYRIGHT TEXT -->
               <mat-list-item class="content-text">
-								<div matListItemLine class="fill-remaining-space text-break">{{ copyRightText }}</div>
-							</mat-list-item>
-
-						</mat-list>
-					</mat-card-content>
-				</mat-card>
-		</div>
-	</div>
+                <div matListItemLine class="fill-remaining-space text-break">{{ copyRightText }}</div>
+              </mat-list-item>
+            </mat-list>
+          </mat-card-content>
+        </mat-card>
+      </div>
+    }
+  </div>
 </div>

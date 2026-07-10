@@ -1,46 +1,50 @@
 <!-- LOGIN SPLASH IMAGE -->
 <div class="login-splash-container">
-    <img src="app/resources/images/wallmanager.jpg" alt="Login Splash" class="login-splash-image">
+  <img src="app/resources/images/wallmanager.jpg" alt="Login Splash" class="login-splash-image">
 </div>
 
 <!-- LOGIN CONTAINER -->
 <div class="login-container">
-    <header class="login-header">
-        <span>{{ 'login.welcome' | translate }}</span>
-    </header>
-    <section class="login-section layout-column">
-        <form id="application-login-form">
-            <div class="login-input-container">
-                <i class="material-icons">person</i>
-                <mat-form-field class="field-container">
-                    <mat-label id="login-username-label">{{ 'login.username' | translate}}</mat-label>
-                    <input matInput type="text" required [(ngModel)]="user.username" #username="ngModel" name="username"
-                        (input)="userNameChanged()" id="login-username-input">
-                </mat-form-field>
-            </div>
-            <div class="login-input-container">
-                <i class="material-icons">vpn_key</i>
-                <mat-form-field class="field-container">
-                    <mat-label id="login-password-label">{{ 'login.password' | translate}}</mat-label>
-                    <input matInput type="password" type="password" [(ngModel)]="user.password" #password="ngModel" name="password" (input)="passwordChanged()" id="login-password-input">
-                </mat-form-field>
-            </div>
-            <div class="login-error-container error-color" *ngIf="hasError">
-                <i class="material-icons">warning</i>
-                <span>{{ errorMessage }}</span>
-            </div>
-            <div class="login-submit-container layout-row">
-                <div class="login-button-container layout-row-reverse">
-                    <button id="login-submit-button" mat-raised-button type="submit" class="mat-raised" nd-click-debounce
-                        (click)="onLoginSubmit()" [disabled]="!username.valid || !password.valid">{{ 'login.button' | translate }}</button>
-                </div>
-                <div id="login-progress" class="login-progress-container" *ngIf="isLoginInProgress">
-                    <mat-progress-spinner diameter="50" mode="indeterminate"></mat-progress-spinner>
-                </div>
-            </div>
-        </form>
-    </section>
+  <header class="login-header">
+    <span>{{ 'login.welcome' | translate }}</span>
+  </header>
+  <section class="login-section layout-column">
+    <form id="application-login-form">
+      <div class="login-input-container">
+        <i class="material-icons">person</i>
+        <mat-form-field class="field-container">
+          <mat-label id="login-username-label">{{ 'login.username' | translate}}</mat-label>
+          <input matInput type="text" required [(ngModel)]="user.username" #username="ngModel" name="username"
+            (input)="userNameChanged()" id="login-username-input">
+        </mat-form-field>
+      </div>
+      <div class="login-input-container">
+        <i class="material-icons">vpn_key</i>
+        <mat-form-field class="field-container">
+          <mat-label id="login-password-label">{{ 'login.password' | translate}}</mat-label>
+          <input matInput type="password" type="password" [(ngModel)]="user.password" #password="ngModel" name="password" (input)="passwordChanged()" id="login-password-input">
+        </mat-form-field>
+      </div>
+      @if (hasError) {
+        <div class="login-error-container error-color">
+          <i class="material-icons">warning</i>
+          <span>{{ errorMessage }}</span>
+        </div>
+      }
+      <div class="login-submit-container layout-row">
+        <div class="login-button-container layout-row-reverse">
+          <button id="login-submit-button" mat-raised-button type="submit" class="mat-raised" nd-click-debounce
+          (click)="onLoginSubmit()" [disabled]="!username.valid || !password.valid">{{ 'login.button' | translate }}</button>
+        </div>
+        @if (isLoginInProgress) {
+          <div id="login-progress" class="login-progress-container">
+            <mat-progress-spinner diameter="50" mode="indeterminate"></mat-progress-spinner>
+          </div>
+        }
+      </div>
+    </form>
+  </section>
 </div>
 <div class="app-logo">
-    <img src="app/resources/images/icon_barco.png">
+  <img src="app/resources/images/icon_barco.png">
 </div>

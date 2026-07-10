@@ -24,7 +24,8 @@ import { ParsingManager } from "../../utils/parsing-manager-util";
 @Component({
     selector: 'cms-tile-list',
     templateUrl: './cms-tile-list.component.html',
-    styleUrls: ['./cms-tile-list.component.scss']
+    styleUrls: ['./cms-tile-list.component.scss'],
+    standalone: false
 })
 /**
  * This class contains the behaviour for CmsTileListComponent, which shows the list of available

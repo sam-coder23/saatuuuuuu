@@ -1,16 +1,24 @@
 <div id="mini-display-grid" class="grid">
-    <div class="tiles" *ngIf="miniTiles && miniTiles.length">
-        <div class="tile" *ngFor="let tile of miniTiles; let tileIndex = index;" 
-            [ngStyle]="formattedStyle(tile)">
+  @if (miniTiles && miniTiles.length) {
+    <div class="tiles">
+      @for (tile of miniTiles; track tile; let tileIndex = $index) {
+        <div class="tile"
+          [ngStyle]="formattedStyle(tile)">
         </div>
+      }
     </div>
-    <div class="contents" *ngIf="contents && contents.length">
-        <div class="content" *ngFor="let content of contents" [attr.data-content-id]="content.id" 
-            [ngStyle]="formattedStyle(content)"
-            [ngClass]="{'box-shadow' : showSelected(content.id)}">
-            <div class="source-label-container"  [ngClass]="{singleline: !isMultiLine, multiline: isMultiLine}">
-                {{content.name}}
-            </div>
+  }
+  @if (contents && contents.length) {
+    <div class="contents">
+      @for (content of contents; track content) {
+        <div class="content" [attr.data-content-id]="content.id"
+          [ngStyle]="formattedStyle(content)"
+          [ngClass]="{'box-shadow' : showSelected(content.id)}">
+          <div class="source-label-container"  [ngClass]="{singleline: !isMultiLine, multiline: isMultiLine}">
+            {{content.name}}
+          </div>
         </div>
+      }
     </div>
+  }
 </div>
