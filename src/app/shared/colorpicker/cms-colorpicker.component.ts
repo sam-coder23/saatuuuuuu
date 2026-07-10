@@ -16,7 +16,8 @@ import { Component, Input, Output, EventEmitter, OnInit, ElementRef, Renderer2 }
 @Component({
     selector: 'cms-colorpicker',
     templateUrl: './cms-colorpicker.component.html',
-    styleUrls: ['./cms-colorpicker.component.scss']
+    styleUrls: ['./cms-colorpicker.component.scss'],
+    standalone: false
 })
 export class CmsColorPickerComponent implements OnInit{
     /**

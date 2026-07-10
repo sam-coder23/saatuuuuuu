@@ -14,7 +14,8 @@ import { CMSConstants } from "./../../cms/models/cms-constants";
 @Component({
     selector: 'cms-about-panel',
     templateUrl: './cms-about-panel.component.html',
-    styleUrls: ['./cms-about-panel.component.scss']
+    styleUrls: ['./cms-about-panel.component.scss'],
+    standalone: false
 })
 
 export class CmsAboutPanelComponent implements OnInit {

@@ -22,7 +22,8 @@ import { CmsEventEmitterService } from "./../../cms/api/cms-event-emitter.servic
 @Component({
     selector: 'cms-display-list',
     templateUrl: './cms-display-list.component.html',
-    styleUrls: ['./cms-display-list.component.scss']
+    styleUrls: ['./cms-display-list.component.scss'],
+    standalone: false
 })
 /**
  * This class contains the behaviour for display list component, contains methods that comprise of

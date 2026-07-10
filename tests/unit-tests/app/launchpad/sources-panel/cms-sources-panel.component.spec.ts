@@ -33,7 +33,8 @@ let activatedRoute: ActivatedRoute;
 
 @Component({
     selector: "cms-source-list",
-    template: ""
+    template: "",
+    standalone: false
 })
 
 class MockSourceListComponent {

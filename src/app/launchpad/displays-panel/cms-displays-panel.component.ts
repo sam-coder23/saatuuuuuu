@@ -22,7 +22,8 @@ import { Validation } from "../../core/util/Validation";
 @Component({
     selector: 'cms-displays-panel',
     templateUrl: './cms-displays-panel.component.html',
-    styleUrls: ['./cms-displays-panel.component.scss']
+    styleUrls: ['./cms-displays-panel.component.scss'],
+    standalone: false
 })
 export class CmsDisplaysPanelComponent implements OnInit, AfterViewInit {
     public isFavoriteFilter: boolean;

@@ -9,7 +9,8 @@ import { ITilePreset } from "../../cms/models/cms-tile-preset";
 @Component({
     selector: 'cms-tile-grid',
     templateUrl: './tile-grid.component.html',
-    styleUrls: ['./tile-grid.component.scss']
+    styleUrls: ['./tile-grid.component.scss'],
+    standalone: false
 })
 /**
  * This class contains the behavior for dynamic tile grid shown inside the layout tiles

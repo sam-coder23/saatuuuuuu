@@ -22,7 +22,8 @@ import { CmsMiniDisplayService } from "./../../shared/mini-display/cms-mini-disp
 @Component({
     selector: 'cms-login',
     templateUrl: './cms-login.component.html',
-    styleUrls: ['./cms-login.component.scss']
+    styleUrls: ['./cms-login.component.scss'],
+    standalone: false
 })
 
 export class CmsLoginComponent implements OnInit, OnDestroy {

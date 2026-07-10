@@ -33,7 +33,8 @@ import { TileContent } from "../../cms/models/cms-tile-content";
 @Component({
     selector: 'cms-source-list',
     templateUrl: './cms-source-list.component.html',
-    styleUrls: ['./cms-source-list.component.scss']
+    styleUrls: ['./cms-source-list.component.scss'],
+    standalone: false
 })
 /**
  * This class contains the behaviour for sourelist component.

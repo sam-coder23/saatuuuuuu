@@ -23,7 +23,8 @@ import { CmsMiniDisplayService } from "./../cms-mini-display.service";
     styleUrls: ['./cms-grid.component.scss'],
     host: {
         "(document:click)": "onFocusLostFromContent($event)"
-    }
+    },
+    standalone: false
 })
 /**
  * This class contains the behaviour for Grid component, contains behaviour for swapping, formatting and

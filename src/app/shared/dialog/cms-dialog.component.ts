@@ -16,7 +16,8 @@ import { AppConfig } from '../../config';
 @Component({
     selector: 'cms-dialog',
     templateUrl: './cms-dialog.component.html',
-    styleUrls: ['./cms-dialog.component.scss']
+    styleUrls: ['./cms-dialog.component.scss'],
+    standalone: false
 })
 export class CmsDialogComponent implements OnInit, OnChanges {
     /**

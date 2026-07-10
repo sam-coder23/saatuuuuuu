@@ -17,7 +17,8 @@ import { ParsingManager } from "./../../utils/parsing-manager-util";
 @Component({
     selector: 'cms-tiles-panel',
     templateUrl: './cms-tiles-panel.component.html',
-    styleUrls: ['./cms-tiles-panel.component.scss']
+    styleUrls: ['./cms-tiles-panel.component.scss'],
+    standalone: false
 })
 
 export class CmsTilesPanelComponent implements OnInit {
